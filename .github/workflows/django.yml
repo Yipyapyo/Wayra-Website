@@ -4,6 +4,7 @@ on: [push, pull_request]
 
 jobs:
   build:
+    name: django test
 
     runs-on: ubuntu-latest
     strategy:
