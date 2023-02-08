@@ -1,0 +1,11 @@
+.lesson-grid {
+    display: grid; 
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 20px;
+  }
+  
+.wayra-logo{
+    width: 10px;
+    height: auto;
+    mix-blend-mode: multiply;
+}

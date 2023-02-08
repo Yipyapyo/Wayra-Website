@@ -1,0 +1,35 @@
+{% extends 'dashboard_template.html' %}
+{% block main %}
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2">Dashboard</h1>
+    <div class="btn-toolbar mb-2 mb-md-0">
+      <div class="btn-group me-2">
+        <button type="button" class="btn btn-sm btn-outline-secondary">Share</button>
+        <button type="button" class="btn btn-sm btn-outline-secondary">Export</button>
+      </div>
+      <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle">
+        <span data-feather="calendar" class="align-text-bottom"></span>
+        This week
+      </button>
+    </div>
+</div>
+
+<div class="p-5 rounded-3">
+    <div class="container-fluid pt-2">
+
+        <div class="input-group col-md-4 pb-1">
+            <input class="form-control py-2" type="search" value="search" id="example-search-input">
+            <span class="input-group-append">
+              <button class="btn btn-primary py-2" type="button">
+                <i class="fa-solid fa-magnifying-glass"></i>
+              </button>
+            </span>
+        </div>
+
+    </div>
+</div>
+
+{% include 'partials/company_card_collection.html' with counter=counter title="Upcoming" page_number=1 %}
+
+
+{% endblock %}
