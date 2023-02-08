@@ -14,7 +14,7 @@
     </div>
 </div>
 
-<div class="p-5 rounded-3">
+<div class="px-5 py-2 rounded-3">
     <div class="container-fluid pt-2">
 
         <div class="input-group col-md-4 pb-1">
@@ -29,7 +29,9 @@
     </div>
 </div>
 
-{% include 'partials/company_card_collection.html' with counter=counter title="Upcoming" page_number=1 %}
+<div class="px-5">
+    {% include 'partials/company_card_collection.html' with counter=counter title="Upcoming" page_number=1 %}
+</div>
 
 
 {% endblock %}
