@@ -20,4 +20,5 @@ from portfolio import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.dashboard, name='main_dashboard'),
+    path('portfolio_company/', views.portfolio_company, name='portfolio_company'),
 ]
