@@ -1,23 +1,41 @@
 from django.shortcuts import redirect, render
+from django.views import View
+
+
 from portfolio.forms import LogInForm
 from django.contrib import messages
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import login, logout
+
+from portfolio.views.mixins import LoginProhibitedMixin
+from vcpms import settings
+
 
 # Create your views here.
-def log_in(request):
-    #if user isn't student, they are admin user so are sent to the admin dashboard
-    if request.method == 'POST':
+class LogInCBV(View, LoginProhibitedMixin):
+    http_method_names = ['get', 'post']
+    redirect_when_logged_in_url = settings.REDIRECT_URL_WHEN_LOGGED_IN
+
+    def get(self, request, *args, **kwargs):
+        self.next = request.GET.get('next') or ''
+        return self.render()
+
+    def post(self, request, *args, **kwargs):
         form = LogInForm(request.POST)
-        #creates a log in form in the variable form with the user's input
-        if form.is_valid():
-            username = form.cleaned_data.get('email') #gets email address from the form
-            password = form.cleaned_data.get('password') #gets password from the form
-            user = authenticate(username = username, password = password)
-            if user is not None: #if the user exists
-                login(request, user)
-                redirect_url = request.POST.get('next') or 'dashboard' #directs to admin dashboard
-                return redirect(redirect_url)
-        messages.add_message(request, messages.ERROR, "Invalid credentials")
-    form = LogInForm()
-    next = request.GET.get('next') or ''
-    return render(request, 'login.html', {'form':form, 'next':next})
+        self.next = request.POST.get('next') or settings.REDIRECT_URL_WHEN_LOGGED_IN
+        # creates a log in form in the variable form with the user's input
+        user = form.get_user()
+        if user is not None:
+            login(request, user)
+            return redirect(self.next)
+        messages.add_message(request, messages.ERROR, "The credentials provided were invalid!")
+        return self.render()
+
+    def render(self):
+        """Render log in template with blank log in form."""
+        form = LogInForm()
+        return render(self.request, 'login.html', {'form': form, 'next': self.next})
+
+
+def log_out(request):
+    logout(request)
+    return redirect('login')

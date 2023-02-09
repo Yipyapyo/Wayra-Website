@@ -128,3 +128,6 @@ STATICFILES_DIRS = (
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'portfolio.User'
+
+
+REDIRECT_URL_WHEN_LOGGED_IN = 'dashboard'

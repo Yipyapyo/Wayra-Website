@@ -1,5 +1,6 @@
 import datetime
 
+from django.core.exceptions import ObjectDoesNotExist
 from django.core.management.base import BaseCommand, CommandError
 from faker import Faker
 from portfolio.models import User
@@ -16,6 +17,10 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         print("seeding...")
         try:
+            User.objects.get(email="john.doe@example.org")
+            print("john doe has already seeded.")
+
+        except (ObjectDoesNotExist):
             user_john = User.objects.create_user(
                 email="john.doe@example.org",
                 password="Password123",
@@ -25,11 +30,14 @@ class Command(BaseCommand):
             )
             user_john.save()
             print("john doe has been seeded.")
-        except (IntegrityError):
-            print("john doe was already seeded.")
+
 
         # Create Petra Pickles (Administrator)
         try:
+            User.objects.get(email="petra.pickles@example.org")
+            print("petra pickles has already seeded.")
+
+        except (ObjectDoesNotExist):
             user_petra = User.objects.create_superuser(
                 email="petra.pickles@example.org",
                 password="Password123",
@@ -39,8 +47,6 @@ class Command(BaseCommand):
             )
             user_petra.save()
             print("petra has been seeded.")
-        except (IntegrityError):
-            print("petra was already seeded.")
 
         # Create 100 auto generated students with requests, lessons and transactions
 

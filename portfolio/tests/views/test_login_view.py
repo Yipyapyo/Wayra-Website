@@ -18,7 +18,7 @@ class LogInViewTestCase(TestCase, LogInTester):
 
     def setUp(self):
         self.url = reverse('login')
-        self.student_user = User.objects.get(email="john.doe@example.org")
+        self.user = User.objects.get(email="john.doe@example.org")
         self.admin_user = User.objects.get(email="petra.pickles@example.org")
 
     def test_log_in_url(self):
@@ -70,8 +70,8 @@ class LogInViewTestCase(TestCase, LogInTester):
         self.assertEqual(len(messages_list), 0)
 
     def test_valid_log_in_by_inactive_user(self):
-        self.student_user.is_active = False
-        self.student_user.save()
+        self.user.is_active = False
+        self.user.save()
         form_input = {'email': 'john.doe@example.org', 'password': 'Password123'}
         response = self.client.post(self.url, form_input, follow=True)
         self.assertEqual(response.status_code, 200)
@@ -85,7 +85,7 @@ class LogInViewTestCase(TestCase, LogInTester):
         self.assertEqual(messages_list[0].level, messages.ERROR)
 
     def test_get_login_redirects_when_user_logged_in(self):
-        self.client.login(email=self.student_user.email, password="Password123")
+        self.client.login(email=self.user.email, password="Password123")
         response = self.client.get(self.url, follow=True)
         redirect_url = reverse("dashboard")
         self.assertRedirects(response, redirect_url, status_code=302, target_status_code=200)

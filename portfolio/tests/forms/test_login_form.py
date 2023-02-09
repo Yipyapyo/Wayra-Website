@@ -1,6 +1,7 @@
 from django import forms
 from django.test import TestCase
 from portfolio.forms import LogInForm
+from portfolio.models import User
 
 
 class LogInFormTestCase(TestCase):
@@ -8,6 +9,7 @@ class LogInFormTestCase(TestCase):
     fixtures = ["portfolio/tests/fixtures/default_user.json"]
 
     def setUp(self):
+        self.user = User.objects.get(email="john.doe@example.org")
         self.form_input = {'email': 'john.doe@example.org', 'password': 'Password123'}
 
     def test_form_contains_required_fields(self):
@@ -40,3 +42,16 @@ class LogInFormTestCase(TestCase):
         self.form_input['password'] = 'pwd'
         form = LogInForm(data=self.form_input)
         self.assertTrue(form.is_valid())
+
+    def test_form_returns_correct_user(self):
+        form = LogInForm(data=self.form_input)
+        self.assertTrue(form.is_valid())
+        form_user = form.get_user()
+        self.assertEqual(form_user, self.user)
+
+    def test_form_returns_none_for_invalid_input(self):
+        self.form_input['password'] = 'pwd'
+        form = LogInForm(data=self.form_input)
+        self.assertTrue(form.is_valid())
+        form_user = form.get_user()
+        self.assertEqual(form_user, None)

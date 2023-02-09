@@ -19,6 +19,8 @@ from portfolio import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', views.log_in, name='home'),
-    path('login', views.log_in, name='login'),
+    path('', views.LogInCBV.as_view(), name='home'),
+    path('login', views.LogInCBV.as_view(), name='login'),
+    path('logout', views.log_out, name='logout'),
+
 ]
