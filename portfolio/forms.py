@@ -10,10 +10,15 @@ class IndividualCreateForm(forms.ModelForm):
         model = individual_create
         fields = ["AngelListLink", "CrunchbaseLink", "LinkedInLink", 
                   "Company", "Position", "Email", "PrimaryNumber", "SecondaryNumber"]
-        widgets = {
-            "PrimaryNumber": PhoneNumberPrefixWidget(initial="UK"),
-            "SecondaryNumber": PhoneNumberPrefixWidget(initial="UK")
-        }
+        # widgets = {
+        #     "PrimaryNumber": PhoneNumberPrefixWidget(initial="UK"),
+        #     "SecondaryNumber": PhoneNumberPrefixWidget(initial="UK")
+        # }
+    def __init__(self, *args, **kwargs):
+        super(IndividualCreateForm, self).__init__(*args, **kwargs)
+        self.fields['PrimaryNumber'].widget = PhoneNumberPrefixWidget()
+        self.fields['SecondaryNumber'].widget = PhoneNumberPrefixWidget()
+
 # Form for creating addresses
 class AddressCreateForm(forms.ModelForm):
     class Meta:

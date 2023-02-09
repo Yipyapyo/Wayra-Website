@@ -9,17 +9,30 @@ from django.shortcuts import redirect, render
 Create an individual.
 """
 def individual_create(request):
+    
+    individualForm = IndividualCreateForm()
+    addressForms = AddressCreateForm()
+    
     if request.method == "POST":
-        individualForm = IndividualCreateForm(request.POST)
-        addressForms = [AddressCreateForm(request.POST, prefix=str(x)) for x in range (0, 1)]
-        if individualForm.is_valid() and all([addressForms.is_valid() for af in addressForms]):
+        individualForm = IndividualCreateForm(request.POST, prefix="form1")
+        addressForms = AddressCreateForm(request.POST, prefix="form2")
+        # addressForms = [AddressCreateForm(request.POST, prefix=str(x)) for x in range (0, 1)]
+        if individualForm.is_valid() and addressForms.is_valid():
+        # if individualForm.is_valid() and all([addressForms.is_valid() for af in addressForms]):
             new_individual = individualForm.save()
-            for af in addressForms:
-                new_address = af.save(commit=False)
-                new_address.individual = new_individual
-                new_address.save()
-                return redirect("individual_page")
-    return render(request, "individual_create.html")
+            new_address = addressForms.save(commit=False)
+            new_address.individual = new_individual
+            new_address.save()
+            return redirect("individual_page")
+    else:
+        individualForm = IndividualCreateForm(prefix="form1")
+        addressForms = AddressCreateForm(prefix="form2")
+    
+    context = {
+        'individualForm': individualForm,
+        'addressForms': addressForms,
+    }
+    return render(request, "individual_create.html", context=context)
 
 """
 List of individuals

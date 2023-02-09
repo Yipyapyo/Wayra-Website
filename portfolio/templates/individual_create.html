@@ -1,0 +1,15 @@
+<html>
+    <head>
+
+    </head>
+    <body>
+        <form action="{%url 'individual_create' %}" method="post">
+            {% csrf_token %}
+            {{ individualForm.as_p }}
+            {{ addressForms.as_p }}
+            <input type="submit" value="Create" class="btn btn-primary">
+        </form>
+        
+    </body>
+    
+</html>
