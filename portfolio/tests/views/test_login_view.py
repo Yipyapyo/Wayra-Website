@@ -1,3 +1,4 @@
+"""Unit tests of the log in view"""
 
 from django.test import TestCase
 from django.urls import reverse
@@ -9,7 +10,7 @@ from portfolio.tests.helpers import LogInTester
 
 
 class LogInViewTestCase(TestCase, LogInTester):
-    """Tests of the log in view"""
+    """Unit tests of the log in view"""
 
     fixtures = [
         "portfolio/tests/fixtures/default_user.json",

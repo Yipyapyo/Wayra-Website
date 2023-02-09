@@ -1,9 +1,6 @@
-from datetime import datetime
 from django import forms
 from django.contrib.auth import authenticate
-from django.core.validators import RegexValidator
 
-from portfolio.models import User
 
 class LogInForm(forms.Form):
     email = forms.EmailField(label="Email")

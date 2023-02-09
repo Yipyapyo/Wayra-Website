@@ -1,12 +1,7 @@
-import datetime
-
 from django.core.exceptions import ObjectDoesNotExist
-from django.core.management.base import BaseCommand, CommandError
-from faker import Faker
+from django.core.management.base import BaseCommand
+
 from portfolio.models import User
-from django.db import IntegrityError
-import random
-from decimal import Decimal
 
 
 class Command(BaseCommand):
@@ -30,7 +25,6 @@ class Command(BaseCommand):
             )
             user_john.save()
             print("john doe has been seeded.")
-
 
         # Create Petra Pickles (Administrator)
         try:

@@ -10,8 +10,7 @@ class User(AbstractUser):
     email = models.EmailField(verbose_name='Email address',
                               max_length=255,
                               unique=True,
-                              validators=[EmailValidator()], 
-                              blank = False
+                              validators=[EmailValidator()],
                               )
     first_name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255)

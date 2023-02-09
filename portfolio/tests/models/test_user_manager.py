@@ -1,4 +1,4 @@
-import datetime
+"""Unit tests of the User manager class."""
 
 from django.core.exceptions import ValidationError
 from django.test import TestCase
@@ -7,6 +7,8 @@ from portfolio.models import User
 
 
 class UserManagerTestCase(TestCase):
+    """Unit tests of the User manager class."""
+
     def test_has_to_supply_first_name(self):
         with self.assertRaises(ValidationError):
             User.objects.create_user(
