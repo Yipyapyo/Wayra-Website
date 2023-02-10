@@ -1,20 +1,16 @@
-<div class="input-group col-md-4 pb-1">
+<form method = "POST" action="{%url 'search_result'%}" class="input-group col-md-4 pb-1">
 
-  <form method = "POST" action="{%url 'search_result'%}">
+  {% csrf_token %}
 
-    {% csrf_token %}
-
-    <input class="form-control py-2" type="search" placeholder="Search for a Company" name="searchresult">
-    <span class="input-group-append">
+  <input class="form-control py-2" type="search" placeholder="Search for a Company" name="searchresult">
+  <span class="input-group-append">
 
 
-      <button class="btn btn-primary py-2" type="submit">
-        <i class="fa-solid fa-magnifying-glass"></i>
-      </button>
+    <button class="btn btn-primary py-2" type="submit">
+      <i class="fa-solid fa-magnifying-glass"></i>
+    </button>
 
-    </span>
+  </span>
 
-  </form>
-
-</div>
+</form>
 
