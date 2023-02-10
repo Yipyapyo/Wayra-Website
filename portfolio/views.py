@@ -76,5 +76,4 @@ def searchcomp(request):
 
 def portfolio_company(request):
     '''This page displays information about a single portfolio company'''
-    print("called")
-    return render(request, 'portfolio_company_page.html')
+    return render(request, 'portfolio_company_page.html', {'counter':{1,2,3}})

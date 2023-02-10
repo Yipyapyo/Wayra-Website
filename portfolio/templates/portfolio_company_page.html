@@ -2,42 +2,78 @@
 {% block main %}
 
 <div class="px-5 py-2 rounded-3">
-    <div class="container-fluid pt-2">
-        <p>Telefonica Innovations</p>
-        <h2>Wayra UK Limited</h2>
-
-        <h5>Details</h5>
-
-        <ul class="list-group list-group-flush">
-            <li class="list-group-item mb-2 mt-2">
-                    <h6>Company Name</h6>
-                    <h7>Wayra UK Ltd.</h7>
-            </li>
-            <li class="list-group-item my-2">
-                <h6>Company Registration Number(CRN)</h6>
-                <h7>AB123456</h7>
-            </li>
-            <li class="list-group-item my-2">
-                <div class="col">
-                    <h6>Jurisdiction</h6>
-                    <h7>United Kingdom</h7>
+    <p>Telefonica Innovations</p>
+    <h2 class="pb-3">Wayra UK Limited</h2>
+    
+    <div class="row align-items-md-stretch">
+        <div class="col-md-6">
+            <div class="container-fluid pt-2">
+                <h5>Details</h5>
+        
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item mb-2 mt-2">
+                            <h6>Company Name</h6>
+                            <h7>Wayra UK Ltd.</h7>
+                    </li>
+                    <li class="list-group-item my-2">
+                        <h6>Company Registration Number(CRN)</h6>
+                        <h7>AB123456</h7>
+                    </li>
+                    <li class="list-group-item my-2">
+                        <div class="col">
+                            <h6>Jurisdiction</h6>
+                            <h7>United Kingdom</h7>
+                        </div>
+                    </li>
+                    <li class="list-group-item my-2">
+                        <h6>Trading Names</h6>
+                        <h7>Wayra UK Limited</h7>
+                    </li>
+                    <li class="list-group-item my-2">
+                        <h6>Previous Names</h6>
+                        <h7>Wayra Innovations Limited</h7>
+                    </li>
+                    <li class="list-group-item my-2">
+                        <h6>Registered Address</h6>
+                        <h7>Tintagel House, 92 Albert Embankment, London SE1 7TY</h7>
+                    </li>
+                </ul>
+        
+            </div>
+        </div>
+        <div class="col-md-6">
+          <div class="h-100 px-5 py-2 rounded-3">
+            <div class="pt-1 pb-3">
+                <h2>Founders</h2>
+                <div class="card-group">
+                    {% for count in counter %}
+                        {% include 'partials/founders_card.html'%}
+                    {% endfor %}
                 </div>
-            </li>
-            <li class="list-group-item my-2">
-                <h6>Trading Names</h6>
-                <h7>Wayra UK Limited</h7>
-            </li>
-            <li class="list-group-item my-2">
-                <h6>Previous Names</h6>
-                <h7>Wayra Innovations Limited</h7>
-            </li>
-            <li class="list-group-item my-2">
-                <h6>Registered Address</h6>
-                <h7>Tintagel House, 92 Albert Embankment, London SE1 7TY</h7>
-            </li>
-        </ul>
-
+            </div>
+            <div class="pt-1 pb-3">
+                <h2>Investors</h2>
+                <div class="card-group">
+                    {% for count in counter %}
+                        {% include 'partials/founders_card.html'%}
+                    {% endfor %}
+                </div>
+            </div>
+          </div>
+        </div>
     </div>
+
+    <!-- <div class="pt-1 pb-3">
+        <h2>Rights/Contracts</h2>
+        <div class="card" style="width: 10rem;">
+            <img src="..." class="card-img-top" alt="...">
+            <div class="card-body">
+              <h5 class="card-title">Wayra Insurance</h5>
+            </div>
+          </div>
+    </div> -->
+
+    
 </div>
 
 {% endblock %}
