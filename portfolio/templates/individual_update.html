@@ -1,0 +1,7 @@
+<h1>Update individual</h1>
+<form action="" method="post">
+    {% csrf_token %}
+    {{ individualForm.as_p }}
+    {{ addressForms.as_p }}
+    <input type="submit" value="Update" class="btn btn-primary">
+</form>

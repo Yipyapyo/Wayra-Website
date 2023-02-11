@@ -21,5 +21,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path("individual_page/individual_create/", views.individual_create, name="individual_create"),
     path("individual_page/", views.individual_page, name="individual_page"),
+    path("individual_page/<int:id>/update/", views.individual_update, name='individual_update'),
+    path("individual_page/<int:id>/delete/", views.individual_delete, name='individual_delete'),
 
 ]

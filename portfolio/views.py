@@ -39,3 +39,31 @@ List of individuals
 """
 def individual_page(request):
     return render(request, "individual_page.html")
+
+def individual_update(request, id):
+    individualForm = IndividualCreateForm.objects.get(id=id)
+    addressForms = AddressCreateForm.objects.get(id=id)
+    if request.method == 'POST':
+        form1 = IndividualCreateForm(request.POST, instance=individualForm, prefix="form1")
+        form2 = AddressCreateForm(request.POST, instance=addressForms, prefix="form2")
+        if form1.is_valid() and form2.is_valid():
+            updated_individual = form1.save()
+            updated_address = form2.save(commit=False)
+            updated_address.individual = updated_individual
+            updated_address.save()
+            return redirect("individual_page")
+    else:
+        form1 = IndividualCreateForm(instance=individualForm, prefix="form1")
+        form2 = AddressCreateForm(instance=addressForms, prefix="form2")
+    context = {
+        'individualForm': form1,
+        'addressForms': form2,
+    }
+    return render(request, 'individual_update.html', context=context)
+
+def individual_delete(request, id):
+    individualForm = IndividualCreateForm.objects.get(id=id)
+    if request.method == 'POST':
+        individualForm.delete()
+        return redirect('individual_page')
+    return render(request, 'individual_delete.html')
