@@ -1,6 +1,14 @@
 <html>
     <body>
         <h1>Placeholder text</h1>
+        {% for form in object_list %}
+            <a href="{% url 'individual_update' form.id %}">Edit</a>
+            <a href="{% url 'individual_delete' form.id %}">Delete</a>
+        {% endfor %}
         
+        <h2>Create a new individual/client</h2>
+        <a href = '{% url 'individual_create' %}' class="btn mb-2 home_button btn-lg btn-secondary mb=2">
+            Create
+        </a>
     </body>
 </html>

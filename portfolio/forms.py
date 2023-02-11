@@ -1,13 +1,13 @@
 """Forms for the VC portfolio management site"""
 from django import forms
-from portfolio.models import individual_create, residentialAddress
+from portfolio.models import individual_model, residentialAddress
 from django_countries.widgets import CountrySelectWidget
 from phonenumber_field.widgets import PhoneNumberPrefixWidget
 
 # Form for creating an individual / client
 class IndividualCreateForm(forms.ModelForm):
     class Meta:
-        model = individual_create
+        model = individual_model
         fields = ["AngelListLink", "CrunchbaseLink", "LinkedInLink", 
                   "Company", "Position", "Email", "PrimaryNumber", "SecondaryNumber"]
         # widgets = {

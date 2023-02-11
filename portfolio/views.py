@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from .forms import IndividualCreateForm, AddressCreateForm
-from .models import individual_create, residentialAddress
+from .models import individual_model, residentialAddress
 from django.shortcuts import redirect, render
 
 # Create your views here.
@@ -38,11 +38,15 @@ def individual_create(request):
 List of individuals
 """
 def individual_page(request):
-    return render(request, "individual_page.html")
+    data = {'object_list': individual_model.objects.all()}
+    return render(request, "individual_page.html", data)
 
+"""
+Update a particular individual's information
+"""
 def individual_update(request, id):
-    individualForm = IndividualCreateForm.objects.get(id=id)
-    addressForms = AddressCreateForm.objects.get(id=id)
+    individualForm = individual_model.objects.get(id=id)
+    addressForms = residentialAddress.objects.get(id=id)
     if request.method == 'POST':
         form1 = IndividualCreateForm(request.POST, instance=individualForm, prefix="form1")
         form2 = AddressCreateForm(request.POST, instance=addressForms, prefix="form2")
@@ -61,8 +65,11 @@ def individual_update(request, id):
     }
     return render(request, 'individual_update.html', context=context)
 
+"""
+Delete a particular individual
+"""
 def individual_delete(request, id):
-    individualForm = IndividualCreateForm.objects.get(id=id)
+    individualForm = individual_model.objects.get(id=id)
     if request.method == 'POST':
         individualForm.delete()
         return redirect('individual_page')

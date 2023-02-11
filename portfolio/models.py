@@ -3,7 +3,7 @@ from phonenumber_field.modelfields import PhoneNumberField
 from django_countries.fields import CountryField
 
 # Create your models here.
-class individual_create(models.Model):
+class individual_model(models.Model):
     """Individual model used by admins to create new client/individual."""
     AngelListLink = models.URLField("Angellist link", max_length = 200)
     CrunchbaseLink = models.URLField("Crunchbase link", max_length = 200)
@@ -22,5 +22,5 @@ class residentialAddress(models.Model):
     city = models.CharField("City", max_length=50, blank=False)
     state = models.CharField("State/Province", max_length=50, blank=True)
     country = CountryField(blank_label="Select country")
-    individual = models.ForeignKey(individual_create, on_delete=models.CASCADE)
+    individual = models.ForeignKey(individual_model, on_delete=models.CASCADE)
 
