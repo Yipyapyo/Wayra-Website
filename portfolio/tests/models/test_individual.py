@@ -1,0 +1,157 @@
+from django.test import TestCase
+from django.core.exceptions import ValidationError
+from portfolio.models import individual_model
+from phonenumber_field.phonenumber import PhoneNumber
+
+
+
+class IndividualTests(TestCase):
+    """Unit tests for the individual model."""
+
+
+    # Sets up example individual to be used for tests
+    def setUp(self):
+        self.individual = individual_model.objects.create(
+             AngelListLink = "https://www.AngelList.com",
+             CrunchbaseLink = "https://www.Crunchbase.com",
+             LinkedInLink = "https://www.LinkedIn.com",
+             Company = "exampleCompany",
+             Position = "examplePosition",
+             Email = "test@gmail.com",
+             PrimaryNumber = PhoneNumber.from_string("+447975777666"),
+             SecondaryNumber = PhoneNumber.from_string("+441325777655")
+        )
+
+
+    # Tests if individual is valid
+    def test_valid_individual(self):
+        self._assert_individual_is_valid()
+
+
+    def test_angellistlink_cannot_be_blank(self):
+        self.individual.AngelListLink = ''
+        self._assert_individual_is_invalid()
+
+
+    def test_angellistlink_can_be_200_characters_long(self):
+        self.individual.AngelListLink = "https://www." + ("x" * 184) + ".com"
+        self._assert_individual_is_valid()
+
+
+    def test_angellistlink_cannot_be_over_200_characters_long(self):
+        self.individual.AngelListLink = "https://www." + ("x" * 185) + ".com"
+        self._assert_individual_is_invalid()
+
+
+    def test_crunchbaselink_cannot_be_blank(self):
+        self.individual.CrunchbaseLink = ''
+        self._assert_individual_is_invalid()
+
+
+    def test_crunchbaselink_can_be_200_characters_long(self):
+        self.individual.CrunchbaseLink = "https://www." + ("x" * 184) + ".com"
+        self._assert_individual_is_valid()
+
+
+    def test_crunchbaselink_cannot_be_over_200_characters_long(self):
+        self.individual.CrunchbaseLink = "https://www." + ("x" * 185) + ".com"
+        self._assert_individual_is_invalid()
+
+
+    def test_linkedinlink_cannot_be_blank(self):
+        self.individual.LinkedInLink = ''
+        self._assert_individual_is_invalid()
+
+
+    def test_linkedinlink_can_be_200_characters_long(self):
+        self.individual.LinkedInLink = "https://www." + ("x" * 184) + ".com"
+        self._assert_individual_is_valid()
+
+
+    def test_linkedinlink_cannot_be_over_200_characters_long(self):
+        self.individual.LinkedInLink = "https://www." + ("x" * 185) + ".com"
+        self._assert_individual_is_invalid()
+
+
+    def test_company_cannot_be_blank(self):
+        self.individual.Company = ''
+        self._assert_individual_is_invalid()
+
+
+    def test_company_can_be_100_characters_long(self):
+        self.individual.Company = 'x' * 100
+        self._assert_individual_is_valid()
+
+
+    def test_company_cannot_be_over_100_characters_long(self):
+        self.individual.Company = 'x' * 101
+        self._assert_individual_is_invalid()
+
+
+    def test_position_cannot_be_blank(self):
+        self.individual.Position = ''
+        self._assert_individual_is_invalid()
+
+
+    def test_position_can_be_100_characters_long(self):
+        self.individual.Position = 'x' * 100
+        self._assert_individual_is_valid()
+
+
+    def test_position_cannot_be_over_100_characters_long(self):
+        self.individual.Position = 'x' * 101
+        self._assert_individual_is_invalid()
+
+
+    # Tests the fact that the email field of a individual shouldn't be blank
+    def test_email_must_not_be_blank(self):
+        self.individual.Email = ''
+        self._assert_individual_is_invalid()
+
+
+    # Tests the fact that the email field of a individual can be not unique
+    def test_email_can_be_not_unique(self):
+        second_individual = self._create_second_individual()
+        self.individual.Email = second_individual.Email
+        self._assert_individual_is_valid()
+
+
+    def test_primarynumber_must_not_be_blank(self):
+        self.individual.PrimaryNumber = ''
+        self._assert_individual_is_invalid()
+
+
+    def test_secondarynumber_can_be_blank(self):
+        self.individual.SecondaryNumber = ''
+        self._assert_individual_is_valid()
+
+
+    """Helper functions"""
+
+    # Assert a individual is valid
+    def _assert_individual_is_valid(self):
+        try:
+            self.individual.full_clean()
+        except ValidationError:
+            self.fail('Test individual is not valid.')
+
+
+    # Assert a individual is invalid
+    def _assert_individual_is_invalid(self):
+        with self.assertRaises(ValidationError):
+            self.individual.full_clean()
+
+
+    # Create a second individual
+    def _create_second_individual(self):
+        individual = individual_model.objects.create(
+             AngelListLink = "www.AngelList2.com",
+             CrunchbaseLink = "www.Crunchbase2.com",
+             LinkedInLink = "www.LinkedInLink2.com",
+             Company = "exampleCompany2",
+             Position = "examplePosition2",
+             Email = "test2@gmail.com",
+             PrimaryNumber = PhoneNumber.from_string("+447975777662"),
+             SecondaryNumber = PhoneNumber.from_string("+441325777651")
+        )
+        return individual
