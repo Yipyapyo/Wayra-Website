@@ -91,6 +91,22 @@
         </div>
     </div>
 
+    <div class="container-fluid pt-3">
+        <h2>Coaches/Mentors</h2>
+        <div class="px-5 pt-3 pb-2 mb-4 bg-light rounded-3">
+            <div class="container-fluid py-3">
+                <div class="container text-center mt-5 mb-2">
+                    <span>These are the coaches and mentors associated with Wayra UK Limited:</span>
+                </div>
+                <div class="row mb-3">
+                    {% for count in counter %}
+                        {% include 'partials/individual_card.html'%}
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+
     
 </div>
 
