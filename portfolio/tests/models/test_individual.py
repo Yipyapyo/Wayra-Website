@@ -57,7 +57,6 @@ class IndividualTests(TestCase):
         self._assert_individual_is_valid()
 
     def test_linkedinlink_cannot_be_over_200_characters_long(self):
-        # self.individual.LinkedInLink = "https://www." + ("x" * 185) + ".com"
         self.individual.LinkedInLink = 'https://www.google.com/search?q=generate+a+url+with+200+characters+long+long+long&sxsrf=AJOqlzUy02dw8aZyAEwLl5Bkc6A_o8sCuQ%3A1676293616530&ei=8DXqY7OJIJH_gAaIzZKABQ&ved=0ahUKEwizwbWsyJL9AhWRP8AKHYimBFAQ4dUDCA8&uact=5&oq=generate+a+url+with+200+characters+long+long+long&gs_lcp=Cgxnd3Mtd2l6LXNlcnAQAzIFCCEQoAE6CggAEEcQ1gQQsAM6BwghEKABEApKBAhBGABKBAhGGABQigJYyRBgoBNoAXABeACAAWKIAdEHkgECMTWYAQCgAQHIAQrAAQE&sclient=gws-wiz-serp'
         self._assert_individual_is_invalid()
 
