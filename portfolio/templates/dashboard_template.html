@@ -1,0 +1,60 @@
+{% extends 'base_content.html' %}
+{% load static %}
+{% block content %}
+
+<header class="navbar navbar-dark bg-dark flex-md-nowrap px-2 shadow navbar-gradient">
+    <!-- <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3 fs-6" href="#"><img src="{% static 'images/wayra_logo.png' %}" alt="Wayra" class="wayra-logo img-fluid"></a> -->
+    <a href="#" class="navbar-brand"><img src="{% static 'images/wayra_logo.png' %}" alt="" class="wayra-logo"></a>
+    <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="navbar-nav">
+      <div class="row nav-item text-nowrap">
+        {% include 'partials/profile_picture_dropdown.html'%}
+      </div>
+    </div>
+  </header>
+  
+  <div class="container-fluid">
+    <div class="row">
+      <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
+        <div class="position-sticky pt-3 sidebar-sticky">
+          <ul class="nav flex-column">
+            <li class="nav-item py-1">
+              <a class="nav-link active text-dark" aria-current="page" href="#">
+                <i class="fa-regular fa-building"></i>
+                Companies
+              </a>
+            </li>
+            <li class="nav-item py-1">
+              <a class="nav-link text-dark" href="#">
+                <i class="fa-regular fa-handshake"></i>
+                Partners
+              </a>
+            </li>
+            <li class="nav-item py-1">
+              <a class="nav-link text-dark" href="Individuals">
+                <i class="fa-solid fa-person"></i>
+                Individuals
+              </a>
+            </li>
+            <li class="nav-item py-1">
+              <a class="nav-link text-dark" href="#">
+                <i class="fa-regular fa-gear"></i>
+                Settings
+              </a>
+            </li>
+          </ul>
+  
+      </nav>
+  
+      <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+        {% block main %}
+
+        {% endblock %}
+      </main>
+    </div>
+  </div>
+  
+
+{% endblock %}
