@@ -1,8 +1,10 @@
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 import logging
 
 
 # Create your views here.
+@login_required
 def dashboard(request):
     '''The main dashboard page of the website.'''
 
@@ -24,7 +26,7 @@ def dashboard(request):
 
     return render(request, 'main_dashboard.html', {"companies": companies, })
 
-
+@login_required
 def searchcomp(request):
     # Data for the each company will be listed here.
 
@@ -64,7 +66,7 @@ def searchcomp(request):
     else:
         return render(request, 'main_dashboard.html')
 
-
+@login_required
 def portfolio_company(request):
     '''This page displays information about a single portfolio company'''
     return render(request, 'portfolio_company_page.html', {'counter': {1, 2, 3}, 'contract_counter': {1, 2, 3, 4}})
