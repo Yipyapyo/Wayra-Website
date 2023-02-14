@@ -131,3 +131,4 @@ AUTH_USER_MODEL = 'portfolio.User'
 
 
 REDIRECT_URL_WHEN_LOGGED_IN = 'dashboard'
+LOGIN_URL = 'login'
