@@ -12,7 +12,7 @@ from vcpms import settings
 
 
 # Create your views here.
-class LogInCBV(View, LoginProhibitedMixin):
+class LogInCBV(LoginProhibitedMixin, View):
     """
     class based views for the login home page
     """
@@ -33,7 +33,6 @@ class LogInCBV(View, LoginProhibitedMixin):
             return redirect(self.next)
         messages.add_message(request, messages.ERROR, "The credentials provided were invalid!")
         return self.render()
-
 
     def render(self):
         """Render log in template with blank log in form."""
