@@ -1,1 +1,1 @@
-from .auth_usermodel import *
+from .company_model import Company
