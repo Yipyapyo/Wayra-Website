@@ -29,7 +29,6 @@ class CreateFormTestCase(TestCase):
     # Test if the form accepts valid input
     def test_valid_sign_up_form(self):
         form = IndividualCreateForm(data=self.form_input)
-        print(form.errors)
         self.assertTrue(form.is_valid())
         
 
@@ -37,7 +36,6 @@ class CreateFormTestCase(TestCase):
     def test_form_has_necessary_fields(self):
         form = IndividualCreateForm()
         self.assertIn("AngelListLink", form.fields)
-        print(type(form.fields['AngelListLink']))
         self.assertTrue(isinstance(form.fields['AngelListLink'], URLField))
         self.assertIn("CrunchbaseLink", form.fields)
         self.assertTrue(isinstance(form.fields['CrunchbaseLink'], URLField))
