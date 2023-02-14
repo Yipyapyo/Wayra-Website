@@ -27,7 +27,7 @@ class CreateFormTestCase(TestCase):
 
 
     # Test if the form accepts valid input
-    def test_valid_sign_up_form(self):
+    def test_valid_individual_create_form(self):
         form = IndividualCreateForm(data=self.form_input)
         self.assertTrue(form.is_valid())
         
