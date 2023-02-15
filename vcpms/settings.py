@@ -39,6 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'portfolio',
     'widget_tweaks',
+    'phonenumber_field',
+    'django_countries',
 ]
 
 MIDDLEWARE = [

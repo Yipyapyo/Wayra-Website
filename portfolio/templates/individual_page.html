@@ -1,0 +1,25 @@
+{% extends 'dashboard_template.html' %}
+{% block main %}
+{% load static %}
+
+<p></p>
+<html>
+    <head><link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
+    </head>
+    <body>
+        <h1>Create, Modify, and Remove Individuals</h1>
+        <h4>To create an Individual click the Create button! <a href = '{% url 'individual_create' %}' class="create_button_home">
+            Create
+        </a></h4>>
+        
+
+        {% for form in object_list %}
+        <p class="individual_count">Individual {{forloop.counter}}</p>
+        <a href="{% url 'individual_update' form.id %}" class="btn mb-2 home_button btn-lg btn-secondary mb=2">Edit</a>
+            <a href="{% url 'individual_delete' form.id %}" class="btn mb-2 home_button btn-lg btn-secondary mb=2">Delete</a>
+        {% endfor %}
+        
+        
+    </body>
+</html>
+{% endblock %}

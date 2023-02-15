@@ -1,0 +1,22 @@
+{% extends 'dashboard_template.html' %}
+{% block main %}
+{% load static %}
+
+<html>
+    <head>
+        <link rel="stylesheet" type="text/css" href="{% static 'css/styles_create.css' %}">
+    </head>
+    <body>
+        <h1>Create Individual</h1><p></p>
+        <form action="{%url 'individual_create' %}" method="post">
+            {% csrf_token %}
+            <p></p>
+            {{ individualForm.as_p }}
+            {{ addressForms.as_p }}
+            <input type="submit" value="Create" class="btn mb-2 home_button btn-lg btn-secondary mb=2">
+        </form>
+        
+    </body>
+    
+</html>
+{% endblock %}
