@@ -36,7 +36,7 @@ class Company(models.Model):
     registered_address = None #models.ForeignKey(ResidentialAddress, on_delete=models.CASCADE, null=True)
     jurisdiction = models.CharField("Jurisdiction", max_length = 50, blank=True)
     founders = None     # models.ForeignKey(Individual)
-    incorporation_date = models.DateField(auto_now=True, unique=True)
+    incorporation_date = models.DateField(auto_now=True)
     investors = None    # e.g. models.ForeignKey(Individual)
     programmes = None  # e.g. models.ForeignKey(Programme)
     mentors = None # e.g. models.ForeignKey(Mentor)
