@@ -17,3 +17,6 @@ class Company(models.Model):
     founders = None     # models.ForeignKey(Individual)
     incorporation_date = models.DateField(auto_now=True)
     investors = None    # e.g. models.ForeignKey(Individual)
+
+class Portfolio_Company(Company):
+    wayra_number = models.CharField(max_length=255)
