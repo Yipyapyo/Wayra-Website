@@ -19,6 +19,11 @@ from portfolio import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('dashboard', views.dashboard, name='dashboard'),
+    path('', views.LogInCBV.as_view(), name='login'),
+    path('logout', views.log_out, name='logout'),
+    path('search_result', views.searchcomp, name='search_result'),
+    path('portfolio_company/', views.portfolio_company, name='portfolio_company'),
     path("individual_page/individual_create/", views.individual_create, name="individual_create"),
     path("individual_page/", views.individual_page, name="individual_page"),
     path("individual_page/<int:id>/update/", views.individual_update, name='individual_update'),
