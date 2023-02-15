@@ -50,7 +50,6 @@ class CreateFormTestCase(TestCase):
         self.assertIn("city", form.fields)
         self.assertIn("state", form.fields)
         self.assertIn('country', form.fields)
-        print(type(form.fields['country']))
         self.assertTrue(isinstance(form.fields['country'], LazyTypedChoiceField))
 
     # Test the form using model validation
