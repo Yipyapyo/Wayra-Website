@@ -26,7 +26,7 @@ def dashboard(request):
 
     ]
 
-    return render(request, 'main_dashboard.html', {"companies": companies, })
+    return render(request, 'company/main_dashboard.html', {"companies": companies, })
 
 @login_required
 def searchcomp(request):
@@ -66,12 +66,12 @@ def searchcomp(request):
 
 
     else:
-        return render(request, 'main_dashboard.html')
+        return render(request, 'company/main_dashboard.html')
 
 @login_required
 def portfolio_company(request):
     '''This page displays information about a single portfolio company'''
-    return render(request, 'portfolio_company_page.html', {'counter': {1, 2, 3}, 'contract_counter': {1, 2, 3, 4}})
+    return render(request, 'company/portfolio_company_page.html', {'counter': {1, 2, 3}, 'contract_counter': {1, 2, 3, 4}})
 
 @login_required
 def create_company(request):
@@ -84,4 +84,4 @@ def create_company(request):
     else:
         form = CompanyCreateForm()
 
-    return render(request, 'company_create.html', {'form':form})
+    return render(request, 'company/company_create.html', {'form':form})
