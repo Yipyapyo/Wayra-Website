@@ -68,21 +68,6 @@
   transition-property: width, left;
 }
 
-div {
-  padding: 8px;
-}
-
-h1 {
-  text-align: center;
-  text-transform: uppercase;
-  color: #22a4a9;
-}
-
-h4 {
-  padding: 20px;
-  color: #000101;
-}
-
 .individual_count {
   font-weight: bold;
   font-size: 36px;
