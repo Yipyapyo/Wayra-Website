@@ -1,0 +1,9 @@
+{% extends 'dashboard_template.html' %}
+{% block main %}
+    <h1>Update programme</h1>
+    <form action="post">
+        {{ form.as_p }}
+        <input type="submit" value="Submit"/>
+        <a href="{% url 'programme_list' %}">Cancel</a>
+    </form>
+{% endblock %}

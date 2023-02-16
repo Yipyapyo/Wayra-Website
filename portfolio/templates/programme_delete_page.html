@@ -1,0 +1,8 @@
+{% extends 'dashboard_template.html' %}
+{% block main %}
+    <h1>Delete programme</h1>
+    <form action="get">
+        <input type="submit" value="Submit"/>
+        <a href="{% url 'programme_list' %}">Cancel</a>
+    </form>
+{% endblock %}
