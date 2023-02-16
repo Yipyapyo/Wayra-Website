@@ -44,7 +44,7 @@ class Command(BaseCommand):
             )
             accelerator_1.partners.add(Company.objects.get(name="Default Ltd"))
             accelerator_1.participants.add(Portfolio_Company.objects.get(name="Child Ltd"))
-            accelerator_1.coaches_mentors.add(Individual.objects.get(Name="Jemma Doe"))
+            accelerator_1.coaches_mentors.add(Individual.objects.get(name="Jemma Doe"))
             accelerator_1.save()
             print("Accelerator Programme 1 has been seeded.")
 
@@ -110,11 +110,11 @@ class Command(BaseCommand):
     def create_individual(self):
         """Seeder for individual"""
         try:
-            Individual.objects.get(Name="Jemma Doe")
+            Individual.objects.get(name="Jemma Doe")
             print("Jemma Doe has already seeded.")
         except ObjectDoesNotExist:
             jemma_individual = Individual.objects.create(
-                Name="Jemma Doe",
+                name="Jemma Doe",
                 AngelListLink="https://www.AngelList.com",
                 CrunchbaseLink="https://www.Crunchbase.com",
                 LinkedInLink="https://www.LinkedIn.com",
@@ -128,7 +128,7 @@ class Command(BaseCommand):
 
             print("Jemma Doe has been seeded.")
 
-        jemma_individual = Individual.objects.get(Name="Jemma Doe")
+        jemma_individual = Individual.objects.get(name="Jemma Doe")
         try:
             ResidentialAddress.objects.get(individual=jemma_individual)
             print("Jemma's address has already seeded.")
