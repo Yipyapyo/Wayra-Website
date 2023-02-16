@@ -1,3 +1,4 @@
+from django.forms import model_to_dict
 from django.forms.fields import *
 from django.test import TestCase
 from portfolio.forms import CreateProgrammeForm, MultipleChoiceField, EditProgrammeForm
@@ -83,13 +84,13 @@ class EditProgrammeFormTestCase(TestCase):
         self.default_programme.participants.add(self.participant)
         self.default_programme.coaches_mentors.add(self.coach)
 
-
     def test_valid_programme_edit_form(self):
-        form = EditProgrammeForm(data=self.default_programme)
+        form = EditProgrammeForm(instance=self.default_programme, data=model_to_dict(self.default_programme))
+        self.assertTrue(form.is_bound)
         self.assertTrue(form.is_valid())
 
     def test_form_has_necessary_fields(self):
-        form = EditProgrammeForm(instance=self.default_programme)
+        form = EditProgrammeForm(instance=self.default_programme, data=model_to_dict(self.default_programme))
         self.assertIn("name", form.fields)
         self.assertTrue(isinstance(form.fields['name'], CharField))
         self.assertIn("cohort", form.fields)
@@ -102,25 +103,25 @@ class EditProgrammeFormTestCase(TestCase):
         self.assertTrue(isinstance(form.fields['coaches_mentors'], MultipleChoiceField))
 
     def test_form_uses_model_validation(self):
-        form = EditProgrammeForm(instance=self.default_programme)
-        form.name = "A" * 256
+        self.default_programme.name = "A" * 256
+        form = EditProgrammeForm(instance=self.default_programme, data=model_to_dict(self.default_programme))
         self.assertFalse(form.is_valid())
 
     def test_create_form_must_save_correctly(self):
-        pass
-        # form = EditProgrammeForm(instance=self.default_programme)
-        # before_count = Programme.objects.count()
-        # form.save()
-        # after_count = Programme.objects.count()
-        # self.assertEqual(after_count, before_count)
-        # programme = Programme.objects.get(name=self.form_input['name'], cohort=self.form_input['cohort'])
-        # self.assertEqual(programme.name, self.form_input['name'])
-        # self.assertEqual(programme.cohort, self.form_input['cohort'])
-        # partners = set([Company.objects.get(id=ID) for ID in self.form_input['partners']])
-        # self.assertTrue(set(programme.partners.all()) == partners)
-        #
-        # participants = set([Portfolio_Company.objects.get(id=ID) for ID in self.form_input['participants']])
-        # self.assertTrue(set(programme.participants.all()) == participants)
-        #
-        # coaches_mentors = set([Individual.objects.get(id=ID) for ID in self.form_input['coaches_mentors']])
-        # self.assertTrue(set(programme.coaches_mentors.all()) == coaches_mentors)
+        original = self.default_programme
+        form = EditProgrammeForm(instance=self.default_programme, data=model_to_dict(original))
+        before_count = Programme.objects.count()
+        form.save()
+        after_count = Programme.objects.count()
+        self.assertEqual(after_count, before_count)
+        programme = Programme.objects.get(name=original.name, cohort=original.cohort)
+        self.assertEqual(programme.name, original.name)
+        self.assertEqual(programme.cohort, original.cohort)
+        partners = set([partner for partner in original.partners.all()])
+        self.assertTrue(set(programme.partners.all()) == partners)
+
+        participants = set([participant for participant in original.participants.all()])
+        self.assertTrue(set(programme.participants.all()) == participants)
+
+        coaches_mentors = set([coach_mentor for coach_mentor in original.coaches_mentors.all()])
+        self.assertTrue(set(programme.coaches_mentors.all()) == coaches_mentors)
