@@ -1,5 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
+from portfolio.forms.company_form import CompanyCreateForm
+from portfolio.models import Company
 import logging
 
 
@@ -74,4 +76,5 @@ def portfolio_company(request):
 @login_required
 def create_company(request):
     '''This page presents a form to create a company'''
-    return render(request, 'company_create.html')
+    form = CompanyCreateForm()
+    return render(request, 'company_create.html', {'form':form})

@@ -33,7 +33,7 @@ class Company(models.Model):
             message="Company name must consist of three to sixty characters"
         )]
     )
-    registered_address = None #models.ForeignKey(ResidentialAddress, on_delete=models.CASCADE, null=True)
+    registered_address = models.CharField("Registered Address", max_length = 50, blank=True) #models.ForeignKey(ResidentialAddress, on_delete=models.CASCADE, null=True)
     jurisdiction = models.CharField("Jurisdiction", max_length = 50, blank=True)
     founders = None     # models.ForeignKey(Individual)
     incorporation_date = models.DateField(auto_now=True)

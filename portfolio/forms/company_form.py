@@ -8,7 +8,7 @@ class CompanyCreateForm(forms.ModelForm):
     class Meta:
         model = Company
         fields = ["name", "company_registration_number", "trading_names",
-                  "previous_names", "registered_address", "Email", "jurisdiction", "incorporation_date"]
+                  "previous_names", "registered_address", "jurisdiction"]
 
     def __init__(self, *args, **kwargs):
         super(CompanyCreateForm, self).__init__(*args, **kwargs)
