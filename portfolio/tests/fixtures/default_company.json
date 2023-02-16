@@ -1,0 +1,10 @@
+[
+  {
+    "model": "portfolio.company",
+    "pk": 1,
+    "fields": {
+      "name": "Default Ltd",
+      "incorporation_date": "2023-02-16"
+    }
+  }
+]
