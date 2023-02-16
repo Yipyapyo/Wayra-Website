@@ -12,8 +12,8 @@ class Migration(migrations.Migration):
     operations = [
         migrations.AddField(
             model_name='individual',
-            name='Name',
-            field=models.CharField(default='Test-name', max_length=200, verbose_name='Name'),
+            name='name',
+            field=models.CharField(default='Test-name', max_length=200, verbose_name='name'),
             preserve_default=False,
         ),
     ]

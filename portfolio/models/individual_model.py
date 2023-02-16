@@ -5,7 +5,7 @@ from django_countries.fields import CountryField
 
 class Individual(models.Model):
     """Individual model used by admins to create new client/individual."""
-    Name = models.CharField("Name", max_length=200)
+    name = models.CharField("name", max_length=200)
     AngelListLink = models.URLField("Angellist link", max_length=200)
     CrunchbaseLink = models.URLField("Crunchbase link", max_length=200)
     LinkedInLink = models.URLField("Linkedin link", max_length=200)

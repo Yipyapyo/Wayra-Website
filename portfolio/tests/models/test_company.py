@@ -46,7 +46,7 @@ class CompanyModelTestCase(TestCase):
     # Create a second company
     def _create_second_company(self):
         company = Company.objects.create(
-            name="Company Name",
+            name="Company name",
             incorporation_date=timezone.now()
         )
         return company
