@@ -7,11 +7,13 @@
         <link rel="stylesheet" type="text/css" href="{% static 'css/styles_create.css' %}">
     </head>
     <body>
-        <div class="modal-header p-5 pb-3 border-bottom-0">
-            <h1>New Company</h1>
-        </div>
+        <header class="pb-3 mb-4 border-bottom">
+            <a href="#" class="d-flex align-items-center text-dark text-decoration-none">
+                <span class="fs-4">Create Company</span>
+            </a>
+        </header>
         <div class="modal-body p-5 pt-0">
-            <form action="{%url 'individual_create' %}" method="post">
+            <form action="{%url 'create_company' %}" method="post">
                 {% csrf_token %}
                 {% include 'partials/form_input.html' %}
                 <div class="mb-3">

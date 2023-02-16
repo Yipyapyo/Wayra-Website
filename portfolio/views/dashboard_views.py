@@ -76,5 +76,12 @@ def portfolio_company(request):
 @login_required
 def create_company(request):
     '''This page presents a form to create a company'''
-    form = CompanyCreateForm()
+    if request.method == "POST":
+        form = CompanyCreateForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('dashboard')
+    else:
+        form = CompanyCreateForm()
+
     return render(request, 'company_create.html', {'form':form})
