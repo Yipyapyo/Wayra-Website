@@ -7,7 +7,7 @@ class MultipleChoiceField(forms.ModelMultipleChoiceField):
         return obj.name
 
 
-class ProgrammeForm(forms.ModelForm):
+class CreateProgrammeForm(forms.ModelForm):
     class Meta:
         model = Programme
         fields = ["name", "cohort"]
@@ -36,25 +36,22 @@ class ProgrammeForm(forms.ModelForm):
         programme_cohort = self.cleaned_data.get("cohort")
         if programme_cohort <= 0:
             self.add_error("cohort", "Cohort value must be positive")
-        elif Programme.objects.filter(name = programme_name, cohort = programme_cohort).count > 0:
+        elif Programme.objects.filter(name=programme_name, cohort=programme_cohort).count() > 0:
             self.add_error("cohort", "Cohort for this programme already exists")
 
-    def save(self,commit=True):
+    def save(self):
         super().save(commit=False)
+        new_programme = Programme.objects.create(
+            name=self.cleaned_data.get("name"),
+            cohort=self.cleaned_data.get("cohort"),
+        )
+        for partner in self.cleaned_data.get("partners"):
 
-        instance = Programme.objects.update_or_create(
-                            name = self.cleaned_data.get("name"),
-                            cohort = self.cleaned_data.get("cohort"),
-                        )
-        for partner in self.cleaned_data.get("partner"):
-            instance.partners.add(partner)
-        for participants in self.cleaned_data.get("participants"):
-            instance.participants.get(participants)
+            new_programme.partners.add(partner)
+        for participant in self.cleaned_data.get("participants"):
+            new_programme.participants.add(participant)
         for coach in self.cleaned_data.get("coaches_mentors"):
-            instance.coaches_mentors.add(coach)
-        if commit:
-            instance.save()
-        return instance
+            new_programme.coaches_mentors.add(coach)
 
     # SAVE THE BELOW FOR NOW IN CASE THIS DOESN'T WORK
 
@@ -79,40 +76,41 @@ class ProgrammeForm(forms.ModelForm):
     #     COACHES_CHOICES.append((coach, coach.name))
     # coaches_mentors = forms.MultipleChoiceField(label="Coaches and Mentors", choices = COACHES_CHOICES, required = True)
 
-# class EditProgrammeForm(forms.ModelForm):
-#     class Meta:
-#         model = Programme
-#         fields = ["name", "cohort"]
-#         widgets = {
-#             'cohort': forms.NumberInput(attrs={'min': 1})
-#         }
-#
-#     partners = MultipleChoiceField(
-#         queryset=Company.objects.all(),
-#         widget=forms.CheckboxSelectMultiple
-#     )
-#
-#     participants = MultipleChoiceField(
-#         queryset=Portfolio_Company.objects.all(),
-#         widget=forms.CheckboxSelectMultiple
-#     )
-#
-#     coaches_mentors = MultipleChoiceField(
-#         queryset=Individual.objects.all(),
-#         widget=forms.CheckboxSelectMultiple
-#     )
-#
-#     def save(self):
-#         super().save(commit=False)
-#         programme = self.instance
-#         programme.name = self.cleaned_data.get("name")
-#         programme.cohort = self.cleaned_data.get("cohort")
-#         programme.partners.clear()
-#         programme.participants.clear()
-#         programme.coaches_mentors.clear()
-#         for partner in self.cleaned_data.get("partner"):
-#             programme.partners.add(partner)
-#         for parti in self.cleaned_data.get("participants"):
-#             programme.participants.get(parti)
-#         for coach in self.cleaned_data.get("coaches_mentors"):
-#             programme.coaches_mentors.add(coach)
+
+class EditProgrammeForm(forms.ModelForm):
+    class Meta:
+        model = Programme
+        fields = ["name", "cohort"]
+        widgets = {
+            'cohort': forms.NumberInput(attrs={'min': 1})
+        }
+
+    partners = MultipleChoiceField(
+        queryset=Company.objects.all(),
+        widget=forms.CheckboxSelectMultiple
+    )
+
+    participants = MultipleChoiceField(
+        queryset=Portfolio_Company.objects.all(),
+        widget=forms.CheckboxSelectMultiple
+    )
+
+    coaches_mentors = MultipleChoiceField(
+        queryset=Individual.objects.all(),
+        widget=forms.CheckboxSelectMultiple
+    )
+
+    def save(self):
+        super().save(commit=False)
+        programme = self.instance
+        programme.name = self.cleaned_data.get("name")
+        programme.cohort = self.cleaned_data.get("cohort")
+        programme.partners.clear()
+        programme.participants.clear()
+        programme.coaches_mentors.clear()
+        for partner in self.cleaned_data.get("partners"):
+            programme.partners.add(partner)
+        for participant in self.cleaned_data.get("participants"):
+            programme.participants.add(participant)
+        for coach in self.cleaned_data.get("coaches_mentors"):
+            programme.coaches_mentors.add(coach)
