@@ -30,8 +30,22 @@ class ProgrammeForm(forms.ModelForm):
         widget=forms.CheckboxSelectMultiple
     )
 
-    def save(self, commit=True):
-        instance = super().save(commit=False)
+    def clean(self):
+        super().clean()
+        programme_name = self.cleaned_data.get("name")
+        programme_cohort = self.cleaned_data.get("cohort")
+        if programme_cohort <= 0:
+            self.add_error("cohort", "Cohort value must be positive")
+        elif Programme.objects.filter(name = programme_name, cohort = programme_cohort).count > 0:
+            self.add_error("cohort", "Cohort for this programme already exists")
+
+    def save(self,commit=True):
+        super().save(commit=False)
+
+        instance = Programme.objects.update_or_create(
+                            name = self.cleaned_data.get("name"),
+                            cohort = self.cleaned_data.get("cohort"),
+                        )
         for partner in self.cleaned_data.get("partner"):
             instance.partners.add(partner)
         for participants in self.cleaned_data.get("participants"):
@@ -44,7 +58,7 @@ class ProgrammeForm(forms.ModelForm):
 
     # SAVE THE BELOW FOR NOW IN CASE THIS DOESN'T WORK
 
-    # #Populating partner choices    
+    # #Populating partner choices
     # partners_list = Company.objects.all()
     # PARTNER_CHOICES = []
     # for partner in partners_list:
