@@ -1,7 +1,10 @@
 {% extends 'dashboard_template.html' %}
 {% block main %}
     <h1>Create programme</h1>
-    <form action="post">
+    <form method="post">
+        {% csrf_token %}
         {{ form.as_p }}
+        <input type="submit" value="Submit"/>
+        <a href="{% url 'programme_list' %}" class="btn btn-danger">Cancel</a>
     </form>
 {% endblock %}

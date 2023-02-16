@@ -3,7 +3,7 @@
     "model": "portfolio.individual",
     "pk": 2,
     "fields": {
-      "Name": "Jenna Doe",
+      "name": "Jenna Doe",
       "AngelListLink": "https://www.AngelList.com",
       "CrunchbaseLink": "https://www.Crunchbase.com",
       "LinkedInLink": "https://www.LinkedIn.com",
