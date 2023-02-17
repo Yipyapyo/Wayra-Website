@@ -3,6 +3,8 @@ from django.shortcuts import render, redirect
 from portfolio.forms.company_form import CompanyCreateForm
 from portfolio.models import Company
 import logging
+from django.http import HttpResponse
+import json 
 
 
 # Create your views here.
@@ -18,43 +20,20 @@ def dashboard(request):
 
 @login_required
 def searchcomp(request):
-    # Data for the each company will be listed here.
 
-    # An array of dictonaries will be created
-    # Until the Add company functionality is developed, we will have a set dataset.
+    if request.method == "GET":
 
-    companies = [
+        searched = request.GET['searchresult']
+        print(f"searched: {searched}")
 
-        {'Company': "Wayra", 'Founders': "John Doe", 'Year_operation': "12 years", "Investors": "Wayra UK Limited"},
-        {'Company': "Apple", 'Founders': "Steve Jobs", 'Year_operation': "30 years", "Investors": "Saadh Ltd"},
-        {'Company': "Microsoft", 'Founders': "Bill Gates", 'Year_operation': "30 years",
-         "Investors": "Wayra UK Limited"},
-        {'Company': "Nation of Pakistan", 'Founders': "Saadh", 'Year_operation': "1 years", "Investors": "Me"},
-        {'Company': "Nation of India", 'Founders': "Not Saadh", 'Year_operation': "2 years", "Investors": "Not me"},
-        {'Company': "ApplePotato", 'Founders': "Steve Zahid", 'Year_operation': "32 years", "Investors": "Benq Ltd"}
-
-    ]
-
-    searched_companies = []
-
-    if request.method == "POST":
-
-        # ADD CLEANING
-
-        searched = request.POST['searchresult']
-
-        logging.debug(searched)
-
-        for comp in companies:
-
-            if searched in comp["Company"]:
-                searched_companies.append(comp)
-
-        return render(request, 'main_dashboard.html', {"companies": searched_companies})
+        search_result = Company.objects.filter(name__contains=searched).values()
+        # print(f"Search Result: {list(search_result)}")
+        
+        return HttpResponse(list(search_result))
 
 
     else:
-        return render(request, 'company/main_dashboard.html')
+        return HttpResponse("Request method is not a GET")
 
 @login_required
 def portfolio_company(request, company_id):
