@@ -1,9 +1,10 @@
-<div class="">
+<div class="border">
+  <!-- style="position:absolute;z-index: 1;" -->
   <!-- Search bar -->
   <form method = "POST" action="{%url 'search_result'%}" class="input-group col-md-4 pb-1">
     {% csrf_token %}
 
-    <input class="form-control py-2" type="search" placeholder="Search for a Company" id="search_input" name="searchresult">
+    <input class="form-control py-2 search_input" type="search" placeholder="Search for a Company" id="search_input" name="searchresult">
     <span class="input-group-append">
 
 
@@ -18,7 +19,7 @@
   <!-- Ajax function call -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
       <script type="text/javascript">
-          $('.search_button').click(function(){
+          $('.search_input').keyup(function(){
               var search_input = document.getElementById("search_input");
               $.ajax(
               {

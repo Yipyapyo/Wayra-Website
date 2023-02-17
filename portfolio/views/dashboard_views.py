@@ -27,8 +27,11 @@ def searchcomp(request):
         searched = request.GET['searchresult']
         print(f"searched: {searched}")
 
-        search_result = Company.objects.filter(name__contains=searched).values()
-        # print(f"Search Result: {list(search_result)}")
+        if(searched == ""):
+            search_result = {}
+        else:
+            search_result = Company.objects.filter(name__contains=searched).values()
+        
         search_results_table_html = render_to_string('partials/utilities/search_results_table.html', {
         'search_results': list(search_result),
     })

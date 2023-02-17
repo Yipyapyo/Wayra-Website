@@ -1,13 +1,10 @@
 <!-- Responsive table with csearch results -->
 {% if search_results %}
-<table class="table table-hover">
-  <tbody>
+<div class="list-group list-group-flush">
     {% for result in search_results %}
-    <tr>
-      <td>{{result.name}}</td>
-      <td>{{result.incorporation_date}}</td>
-      <td>{{result.trading_names}}</td>
-    </tr>
+        <a href="#" class="list-group-item list-group-item-action">
+            {{result.name}}
+        </a>
     {% endfor %}
-</table>
+</div>
 {% endif %}
