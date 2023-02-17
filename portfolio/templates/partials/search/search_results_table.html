@@ -2,9 +2,7 @@
 {% if search_results %}
 <div class="list-group list-group-flush">
     {% for result in search_results %}
-        <a href="#" class="list-group-item list-group-item-action">
-            {{result.name}}
-        </a>
+        {% include 'partials/search/search_result_cell.html' with result=result %}
     {% endfor %}
 </div>
 {% endif %}

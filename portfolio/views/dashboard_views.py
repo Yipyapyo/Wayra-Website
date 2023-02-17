@@ -32,13 +32,11 @@ def searchcomp(request):
         else:
             search_result = Company.objects.filter(name__contains=searched).values()
         
-        search_results_table_html = render_to_string('partials/utilities/search_results_table.html', {
+        search_results_table_html = render_to_string('partials/search/search_results_table.html', {
         'search_results': list(search_result),
     })
 
-        # Return the resulting HTML as an HTTP response
         return HttpResponse(search_results_table_html)
-        # return HttpResponse(list(search_result))
 
 
     else:
