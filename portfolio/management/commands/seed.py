@@ -1,13 +1,15 @@
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.management.base import BaseCommand
-
-from portfolio.models import User
+from faker import Faker
+from portfolio.models import User, Company
+import random
 
 
 class Command(BaseCommand):
 
     def __init__(self):
         super().__init__()
+        self.faker = Faker('en_GB')
 
     def handle(self, *args, **options):
         print("seeding...")
@@ -43,6 +45,22 @@ class Command(BaseCommand):
             print("petra has been seeded.")
 
         # Create 100 auto generated students with requests, lessons and transactions
+        self.populate_companies()
 
         print(f"done.")
         print(f"{User.objects.count()} users in the db.")
+
+    def populate_companies(self):
+        self.stdout.write('seeding admin...')
+        for i in range(10):
+            company_name1 = self.faker.company()
+            company_name2 = self.faker.company()
+            crn = random.randint(0,10**8)
+            address = self.faker.address()
+            city = self.faker.city()
+            Company.objects.create(name=company_name1,
+                                         company_registration_number=crn,
+                                         trading_names=company_name1,
+                                         previous_names=company_name2,
+                                         registered_address=address,
+                                         jurisdiction=city,)

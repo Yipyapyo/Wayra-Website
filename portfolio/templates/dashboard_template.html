@@ -10,7 +10,7 @@
     </button>
     <div class="navbar-nav">
       <div class="row nav-item text-nowrap">
-        {% include 'partials/profile_picture_dropdown.html'%}
+        {% include 'partials/utilities/profile_picture_dropdown.html'%}
       </div>
     </div>
   </header>
@@ -33,7 +33,7 @@
               </a>
             </li>
             <li class="nav-item py-1">
-              <a class="nav-link text-dark" href="Individuals">
+              <a class="nav-link text-dark" href="{% url 'individual_page' %}">
                 <i class="fa-solid fa-person"></i>
                 Individuals
               </a>

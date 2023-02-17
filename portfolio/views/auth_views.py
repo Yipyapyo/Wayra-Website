@@ -37,7 +37,7 @@ class LogInCBV(LoginProhibitedMixin, View):
     def render(self):
         """Render log in template with blank log in form."""
         form = LogInForm()
-        return render(self.request, 'login.html', {'form': form, 'next': self.next})
+        return render(self.request, 'login/login.html', {'form': form, 'next': self.next})
 
 
 def log_out(request):

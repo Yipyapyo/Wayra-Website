@@ -3,7 +3,7 @@
 
 <div class="px-5 py-2 rounded-3">
     <p>Telefonica Innovations</p>
-    <h2 class="pb-3">Wayra UK Limited</h2>
+    <h2 class="pb-3">{{company.name}}</h2>
     
     <div class="row align-items-md-stretch">
         <div class="col-md-6">
@@ -13,29 +13,29 @@
                 <ul class="list-group list-group-flush">
                     <li class="list-group-item mb-2 mt-2">
                             <h6>Company Name</h6>
-                            <h7>Wayra UK Ltd.</h7>
+                            <h7>{{company.name}}</h7>
                     </li>
                     <li class="list-group-item my-2">
                         <h6>Company Registration Number(CRN)</h6>
-                        <h7>AB123456</h7>
+                        <h7>{{company.company_registration_number}}</h7>
                     </li>
                     <li class="list-group-item my-2">
                         <div class="col">
                             <h6>Jurisdiction</h6>
-                            <h7>United Kingdom</h7>
+                            <h7>{{company.jurisdiction}}</h7>
                         </div>
                     </li>
                     <li class="list-group-item my-2">
                         <h6>Trading Names</h6>
-                        <h7>Wayra UK Limited</h7>
+                        <h7>{{company.trading_names}}</h7>
                     </li>
                     <li class="list-group-item my-2">
                         <h6>Previous Names</h6>
-                        <h7>Wayra Innovations Limited</h7>
+                        <h7>{{company.previous_names}}</h7>
                     </li>
                     <li class="list-group-item my-2">
                         <h6>Registered Address</h6>
-                        <h7>Tintagel House, 92 Albert Embankment, London SE1 7TY</h7>
+                        <h7>{{company.registered_address}}</h7>
                     </li>
                 </ul>
         
@@ -47,7 +47,7 @@
                 <h4>Founders</h4>
                 <div class="row mb-3">
                     {% for count in counter %}
-                        {% include 'partials/individual_card.html'%}
+                        {% include 'partials/utilities/individual_card.html'%}
                     {% endfor %}
                 </div>
             </div>
@@ -55,7 +55,7 @@
                 <h4>Investors</h4>
                 <div class="row mb-3">
                     {% for count in counter %}
-                        {% include 'partials/individual_card.html'%}
+                        {% include 'partials/utilities/individual_card.html'%}
                     {% endfor %}
                 </div>
             </div>
@@ -69,11 +69,11 @@
             <div class="container-fluid py-3">
                 <div class="row mb-3">
                     {% for count in contract_counter %}
-                        {% include 'partials/document_card.html'%}
+                        {% include 'partials/utilities/document_card.html'%}
                     {% endfor %}
                 </div>
                 <div class="row pt-2">
-                    {% include 'partials/see_all_button.html'%}
+                    {% include 'partials/utilities/see_all_button.html'%}
                 </div>
             </div>
         </div>
@@ -85,7 +85,7 @@
             <div class="container-fluid py-3">
                 <p>Wayra UK Limited is currently enrolled in the following programmes:</p>
                 <div class="row mb-3">
-                    {% include 'partials/programme_card.html'%}
+                    {% include 'partials/utilities/programme_card.html'%}
                 </div>
             </div>
         </div>
@@ -98,7 +98,7 @@
                 <p>These are the coaches and mentors associated with Wayra UK Limited:</p>
                 <div class="row mb-3">
                     {% for count in counter %}
-                        {% include 'partials/individual_card.html'%}
+                        {% include 'partials/utilities/individual_card.html'%}
                     {% endfor %}
                 </div>
             </div>

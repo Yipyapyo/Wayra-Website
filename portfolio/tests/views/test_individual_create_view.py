@@ -39,7 +39,7 @@ class IndividualCreateViewTestCase(TestCase):
     def test_get_individual_create_view(self):
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'individual_create.html')
+        self.assertTemplateUsed(response, 'individual/individual_create.html')
         individual_form = response.context['individualForm']
         self.assertTrue(isinstance(individual_form, IndividualCreateForm))
         adress_form = response.context['addressForms']
@@ -55,7 +55,7 @@ class IndividualCreateViewTestCase(TestCase):
         after_count = Individual.objects.count()
         self.assertEqual(after_count, before_count)
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'individual_create.html')
+        self.assertTemplateUsed(response, 'individual/individual_create.html')
         form = response.context['individualForm']
         self.assertTrue(isinstance(form, IndividualCreateForm))
         self.assertTrue(form.is_bound)
@@ -68,7 +68,7 @@ class IndividualCreateViewTestCase(TestCase):
         after_count = ResidentialAddress.objects.count()
         self.assertEqual(after_count, before_count)
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'individual_create.html')
+        self.assertTemplateUsed(response, 'individual/individual_create.html')
         form = response.context['addressForms']
         self.assertTrue(isinstance(form, AddressCreateForm))
         self.assertTrue(form.is_bound)

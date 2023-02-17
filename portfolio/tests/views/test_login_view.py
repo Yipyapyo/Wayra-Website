@@ -28,7 +28,7 @@ class LogInViewTestCase(TestCase, LogInTester):
     def test_get_log_in(self):
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'login.html')
+        self.assertTemplateUsed(response, 'login/login.html')
         form = response.context['form']
         next = response.context['next']
         self.assertTrue(isinstance(form, LogInForm))
@@ -41,7 +41,7 @@ class LogInViewTestCase(TestCase, LogInTester):
         form_input = {'email': "john.doe@example.org", 'password': 'WrongPassword123'}
         response = self.client.post(self.url, form_input)
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'login.html')
+        self.assertTemplateUsed(response, 'login/login.html')
         form = response.context['form']
         self.assertTrue(isinstance(form, LogInForm))
         self.assertFalse(form.is_bound)
@@ -56,7 +56,7 @@ class LogInViewTestCase(TestCase, LogInTester):
         self.assertTrue(self._is_logged_in())
         response_url = reverse('dashboard')
         self.assertRedirects(response, response_url, status_code=302, target_status_code=200)
-        self.assertTemplateUsed(response, "main_dashboard.html")
+        self.assertTemplateUsed(response, "company/main_dashboard.html")
         messages_list = list(response.context['messages'])
         self.assertEqual(len(messages_list), 0)
 
@@ -66,7 +66,7 @@ class LogInViewTestCase(TestCase, LogInTester):
         self.assertTrue(self._is_logged_in())
         response_url = reverse('dashboard')
         self.assertRedirects(response, response_url, status_code=302, target_status_code=200)
-        self.assertTemplateUsed(response, "main_dashboard.html")
+        self.assertTemplateUsed(response, "company/main_dashboard.html")
         messages_list = list(response.context['messages'])
         self.assertEqual(len(messages_list), 0)
 
@@ -76,7 +76,7 @@ class LogInViewTestCase(TestCase, LogInTester):
         form_input = {'email': 'john.doe@example.org', 'password': 'Password123'}
         response = self.client.post(self.url, form_input, follow=True)
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'login.html')
+        self.assertTemplateUsed(response, 'login/login.html')
         form = response.context['form']
         self.assertTrue(isinstance(form, LogInForm))
         self.assertFalse(form.is_bound)
@@ -90,7 +90,7 @@ class LogInViewTestCase(TestCase, LogInTester):
         response = self.client.get(self.url, follow=True)
         redirect_url = reverse("dashboard")
         self.assertRedirects(response, redirect_url, status_code=302, target_status_code=200)
-        self.assertTemplateUsed(response, "main_dashboard.html")
+        self.assertTemplateUsed(response, "company/main_dashboard.html")
 
     def test_post_login_redirects_when_user_logged_in(self):
         self.client.login(email=self.admin_user.email, password="Password123")
@@ -98,14 +98,14 @@ class LogInViewTestCase(TestCase, LogInTester):
         response = self.client.post(self.url, form_input, follow=True)
         redirect_url = reverse("dashboard")
         self.assertRedirects(response, redirect_url, status_code=302, target_status_code=200)
-        self.assertTemplateUsed(response, "main_dashboard.html")
+        self.assertTemplateUsed(response, "company/main_dashboard.html")
 
     def test_get_login_redirects_when_admin_logged_in(self):
         self.client.login(email=self.admin_user.email, password="Password123")
         response = self.client.get(self.url, follow=True)
         redirect_url = reverse("dashboard")
         self.assertRedirects(response, redirect_url, status_code=302, target_status_code=200)
-        self.assertTemplateUsed(response, "main_dashboard.html")
+        self.assertTemplateUsed(response, "company/main_dashboard.html")
 
     def test_post_login_redirects_when_admin_logged_in(self):
         self.client.login(email=self.admin_user.email, password="Password123")
@@ -113,4 +113,4 @@ class LogInViewTestCase(TestCase, LogInTester):
         response = self.client.post(self.url, form_input, follow=True)
         redirect_url = reverse("dashboard")
         self.assertRedirects(response, redirect_url, status_code=302, target_status_code=200)
-        self.assertTemplateUsed(response, "main_dashboard.html")
+        self.assertTemplateUsed(response, "company/main_dashboard.html")
