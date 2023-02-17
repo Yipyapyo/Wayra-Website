@@ -4,6 +4,7 @@ from portfolio.forms.company_form import CompanyCreateForm
 from portfolio.models import Company
 import logging
 from django.http import HttpResponse
+from django.template.loader import render_to_string
 import json 
 
 
@@ -28,8 +29,13 @@ def searchcomp(request):
 
         search_result = Company.objects.filter(name__contains=searched).values()
         # print(f"Search Result: {list(search_result)}")
-        
-        return HttpResponse(list(search_result))
+        search_results_table_html = render_to_string('partials/utilities/search_results_table.html', {
+        'search_results': list(search_result),
+    })
+
+        # Return the resulting HTML as an HTTP response
+        return HttpResponse(search_results_table_html)
+        # return HttpResponse(list(search_result))
 
 
     else:
