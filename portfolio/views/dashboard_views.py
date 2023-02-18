@@ -33,8 +33,7 @@ def searchcomp(request):
             search_result = Company.objects.filter(name__contains=searched).values()
         
         search_results_table_html = render_to_string('partials/search/search_results_table.html', {
-        'search_results': list(search_result),
-    })
+        'search_results': list(search_result), 'searched':searched})
 
         return HttpResponse(search_results_table_html)
 

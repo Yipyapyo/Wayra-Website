@@ -15,16 +15,18 @@
 </div>
 
 <div class="px-5 py-2 rounded-3">
-    <div class="container-fluid pt-2">
+    <div class="container-fluid pt-2 px-0" style="position:absolute;z-index: 1;width: 75%;">
 
- 
+      <div class="row">
+
         {% include 'partials/search/searchbar.html' %}
 
+      </div>
 
     </div>
 </div>
 
-<div class="px-5">
+<div class="px-5 pt-5">
     {% include 'partials/company/company_card_collection.html' with companies=companies %}
 </div>
 
