@@ -1,5 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
+from portfolio.forms.company_form import CompanyCreateForm
+from portfolio.models import Company
 import logging
 
 
@@ -10,21 +12,9 @@ def dashboard(request):
 
     # Data for the each company will be listed here.
 
-    # An array of dictonaries will be created
-    # Until the Add company functionality is developed, we will have a set dataset.
+    companies = Company.objects.all()
 
-    companies = [
-
-        {'Company': "Wayra", 'Founders': "John Doe", 'Year_operation': "12 years", "Investors": "Wayra UK Limited"},
-        {'Company': "Apple", 'Founders': "Steve Jobs", 'Year_operation': "30 years", "Investors": "Saadh Ltd"},
-        {'Company': "Microsoft", 'Founders': "Bill Gates", 'Year_operation': "30 years",
-         "Investors": "Wayra UK Limited"},
-        {'Company': "Nation of Pakistan", 'Founders': "Saadh", 'Year_operation': "1 years", "Investors": "Me"},
-        {'Company': "Nation of India", 'Founders': "Not Saadh", 'Year_operation': "2 years", "Investors": "Not me"}
-
-    ]
-
-    return render(request, 'main_dashboard.html', {"companies": companies, })
+    return render(request, 'company/main_dashboard.html', {"companies": companies})
 
 @login_required
 def searchcomp(request):
@@ -64,9 +54,24 @@ def searchcomp(request):
 
 
     else:
-        return render(request, 'main_dashboard.html')
+        return render(request, 'company/main_dashboard.html')
 
 @login_required
-def portfolio_company(request):
+def portfolio_company(request, company_id):
     '''This page displays information about a single portfolio company'''
-    return render(request, 'portfolio_company_page.html', {'counter': {1, 2, 3}, 'contract_counter': {1, 2, 3, 4}})
+    company = Company.objects.get(id=company_id)
+
+    return render(request, 'company/portfolio_company_page.html', {'counter': {1, 2, 3}, 'contract_counter': {1, 2, 3, 4}, 'company':company})
+
+@login_required
+def create_company(request):
+    '''This page presents a form to create a company'''
+    if request.method == "POST":
+        form = CompanyCreateForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('dashboard')
+    else:
+        form = CompanyCreateForm()
+
+    return render(request, 'company/company_create.html', {'form':form})

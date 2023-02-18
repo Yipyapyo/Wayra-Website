@@ -18,15 +18,16 @@
     <div class="container-fluid pt-2">
 
  
-        {% include 'partials/searchbar.html' %}
+        {% include 'partials/utilities/searchbar.html' %}
 
 
     </div>
 </div>
 
 <div class="px-5">
-    {% include 'partials/company_card_collection.html' with counter=counter title="Upcoming" page_number=1 %}
+    {% include 'partials/company/company_card_collection.html' with companies=companies %}
 </div>
 
+<a href="{% url 'create_company' %}" style="position:fixed;bottom:30px;right:30px;margin:0;padding:5px 3px;"><i class="fas fa-plus-circle fa-3x pt-3 pb-3"></i></a>
 
 {% endblock %}

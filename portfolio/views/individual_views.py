@@ -32,7 +32,7 @@ def individual_create(request):
         'individualForm': individualForm,
         'addressForms': addressForms,
     }
-    return render(request, "individual_create.html", context=context)
+    return render(request, "individual/individual_create.html", context=context)
 
 
 """
@@ -42,7 +42,7 @@ List of individuals
 
 def individual_page(request):
     data = {'object_list': Individual.objects.all()}
-    return render(request, "individual_page.html", data)
+    return render(request, "individual/individual_page.html", data)
 
 
 """
@@ -69,7 +69,7 @@ def individual_update(request, id):
         'individualForm': form1,
         'addressForms': form2,
     }
-    return render(request, 'individual_update.html', context=context)
+    return render(request, 'individual/individual_update.html', context=context)
 
 
 """
@@ -82,4 +82,4 @@ def individual_delete(request, id):
     if request.method == 'POST':
         individualForm.delete()
         return redirect('individual_page')
-    return render(request, 'individual_delete.html')
+    return render(request, 'individual/individual_delete.html')
