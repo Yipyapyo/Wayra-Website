@@ -1,6 +1,7 @@
 """Forms for the VC portfolio management site"""
 from django import forms
 from portfolio.models import Individual, ResidentialAddress
+from portfolio.models.past_experience_model import pastExperience
 from django_countries.widgets import CountrySelectWidget
 from phonenumber_field.widgets import PhoneNumberPrefixWidget
 
@@ -31,3 +32,9 @@ class AddressCreateForm(forms.ModelForm):
         widgets = {
             "country": CountrySelectWidget()
         }
+
+class PastExperienceForm(forms.ModelForm):
+    class Meta:
+        model = pastExperience
+        fields = ['companyName', 'workTitle', 'start_year', 'end_year', 'Description']
+        exclude = ('individual', 'duration',)

@@ -10,9 +10,11 @@
         <h1>Create Individual</h1><p></p>
         <form action="{%url 'individual_create' %}" method="post">
             {% csrf_token %}
-            <p></p>
             {{ individualForm.as_p }}
             {{ addressForms.as_p }}
+            {% for form in pastExperienceForms %}
+                {{ form.as_p }}
+            {% endfor %}
             <input type="submit" value="Create" class="btn mb-2 home_button btn-lg btn-secondary mb=2">
         </form>
         

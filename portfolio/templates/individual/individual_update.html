@@ -7,6 +7,9 @@
     {% csrf_token %}
     {{ individualForm.as_p }}
     {{ addressForms.as_p }}
+    {% for form in pastExperienceForms %}
+        {{ form.as_p }}
+    {% endfor %}
     <input type="submit" value="Update" class="btn btn-primary">
 </form>
 {% endblock %}
