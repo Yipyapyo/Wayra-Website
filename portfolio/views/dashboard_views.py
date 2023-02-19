@@ -51,13 +51,20 @@ def searchcomp(request):
         return HttpResponse(search_results_table_html)
 
     elif request.method == "POST":
+        page_number = request.POST.get('page', 1)
         searched = request.POST['searchresult']
         if(searched == ""):
             return redirect('dashboard')
         else:
             companies = Company.objects.filter(name__contains=searched).values()
         
-        return render(request, 'company/main_dashboard.html', {"companies": companies, "searched":searched})
+        paginator = Paginator(companies, 6)
+        try:
+            companies_page = paginator.page(page_number)
+        except EmptyPage:
+            companies_page = []
+
+        return render(request, 'company/main_dashboard.html', {"companies": companies_page, "searched":searched})
 
     else:
         return HttpResponse("Request method is not a GET")
