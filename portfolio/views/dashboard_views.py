@@ -103,3 +103,14 @@ def update_company(request, company_id):
         form = CompanyCreateForm(instance=company)
 
     return render(request, 'company/company_update.html', {'form':form, 'company_id':company.id})
+
+@login_required
+def delete_company(request, company_id):
+    """Handles the deletion of a company"""
+    company = Company.objects.get(id=company_id)
+
+    try:
+        company.delete()
+    except Company.DoesNotExist:
+        pass
+    return redirect('dashboard')
