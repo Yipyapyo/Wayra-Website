@@ -1,4 +1,8 @@
-<div class="lesson-grid mt-4 mb-4">
-        {% include 'partials/company/company_card.html' %}
+<div class="container-fluid px-0">
+        <div class="row my-4">
+                {% for company in companies %}
+                        {% include 'partials/company/company_card.html' %}
+                {% endfor %}
+        </div>
+        {% include 'partials/utilities/pagination.html' with page=companies %}
 </div>
-{% include 'partials/utilities/pagination.html' with page=companies %}

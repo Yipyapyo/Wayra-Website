@@ -28,7 +28,7 @@ def dashboard(request):
 
     context = {
         "companies": companies_page,
-        }
+    }
 
     return render(request, 'company/main_dashboard.html', context)
 
