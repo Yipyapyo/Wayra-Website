@@ -1,5 +1,7 @@
 {% extends 'dashboard_template.html' %}
+{% load static %}
 {% block main %}
+<link href="{% static 'css/styles.css' %}" rel="stylesheet" />
 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
     <h1 class="h2">Dashboard</h1>
     <div class="btn-toolbar mb-2 mb-md-0">
@@ -15,7 +17,7 @@
 </div>
 
 <div class="px-5 py-2 rounded-3">
-    <div class="container-fluid pt-2 px-0" style="position:absolute;z-index: 1;width: 75%;">
+    <div class="container-fluid pt-2 px-0 search-div-styling" style="position:absolute;z-index: 1;max-width: 75%;">
 
       <div class="row">
 
@@ -30,6 +32,6 @@
     {% include 'partials/company/company_card_collection.html' with companies=companies %}
 </div>
 
-<a href="{% url 'create_company' %}" style="position:fixed;bottom:30px;right:30px;margin:0;padding:5px 3px;"><i class="fas fa-plus-circle fa-3x pt-3 pb-3"></i></a>
+<a href="{% url 'create_company' %}" class="create-company-plus-button"><i class="fas fa-plus-circle fa-3x pt-3 pb-3"></i></a>
 
 {% endblock %}
