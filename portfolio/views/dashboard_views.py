@@ -37,6 +37,14 @@ def searchcomp(request):
 
         return HttpResponse(search_results_table_html)
 
+    elif request.method == "POST":
+        searched = request.POST['searchresult']
+        if(searched == ""):
+            return redirect('dashboard')
+        else:
+            companies = Company.objects.filter(name__contains=searched).values()
+        
+        return render(request, 'company/main_dashboard.html', {"companies": companies, "searched":searched})
 
     else:
         return HttpResponse("Request method is not a GET")

@@ -6,7 +6,7 @@
   <form method = "POST" action="{%url 'search_result'%}" class="input-group col-md-4 pb-1">
     {% csrf_token %}
 
-    <input class="search_input form-control py-2" type="search" placeholder="Search for a Company" id="search_input" name="searchresult" autocomplete="off" style="border: 0;" spellcheck="false">
+    <input class="search_input form-control py-2" type="search" placeholder="Search for a Company" id="search_input" name="searchresult" autocomplete="off" style="border: 0;" spellcheck="false" value="{{searched}}">
     <span class="input-group-append">
 
 
