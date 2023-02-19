@@ -7,6 +7,7 @@ document.addEventListener('click', function(event) {
     if (isClickInside) {
     //Show the search results container
     if (results_container.style.display === "none") {
+        console.log("it workds")
         results_container.style.display = "block";
     }
     }
