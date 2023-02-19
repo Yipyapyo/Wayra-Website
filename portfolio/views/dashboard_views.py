@@ -6,6 +6,7 @@ import logging
 from django.http import HttpResponse
 from django.template.loader import render_to_string
 import json 
+from django.core.paginator import Paginator, EmptyPage
 
 
 # Create your views here.
@@ -14,10 +15,22 @@ def dashboard(request):
     '''The main dashboard page of the website.'''
 
     # Data for the each company will be listed here.
+    page_number = request.GET.get('page', 1)
 
     companies = Company.objects.all()
 
-    return render(request, 'company/main_dashboard.html', {"companies": companies})
+    paginator = Paginator(companies, 6)
+
+    try:
+        companies_page = paginator.page(page_number)
+    except EmptyPage:
+        companies_page = []
+
+    context = {
+        "companies": companies_page,
+        }
+
+    return render(request, 'company/main_dashboard.html', context)
 
 @login_required
 def searchcomp(request):
