@@ -88,3 +88,18 @@ def create_company(request):
         form = CompanyCreateForm()
 
     return render(request, 'company/company_create.html', {'form':form})
+
+@login_required
+def update_company(request, company_id):
+    '''This page presents a form to update a company'''
+    company = Company.objects.get(id=company_id)
+
+    if request.method == "POST":
+        form = CompanyCreateForm(request.POST, instance=company)
+        if form.is_valid():
+            form.save()
+            return redirect('portfolio_company', company_id=company.id)
+    else:
+        form = CompanyCreateForm(instance=company)
+
+    return render(request, 'company/company_update.html', {'form':form, 'company_id':company.id})
