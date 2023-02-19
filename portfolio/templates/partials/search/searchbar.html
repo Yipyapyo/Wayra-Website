@@ -22,44 +22,7 @@
 
   <!-- Ajax function call -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
-  <script type="text/javascript">
-      var search_input = document.getElementById('search_input');
-      var results_container = document.getElementById('results_container');
-
-      // Show or Hide the table depending on if the search input is active or not
-      document.addEventListener('click', function(event) {
-          var isClickInside = search_input.contains(event.target);
-          if (isClickInside) {
-            //Show the search results container
-            if (results_container.style.display === "none") {
-              results_container.style.display = "block";
-            }
-          }
-          else {
-            // hide the search results container
-            if (results_container.style.display === "block") {
-              results_container.style.display = "none";
-            }
-          }
-      });
-
-      // Handle the async search result calls to django backend
-      $('.search_input').keyup(function(){
-          var search_input = document.getElementById("search_input");
-          $.ajax(
-          {
-              type:"GET",
-              url: "/search_result",
-              data:{
-                      searchresult: search_input.value
-              },
-              success: function( data ) 
-              {
-                $('#results_container').html(data);
-              }
-          })
-      });
-  </script>
+  <script src="{% static 'js/searchbar.js' %}"></script>
   
 </div>
 
