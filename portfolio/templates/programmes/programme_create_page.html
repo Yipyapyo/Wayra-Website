@@ -1,10 +1,28 @@
 {% extends 'dashboard_template.html' %}
 {% block main %}
-    <h1>Create programme</h1>
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <input type="submit" value="Submit"/>
-        <a href="{% url 'programme_list' %}" class="btn btn-danger">Cancel</a>
-    </form>
+{% load static %}
+<html>
+    <head>
+        <link rel="stylesheet" type="text/css" href="{% static 'css/styles_create.css' %}">
+    </head>
+    <body>
+        <header class="pb-3 mb-4 border-bottom">
+            <a href="#" class="d-flex align-items-center text-dark text-decoration-none">
+                <span class="fs-4">Create New Programme</span>
+            </a>
+        </header>
+        <div class="modal-body p-5 pt-0">
+            <form action="{%url 'programme_create' %}" method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <div class="mb-3">
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <a type="button" class="btn btn-secondary" href="{% url 'programme_list' %}">Cancel</a>
+                </div>
+            </form>
+        </div>
+        
+    </body>
+    
+</html>
 {% endblock %}

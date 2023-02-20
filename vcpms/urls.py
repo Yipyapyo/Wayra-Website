@@ -21,7 +21,7 @@ urlpatterns = [
     path('dashboard', views.dashboard, name='dashboard'),
     path('', views.LogInCBV.as_view(), name='login'),
     path('logout', views.log_out, name='logout'),
-    path('search_result', views.searchcomp, name='search_result'),
+    path('search_result', views.searchcomp, name='company_search_result'),
 
     path('portfolio_company/', views.portfolio_company, name='portfolio_company'),
     path('portfolio_company/<int:company_id>', views.portfolio_company, name='portfolio_company'),
@@ -39,6 +39,8 @@ urlpatterns = [
     path("programme_page/<int:id>/update/", views.ProgrammeUpdateView.as_view(), name="programme_update"),
     path("programme_page/<int:id>/delete/", views.ProgrammeDeleteView.as_view(), name="programme_delete"),
     path("programme_page/<int:id>/programme_id/", views.ProgrammeDetailView.as_view(), name="programme_detail"),
+    path('search_result', views.ProgrammeUpdateView.searchprogramme, name='programme_search_result'),
+
 
 ]
 
