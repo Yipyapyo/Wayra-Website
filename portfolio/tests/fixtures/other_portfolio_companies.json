@@ -1,0 +1,11 @@
+[
+  {
+    "model": "portfolio.portfolio_company",
+    "pk": 2,
+    "fields": {
+      "name": "Child TWO Ltd",
+      "incorporation_date": "2023-02-17",
+      "wayra_number": "WN-2"
+    }
+  }
+]
