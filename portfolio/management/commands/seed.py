@@ -177,7 +177,7 @@ class Command(BaseCommand):
             print("Jemma's address has been seeded.")
 
     def populate_companies(self):
-        self.stdout.write('seeding admin...')
+        self.stdout.write('seeding companies...')
         for i in range(10):
             company_name1 = self.faker.company()
             company_name2 = self.faker.company()
@@ -193,7 +193,7 @@ class Command(BaseCommand):
 
     def populate_individuals(self):
         """Seeder for fake individuals"""
-        self.stdout.write('seeding admin...')
+        self.stdout.write('seeding individuals...')
         for i in range(15):
             name = self.faker.name()
             company = self.faker.company()
