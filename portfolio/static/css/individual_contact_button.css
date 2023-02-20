@@ -1,5 +1,5 @@
 .btn-cssbuttons {
-    --btn-color: #275efe;
+    --btn-color: linear-gradient(15deg, #82AAE3 0%, #80d0c7 100%);
     position: relative;
     padding: 16px 32px;
     font-family: Roboto, sans-serif;

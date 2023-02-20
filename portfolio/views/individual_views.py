@@ -41,7 +41,10 @@ List of individuals
 
 
 def individual_page(request):
-    data = {'object_list': Individual.objects.all()}
+    data = {
+        'object_list': Individual.objects.all(),
+        'individuals':[1,2,3,4,5,6,7,8,9],
+    }
     return render(request, "individual/individual_page.html", data)
 
 

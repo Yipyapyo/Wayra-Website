@@ -27,13 +27,6 @@
 
     </div>
 </div>
-    
-
-<!-- {% for form in object_list %}
-<p class="individual_count">Individual {{forloop.counter}}</p>
-<a href="{% url 'individual_update' form.id %}" class="btn mb-2 home_button btn-lg btn-secondary mb=2">Edit</a>
-    <a href="{% url 'individual_delete' form.id %}" class="btn mb-2 home_button btn-lg btn-secondary mb=2">Delete</a>
-{% endfor %} -->
 
 <div class="px-5 pt-5">
     {% include 'partials/individual/individual_card_collection.html' with individuals=individuals %}
