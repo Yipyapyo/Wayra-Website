@@ -9,7 +9,7 @@ class Company(models.Model):
         unique=True,
         blank=False,
         validators=[RegexValidator(
-            regex=r"^[a-zA-Z0-9 ]{3,}$",
+            regex=r"^[a-zA-Z0-9 ,]{3,}$",
             message="Company name must consist of three to sixty characters"
         )]
     )
@@ -20,7 +20,7 @@ class Company(models.Model):
         unique=True,
         blank=True,
         validators=[RegexValidator(
-            regex=r"^[a-zA-Z0-9 ]{3,}$",
+            regex=r"^[a-zA-Z0-9 ,]{3,}$",
             message="Company name must consist of three to sixty characters"
         )]
     )
@@ -29,7 +29,7 @@ class Company(models.Model):
         unique=True,
         blank=True,
         validators=[RegexValidator(
-            regex=r"^[a-zA-Z0-9 ]{3,}$",
+            regex=r"^[a-zA-Z0-9 ,]{3,}$",
             message="Company name must consist of three to sixty characters"
         )]
     )
