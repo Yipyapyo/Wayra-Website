@@ -38,7 +38,6 @@ def searchcomp(request):
     if request.method == "GET":
 
         searched = request.GET['searchresult']
-        print(f"searched: {searched}")
 
         if(searched == ""):
             search_result = {}
