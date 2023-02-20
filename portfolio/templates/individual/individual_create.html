@@ -5,12 +5,25 @@
 <html>
     <head>
         <link rel="stylesheet" type="text/css" href="{% static 'css/styles_create.css' %}">
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script type="text/javascript">
+            function toggleFounderFields(checkbox) {
+                var form = $('#founder-fields');
+                if (checkbox.checked) {
+                    form.show();
+                }
+                else {
+                    form.hide();
+                }
+            }
+            </script>
     </head>
     <body>
         <h1>Create Individual</h1><p></p>
         <form action="{%url 'individual_create' %}" method="post">
             {% csrf_token %}
             {{ individualForm.as_p }}
+            <input type="checkbox" name="isFounder" id="id_isFounder" onclick="toggleFounderFields(this)">
             <div id="founder-fields" style="display: none;">
                 {{ founderForm.as_p }}
             </div>
@@ -18,21 +31,6 @@
             {% for form in pastExperienceForms %}
                 {{ form.as_p }}
             {% endfor %}
-
-            <script type="text/javascript">
-                $(function() {
-                    var form = $('#founder-fields');
-                    var isFounder = $('#id_isFounder');
-                    isFounder.change(function() {
-                        if (isFounder.is(':checked')) {
-                            form.show();
-                        }
-                        else {
-                            form.hide();
-                        }
-                    });
-                });
-            </script>
         <input type="submit" value="Create" class="btn mb-2 home_button btn-lg btn-secondary mb=2">
     </form>
     

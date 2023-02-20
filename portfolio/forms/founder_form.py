@@ -5,10 +5,10 @@ from portfolio.models.company_model import Company
 class FounderForm(forms.ModelForm):
     class Meta:
         model = Founder
-        fields = ['company', 'additionalInformation']
+        fields = ['companyFounded', 'additionalInformation']
 
-        company = forms.ModelMultipleChoiceField(
-            label="Select company founded", 
-            widget=forms.CheckboxSelectMultiple,  
-            queryset=Company.objects.all()
-        )
+        # company = forms.ModelMultipleChoiceField(
+        #     label="Select company founded", 
+        #     widget=forms.CheckboxSelectMultiple,  
+        #     queryset=Company.objects.all()
+        # )
