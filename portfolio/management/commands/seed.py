@@ -1,7 +1,7 @@
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.management.base import BaseCommand
 from faker import Faker
-from portfolio.models import User, Company
+from portfolio.models import User, Company, ResidentialAddress, Individual
 import random
 
 
@@ -46,6 +46,7 @@ class Command(BaseCommand):
 
         # Create 100 auto generated students with requests, lessons and transactions
         self.populate_companies()
+        self.populate_individuals()
 
         print(f"done.")
         print(f"{User.objects.count()} users in the db.")
@@ -64,3 +65,44 @@ class Command(BaseCommand):
                                          previous_names=company_name2,
                                          registered_address=address,
                                          jurisdiction=city,)
+
+    def populate_individuals(self):
+        """Seeder for fake individuals"""
+        self.stdout.write('seeding admin...')
+        for i in range(15):
+            name = self.faker.name()
+            company = self.faker.company()
+            position = self.faker.job()
+            email = self.faker.email()
+            primary_phone_number = self.faker.phone_number()
+            secondary_phone_number = self.faker.phone_number()
+
+            individual = Individual.objects.create(
+                name=name,
+                AngelListLink="https://www.AngelList.com",
+                CrunchbaseLink="https://www.Crunchbase.com",
+                LinkedInLink="https://www.LinkedIn.com",
+                Company=company,
+                Position=position,
+                Email=email,
+                PrimaryNumber=primary_phone_number,
+                SecondaryNumber=secondary_phone_number
+            )
+            individual.save()
+
+            address1 = self.faker.building_number()
+            address2 = self.faker.street_address()
+            city = self.faker.city()
+            postcode = self.faker.postcode()
+            state = self.faker.country_code()
+            country = self.faker.country()
+            addr = ResidentialAddress.objects.create(
+                address_line1=address1,
+                address_line2=address2,
+                postal_code=postcode,
+                city=city,
+                state=state,
+                country=country,
+                individual=individual
+            )
+            addr.save()
