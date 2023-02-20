@@ -1,0 +1,8 @@
+<div class="container-fluid px-0">
+    <div class="row my-4">
+            {% for individyal in individuals %}
+                {% include 'partials/individual/individual_card.html' %}
+            {% endfor %}
+    </div>
+    <!-- {% include 'partials/utilities/pagination.html' with page=companies %} -->
+</div>

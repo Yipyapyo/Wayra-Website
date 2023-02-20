@@ -1,26 +1,42 @@
 {% extends 'dashboard_template.html' %}
 {% block main %}
 {% load static %}
+<link href="{% static 'css/styles.css' %}" rel="stylesheet" />
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2">Dashboard</h1>
+    <div class="btn-toolbar mb-2 mb-md-0">
+      <div class="btn-group me-2">
+        <button type="button" class="btn btn-sm btn-outline-secondary">Share</button>
+        <button type="button" class="btn btn-sm btn-outline-secondary">Export</button>
+      </div>
+      <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle">
+        <span data-feather="calendar" class="align-text-bottom"></span>
+        This week
+      </button>
+    </div>
+</div>
 
-<p></p>
-<html>
-    <head><link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
-    </head>
-    <body>
-        <h1>Create, Modify, and Remove Individuals</h1>
-        <h4>To create an Individual click the Create button! <a href = '{% url 'individual_create' %}' class="create_button_home">
-            Create
-        </a></h4>
-        
+<div class="px-5 py-2 rounded-3">
+    <div class="container-fluid pt-2 px-0 search-div-styling" style="position:absolute;z-index: 1;max-width: 75%;">
 
-        {% for form in object_list %}
-        <p class="individual_count">Individual {{forloop.counter}}</p>
-        <a href="{% url 'individual_update' form.id %}" class="btn mb-2 home_button btn-lg btn-secondary mb=2">Edit</a>
-            <a href="{% url 'individual_delete' form.id %}" class="btn mb-2 home_button btn-lg btn-secondary mb=2">Delete</a>
-        {% endfor %}
-        
-        {% include 'partials/individual/individual_card.html' %}
-        
-    </body>
-</html>
+      <div class="row">
+
+        {% include 'partials/search/individual_searchbar.html' %}
+
+      </div>
+
+    </div>
+</div>
+    
+
+<!-- {% for form in object_list %}
+<p class="individual_count">Individual {{forloop.counter}}</p>
+<a href="{% url 'individual_update' form.id %}" class="btn mb-2 home_button btn-lg btn-secondary mb=2">Edit</a>
+    <a href="{% url 'individual_delete' form.id %}" class="btn mb-2 home_button btn-lg btn-secondary mb=2">Delete</a>
+{% endfor %} -->
+
+<div class="px-5 pt-5">
+    {% include 'partials/individual/individual_card_collection.html' with individuals=individuals %}
+</div>
+
 {% endblock %}
