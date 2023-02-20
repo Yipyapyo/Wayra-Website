@@ -5,12 +5,16 @@ from django_countries.fields import Country
 from phonenumber_field.phonenumber import PhoneNumber
 
 from portfolio.models import User, Individual, Company, Portfolio_Company, Programme, ResidentialAddress
+from faker import Faker
+from portfolio.models import User, Company
+import random
 
 
 class Command(BaseCommand):
 
     def __init__(self):
         super().__init__()
+        self.faker = Faker('en_GB')
 
     def handle(self, *args, **options):
         print("seeding...")
@@ -31,6 +35,11 @@ class Command(BaseCommand):
         self.create_porfolio_company()
 
         self.create_programme()
+
+        self.populate_companies()
+
+        print(f"done.")
+        print(f"{User.objects.count()} users in the db.")
 
     def create_programme(self):
         try:
@@ -107,6 +116,7 @@ class Command(BaseCommand):
             user_petra.save()
             print("petra has been seeded.")
 
+
     def create_individual(self):
         """Seeder for individual"""
         try:
@@ -145,3 +155,19 @@ class Command(BaseCommand):
             )
             addr.save()
             print("Jemma's address has been seeded.")
+
+
+    def populate_companies(self):
+        self.stdout.write('seeding admin...')
+        for i in range(10):
+            company_name1 = self.faker.company()
+            company_name2 = self.faker.company()
+            crn = random.randint(0,10**8)
+            address = self.faker.address()
+            city = self.faker.city()
+            Company.objects.create(name=company_name1,
+                                         company_registration_number=crn,
+                                         trading_names=company_name1,
+                                         previous_names=company_name2,
+                                         registered_address=address,
+                                         jurisdiction=city,)

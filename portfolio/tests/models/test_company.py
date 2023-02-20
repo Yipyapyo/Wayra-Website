@@ -11,7 +11,11 @@ class CompanyModelTestCase(TestCase):
     def setUp(self):
         self.company = Company.objects.create(
             name="Default Ltd",
-            incorporation_date=timezone.now()
+            company_registration_number="00000000",
+            trading_names="Default Ltd",
+            previous_names="Default Ltd",
+            jurisdiction="United Kingdom",
+            incorporation_date=timezone.now(),
         )
 
     def test_valid_company(self):
@@ -46,7 +50,11 @@ class CompanyModelTestCase(TestCase):
     # Create a second company
     def _create_second_company(self):
         company = Company.objects.create(
-            name="Company name",
+            name="Company Name",
+            company_registration_number="00000001",
+            trading_names="Company Ltd",
+            previous_names="Company Ltd",
+            jurisdiction="United Kingdom",
             incorporation_date=timezone.now()
         )
         return company

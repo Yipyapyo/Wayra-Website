@@ -16,14 +16,16 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from portfolio import views
-
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('dashboard', views.dashboard, name='dashboard'),
     path('', views.LogInCBV.as_view(), name='login'),
     path('logout', views.log_out, name='logout'),
     path('search_result', views.searchcomp, name='search_result'),
+
     path('portfolio_company/', views.portfolio_company, name='portfolio_company'),
+    path('portfolio_company/<int:company_id>', views.portfolio_company, name='portfolio_company'),
+    path('portfolio_company/company_create/', views.create_company, name='create_company'),
 
     # Individual CRUD
     path("individual_page/individual_create/", views.individual_create, name="individual_create"),
@@ -39,3 +41,4 @@ urlpatterns = [
     path("programme_page/<int:id>/detail/", views.ProgrammeDetailView.as_view(), name="programme_detail"),
 
 ]
+

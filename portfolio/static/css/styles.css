@@ -68,21 +68,6 @@
   transition-property: width, left;
 }
 
-div {
-  padding: 8px;
-}
-
-h1 {
-  text-align: center;
-  text-transform: uppercase;
-  color: #22a4a9;
-}
-
-h4 {
-  padding: 20px;
-  color: #000101;
-}
-
 .individual_count {
   font-weight: bold;
   font-size: 36px;
@@ -104,4 +89,30 @@ h4 {
 
 }
 
+.company_plus_button{
+  position:fixed;
+  bottom:5px;
+  right:20px;
+  margin:0;
+  padding:5px 3px;
+}
 
+#search_input:focus {
+  outline: none;
+  box-shadow:none;
+  border:1px solid #ccc;
+} 
+
+.search-div-styling{
+  position:absolute;
+  z-index: 1;
+  max-width: 75%;
+}
+
+.create-company-plus-button{
+  position:fixed;
+  bottom:30px;
+  right:30px;
+  margin:0;
+  padding:5px 3px;
+}
