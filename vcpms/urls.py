@@ -34,11 +34,11 @@ urlpatterns = [
     path("individual_page/<int:id>/delete/", views.individual_delete, name='individual_delete'),
 
     # Programme CRUD
-    path("programme_page/", views.ProgrammeListView.as_view(), name="programme_list"),
+    path("programme_page/", views.ProgrammeListView.dashboard, name="programme_list"),
     path("programme_page/create/", views.ProgrammeCreateView.as_view(), name="programme_create"),
     path("programme_page/<int:id>/update/", views.ProgrammeUpdateView.as_view(), name="programme_update"),
     path("programme_page/<int:id>/delete/", views.ProgrammeDeleteView.as_view(), name="programme_delete"),
-    path("programme_page/<int:id>/detail/", views.ProgrammeDetailView.as_view(), name="programme_detail"),
+    path("programme_page/<int:id>/programme_id/", views.ProgrammeDetailView.as_view(), name="programme_detail"),
 
 ]
 

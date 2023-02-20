@@ -1,7 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-
-from portfolio.models import User
+from portfolio.models import User, Programme
 
 # Register your models here.
 @admin.register(User)
@@ -11,3 +10,5 @@ class UserAdmin(admin.ModelAdmin):
     list_display = [
         'email', 'first_name', 'last_name', 'phone', 'is_active'
     ]
+
+admin.site.register(Programme)
