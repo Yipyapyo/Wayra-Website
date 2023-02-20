@@ -1,16 +1,16 @@
 # Venture Capital Portfolio Management Suite
 ## Team Kinkajou
 The members of the team are:
-- Lewis
-- Saadh
-- Kriyes
-- Francis
-- Adnan
-- Kabir
-- Chin
-- Ken
-- Fergan
-- Reb
+- Kwan Yui Chiu
+- Reibjok Othow
+- Saadh Zahid
+- Kriyes Mahendra
+- Kabir Suri
+- Adnan Turkay
+- Chin Wan
+- Chin Kan Yeung
+- Fergan Yalim
+- Francis Yip
 
 ## Project structure
 The project is called `vcpms` (Venture Capital Portfolio Management Suite).  It currently consists of a single app `portfolio` where all functionality resides.
