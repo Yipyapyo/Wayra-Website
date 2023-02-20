@@ -4,6 +4,7 @@ from portfolio.models import Individual, ResidentialAddress
 from portfolio.models.past_experience_model import pastExperience
 from django_countries.widgets import CountrySelectWidget
 from phonenumber_field.widgets import PhoneNumberPrefixWidget
+from django.forms.models import inlineformset_factory
 
 
 # Form for creating an individual / client
@@ -11,7 +12,7 @@ class IndividualCreateForm(forms.ModelForm):
     class Meta:
         model = Individual
         fields = ["AngelListLink", "CrunchbaseLink", "LinkedInLink",
-                  "Company", "Position", "Email", "PrimaryNumber", "SecondaryNumber"]
+                  "Company", "Position", "Email", "PrimaryNumber", "SecondaryNumber", "isFounder"]
         # widgets = {
         #     "PrimaryNumber": PhoneNumberPrefixWidget(initial="UK"),
         #     "SecondaryNumber": PhoneNumberPrefixWidget(initial="UK")
@@ -21,7 +22,6 @@ class IndividualCreateForm(forms.ModelForm):
         super(IndividualCreateForm, self).__init__(*args, **kwargs)
         self.fields['PrimaryNumber'].widget = PhoneNumberPrefixWidget()
         self.fields['SecondaryNumber'].widget = PhoneNumberPrefixWidget()
-
 
 # Form for creating addresses
 class AddressCreateForm(forms.ModelForm):
@@ -33,6 +33,7 @@ class AddressCreateForm(forms.ModelForm):
             "country": CountrySelectWidget()
         }
 
+# Form for creating past experience of individual
 class PastExperienceForm(forms.ModelForm):
     class Meta:
         model = pastExperience

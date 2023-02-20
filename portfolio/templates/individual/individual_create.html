@@ -11,14 +11,34 @@
         <form action="{%url 'individual_create' %}" method="post">
             {% csrf_token %}
             {{ individualForm.as_p }}
+            <div id="founder-fields" style="display: none;">
+                {{ founderForm.as_p }}
+            </div>
             {{ addressForms.as_p }}
             {% for form in pastExperienceForms %}
                 {{ form.as_p }}
             {% endfor %}
-            <input type="submit" value="Create" class="btn mb-2 home_button btn-lg btn-secondary mb=2">
-        </form>
+
+            <script type="text/javascript">
+                $(function() {
+                    var form = $('#founder-fields');
+                    var isFounder = $('#id_isFounder');
+                    isFounder.change(function() {
+                        if (isFounder.is(':checked')) {
+                            form.show();
+                        }
+                        else {
+                            form.hide();
+                        }
+                    });
+                });
+            </script>
+        <input type="submit" value="Create" class="btn mb-2 home_button btn-lg btn-secondary mb=2">
+    </form>
+    
         
     </body>
     
 </html>
 {% endblock %}
+

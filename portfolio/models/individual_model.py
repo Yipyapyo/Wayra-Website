@@ -13,3 +13,5 @@ class Individual(models.Model):
     Email = models.EmailField(blank=False)
     PrimaryNumber = PhoneNumberField("Primary phone number", blank=False)
     SecondaryNumber = PhoneNumberField("Secondary phone number", blank=True)
+    isFounder = models.BooleanField()
+    
