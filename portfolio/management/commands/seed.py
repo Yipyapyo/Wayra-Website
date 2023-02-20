@@ -63,8 +63,19 @@ class Command(BaseCommand):
             print("Child Ltd has already seeded.")
 
         except ObjectDoesNotExist:
+            company_name1 = self.faker.company()
+            company_name2 = self.faker.company()
+            crn = random.randint(0, 10 ** 8)
+            address = self.faker.address()
+            city = self.faker.city()
+
             child_ltd = Portfolio_Company.objects.create(
                 name="Child Ltd",
+                company_registration_number=crn,
+                trading_names=company_name1,
+                previous_names=company_name2,
+                registered_address=address,
+                jurisdiction=city,
                 incorporation_date=timezone.now(),
                 wayra_number="WN-1"
             )
@@ -77,10 +88,17 @@ class Command(BaseCommand):
             print("Default Ltd has already seeded.")
 
         except ObjectDoesNotExist:
-            default_ltd = Company.objects.create(
-                name="Default Ltd",
-                incorporation_date=timezone.now()
-            )
+            company_name1 = self.faker.company()
+            company_name2 = self.faker.company()
+            crn = random.randint(0, 10 ** 8)
+            address = self.faker.address()
+            city = self.faker.city()
+            default_ltd = Company.objects.create(name="Default Ltd",
+                                                 company_registration_number=crn,
+                                                 trading_names=company_name1,
+                                                 previous_names=company_name2,
+                                                 registered_address=address,
+                                                 jurisdiction=city, )
             default_ltd.save()
             print("Default Ltd has been seeded.")
 
@@ -115,7 +133,6 @@ class Command(BaseCommand):
             )
             user_petra.save()
             print("petra has been seeded.")
-
 
     def create_individual(self):
         """Seeder for individual"""
@@ -156,18 +173,17 @@ class Command(BaseCommand):
             addr.save()
             print("Jemma's address has been seeded.")
 
-
     def populate_companies(self):
         self.stdout.write('seeding admin...')
         for i in range(10):
             company_name1 = self.faker.company()
             company_name2 = self.faker.company()
-            crn = random.randint(0,10**8)
+            crn = random.randint(0, 10 ** 8)
             address = self.faker.address()
             city = self.faker.city()
             Company.objects.create(name=company_name1,
-                                         company_registration_number=crn,
-                                         trading_names=company_name1,
-                                         previous_names=company_name2,
-                                         registered_address=address,
-                                         jurisdiction=city,)
+                                   company_registration_number=crn,
+                                   trading_names=company_name1,
+                                   previous_names=company_name2,
+                                   registered_address=address,
+                                   jurisdiction=city, )

@@ -69,6 +69,8 @@ class ProgrammeModelTestCase(TestCase):
     def test_name_can_repeat(self):
         second_programme = self._create_second_programme()
         self.programme.name = second_programme.name
+        # has to change to 2 to avoid unique_tgt name and cohort
+        self.programme.cohort = 2
         self._assert_programme_is_valid()
 
     def test_cohort_cannot_be_blank(self):

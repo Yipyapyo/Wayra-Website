@@ -2,11 +2,10 @@
 
 import django.core.validators
 from django.db import migrations, models
-import django.db.models.deletion
 import django.utils.timezone
 import django_countries.fields
 import phonenumber_field.modelfields
-import portfolio.manager
+import portfolio.models.manager
 
 
 class Migration(migrations.Migration):
@@ -84,7 +83,7 @@ class Migration(migrations.Migration):
                 'abstract': False,
             },
             managers=[
-                ('objects', portfolio.manager.UserManager()),
+                ('objects', portfolio.models.manager.UserManager()),
             ],
         ),
     ]
