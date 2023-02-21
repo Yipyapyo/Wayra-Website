@@ -2,6 +2,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.forms import model_to_dict
 from django.shortcuts import render, redirect
 from django.urls import reverse
+
 from django.views.generic import TemplateView, CreateView, DeleteView, UpdateView, DetailView, ListView
 from django.core.paginator import Paginator, EmptyPage
 from django.template.loader import render_to_string
@@ -13,14 +14,13 @@ from portfolio.models import Programme
 from vcpms import settings
 
 
-def search_programme(request):
-    if request.method == "GET":
+class SearchProgramme(TemplateView):
+    http_method_names = ['get', 'post']
 
+    def get(self, request, *args, **kwargs):
         searched = request.GET['searchresult']
-
-        if (searched == ""):
-            search_result = {}
-        else:
+        search_result = {}
+        if searched != "":
             search_result = Programme.objects.filter(name__contains=searched).values()
 
         search_results_table_html = render_to_string('programmes/search/search_results_table.html', {
@@ -28,13 +28,13 @@ def search_programme(request):
 
         return HttpResponse(search_results_table_html)
 
-    elif request.method == "POST":
+    def post(self, request, *args, **kwargs):
         page_number = request.POST.get('page', 1)
         searched = request.POST['searchresult']
-        if (searched == ""):
+        if searched == "":
             return redirect('programme_list')
-        else:
-            programmes = Programme.objects.filter(name__contains=searched).values()
+
+        programmes = Programme.objects.filter(name__contains=searched).values()
 
         paginator = Paginator(programmes, 6)
         try:
@@ -44,9 +44,6 @@ def search_programme(request):
 
         return render(request, 'programmes/programme_list_page.html',
                       {"programmes": programmes_page, "searched": searched})
-
-    else:
-        return HttpResponse("Request method is not a GET")
 
 
 class ProgrammeListView(LoginRequiredMixin, ListView):

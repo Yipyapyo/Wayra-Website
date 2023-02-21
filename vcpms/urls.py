@@ -39,7 +39,7 @@ urlpatterns = [
     path("programme_page/<int:id>/update/", views.ProgrammeUpdateView.as_view(), name="programme_update"),
     path("programme_page/<int:id>/delete/", views.ProgrammeDeleteView.as_view(), name="programme_delete"),
     path("programme_page/<int:id>/programme_id/", views.ProgrammeDetailView.as_view(), name="programme_detail"),
-    path('programme_page/search_result', views.search_programme, name='programme_search_result'),
+    path('programme_page/search_result', views.SearchProgramme.as_view(), name='programme_search_result'),
 
 
 ]
