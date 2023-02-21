@@ -10,14 +10,14 @@ class IndividualTests(TestCase):
     # Sets up example individual to be used for tests
     def setUp(self):
         self.individual = Individual.objects.create(
-             AngelListLink = "https://www.AngelList.com",
-             CrunchbaseLink = "https://www.Crunchbase.com",
-             LinkedInLink = "https://www.LinkedIn.com",
-             Company = "exampleCompany",
-             Position = "examplePosition",
-             Email = "test@gmail.com",
-             PrimaryNumber = PhoneNumber.from_string("+447975777666"),
-             SecondaryNumber = PhoneNumber.from_string("+441325777655")
+            AngelListLink="https://www.AngelList.com",
+            CrunchbaseLink="https://www.Crunchbase.com",
+            LinkedInLink="https://www.LinkedIn.com",
+            Company="exampleCompany",
+            Position="examplePosition",
+            Email="test@gmail.com",
+            PrimaryNumber=PhoneNumber.from_string("+447975777666"),
+            SecondaryNumber=PhoneNumber.from_string("+441325777655")
         )
 
     # Tests if individual is valid
@@ -120,13 +120,13 @@ class IndividualTests(TestCase):
     # Create a second individual
     def _create_second_individual(self):
         individual = Individual.objects.create(
-             AngelListLink="www.AngelList2.com",
-             CrunchbaseLink="www.Crunchbase2.com",
-             LinkedInLink="www.LinkedInLink2.com",
-             Company="exampleCompany2",
-             Position="examplePosition2",
-             Email="test2@gmail.com",
-             PrimaryNumber=PhoneNumber.from_string("+447975777662"),
-             SecondaryNumber=PhoneNumber.from_string("+441325777651")
+            AngelListLink="www.AngelList2.com",
+            CrunchbaseLink="www.Crunchbase2.com",
+            LinkedInLink="www.LinkedInLink2.com",
+            Company="exampleCompany2",
+            Position="examplePosition2",
+            Email="test2@gmail.com",
+            PrimaryNumber=PhoneNumber.from_string("+447975777662"),
+            SecondaryNumber=PhoneNumber.from_string("+441325777651")
         )
         return individual
