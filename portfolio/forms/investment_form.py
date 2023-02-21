@@ -6,6 +6,7 @@ from portfolio.models.investor_company_model import InvestorCompany
 
 
 class InvestmentForm(forms.ModelForm):
+    """Form"""
     class Meta:
         model = Investment
         fields = ['investor', 'startup', 'typeOfFoundingRounds', 'moneyRaised', 'dateInvested']
