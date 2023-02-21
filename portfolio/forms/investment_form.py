@@ -11,8 +11,7 @@ class InvestmentForm(forms.ModelForm):
         fields = ['investor', 'startup', 'typeOfFoundingRounds', 'moneyRaised', 'dateInvested']
 
         investor = forms.ModelMultipleChoiceField(
-            label="Select the investors in this investment", 
-            widget=forms.CheckboxSelectMultiple,  
-            queryset=InvestorIndividual.objects.all() | InvestorCompany.objects.all()
+            label="Select the investors in this investment",
+            widget=forms.CheckboxSelectMultiple,
+            queryset=InvestorIndividual.objects.all().union(InvestorCompany.objects.all())
         )
-        
