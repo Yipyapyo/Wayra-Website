@@ -10,9 +10,10 @@ class MultipleChoiceField(forms.ModelMultipleChoiceField):
 class CreateProgrammeForm(forms.ModelForm):
     class Meta:
         model = Programme
-        fields = ["name", "cohort"]
+        fields = ["name", "cohort", "cover"]
         widgets = {
-            'cohort': forms.NumberInput(attrs={'min': 1})
+            'cohort': forms.NumberInput(attrs={'min': 1}),
+            'cover': forms.FileField()
         }
 
     partners = MultipleChoiceField(
@@ -44,9 +45,9 @@ class CreateProgrammeForm(forms.ModelForm):
         new_programme = Programme.objects.create(
             name=self.cleaned_data.get("name"),
             cohort=self.cleaned_data.get("cohort"),
+            cover=self.cleaned_data.get("cover")
         )
         for partner in self.cleaned_data.get("partners"):
-
             new_programme.partners.add(partner)
         for participant in self.cleaned_data.get("participants"):
             new_programme.participants.add(participant)
@@ -80,9 +81,10 @@ class CreateProgrammeForm(forms.ModelForm):
 class EditProgrammeForm(forms.ModelForm):
     class Meta:
         model = Programme
-        fields = ["name", "cohort"]
+        fields = ["name", "cohort", "cover"]
         widgets = {
-            'cohort': forms.NumberInput(attrs={'min': 1})
+            'cohort': forms.NumberInput(attrs={'min': 1}),
+            'cover': forms.FileField()
         }
 
     partners = MultipleChoiceField(
@@ -114,3 +116,4 @@ class EditProgrammeForm(forms.ModelForm):
             programme.participants.add(participant)
         for coach in self.cleaned_data.get("coaches_mentors"):
             programme.coaches_mentors.add(coach)
+        programme.cover = self.cleaned_data.get("cover")
