@@ -26,7 +26,9 @@ urlpatterns = [
     path('portfolio_company/', views.portfolio_company, name='portfolio_company'),
     path('portfolio_company/<int:company_id>', views.portfolio_company, name='portfolio_company'),
     path('portfolio_company/company_create/', views.create_company, name='create_company'),
-
+    path('portfolio_company/company_update/<int:company_id>', views.update_company, name='update_company'),
+    path('portfolio_company/company_delete/<int:company_id>', views.delete_company, name='delete_company'),
+    
     # Individual CRUD
     path("individual_page/individual_create/", views.individual_create, name="individual_create"),
     path("individual_page/", views.individual_page, name="individual_page"),
