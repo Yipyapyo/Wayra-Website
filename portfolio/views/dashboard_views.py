@@ -3,6 +3,10 @@ from django.shortcuts import render, redirect
 from portfolio.forms.company_form import CompanyCreateForm
 from portfolio.models import Company
 import logging
+from django.http import HttpResponse
+from django.template.loader import render_to_string
+import json 
+from django.core.paginator import Paginator, EmptyPage
 
 
 # Create your views here.
@@ -11,50 +15,59 @@ def dashboard(request):
     '''The main dashboard page of the website.'''
 
     # Data for the each company will be listed here.
+    page_number = request.GET.get('page', 1)
 
     companies = Company.objects.all()
 
-    return render(request, 'company/main_dashboard.html', {"companies": companies})
+    paginator = Paginator(companies, 6)
+
+    try:
+        companies_page = paginator.page(page_number)
+    except EmptyPage:
+        companies_page = []
+
+    context = {
+        "companies": companies_page,
+    }
+
+    return render(request, 'company/main_dashboard.html', context)
 
 @login_required
 def searchcomp(request):
-    # Data for the each company will be listed here.
 
-    # An array of dictonaries will be created
-    # Until the Add company functionality is developed, we will have a set dataset.
+    if request.method == "GET":
 
-    companies = [
+        searched = request.GET['searchresult']
+        print(f"searched: {searched}")
 
-        {'Company': "Wayra", 'Founders': "John Doe", 'Year_operation': "12 years", "Investors": "Wayra UK Limited"},
-        {'Company': "Apple", 'Founders': "Steve Jobs", 'Year_operation': "30 years", "Investors": "Saadh Ltd"},
-        {'Company': "Microsoft", 'Founders': "Bill Gates", 'Year_operation': "30 years",
-         "Investors": "Wayra UK Limited"},
-        {'Company': "Nation of Pakistan", 'Founders': "Saadh", 'Year_operation': "1 years", "Investors": "Me"},
-        {'Company': "Nation of India", 'Founders': "Not Saadh", 'Year_operation': "2 years", "Investors": "Not me"},
-        {'Company': "ApplePotato", 'Founders': "Steve Zahid", 'Year_operation': "32 years", "Investors": "Benq Ltd"}
+        if(searched == ""):
+            search_result = {}
+        else:
+            search_result = Company.objects.filter(name__contains=searched).values()
+        
+        search_results_table_html = render_to_string('partials/search/search_results_table.html', {
+        'search_results': list(search_result), 'searched':searched})
 
-    ]
+        return HttpResponse(search_results_table_html)
 
-    searched_companies = []
-
-    if request.method == "POST":
-
-        # ADD CLEANING
-
+    elif request.method == "POST":
+        page_number = request.POST.get('page', 1)
         searched = request.POST['searchresult']
+        if(searched == ""):
+            return redirect('dashboard')
+        else:
+            companies = Company.objects.filter(name__contains=searched).values()
+        
+        paginator = Paginator(companies, 6)
+        try:
+            companies_page = paginator.page(page_number)
+        except EmptyPage:
+            companies_page = []
 
-        logging.debug(searched)
-
-        for comp in companies:
-
-            if searched in comp["Company"]:
-                searched_companies.append(comp)
-
-        return render(request, 'main_dashboard.html', {"companies": searched_companies})
-
+        return render(request, 'company/main_dashboard.html', {"companies": companies_page, "searched":searched})
 
     else:
-        return render(request, 'company/main_dashboard.html')
+        return HttpResponse("Request method is not a GET")
 
 @login_required
 def portfolio_company(request, company_id):
@@ -75,3 +88,29 @@ def create_company(request):
         form = CompanyCreateForm()
 
     return render(request, 'company/company_create.html', {'form':form})
+
+@login_required
+def update_company(request, company_id):
+    '''This page presents a form to update a company'''
+    company = Company.objects.get(id=company_id)
+
+    if request.method == "POST":
+        form = CompanyCreateForm(request.POST, instance=company)
+        if form.is_valid():
+            form.save()
+            return redirect('portfolio_company', company_id=company.id)
+    else:
+        form = CompanyCreateForm(instance=company)
+
+    return render(request, 'company/company_update.html', {'form':form, 'company_id':company.id})
+
+@login_required
+def delete_company(request, company_id):
+    """Handles the deletion of a company"""
+    company = Company.objects.get(id=company_id)
+
+    try:
+        company.delete()
+    except Company.DoesNotExist:
+        pass
+    return redirect('dashboard')
