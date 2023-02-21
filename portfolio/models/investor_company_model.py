@@ -1,5 +1,5 @@
 from django.db import models
-from company_model import Company
+from portfolio.models.company_model import Company
 
 class InvestorCompany(Company):
     VENTURE_CAPITAL = 'VC'
@@ -25,27 +25,27 @@ class InvestorCompany(Company):
     PENSION_FUNDS = 'PF'
 
     INVESTOR_TYPES = [
-        (VENTURE_CAPITAL, 'Venture Capital'),
-        (PRIVATE_EQUITY_FIRM, 'Private Equity Firm'),
-        (ACCELERATOR, 'Accelerator'),
-        (INVESTMENT_PARTNER, 'Investment Partner'),
-        (CORPORATE_VENTURE_CAPITAL, 'Corporate Venture Capital'),
-        (MICRO_VC, 'Micro VC'),
-        (ANGEL_GROUP, 'Angel Group'),
-        (INCUBATOR, 'Incubator'),
-        (INVESTMENT_BANK, 'Investment Bank'),
-        (FAMILY_INVESTMENT_OFFICE, 'Family Investment Office'),
-        (VENTURE_DEBT, 'Venture Debt'),
-        (CO_WORKING_SPACE), 'Co-Working Space',
-        (FUND_OF_FUNDS, 'Fund Of Funds'),
-        (HEDGE_FUND, 'Hedge Fund'),
-        (GOVERNMENT_OFFICE, 'Government Office'),
-        (UNIVERSITY_PROGRAM, 'University Program'),
-        (ENTREPRENEURSHIP_PROGRAM, 'Entrepreneurship Program'),
-        (SECONDARY_PURCHASER, 'Secondary Purchaser'),
-        (STARTUP_COMPETITION, 'Startup Competition'),
-        (SYNDICATE, 'Syndicate'),
-        (PENSION_FUNDS, ' Pension Funds'),
+        ('VENTURE_CAPITAL', 'Venture Capital'),
+        ('PRIVATE_EQUITY_FIRM', 'Private Equity Firm'),
+        ('ACCELERATOR', 'Accelerator'),
+        ('INVESTMENT_PARTNER', 'Investment Partner'),
+        ('CORPORATE_VENTURE_CAPITAL', 'Corporate Venture Capital'),
+        ('MICRO_VC', 'Micro VC'),
+        ('ANGEL_GROUP', 'Angel Group'),
+        ('INCUBATOR', 'Incubator'),
+        ('INVESTMENT_BANK', 'Investment Bank'),
+        ('FAMILY_INVESTMENT_OFFICE', 'Family Investment Office'),
+        ('VENTURE_DEBT', 'Venture Debt'),
+        ('CO_WORKING_SPACE', 'Co-Working Space'),
+        ('FUND_OF_FUNDS', 'Fund Of Funds'),
+        ('HEDGE_FUND', 'Hedge Fund'),
+        ('GOVERNMENT_OFFICE', 'Government Office'),
+        ('UNIVERSITY_PROGRAM', 'University Program'),
+        ('ENTREPRENEURSHIP_PROGRAM', 'Entrepreneurship Program'),
+        ('SECONDARY_PURCHASER', 'Secondary Purchaser'),
+        ('STARTUP_COMPETITION', 'Startup Competition'),
+        ('SYNDICATE', 'Syndicate'),
+        ('PENSION_FUNDS', ' Pension Funds'),
     ]
 
     AngelListLink = models.URLField("Angellist link", max_length=200)
@@ -53,7 +53,7 @@ class InvestorCompany(Company):
     LinkedInLink = models.URLField("Linkedin link", max_length=200)
     InvestedCompanies = models.ManyToManyField(Company, related_name="companies")
     Type = models.CharField(
-        max_length=3,
+        max_length=50,
         choices=INVESTOR_TYPES,
         default=VENTURE_CAPITAL,
     )

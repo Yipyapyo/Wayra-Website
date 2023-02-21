@@ -1,5 +1,5 @@
 from django.db import models
-from individual_model import Individual
+from portfolio.models.individual_model import Individual
 
 class InvestorIndividual(Individual):
     NumberOfPortfolioCompanies = models.PositiveIntegerField()
