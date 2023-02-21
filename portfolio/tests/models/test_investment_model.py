@@ -1,6 +1,6 @@
 from django.test import TestCase
 from django.core.exceptions import ValidationError
-from portfolio.models.investment_model import Investment
+from portfolio.models.investment_model import Investment, FOUNDING_ROUNDS
 from portfolio.models.investor_company_model import InvestorCompany
 from portfolio.models.investor_individual_model import InvestorIndividual
 from portfolio.models.company_model import PortfolioCompany
@@ -62,6 +62,46 @@ class InvestmentModelTestCase(TestCase):
         self.investment.investor.add(self.InvestorCompany)
         self.assertEqual(self.investment.investor.count(), 1)
         self.assertIn(self.InvestorCompany, self.investment.investor.all())
+        self._assert_investment_is_valid()
+
+    def test_investor_individual_many_to_many_field(self):
+        self.investment.individualInvestor.add(self.InvestorIndividual)
+        self.assertEqual(self.investment.individualInvestor.count(), 1)
+        self.assertIn(self.InvestorIndividual, self.investment.individualInvestor.all())
+        self._assert_investment_is_valid()
+    
+    def test_portfolio_company_many_to_many_field(self):
+        self.investment.startup.add(self.PortfolioCompany)
+        self.assertEqual(self.investment.startup.count(), 1)
+        self.assertIn(self.PortfolioCompany, self.investment.startup.all())
+        self._assert_investment_is_valid()
+
+    def test_type_of_founding_rounds_cannot_be_blank(self):
+        self.investment.typeOfFoundingRounds = ""
+        self._assert_investment_is_invalid()
+
+    def test_type_of_founding_rounds_have_max_length_50_characters(self):
+        self.investment.typeOfFoundingRounds = ("x" * 51)
+        self._assert_investment_is_invalid()
+
+    def test_type_of_founding_rounds_choices(self):
+        for choice in dict(FOUNDING_ROUNDS).keys():
+            self.investment.typeOfFoundingRounds = choice
+            self._assert_investment_is_valid()
+        
+        invalid_choice = 'invalid'
+        self.investment.typeOfFoundingRounds = invalid_choice
+        self._assert_investment_is_invalid()
+
+    def test_money_raised_have_max_digit_5(self):
+        self.investment.moneyRaised = 50000000
+        self._assert_investment_is_invalid()
+    
+    def test_date_invested_max_value(self):
+        future_date = timezone.now() + timezone.timedelta(days=2)
+        self.investment.dateInvested = future_date
+        self._assert_investment_is_invalid()
+
 
     # Assert an investment is valid
     def _assert_investment_is_valid(self):
