@@ -1,6 +1,7 @@
 from django.db import models
 from portfolio.models.company_model import Company
 
+
 class InvestorCompany(Company):
     VENTURE_CAPITAL = 'VC'
     PRIVATE_EQUITY_FIRM = 'PEF'

@@ -1,6 +1,5 @@
 from django.db import models
 from phonenumber_field.modelfields import PhoneNumberField
-from django_countries.fields import CountryField
 
 
 class Individual(models.Model):
@@ -14,4 +13,3 @@ class Individual(models.Model):
     PrimaryNumber = PhoneNumberField("Primary phone number", blank=False)
     SecondaryNumber = PhoneNumberField("Secondary phone number", blank=True)
     isFounder = models.BooleanField(null=True, default=None)
-    

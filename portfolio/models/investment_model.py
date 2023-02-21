@@ -17,6 +17,7 @@ FOUNDING_ROUNDS = [
     ('Post-IPO Equity', 'Post-IPO Equity')
 ]
 
+
 class Investment(models.Model):
     """Investment model for a investment from an investor to a startup"""
     investor = models.ManyToManyField(InvestorCompany, related_name="investor")
