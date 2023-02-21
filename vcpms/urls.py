@@ -16,6 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from portfolio import views
+from portfolio.views import founder_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -29,5 +30,7 @@ urlpatterns = [
     path("individual_page/", views.individual_page, name="individual_page"),
     path("individual_page/<int:id>/update/", views.individual_update, name='individual_update'),
     path("individual_page/<int:id>/delete/", views.individual_delete, name='individual_delete'),
+    path("individual_page/founder_create/", founder_views.founder_create, name="founder_create"),
+    path("individual_page/<int:id>/deleteFounder/", founder_views.founder_delete, name="founder_delete"),
 
 ]

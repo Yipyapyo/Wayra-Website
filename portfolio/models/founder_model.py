@@ -7,3 +7,4 @@ class Founder(Individual):
     companyFounded = models.CharField(max_length=100, default="USA")
     additionalInformation = models.CharField(max_length=500, blank=True)
 
+
