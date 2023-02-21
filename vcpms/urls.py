@@ -42,5 +42,8 @@ urlpatterns = [
     path("programme_page/<int:id>/delete/", views.ProgrammeDeleteView.as_view(), name="programme_delete"),
     path("programme_page/<int:id>/detail/", views.ProgrammeDetailView.as_view(), name="programme_detail"),
 
+    # Archive views
+    path("archive_page/", views.archive, name="archive_page"),
+
 ]
 
