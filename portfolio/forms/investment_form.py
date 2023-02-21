@@ -9,7 +9,7 @@ class InvestmentForm(forms.ModelForm):
     """Form"""
     class Meta:
         model = Investment
-        fields = ['investor', 'startup', 'typeOfFoundingRounds', 'moneyRaised', 'dateInvested']
+        fields = ['investor', 'startup', 'typeOfFoundingRounds', 'moneyRaised']
 
         investor = forms.ModelMultipleChoiceField(
             label="Select the investors in this investment",
