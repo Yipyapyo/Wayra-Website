@@ -1,11 +1,11 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from portfolio.forms.company_form import CompanyCreateForm
-from portfolio.models import Company
+from portfolio.models import Company, Programme
 import logging
 from django.http import HttpResponse
 from django.template.loader import render_to_string
-import json 
+import json
 from django.core.paginator import Paginator, EmptyPage
 
 
@@ -32,48 +32,55 @@ def dashboard(request):
 
     return render(request, 'company/main_dashboard.html', context)
 
+
 @login_required
 def searchcomp(request):
-
     if request.method == "GET":
 
         searched = request.GET['searchresult']
 
-        if(searched == ""):
+        if (searched == ""):
             search_result = {}
         else:
             search_result = Company.objects.filter(name__contains=searched).values()
-        
+
         search_results_table_html = render_to_string('partials/search/search_results_table.html', {
-        'search_results': list(search_result), 'searched':searched})
+            'search_results': list(search_result), 'searched': searched})
 
         return HttpResponse(search_results_table_html)
 
     elif request.method == "POST":
         page_number = request.POST.get('page', 1)
         searched = request.POST['searchresult']
-        if(searched == ""):
+        if (searched == ""):
             return redirect('dashboard')
         else:
             companies = Company.objects.filter(name__contains=searched).values()
-        
+
         paginator = Paginator(companies, 6)
         try:
             companies_page = paginator.page(page_number)
         except EmptyPage:
             companies_page = []
 
-        return render(request, 'company/main_dashboard.html', {"companies": companies_page, "searched":searched})
+        return render(request, 'company/main_dashboard.html', {"companies": companies_page, "searched": searched})
 
     else:
         return HttpResponse("Request method is not a GET")
+
 
 @login_required
 def portfolio_company(request, company_id):
     '''This page displays information about a single portfolio company'''
     company = Company.objects.get(id=company_id)
+    programmes = Programme.objects.filter(partners=company, participants=company)
+    return render(request, 'company/portfolio_company_page.html',
+                  {'counter': {1, 2, 3},
+                   'contract_counter': {1, 2, 3, 4},
+                   'company': company,
+                   'programmes': programmes
+                   })
 
-    return render(request, 'company/portfolio_company_page.html', {'counter': {1, 2, 3}, 'contract_counter': {1, 2, 3, 4}, 'company':company})
 
 @login_required
 def create_company(request):
@@ -86,4 +93,4 @@ def create_company(request):
     else:
         form = CompanyCreateForm()
 
-    return render(request, 'company/company_create.html', {'form':form})
+    return render(request, 'company/company_create.html', {'form': form})

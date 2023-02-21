@@ -92,3 +92,10 @@ class ProgrammeDetailView(LoginRequiredMixin, DetailView):
     model = Programme
     template_name = 'programmes/programme_page.html'
     pk_url_kwarg = 'id'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['partners'] = []
+        context['participants'] = []
+        context['coaches_mentors'] = []
+        return context
