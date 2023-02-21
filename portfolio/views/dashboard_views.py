@@ -12,7 +12,7 @@ from django.core.paginator import Paginator, EmptyPage
 # Create your views here.
 @login_required
 def dashboard(request):
-    '''The main dashboard page of the website.'''
+    """The main dashboard page of the website."""
 
     # Data for the each company will be listed here.
     page_number = request.GET.get('page', 1)
@@ -32,6 +32,7 @@ def dashboard(request):
 
     return render(request, 'company/main_dashboard.html', context)
 
+
 @login_required
 def searchcomp(request):
 
@@ -40,7 +41,7 @@ def searchcomp(request):
         searched = request.GET['searchresult']
         print(f"searched: {searched}")
 
-        if(searched == ""):
+        if searched == "":
             search_result = {}
         else:
             search_result = Company.objects.filter(name__contains=searched).values()
@@ -53,7 +54,7 @@ def searchcomp(request):
     elif request.method == "POST":
         page_number = request.POST.get('page', 1)
         searched = request.POST['searchresult']
-        if(searched == ""):
+        if searched == "":
             return redirect('dashboard')
         else:
             companies = Company.objects.filter(name__contains=searched).values()
@@ -69,16 +70,18 @@ def searchcomp(request):
     else:
         return HttpResponse("Request method is not a GET")
 
+
 @login_required
 def portfolio_company(request, company_id):
-    '''This page displays information about a single portfolio company'''
+    """This page displays information about a single portfolio company"""
     company = Company.objects.get(id=company_id)
 
     return render(request, 'company/portfolio_company_page.html', {'counter': {1, 2, 3}, 'contract_counter': {1, 2, 3, 4}, 'company':company})
 
+
 @login_required
 def create_company(request):
-    '''This page presents a form to create a company'''
+    """This page presents a form to create a company"""
     if request.method == "POST":
         form = CompanyCreateForm(request.POST)
         if form.is_valid():
@@ -89,9 +92,10 @@ def create_company(request):
 
     return render(request, 'company/company_create.html', {'form':form})
 
+
 @login_required
 def update_company(request, company_id):
-    '''This page presents a form to update a company'''
+    """This page presents a form to update a company"""
     company = Company.objects.get(id=company_id)
 
     if request.method == "POST":
@@ -103,6 +107,7 @@ def update_company(request, company_id):
         form = CompanyCreateForm(instance=company)
 
     return render(request, 'company/company_update.html', {'form':form, 'company_id':company.id})
+
 
 @login_required
 def delete_company(request, company_id):
