@@ -1,6 +1,6 @@
 """Unit tests of the sign up form."""
 from django import forms
-from django.forms.fields import URLField
+from django.forms.fields import URLField, CharField
 from django.test import TestCase
 from portfolio.models import Individual
 from portfolio.forms import IndividualCreateForm
@@ -8,33 +8,35 @@ from phonenumber_field.phonenumber import PhoneNumber
 from phonenumber_field.formfields import PhoneNumberField
 from phonenumber_field.widgets import PhoneNumberPrefixWidget
 
+
 class CreateFormTestCase(TestCase):
 
-    #Set up an examplery input to use for the tests
+    # Set up an examplery input to use for the tests
     def setUp(self):
         self.form_input = {
-             "AngelListLink" : "https://www.AngelList.com",
-             "CrunchbaseLink" : "https://www.Crunchbase.com",
-             "LinkedInLink" : "https://www.LinkedIn.com",
-             "Company" : "exampleCompany",
-             "Position" : "examplePosition",
-             "Email" : "test@gmail.com",
-             "PrimaryNumber_0" : "UK",
-             "PrimaryNumber_1" : "+447975777666",
-             "SecondaryNumber_0" : "UK",
-             "SecondaryNumber_1" : "+441325777655"
+            "name": "Jemma Doe",
+            "AngelListLink": "https://www.AngelList.com",
+            "CrunchbaseLink": "https://www.Crunchbase.com",
+            "LinkedInLink": "https://www.LinkedIn.com",
+            "Company": "exampleCompany",
+            "Position": "examplePosition",
+            "Email": "test@gmail.com",
+            "PrimaryNumber_0": "UK",
+            "PrimaryNumber_1": "+447975777666",
+            "SecondaryNumber_0": "UK",
+            "SecondaryNumber_1": "+441325777655"
         }
-
 
     # Test if the form accepts valid input
     def test_valid_individual_create_form(self):
         form = IndividualCreateForm(data=self.form_input)
         self.assertTrue(form.is_valid())
-        
 
     # Test the form having the required fields inside it
     def test_form_has_necessary_fields(self):
         form = IndividualCreateForm()
+        self.assertIn("name", form.fields)
+        self.assertTrue(isinstance(form.fields['name'], CharField))
         self.assertIn("AngelListLink", form.fields)
         self.assertTrue(isinstance(form.fields['AngelListLink'], URLField))
         self.assertIn("CrunchbaseLink", form.fields)
@@ -50,13 +52,11 @@ class CreateFormTestCase(TestCase):
         self.assertIn('SecondaryNumber', form.fields)
         self.assertTrue(isinstance(form.fields['SecondaryNumber'], PhoneNumberField))
 
-
     # Test the form using model validation
     def test_form_uses_model_validation(self):
         self.form_input['AngelListLink'] = 'A'
         form = IndividualCreateForm(data=self.form_input)
         self.assertFalse(form.is_valid())
-
 
     # Test if the form saves correctly
     def test_form_must_save_correctly(self):
@@ -64,7 +64,7 @@ class CreateFormTestCase(TestCase):
         before_count = Individual.objects.count()
         form.save()
         after_count = Individual.objects.count()
-        self.assertEqual(after_count, before_count+1)
+        self.assertEqual(after_count, before_count + 1)
         individual = Individual.objects.get(Company='exampleCompany')
         self.assertEqual(individual.AngelListLink, "https://www.AngelList.com")
         self.assertEqual(individual.CrunchbaseLink, "https://www.Crunchbase.com")
