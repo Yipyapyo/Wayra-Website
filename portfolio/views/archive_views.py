@@ -23,7 +23,6 @@ def archive_search(request):
     if request.method == "GET":
 
         searched = request.GET['searchresult']
-        print(f"searched: {searched}")
 
         response = []
 
@@ -32,8 +31,10 @@ def archive_search(request):
         else:
             company_search_result = Company.objects.filter(name__contains=searched).values()
             individual_search_result = Individual.objects.filter(name__contains=searched).values()
-            response.append(("Companies",list(company_search_result)))
-            response.append(("Individuals",list(individual_search_result)))
+            if company_search_result:
+                response.append(("Companies",list(company_search_result)))
+            if individual_search_result:
+                response.append(("Individuals",list(individual_search_result)))
         
         search_results_table_html = render_to_string('partials/search/search_results_table.html', {
         'search_results': response, 'searched':searched, 'destination_url':'portfolio_company'})
