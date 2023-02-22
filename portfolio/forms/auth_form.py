@@ -1,5 +1,7 @@
 from django import forms
 from django.contrib.auth import authenticate
+from django.contrib.auth.models import Group
+from portfolio.models import User
 
 
 class LogInForm(forms.Form):
@@ -14,3 +16,26 @@ class LogInForm(forms.Form):
             password = self.cleaned_data.get('password')
             user = authenticate(email=email, password=password)
         return user
+
+class UserForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ["first_name", "last_name", "phone", "is_active"]
+    group = forms.ModelChoiceField(
+        label='Group',
+        queryset=Group.objects.all(),
+        empty_label=None,
+    )
+    def save(self, commit=True):
+        user = super().save(commit=False)
+        user.email = self.cleaned_data['email']
+        group = self.cleaned_data['group']
+        user.save()
+        user.groups.clear()
+        user.groups.add(group)
+        if commit:
+            user.save()
+        return user
+
+
+
