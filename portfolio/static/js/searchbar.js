@@ -25,7 +25,7 @@ $('.search_input').keyup(function(){
     $.ajax(
     {
         type:"GET",
-        url: "/search_result",
+        url: search_url,
         data:{
                 searchresult: search_input.value
         },

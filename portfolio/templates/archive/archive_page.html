@@ -6,5 +6,17 @@
     <h1 class="h2">Archive</h1>
 </div>
 
+<div class="px-5 py-2 rounded-3">
+    <div class="container-fluid pt-2 px-0 search-div-styling" style="position:absolute;z-index: 1;max-width: 75%;">
+
+      <div class="row">
+
+        {% include 'partials/search/searchbar.html' with search_url=search_url %}
+
+      </div>
+
+    </div>
+</div>
+
 
 {% endblock %}
