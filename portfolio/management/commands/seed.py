@@ -6,7 +6,7 @@ from phonenumber_field.phonenumber import PhoneNumber
 
 from portfolio.models import User, Individual, Company, Portfolio_Company, Programme, ResidentialAddress
 from faker import Faker
-from portfolio.models import User, Company
+from portfolio.models import User, Company, ResidentialAddress, Individual
 import random
 
 
@@ -37,6 +37,8 @@ class Command(BaseCommand):
         self.create_programme()
 
         self.populate_companies()
+
+        self.populate_individuals()
 
         print(f"done.")
         print(f"{User.objects.count()} users in the db.")
@@ -159,6 +161,7 @@ class Command(BaseCommand):
         try:
             ResidentialAddress.objects.get(individual=jemma_individual)
             print("Jemma's address has already seeded.")
+        
 
         except ObjectDoesNotExist:
             addr = ResidentialAddress.objects.create(
@@ -174,7 +177,7 @@ class Command(BaseCommand):
             print("Jemma's address has been seeded.")
 
     def populate_companies(self):
-        self.stdout.write('seeding admin...')
+        self.stdout.write('seeding companies...')
         for i in range(10):
             company_name1 = self.faker.company()
             company_name2 = self.faker.company()
@@ -187,3 +190,44 @@ class Command(BaseCommand):
                                    previous_names=company_name2,
                                    registered_address=address,
                                    jurisdiction=city, )
+
+    def populate_individuals(self):
+        """Seeder for fake individuals"""
+        self.stdout.write('seeding individuals...')
+        for i in range(15):
+            name = self.faker.name()
+            company = self.faker.company()
+            position = self.faker.job()
+            email = self.faker.email()
+            primary_phone_number = self.faker.phone_number()
+            secondary_phone_number = self.faker.phone_number()
+
+            individual = Individual.objects.create(
+                name=name,
+                AngelListLink="https://www.AngelList.com",
+                CrunchbaseLink="https://www.Crunchbase.com",
+                LinkedInLink="https://www.LinkedIn.com",
+                Company=company,
+                Position=position,
+                Email=email,
+                PrimaryNumber=primary_phone_number,
+                SecondaryNumber=secondary_phone_number
+            )
+            individual.save()
+
+            address1 = self.faker.building_number()
+            address2 = self.faker.street_address()
+            city = self.faker.city()
+            postcode = self.faker.postcode()
+            state = self.faker.country_code()
+            country = self.faker.country()
+            addr = ResidentialAddress.objects.create(
+                address_line1=address1,
+                address_line2=address2,
+                postal_code=postcode,
+                city=city,
+                state=state,
+                country=country,
+                individual=individual
+            )
+            addr.save()
