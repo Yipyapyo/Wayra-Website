@@ -8,7 +8,6 @@ class LogInForm(forms.Form):
 
     def get_user(self):
         """Returns authenticated user if possible."""
-
         user = None
         if self.is_valid():
             email = self.cleaned_data.get('email')
