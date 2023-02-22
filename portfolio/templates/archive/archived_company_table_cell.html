@@ -1,0 +1,28 @@
+{% load static %}
+<tr>
+    <td>
+      <div class="d-flex align-items-center">
+        <img
+            src="{% static 'images/wayra_logo.png' %}"
+            alt=""
+            style="width: 45px; height: 45px"
+            class="rounded-circle"
+            />
+        <div class="ms-3">
+          <p class="fw-bold mb-1">{{company.name}}</p>
+        </div>
+      </div>
+    </td>
+    <td>
+      <p class="fw-normal mb-1">{{company.company_registration_number}}</p>
+    </td>
+    <td>
+      <span class="fw-normal mb-1">{{company.registered_address}}</span>
+    </td>
+    <td>{{company.jurisdiction}}</td>
+    <td>
+      <button type="button" class="btn btn-link btn-sm btn-rounded">
+        Unarchive
+      </button>
+    </td>
+  </tr>

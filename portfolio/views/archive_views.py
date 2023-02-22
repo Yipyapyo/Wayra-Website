@@ -10,9 +10,12 @@ from django.urls import reverse
 def archive(request):
     '''This ius the archive page. ONLY VIEWED BY ADMINS'''
 
+    companies = Company.objects.all()
+
     context = {
+        "companies":companies,
         "search_url": reverse('archive_search'),
-        "placeholder":"Search the archive"
+        "placeholder":"Search through the archive"
     }
 
     return render(request, 'archive/archive_page.html', context)
