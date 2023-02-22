@@ -13,3 +13,4 @@ class UserAdmin(admin.ModelAdmin):
 
 admin.site.register(Programme)
 admin.site.register(Company)
+

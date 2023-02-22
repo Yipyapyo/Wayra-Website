@@ -11,7 +11,7 @@ class Programme(models.Model):
     partners = models.ManyToManyField(Company, related_name="partners")
     participants = models.ManyToManyField(Portfolio_Company, related_name="participants")
     coaches_mentors = models.ManyToManyField(Individual)
-    cover = models.ImageField(upload_to="uploads/", blank=True)
+    cover = models.ImageField(blank=True)
 
     class Meta:
         unique_together = ('name', 'cohort')
