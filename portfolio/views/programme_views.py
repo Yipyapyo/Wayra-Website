@@ -95,7 +95,7 @@ class ProgrammeDetailView(LoginRequiredMixin, DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['partners'] = []
+        context['partners'] = self.get_object().partners.all()
         context['participants'] = []
         context['coaches_mentors'] = []
         return context
