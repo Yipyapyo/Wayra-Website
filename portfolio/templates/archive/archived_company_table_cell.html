@@ -1,5 +1,5 @@
 {% load static %}
-<tr>
+<tr onclick="window.location.href = '{%url 'portfolio_company' company.id %}'">
     <td>
         <div class="d-flex align-items-center">
             <img
@@ -24,6 +24,6 @@
         <button type="button" class="btn btn-light btn-sm btn-rounded text-success">
             <i class="fa-sharp fa-solid fa-inbox"></i>
             Unarchive
-         </button>
+        </button>
     </td>
 </tr>
