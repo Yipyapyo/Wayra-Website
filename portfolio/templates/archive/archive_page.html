@@ -35,6 +35,7 @@
         <div class="container-fluid py-2">
           <h3 class="display-7 mb-2">Archived Companies</h3>
           {% include 'archive/archived_company_table.html' with companies=companies%}
+          {% include 'partials/utilities/pagination.html' with page=companies %}
         </div>
       </div>
 </div>
