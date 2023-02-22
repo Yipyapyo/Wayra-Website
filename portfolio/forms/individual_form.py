@@ -9,7 +9,7 @@ from phonenumber_field.widgets import PhoneNumberPrefixWidget
 class IndividualCreateForm(forms.ModelForm):
     class Meta:
         model = Individual
-        fields = ["AngelListLink", "CrunchbaseLink", "LinkedInLink",
+        fields = ["name", "AngelListLink", "CrunchbaseLink", "LinkedInLink",
                   "Company", "Position", "Email", "PrimaryNumber", "SecondaryNumber"]
         # widgets = {
         #     "PrimaryNumber": PhoneNumberPrefixWidget(initial="UK"),

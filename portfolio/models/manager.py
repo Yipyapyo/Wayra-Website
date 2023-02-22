@@ -1,5 +1,6 @@
 from django.contrib.auth.base_user import BaseUserManager
 from django.core.exceptions import ValidationError
+from django.db import models
 
 
 class UserManager(BaseUserManager):
@@ -18,8 +19,11 @@ class UserManager(BaseUserManager):
             return user
         except ValidationError as ve:
             raise ve
+
     def create_user(self, email=None, password=None, **extra_fields):
         return self._create_user(email, password, False, False, **extra_fields)
 
     def create_superuser(self, email=None, password=None, **extra_fields):
         return self._create_user(email, password, True, True, **extra_fields)
+
+

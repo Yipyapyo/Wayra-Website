@@ -2,6 +2,7 @@ from django.shortcuts import render
 from portfolio.forms import IndividualCreateForm, AddressCreateForm
 from portfolio.models import Individual, ResidentialAddress
 from django.shortcuts import redirect, render
+from django.core.paginator import Paginator, EmptyPage
 
 
 """
@@ -41,7 +42,18 @@ List of individuals
 
 
 def individual_page(request):
-    data = {'object_list': Individual.objects.all()}
+    page_number = request.GET.get('page', 1)
+    individuals = Individual.objects.all()
+    paginator = Paginator(individuals, 6)
+    try:
+        individuals_page = paginator.page(page_number)
+    except EmptyPage:
+        individuals_page = []
+
+    data = {
+        'individuals': individuals_page,
+    }
+
     return render(request, "individual/individual_page.html", data)
 
 
