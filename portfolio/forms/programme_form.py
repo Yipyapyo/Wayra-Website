@@ -13,7 +13,7 @@ class CreateProgrammeForm(forms.ModelForm):
         fields = ["name", "cohort", "cover"]
         widgets = {
             'cohort': forms.NumberInput(attrs={'min': 1}),
-            'cover': forms.FileField()
+            'cover': forms.FileInput()
         }
 
     partners = MultipleChoiceField(
@@ -84,7 +84,7 @@ class EditProgrammeForm(forms.ModelForm):
         fields = ["name", "cohort", "cover"]
         widgets = {
             'cohort': forms.NumberInput(attrs={'min': 1}),
-            'cover': forms.FileField()
+            'cover': forms.FileInput()
         }
 
     partners = MultipleChoiceField(

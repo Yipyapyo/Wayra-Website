@@ -1,4 +1,5 @@
 from django.contrib.auth.decorators import login_required
+from django.db.models import Q
 from django.shortcuts import render, redirect
 from portfolio.forms.company_form import CompanyCreateForm
 from portfolio.models import Company, Programme
@@ -73,7 +74,7 @@ def searchcomp(request):
 def portfolio_company(request, company_id):
     '''This page displays information about a single portfolio company'''
     company = Company.objects.get(id=company_id)
-    programmes = Programme.objects.filter(partners=company, participants=company)
+    programmes = Programme.objects.filter(Q(participants=company) | Q(partners=company))
     return render(request, 'company/portfolio_company_page.html',
                   {'counter': {1, 2, 3},
                    'contract_counter': {1, 2, 3, 4},

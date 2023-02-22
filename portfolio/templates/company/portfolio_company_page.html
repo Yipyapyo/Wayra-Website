@@ -86,7 +86,7 @@
                         <p>Wayra UK Limited is currently enrolled in the following programmes:</p>
                         <div class="row mb-3">
                             {% for programme in programmes %}
-                                {% include 'partials/utilities/programme_card.html' %}
+                                {% include 'partials/utilities/programme_card.html' with programme=programme%}
                             {% endfor %}
                         </div>
                     </div>
