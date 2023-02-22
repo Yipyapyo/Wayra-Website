@@ -35,7 +35,17 @@
         <div class="container-fluid py-2">
           <h3 class="display-7 mb-2">Archived Companies</h3>
           {% include 'archive/archived_company_table.html' with companies=companies%}
-          {% include 'partials/utilities/pagination.html' with page=companies %}
+          {% include 'partials/utilities/pagination.html' with page=companies page_number=1%}
+        </div>
+      </div>
+</div>
+
+<div class="mt-5 pt-4">
+    <div class="p-2 mb-4 bg-light rounded mx-3">
+        <div class="container-fluid py-2">
+          <h3 class="display-7 mb-2">Archived Individuals</h3>
+          {% include 'archive/archived_individual_table.html' with individuals=individuals%}
+          {% include 'partials/utilities/pagination.html' with page=individuals page_number=2%}
         </div>
       </div>
 </div>

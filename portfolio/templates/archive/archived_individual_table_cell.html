@@ -1,0 +1,28 @@
+{% load static %}
+<tr>
+    <td>
+        <div class="d-flex align-items-center">
+            <img
+                src="{% static 'images/default_logo.png' %}"
+                alt=""
+                style="width: 45px; height: 45px"
+                class="rounded-circle"
+                />
+            <div class="ms-3">
+            <p class="fw-bold mb-1">{{individual.name}}</p>
+            </div>
+        </div>
+    </td>
+    <td>
+        <p class="fw-normal mb-1">{{individual.Email}}</p>
+    </td>
+    <td>
+        <span class="fw-normal mb-1">{{individual.Company}}</span>
+    </td>
+    <td>{{individual.Position}}</td>
+    <td>
+        <button type="button" class="btn btn-light btn-sm btn-rounded text-dark">
+            Unarchive
+         </button>
+    </td>
+</tr>

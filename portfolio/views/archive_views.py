@@ -10,19 +10,26 @@ from django.core.paginator import Paginator, EmptyPage
 @login_required
 def archive(request):
     '''This ius the archive page. ONLY VIEWED BY ADMINS'''
-    page_number = request.GET.get('page', 1)
+    company_page_number = request.GET.get('page1', 1)
+    individual_page_number = request.GET.get('page2', 1)
 
     companies = Company.objects.all()
+    individuals = Individual.objects.all()
 
-    paginator = Paginator(companies, 5)
+    companies_paginator = Paginator(companies, 5)
+    individuals_paginator = Paginator(individuals, 5)
 
     try:
-        companies_page = paginator.page(page_number)
+        companies_page = companies_paginator.page(company_page_number)
+        individuals_page = individuals_paginator.page(individual_page_number)
+        
     except EmptyPage:
         companies_page = []
+        individuals_page = []
 
     context = {
         "companies":companies_page,
+        "individuals":individuals_page,
         "search_url": reverse('archive_search'),
         "placeholder":"Search through the archive"
     }

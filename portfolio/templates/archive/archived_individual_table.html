@@ -2,15 +2,15 @@
     <thead class="bg-light">
       <tr>
         <th>Name</th>
-        <th>CRN</th>
-        <th>Registered Address</th>
-        <th>Jurisdiction</th>
+        <th>Email</th>
+        <th>Company</th>
+        <th>Position</th>
         <th>Actions</th>
       </tr>
     </thead>
     <tbody>
-        {%for cell in companies%}
-            {% include 'archive/archived_company_table_cell.html' with company=cell %}
+        {%for cell in individuals%}
+            {% include 'archive/archived_company_table_cell.html' with individual=cell %}
         {%endfor%}
     </tbody>
 </table>
