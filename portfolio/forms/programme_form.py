@@ -117,3 +117,4 @@ class EditProgrammeForm(forms.ModelForm):
         for coach in self.cleaned_data.get("coaches_mentors"):
             programme.coaches_mentors.add(coach)
         programme.cover = self.cleaned_data.get("cover")
+        programme.save()
