@@ -36,6 +36,9 @@ urlpatterns = [
     path("individual_page/", views.individual_page, name="individual_page"),
     path("individual_page/<int:id>/update/", views.individual_update, name='individual_update'),
     path("individual_page/<int:id>/delete/", views.individual_delete, name='individual_delete'),
+    path("individual_profile_page/<int:id>/", views.individual_profile, name='individual_profile'),
+    path('individual_page/archive/<int:id>', views.archive_individual, name='archive_individual'),
+    path('individual_page/unarchive/<int:id>', views.unarchive_individual, name='unarchive_individual'),
 
     # Programme CRUD
     path("programme_page/", views.ProgrammeListView.as_view(), name="programme_list"),
@@ -47,6 +50,7 @@ urlpatterns = [
     # Archive views
     path("archive_page/", views.archive, name="archive_page"),
     path('archive/search', views.archive_search, name='archive_search'),
+
 
 ]
 

@@ -14,7 +14,7 @@ def archive(request):
     individual_page_number = request.GET.get('page2', 1)
 
     companies = Company.objects.filter(is_archived=True)
-    individuals = Individual.objects.all()
+    individuals = Individual.objects.filter(is_archived=True)
 
     companies_paginator = Paginator(companies, 5)
     individuals_paginator = Paginator(individuals, 5)
@@ -49,7 +49,7 @@ def archive_search(request):
             response = []
         else:
             company_search_result = Company.objects.filter(name__contains=searched, is_archived=True).values()
-            individual_search_result = Individual.objects.filter(name__contains=searched).values()
+            individual_search_result = Individual.objects.filter(name__contains=searched, is_archived=True).values()
             response.append(("Companies",list(company_search_result[:4])))
             response.append(("Individuals",list(individual_search_result[:4])))
         
