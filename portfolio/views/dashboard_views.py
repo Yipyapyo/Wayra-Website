@@ -7,6 +7,7 @@ from django.http import HttpResponse
 from django.template.loader import render_to_string
 import json 
 from django.core.paginator import Paginator, EmptyPage
+from django.urls import reverse
 
 
 # Create your views here.
@@ -17,7 +18,7 @@ def dashboard(request):
     # Data for the each company will be listed here.
     page_number = request.GET.get('page', 1)
 
-    companies = Company.objects.all()
+    companies = Company.objects.filter(is_archived=False).order_by('id')
 
     paginator = Paginator(companies, 6)
 
@@ -28,6 +29,8 @@ def dashboard(request):
 
     context = {
         "companies": companies_page,
+        "search_url": reverse('search_result'),
+        "placeholder":"Search for a Company"
     }
 
     return render(request, 'company/main_dashboard.html', context)
@@ -38,15 +41,18 @@ def searchcomp(request):
     if request.method == "GET":
 
         searched = request.GET['searchresult']
-        print(f"searched: {searched}")
+        
+        response = []
 
         if(searched == ""):
-            search_result = {}
+            response = []
         else:
             search_result = Company.objects.filter(name__contains=searched).values()
+            response.append(("Companies",list(search_result)))
         
+
         search_results_table_html = render_to_string('partials/search/search_results_table.html', {
-        'search_results': list(search_result), 'searched':searched})
+        'search_results': response, 'searched':searched, 'destination_url':'portfolio_company'})
 
         return HttpResponse(search_results_table_html)
 
@@ -114,3 +120,17 @@ def delete_company(request, company_id):
     except Company.DoesNotExist:
         pass
     return redirect('dashboard')
+
+@login_required
+def archive_company(request, company_id):
+    """Handles the deletion of a company"""
+    company = Company.objects.get(id=company_id)
+    company.archive()
+    return redirect('portfolio_company', company_id=company.id)
+
+@login_required
+def unarchive_company(request, company_id):
+    """Handles the deletion of a company"""
+    company = Company.objects.get(id=company_id)
+    company.unarchive()
+    return redirect('portfolio_company', company_id=company.id)

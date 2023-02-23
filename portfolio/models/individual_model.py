@@ -15,3 +15,12 @@ class Individual(models.Model):
     Email = models.EmailField(blank=False)
     PrimaryNumber = PhoneNumberField("Primary phone number", blank=False)
     SecondaryNumber = PhoneNumberField("Secondary phone number", blank=True)
+    is_archived = models.BooleanField(default=False)
+
+    def archive(self):
+        self.is_archived = True
+        self.save()
+    
+    def unarchive(self):
+        self.is_archived = False
+        self.save()

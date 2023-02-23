@@ -28,12 +28,17 @@ urlpatterns = [
     path('portfolio_company/company_create/', views.create_company, name='create_company'),
     path('portfolio_company/company_update/<int:company_id>', views.update_company, name='update_company'),
     path('portfolio_company/company_delete/<int:company_id>', views.delete_company, name='delete_company'),
-
+    path('portfolio_company/archive/<int:company_id>', views.archive_company, name='archive_company'),
+    path('portfolio_company/unarchive/<int:company_id>', views.unarchive_company, name='unarchive_company'),
+    
     # Individual CRUD
     path("individual_page/individual_create/", views.individual_create, name="individual_create"),
     path("individual_page/", views.individual_page, name="individual_page"),
     path("individual_page/<int:id>/update/", views.individual_update, name='individual_update'),
     path("individual_page/<int:id>/delete/", views.individual_delete, name='individual_delete'),
+    path("individual_profile_page/<int:id>/", views.individual_profile, name='individual_profile'),
+    path('individual_page/archive/<int:id>', views.archive_individual, name='archive_individual'),
+    path('individual_page/unarchive/<int:id>', views.unarchive_individual, name='unarchive_individual'),
 
     # Programme CRUD
     path("programme_page/", views.ProgrammeListView.as_view(), name="programme_list"),
@@ -41,6 +46,11 @@ urlpatterns = [
     path("programme_page/<int:id>/update/", views.ProgrammeUpdateView.as_view(), name="programme_update"),
     path("programme_page/<int:id>/delete/", views.ProgrammeDeleteView.as_view(), name="programme_delete"),
     path("programme_page/<int:id>/detail/", views.ProgrammeDetailView.as_view(), name="programme_detail"),
+
+    # Archive views
+    path("archive_page/", views.archive, name="archive_page"),
+    path('archive/search', views.archive_search, name='archive_search'),
+
 
 ]
 
