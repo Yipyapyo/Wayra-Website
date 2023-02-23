@@ -14,7 +14,7 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
 from portfolio import views
 
 urlpatterns = [
@@ -31,5 +31,11 @@ urlpatterns = [
     path("individual_page/", views.individual_page, name="individual_page"),
     path("individual_page/<int:id>/update/", views.individual_update, name='individual_update'),
     path("individual_page/<int:id>/delete/", views.individual_delete, name='individual_delete'),
+
+    #Permissions
+    path("select2/", include("django_select2.urls")),
+    path("permissions/users/", views.UserListView.as_view(), name='user_list'),
+    path("permissions/create_user/", views.UserSignUpFormView.as_view(), name='permission_create_user'),
+    path("permissions/create_group/", views.GroupCreateView.as_view(), name='permission_create_group'),
 
 ]

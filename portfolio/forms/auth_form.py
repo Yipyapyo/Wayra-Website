@@ -17,7 +17,7 @@ class LogInForm(forms.Form):
             user = authenticate(email=email, password=password)
         return user
 
-class UserForm(forms.ModelForm):
+class UserCreationForm(forms.ModelForm):
     class Meta:
         model = User
         fields = ["first_name", "last_name", "phone", "is_active"]
