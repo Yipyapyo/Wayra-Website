@@ -1,6 +1,6 @@
 {% load static %}
 <tr>
-    <td>
+    <td class="clickable-cell" data-href="{% url 'individual_profile' individual.id %}">
         <div class="d-flex align-items-center">
             <img
                 src="{% static 'images/default_logo.png' %}"
@@ -13,17 +13,32 @@
             </div>
         </div>
     </td>
-    <td>
+    <td class="clickable-cell" data-href="{% url 'individual_profile' individual.id %}">
         <p class="fw-normal mb-1">{{individual.Email}}</p>
     </td>
-    <td>
+    <td class="clickable-cell" data-href="{% url 'individual_profile' individual.id %}">
         <span class="fw-normal mb-1">{{individual.Company}}</span>
     </td>
-    <td>{{individual.Position}}</td>
+    <td class="clickable-cell" data-href="{% url 'individual_profile' individual.id %}">
+        {{individual.Position}}
+    </td>
     <td>
-        <button type="button" class="btn btn-light btn-sm btn-rounded text-success">
+        <a type="button" class="btn btn-light btn-sm btn-rounded text-success" href="{% url 'unarchive_individual' individual.id %}">
             <i class="fa-sharp fa-solid fa-inbox"></i>
             Unarchive
-         </button>
+        </a>
     </td>
 </tr>
+
+
+<script>
+    var cells = document.querySelectorAll('.clickable-cell');
+
+    for (var i = 0; i < cells.length; i++) {
+    cells[i].onclick = function() {
+        var href = this.getAttribute('data-href');
+        window.location.href = href;
+    }
+    }
+
+</script>
