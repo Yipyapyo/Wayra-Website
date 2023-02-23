@@ -18,7 +18,7 @@ def dashboard(request):
     # Data for the each company will be listed here.
     page_number = request.GET.get('page', 1)
 
-    companies = Company.objects.filter(is_archived=False)
+    companies = Company.objects.filter(is_archived=False).order_by('id')
 
     paginator = Paginator(companies, 6)
 

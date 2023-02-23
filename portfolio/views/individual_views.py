@@ -43,7 +43,7 @@ List of individuals
 @login_required
 def individual_page(request):
     page_number = request.GET.get('page', 1)
-    individuals = Individual.objects.filter(is_archived=False)
+    individuals = Individual.objects.filter(is_archived=False).order_by('id')
     paginator = Paginator(individuals, 6)
     try:
         individuals_page = paginator.page(page_number)

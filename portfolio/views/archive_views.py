@@ -13,8 +13,8 @@ def archive(request):
     company_page_number = request.GET.get('page1', 1)
     individual_page_number = request.GET.get('page2', 1)
 
-    companies = Company.objects.filter(is_archived=True)
-    individuals = Individual.objects.filter(is_archived=True)
+    companies = Company.objects.filter(is_archived=True).order_by('id')
+    individuals = Individual.objects.filter(is_archived=True).order_by('id')
 
     companies_paginator = Paginator(companies, 5)
     individuals_paginator = Paginator(individuals, 5)
