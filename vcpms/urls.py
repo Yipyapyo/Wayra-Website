@@ -28,6 +28,8 @@ urlpatterns = [
     path('portfolio_company/company_create/', views.create_company, name='create_company'),
     path('portfolio_company/company_update/<int:company_id>', views.update_company, name='update_company'),
     path('portfolio_company/company_delete/<int:company_id>', views.delete_company, name='delete_company'),
+    path('portfolio_company/archive/<int:company_id>', views.archive_company, name='archive_company'),
+    path('portfolio_company/unarchive/<int:company_id>', views.unarchive_company, name='unarchive_company'),
     
     # Individual CRUD
     path("individual_page/individual_create/", views.individual_create, name="individual_create"),

@@ -13,7 +13,7 @@ def archive(request):
     company_page_number = request.GET.get('page1', 1)
     individual_page_number = request.GET.get('page2', 1)
 
-    companies = Company.objects.all()
+    companies = Company.objects.filter(is_archived=True)
     individuals = Individual.objects.all()
 
     companies_paginator = Paginator(companies, 5)
@@ -48,10 +48,10 @@ def archive_search(request):
         if(searched == ""):
             response = []
         else:
-            company_search_result = Company.objects.filter(name__contains=searched).values()
+            company_search_result = Company.objects.filter(name__contains=searched, is_archived=True).values()
             individual_search_result = Individual.objects.filter(name__contains=searched).values()
-            response.append(("Companies",list(company_search_result)))
-            response.append(("Individuals",list(individual_search_result)))
+            response.append(("Companies",list(company_search_result[:4])))
+            response.append(("Individuals",list(individual_search_result[:4])))
         
         search_results_table_html = render_to_string('partials/search/search_results_table.html', {
         'search_results': response, 'searched':searched, 'destination_url':'portfolio_company'})

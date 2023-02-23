@@ -18,7 +18,7 @@ def dashboard(request):
     # Data for the each company will be listed here.
     page_number = request.GET.get('page', 1)
 
-    companies = Company.objects.all()
+    companies = Company.objects.filter(is_archived=False)
 
     paginator = Paginator(companies, 6)
 
@@ -120,3 +120,17 @@ def delete_company(request, company_id):
     except Company.DoesNotExist:
         pass
     return redirect('dashboard')
+
+@login_required
+def archive_company(request, company_id):
+    """Handles the deletion of a company"""
+    company = Company.objects.get(id=company_id)
+    company.archive()
+    return redirect('portfolio_company', company_id=company.id)
+
+@login_required
+def unarchive_company(request, company_id):
+    """Handles the deletion of a company"""
+    company = Company.objects.get(id=company_id)
+    company.unarchive()
+    return redirect('portfolio_company', company_id=company.id)
