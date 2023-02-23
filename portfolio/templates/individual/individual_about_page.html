@@ -12,7 +12,7 @@
             {% else %}
                 <a type="button" class="btn btn-sm btn-outline-success" href="{% url 'archive_individual' individual.id %}">Archive</a>
             {% endif %}
-            <a type="button" class="btn btn-sm btn-outline-primary" href="#">Update</a>
+            <a type="button" class="btn btn-sm btn-outline-primary" href="{% url 'individual_update' individual.id %}">Update</a>
             <button type="button" class="btn btn-sm btn-outline-danger" data-toggle="modal" data-target="#deleteIndividualModal">Delete</button>
         </div>
         {% include 'partials/individual/individual_delete_modal.html'%}
