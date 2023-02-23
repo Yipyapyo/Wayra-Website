@@ -9,7 +9,7 @@
         </div>
         <div class="btn-group me-2">
             {% if company.is_archived %}
-                <a type="button" class="btn btn-sm btn-outline-secondary" href="{% url 'unarchive_company' company.id %}">Unrchive</a>
+                <a type="button" class="btn btn-sm btn-outline-secondary" href="{% url 'unarchive_company' company.id %}">Unarchive</a>
             {% else %}
                 <a type="button" class="btn btn-sm btn-outline-success" href="{% url 'archive_company' company.id %}">Archive</a>
             {% endif %}
