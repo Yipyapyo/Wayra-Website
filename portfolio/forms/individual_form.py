@@ -13,7 +13,6 @@ class IndividualCreateForm(forms.ModelForm):
         model = Individual
         fields = ["AngelListLink", "CrunchbaseLink", "LinkedInLink",
                   "Company", "Position", "Email", "PrimaryNumber", "SecondaryNumber"]
-        exclude = ('isFounder',)
 
     def __init__(self, *args, **kwargs):
         super(IndividualCreateForm, self).__init__(*args, **kwargs)

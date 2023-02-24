@@ -5,7 +5,5 @@ from portfolio.models.individual_model import Individual
 
 class Founder(Individual):
     """A founder of a company."""
-
-    # company = models.ManyToManyField(Company, related_name="companies")
     companyFounded = models.CharField(max_length=100, default="USA")
     additionalInformation = models.CharField(max_length=500, blank=True)
