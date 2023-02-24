@@ -34,5 +34,6 @@ urlpatterns = [
     path("individual_page/<int:id>/delete/", views.individual_delete, name='individual_delete'),
     path("individual_page/founder_create/", founder_views.founder_create, name="founder_create"),
     path("individual_page/<int:id>/deleteFounder/", founder_views.founder_delete, name="founder_delete"),
+    path("individual_page/<int:id>/modifyFounder/", founder_views.founder_modify, name="founder_modify"),
 
 ]

@@ -50,3 +50,39 @@ def founder_delete(request):
         founderInstance.delete()
         return redirect('individual_page')
     return render(request, 'individual/founder_delete.html')
+
+
+"""
+Modify a founder.
+"""
+
+def founder_modify(request):
+    founder_form = Founder.objects.get(id=id)
+    address_forms = ResidentialAddress.objects.get(id=id)
+    past_experience_list = PastExperience.objects.filter(individual=founder_form)
+    past_experience_forms = [PastExperienceForm(instance=p, prefix="past_experience") for p in past_experience_list]
+    if request.method == 'POST':
+        form1 = IndividualCreateForm(request.POST, instance=founder_form, prefix="form1")
+        form2 = AddressCreateForm(request.POST, instance=address_forms, prefix="form2")
+        forms3 = [PastExperienceForm(request.POST, instance=p, prefix="past_experience") for p in past_experience_list]
+        if form1.is_valid() and form2.is_valid() and all([pf.is_valid() for pf in forms3]):
+            updated_founder = form1.save()
+            updated_address = form2.save(commit=False)
+            updated_address.individual = updated_founder
+            updated_address.save()
+            for pf in forms3:
+                updated_experience = pf.save(commit=False)
+                updated_experience.individual = updated_founder
+                updated_experience.duration = updated_experience.end_year - updated_experience.start_year
+                updated_experience.save()
+            return redirect("individual_page")
+    else:
+        form1 = IndividualCreateForm(instance=founder_form, prefix="form1")
+        form2 = AddressCreateForm(instance=address_forms, prefix="form2")
+        forms3 = past_experience_forms
+    context = {
+        'founderForm': form1,
+        'addressForms': form2,
+        'pastExperienceForms': forms3,
+    }
+    return render(request, 'individual/individual_update.html', context=context)
