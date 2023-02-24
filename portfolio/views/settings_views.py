@@ -15,4 +15,8 @@ View and Update user settings
 """
 @login_required
 def account_settings(request):
-    return render(request, 'settings/account_settings.html')
+    current_user = request.user
+    context = {
+        "user":current_user,
+    }
+    return render(request, 'settings/account_settings.html', context)

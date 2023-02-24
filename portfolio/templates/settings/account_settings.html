@@ -2,7 +2,7 @@
 {% load static %}
 {% block main %}
 
-<link href="{% static 'css/settings.css' %}" rel="stylesheet" />
+<!-- <link href="{% static 'css/settings.css' %}" rel="stylesheet" /> -->
 <div class="px-5 py-2 rounded-3">
     <div class="d-flex justify-content-between align-items-center border-bottom mb-3">
         <div class="col">
@@ -14,20 +14,16 @@
         <div class="col">
 
             <form class="file-upload">
-                <div class="row mb-5 gx-5">
-                    {% include 'settings/contact_details_section.html' %}
+                <div class="row mb-2 gx-5">
                     {% include 'settings/upload_profile_section.html' %}
+                    {% include 'settings/contact_details_section.html' %}
                 </div>
 
-                <div class="row mb-5 gx-5">
-                    {% include 'settings/links_section.html' %}
+                <div class="row mb-2 gx-5">
                     {% include 'settings/change_password_section.html' %}
+                    {% include 'settings/links_section.html' %}
                 </div>
-                <!-- buttons -->
-                <div class="gap-3 d-md-flex justify-content-md-end text-center">
-                    <button type="button" class="btn btn-danger">Delete profile</button>
-                    <button type="button" class="btn btn-primary">Update profile</button>
-                </div>
+                {% include 'settings/deactivate_account.html' %}
 
             </form>
 

@@ -1,18 +1,33 @@
-<!-- Upload profile -->
-<div class="col-xxl-4">
-    <div class="bg-secondary-soft px-4 py-5 rounded">
-        <div class="row g-3">
-            <h4 class="mb-4 mt-0">Upload your profile photo</h4>
-            <div class="text-center">
-                <!-- Image upload -->
-                <div class="square position-relative display-2 mb-3">
-                    <i
-                        class="fas fa-fw fa-user position-absolute top-50 start-50 translate-middle text-secondary"></i>
+<div class="container-fluid pe-5">
+    <div class="row pe-5 me-5">
+        <div class="col-xl-7 mx-5 w-100 pe-5">
+            <!-- Profile picture -->
+            <div class="card border my-4 w-100 rounded-3">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div>
+                            <div class="d-flex align-items-center">
+                                <a href="#" class="avatar avatar-lg bg-warning rounded-circle text-white">
+                                    <img alt="..."
+                                        src="https://images.unsplash.com/photo-1579463148228-138296ac3b98?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=3&w=256&h=256&q=80"
+                                        class="rounded-circle"
+                                        style="width: 100px; height: 100px"
+                                    >
+                                </a>
+                                <div class="ms-4">
+                                    <span class="h4 d-block mb-0">Julianne Moore</span>
+                                    <a href="#" class="text-sm font-semibold text-muted">View Profile</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ms-auto">
+                            <!-- <button type="button" class="btn btn-primary">Upload</button> -->
+                            <input type="file" id="customFile" name="file" hidden="">
+                            <label class="btn btn-success btn-block" for="customFile">Upload</label>
+                            <button type="button" class="btn btn-danger">Remove</button>
+                        </div>
+                    </div>
                 </div>
-                <!-- Button -->
-                <input type="file" id="customFile" name="file" hidden="">
-                <label class="btn btn-success-soft btn-block" for="customFile">Upload</label>
-                <button type="button" class="btn btn-danger-soft">Remove</button>
             </div>
         </div>
     </div>
