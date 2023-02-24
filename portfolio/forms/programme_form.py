@@ -53,7 +53,7 @@ class CreateProgrammeForm(forms.ModelForm):
             new_programme.participants.add(participant)
         for coach in self.cleaned_data.get("coaches_mentors"):
             new_programme.coaches_mentors.add(coach)
-
+        new_programme.save()
     # SAVE THE BELOW FOR NOW IN CASE THIS DOESN'T WORK
 
     # #Populating partner choices
