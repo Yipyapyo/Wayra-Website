@@ -36,8 +36,6 @@ def change_password(request):
             from django.contrib.auth import update_session_auth_hash
             update_session_auth_hash(request, form.user)
 
-            if(check_password(form.cleaned_data['new_password'], request.user.password)):
-                print("Password Changed Successfylly")
             messages.add_message(request, messages.SUCCESS, "Password Updated Successfully!")
             return redirect('account_settings')
         else:
@@ -48,3 +46,5 @@ def change_password(request):
                 "change_password_form":form,
             }
             return render(request, 'settings/account_settings.html', context)
+    else:
+        return HttpResponse("404, Unable to make this call")
