@@ -20,7 +20,7 @@
                 </div>
 
                 <div class="row mb-2 gx-5">
-                    {% include 'settings/change_password_section.html' %}
+                    {% include 'settings/change_password_section.html' with form=change_password_form %}
                     {% include 'settings/links_section.html' %}
                 </div>
                 {% include 'settings/deactivate_account.html' %}
