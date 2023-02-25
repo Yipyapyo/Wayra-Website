@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.core.validators import EmailValidator
 
-from portfolio.manager import UserManager
+from portfolio.models.manager import UserManager
 
 # Create your models here.
 class User(AbstractUser):

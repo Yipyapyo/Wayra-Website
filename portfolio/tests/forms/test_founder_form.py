@@ -9,6 +9,7 @@ from portfolio.forms import FounderForm
 class FounderFormTestCase(TestCase):
     def setUp(self):
         self.form_input = {
+            "name": "Ben", 
             "AngelListLink" : "https://www.AngelList.com",
              "CrunchbaseLink" : "https://www.Crunchbase.com",
              "LinkedInLink" : "https://www.LinkedIn.com",
@@ -29,6 +30,8 @@ class FounderFormTestCase(TestCase):
     
     def test_form_has_necessary_fields(self):
         form = FounderForm()
+        self.assertIn("name", form.fields)
+        self.assertTrue(isinstance(form.fields['name'], forms.CharField))
         self.assertIn("AngelListLink", form.fields)
         self.assertTrue(isinstance(form.fields['AngelListLink'], URLField))
         self.assertIn("CrunchbaseLink", form.fields)

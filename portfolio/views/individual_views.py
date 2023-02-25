@@ -1,15 +1,16 @@
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from portfolio.forms import IndividualCreateForm, AddressCreateForm, PastExperienceForm
 from portfolio.models import Individual, ResidentialAddress
 from portfolio.models.past_experience_model import PastExperience
 from portfolio.forms.founder_form import FounderForm
 from django.shortcuts import redirect, render
+from django.core.paginator import Paginator, EmptyPage
 
 
 """
 Create an individual.
 """
-
 
 def individual_create(request):
 
@@ -45,16 +46,26 @@ def individual_create(request):
 List of individuals
 """
 
-
+@login_required
 def individual_page(request):
-    data = {'object_list': Individual.objects.all()}
+    page_number = request.GET.get('page', 1)
+    individuals = Individual.objects.filter(is_archived=False).order_by('id')
+    paginator = Paginator(individuals, 6)
+    try:
+        individuals_page = paginator.page(page_number)
+    except EmptyPage:
+        individuals_page = []
+
+    data = {
+        'individuals': individuals_page,
+    }
+
     return render(request, "individual/individual_page.html", data)
 
 
 """
 Update a particular individual's information
 """
-
 
 def individual_update(request, id):
     individual_form = Individual.objects.get(id=id)
@@ -92,10 +103,32 @@ def individual_update(request, id):
 Delete a particular individual
 """
 
-
 def individual_delete(request, id):
     individual_form = Individual.objects.get(id=id)
     if request.method == 'POST':
         individual_form.delete()
         return redirect('individual_page')
     return render(request, 'individual/individual_delete.html')
+
+"""
+View an individual profile page
+"""
+
+@login_required
+def individual_profile(request, id):
+    individual = Individual.objects.get(id=id)
+    return render(request, 'individual/individual_about_page.html', {"individual": individual})
+
+@login_required
+def archive_individual(request, id):
+    """Handles the deletion of a company"""
+    individual = Individual.objects.get(id=id)
+    individual.archive()
+    return redirect('individual_profile', id=individual.id)
+
+@login_required
+def unarchive_individual(request, id):
+    """Handles the deletion of a company"""
+    individual = Individual.objects.get(id=id)
+    individual.unarchive()
+    return redirect('individual_profile', id=individual.id)

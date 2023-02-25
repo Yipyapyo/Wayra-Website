@@ -3,7 +3,7 @@ from django import forms
 from portfolio.models.investment_model import Investment
 from portfolio.models.investor_individual_model import InvestorIndividual
 from portfolio.models.investor_company_model import InvestorCompany
-from portfolio.models.company_model import PortfolioCompany
+from portfolio.models.company_model import Portfolio_Company
 
 
 class InvestmentForm(forms.ModelForm):
@@ -26,5 +26,5 @@ class InvestmentForm(forms.ModelForm):
         startup = forms.ModelMultipleChoiceField(
             label="Select the portfolio company invested if there is one",
             widget=forms.CheckboxSelectMultiple,
-            queryset=PortfolioCompany.objects.all()
+            queryset=Portfolio_Company.objects.all()
         )

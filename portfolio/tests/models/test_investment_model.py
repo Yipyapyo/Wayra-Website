@@ -3,7 +3,7 @@ from django.core.exceptions import ValidationError
 from portfolio.models.investment_model import Investment, FOUNDING_ROUNDS
 from portfolio.models.investor_company_model import InvestorCompany
 from portfolio.models.investor_individual_model import InvestorIndividual
-from portfolio.models.company_model import PortfolioCompany
+from portfolio.models.company_model import Portfolio_Company
 from phonenumber_field.phonenumber import PhoneNumber
 from django.utils import timezone
 
@@ -26,7 +26,7 @@ class InvestmentModelTestCase(TestCase):
              PartOfIncubator = False,
              NumberOfExits = 5
         )
-        self.PortfolioCompany = PortfolioCompany.objects.create(
+        self.PortfolioCompany = Portfolio_Company.objects.create(
             name="Facebook",
             company_registration_number="00000000",
             trading_names="Defaul",

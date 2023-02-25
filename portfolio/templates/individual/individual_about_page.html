@@ -1,0 +1,24 @@
+{% extends 'dashboard_template.html' %}
+{% block main %}
+
+<div class="px-5 py-2 rounded-3">
+    <div class="d-flex justify-content-between align-items-center border-bottom mb-3">
+        <div class="col">
+            <h2 class="pb-3">{{individual.name}}</h2>
+        </div>
+        <div class="btn-group me-2">
+            {% if individual.is_archived %}
+                <a type="button" class="btn btn-sm btn-outline-secondary" href="{% url 'unarchive_individual' individual.id %}">Unrchive</a>
+            {% else %}
+                <a type="button" class="btn btn-sm btn-outline-success" href="{% url 'archive_individual' individual.id %}">Archive</a>
+            {% endif %}
+            <a type="button" class="btn btn-sm btn-outline-primary" href="{% url 'individual_update' individual.id %}">Update</a>
+            <button type="button" class="btn btn-sm btn-outline-danger" data-toggle="modal" data-target="#deleteIndividualModal">Delete</button>
+        </div>
+        {% include 'partials/individual/individual_delete_modal.html'%}
+        
+    </div>
+
+</div>
+
+{% endblock %}

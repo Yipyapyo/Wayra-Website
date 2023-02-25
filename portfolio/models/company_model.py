@@ -42,12 +42,18 @@ class Company(models.Model):
     founders = None     # models.ForeignKey(Individual)
     incorporation_date = models.DateField(auto_now=True)
     investors = None    # e.g. models.ForeignKey(Individual)
-    programmes = None   # e.g. models.ForeignKey(Programme)
-    mentors = None      # e.g. models.ForeignKey(Mentor)
-    coaches = None      # e.g. models.ForeignKey(Coach)
+    is_archived = models.BooleanField(default=False)
 
+    def archive(self):
+        self.is_archived = True
+        self.save()
+    
+    def unarchive(self):
+        self.is_archived = False
+        self.save()
 
-class PortfolioCompany(Company):
-    """Represents a company in the client's portfolio."""
-
+class Portfolio_Company(Company):
     wayra_number = models.CharField(max_length=255)
+    programmes = None  # e.g. models.ForeignKey(Programme)
+    mentors = None # e.g. models.ForeignKey(Mentor)
+    coaches = None # e.g. models.ForeignKey(Coach)

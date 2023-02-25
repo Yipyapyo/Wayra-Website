@@ -10,19 +10,32 @@ class IndividualTests(TestCase):
     # Sets up example individual to be used for tests
     def setUp(self):
         self.individual = Individual.objects.create(
-            AngelListLink="https://www.AngelList.com",
-            CrunchbaseLink="https://www.Crunchbase.com",
-            LinkedInLink="https://www.LinkedIn.com",
-            Company="exampleCompany",
-            Position="examplePosition",
-            Email="test@gmail.com",
-            PrimaryNumber=PhoneNumber.from_string("+447975777666"),
-            SecondaryNumber=PhoneNumber.from_string("+441325777655")
+             name = "Jemma Doe",
+             AngelListLink = "https://www.AngelList.com",
+             CrunchbaseLink = "https://www.Crunchbase.com",
+             LinkedInLink = "https://www.LinkedIn.com",
+             Company = "exampleCompany",
+             Position = "examplePosition",
+             Email = "test@gmail.com",
+             PrimaryNumber = PhoneNumber.from_string("+447975777666"),
+             SecondaryNumber = PhoneNumber.from_string("+441325777655")
         )
 
     # Tests if individual is valid
     def test_valid_individual(self):
         self._assert_individual_is_valid()
+
+    def test_name_cannot_be_blank(self):
+        self.individual.name = ''
+        self._assert_individual_is_invalid()
+
+    def test_name_can_be_200_characters_long(self):
+        self.individual.name = 'A' * 200
+        self._assert_individual_is_valid()
+
+    def test_name_cannot_exceed_200_characters(self):
+        self.individual.name = 'A' * 201
+        self._assert_individual_is_invalid()
 
     def test_angellistlink_cannot_be_blank(self):
         self.individual.AngelListLink = ''

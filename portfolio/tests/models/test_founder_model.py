@@ -7,6 +7,7 @@ class FounderModelTestCase(TestCase):
     """Unit test for the founder model."""
     def setUp(self):
         self.founder = Founder.objects.create(
+            name="ben",
             AngelListLink="https://www.AngelList.com",
             CrunchbaseLink="https://www.Crunchbase.com",
             LinkedInLink="https://www.LinkedIn.com",

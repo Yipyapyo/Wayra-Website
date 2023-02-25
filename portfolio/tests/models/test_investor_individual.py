@@ -10,6 +10,7 @@ class InvestorIndividualTests(TestCase):
     # Sets up example investor individual to be used for tests
     def setUp(self):
         self.individual = InvestorIndividual.objects.create(
+            name="Ben",
             AngelListLink="https://www.AngelList.com",
             CrunchbaseLink="https://www.Crunchbase.com",
             LinkedInLink="https://www.LinkedIn.com",

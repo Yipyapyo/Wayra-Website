@@ -11,7 +11,7 @@ from django.forms.models import inlineformset_factory
 class IndividualCreateForm(forms.ModelForm):
     class Meta:
         model = Individual
-        fields = ["AngelListLink", "CrunchbaseLink", "LinkedInLink",
+        fields = ["name", "AngelListLink", "CrunchbaseLink", "LinkedInLink",
                   "Company", "Position", "Email", "PrimaryNumber", "SecondaryNumber"]
 
     def __init__(self, *args, **kwargs):
