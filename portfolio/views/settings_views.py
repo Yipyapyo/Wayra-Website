@@ -1,7 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from portfolio.forms import ChangePasswordForm
-from portfolio.models import Company
+from portfolio.models import User
 import logging
 from django.http import HttpResponse
 from django.template.loader import render_to_string
@@ -11,6 +11,7 @@ from django.urls import reverse
 from django.contrib import messages
 from django.contrib.auth.hashers import check_password
 from django.contrib.auth import update_session_auth_hash
+from django.contrib.auth import logout
 
 
 """
@@ -48,3 +49,11 @@ def change_password(request):
             return render(request, 'settings/account_settings.html', context)
     else:
         return HttpResponse("404, Unable to make this call")
+
+@login_required
+def deactivate_account(request):
+    user = request.user
+    logout(request)
+    user.delete()
+    messages.add_message(request, messages.SUCCESS, "Account successfully deactivated!")
+    return redirect('login')
