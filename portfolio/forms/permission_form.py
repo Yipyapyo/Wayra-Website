@@ -61,6 +61,35 @@ class CreateGroupForm(forms.ModelForm):
 
         
 
+class EditGroupForm(forms.ModelForm):
+    class Meta:
+        model = Group
+        fields = ('name', 'permissions')
+
+    name = forms.CharField(label='Group Name', max_length=100)
+    
+    permissions = forms.MultipleChoiceField(
+        label='Permissions',
+        # queryset=Permission.objects.filter(content_type__model__in=MODEL_NAMES),
+        choices=CHOICES,
+        widget=Select2MultipleWidget(),
+    )
+    
+    def clean(self):
+        super().clean()
+        current_group = self.instance
+        if Group.objects.filter(name = self.cleaned_data.get("name")).exists() and self.cleaned_data.get("name") != current_group.name:
+            self.add_error("name", "Group already exists")
+            
+    def save(self):
+        super().save(commit=False)
+        group = self.instance
+        group.name = self.cleaned_data.get("name")
+        group.permissions.clear()
+        for permission_name in self.cleaned_data.get("permissions"):
+            permission = Permission.objects.get(codename=permission_name)
+            group.permissions.add(permission)
+        group.save()
 
     # KEEP BELOW FOR NOW IN CASE CODES ABOVE DO NOT WORK
     # name = forms.CharField()
