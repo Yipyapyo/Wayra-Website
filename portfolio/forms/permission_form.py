@@ -19,10 +19,25 @@ class CreateGroupForm(forms.ModelForm):
     permissions = forms.ModelMultipleChoiceField(
         label='Permissions',
         queryset=Permission.objects.filter(content_type__model__in=MODEL_NAMES),
-        widget=ModelSelect2MultipleWidget(
-            search_fields=['name__icontains'],
-        ),
+        # widget=ModelSelect2MultipleWidget(
+        #     search_fields=['name__icontains'],
+        # ),
     )
+    
+    def clean(self):
+        super().clean()
+        if Group.objects.filter(name = self.cleaned_data.get("name")).exists():
+            self.add_error("name", "Group already exists")
+        
+    def save(self):
+        super().save(commit=False)
+        new_group = Group.objects.create(
+            name = self.cleaned_data.get("name"),
+        )
+        for permission in self.cleaned_data.get("permissions"):
+            new_group.permissions.add(permission)
+        new_group.save()
+
 
     # KEEP BELOW FOR NOW IN CASE CODES ABOVE DO NOT WORK
     # name = forms.CharField()
