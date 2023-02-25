@@ -1,21 +1,23 @@
+{% load static %}
 {% if messages %}
-  <div class="container">
-    <div class="row">
-      <div class="col-12">
-        {% for message in messages %}
-          {% if message.level_tag == "error" %}
-            <div class="alert alert-danger" role="alert">
-              {{ message }}
-              {{ message.level_tag }}
-            </div>
-          {% else %}
-          <div class="alert alert-success" role="alert">
-            {{ message }}
-            {{ message.level_tag }}
-          </div>
-          {% endif %}
-        {% endfor %}
+  
+  {% for message in messages %}
+    {% if message.level_tag == "error" %}
+    <div id="messagesModal" class="modal fade py-3 px-4">
+      <div class="modal-dialog">
+        <div class="alert alert-danger" role="alert" data-mdb-autohide="true" data-mdb-delay="2000">
+          {{ message }}
+        </div>
       </div>
     </div>
-  </div>
+    {% else %}
+    <div id="messagesModal" class="modal fade py-3 px-4">
+      <div class="modal-dialog">
+        <div class="alert alert-success" role="alert" data-mdb-autohide="true" data-mdb-delay="2000">
+          {{ message }}
+        </div>
+      </div>
+    </div>
+    {% endif %}
+  {% endfor %}
 {% endif %}
