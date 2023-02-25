@@ -1,11 +1,11 @@
 {% extends 'dashboard_template.html' %}
 {% block main %}
-<h1>Update individual</h1>
+<h1>Update founder</h1>
 <p><p></p>
 
 <form action="" method="post">
     {% csrf_token %}
-    {{ individualForm.as_p }}
+    {{ founderForm.as_p }}
     
     {{ addressForms.as_p }}
     {% for form in pastExperienceForms %}
@@ -14,5 +14,3 @@
     <input type="submit" value="Update" class="btn btn-primary">
 </form>
 {% endblock %}
-
-

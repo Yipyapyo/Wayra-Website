@@ -1,7 +1,9 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
-from portfolio.forms import IndividualCreateForm, AddressCreateForm
+from portfolio.forms import IndividualCreateForm, AddressCreateForm, PastExperienceForm
 from portfolio.models import Individual, ResidentialAddress
+from portfolio.models.past_experience_model import PastExperience
+from portfolio.forms.founder_form import FounderForm
 from django.shortcuts import redirect, render
 from django.core.paginator import Paginator, EmptyPage
 
@@ -11,27 +13,31 @@ Create an individual.
 """
 
 def individual_create(request):
-    individualForm = IndividualCreateForm()
-    addressForms = AddressCreateForm()
 
     if request.method == "POST":
-        individualForm = IndividualCreateForm(request.POST, prefix="form1")
-        addressForms = AddressCreateForm(request.POST, prefix="form2")
-        # addressForms = [AddressCreateForm(request.POST, prefix=str(x)) for x in range (0, 1)]
-        if individualForm.is_valid() and addressForms.is_valid():
-            # if individualForm.is_valid() and all([addressForms.is_valid() for af in addressForms]):
-            new_individual = individualForm.save()
-            new_address = addressForms.save(commit=False)
+        individual_form = IndividualCreateForm(request.POST, prefix="form1")
+        address_forms = AddressCreateForm(request.POST, prefix="form2")
+        past_experience_forms = [PastExperienceForm(request.POST, prefix=str(x)) for x in range(0,2)]      
+        if individual_form.is_valid() and address_forms.is_valid() and all([pf.is_valid() for pf in past_experience_forms]):
+            new_individual = individual_form.save()
+            new_address = address_forms.save(commit=False)
             new_address.individual = new_individual
             new_address.save()
+            for pf in past_experience_forms:
+                new_past_experience = pf.save(commit=False)
+                new_past_experience.individual = new_individual
+                new_past_experience.duration = new_past_experience.end_year - new_past_experience.start_year
+                new_past_experience.save()
             return redirect("individual_page")
     else:
-        individualForm = IndividualCreateForm(prefix="form1")
-        addressForms = AddressCreateForm(prefix="form2")
+        individual_form = IndividualCreateForm(prefix="form1")
+        address_forms = AddressCreateForm(prefix="form2")
+        past_experience_forms = [PastExperienceForm(prefix=str(x)) for x in range(0,2)]
 
     context = {
-        'individualForm': individualForm,
-        'addressForms': addressForms,
+        'individualForm': individual_form,
+        'addressForms': address_forms,
+        'pastExperienceForms': past_experience_forms,
     }
     return render(request, "individual/individual_create.html", context=context)
 
@@ -62,23 +68,33 @@ Update a particular individual's information
 """
 
 def individual_update(request, id):
-    individualForm = Individual.objects.get(id=id)
-    addressForms = ResidentialAddress.objects.get(id=id)
+    individual_form = Individual.objects.get(id=id)
+    address_forms = ResidentialAddress.objects.get(id=id)
+    past_experience_list = PastExperience.objects.filter(individual=individual_form)
+    past_experience_forms = [PastExperienceForm(instance=p, prefix="past_experience") for p in past_experience_list]
     if request.method == 'POST':
-        form1 = IndividualCreateForm(request.POST, instance=individualForm, prefix="form1")
-        form2 = AddressCreateForm(request.POST, instance=addressForms, prefix="form2")
-        if form1.is_valid() and form2.is_valid():
+        form1 = IndividualCreateForm(request.POST, instance=individual_form, prefix="form1")
+        form2 = AddressCreateForm(request.POST, instance=address_forms, prefix="form2")
+        forms3 = [PastExperienceForm(request.POST, instance=p, prefix="past_experience") for p in past_experience_list]
+        if form1.is_valid() and form2.is_valid() and all([pf.is_valid() for pf in forms3]):
             updated_individual = form1.save()
             updated_address = form2.save(commit=False)
             updated_address.individual = updated_individual
             updated_address.save()
+            for pf in forms3:
+                updated_experience = pf.save(commit=False)
+                updated_experience.individual = updated_individual
+                updated_experience.duration = updated_experience.end_year - updated_experience.start_year
+                updated_experience.save()
             return redirect("individual_page")
     else:
-        form1 = IndividualCreateForm(instance=individualForm, prefix="form1")
-        form2 = AddressCreateForm(instance=addressForms, prefix="form2")
+        form1 = IndividualCreateForm(instance=individual_form, prefix="form1")
+        form2 = AddressCreateForm(instance=address_forms, prefix="form2")
+        forms3 = past_experience_forms
     context = {
         'individualForm': form1,
         'addressForms': form2,
+        'pastExperienceForms': forms3,
     }
     return render(request, 'individual/individual_update.html', context=context)
 
@@ -88,9 +104,9 @@ Delete a particular individual
 """
 
 def individual_delete(request, id):
-    individualForm = Individual.objects.get(id=id)
+    individual_form = Individual.objects.get(id=id)
     if request.method == 'POST':
-        individualForm.delete()
+        individual_form.delete()
         return redirect('individual_page')
     return render(request, 'individual/individual_delete.html')
 
