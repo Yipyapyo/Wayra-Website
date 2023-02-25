@@ -34,8 +34,9 @@ urlpatterns = [
 
     #Permissions
     path("select2/", include("django_select2.urls")),
-    path("permissions/users/", views.UserListView.as_view(), name='user_list'),
+    path("permissions/users/", views.UserListView.as_view(), name='permission_user_list'),
     path("permissions/create_user/", views.UserSignUpFormView.as_view(), name='permission_create_user'),
     path("permissions/create_group/", views.GroupCreateView.as_view(), name='permission_create_group'),
+    path("permissions/<int:id>/delete/", views.UserDeleteView.as_view(), name='permission_delete_user'),
 
 ]

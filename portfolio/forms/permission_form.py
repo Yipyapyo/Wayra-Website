@@ -1,11 +1,13 @@
 from django import forms
-from django_select2.forms import Select2MultipleWidget
-
+from django_select2.forms import ModelSelect2MultipleWidget
 
 from django.contrib.auth.models import Group, Permission
 
-
 MODEL_NAMES = ['company', 'individual']
+
+
+class GroupWidget(ModelSelect2MultipleWidget):
+    search_fields = ['name__icontains']
 
 
 class CreateGroupForm(forms.ModelForm):
@@ -17,7 +19,9 @@ class CreateGroupForm(forms.ModelForm):
     permissions = forms.ModelMultipleChoiceField(
         label='Permissions',
         queryset=Permission.objects.filter(content_type__model__in=MODEL_NAMES),
-        widget=forms.CheckboxSelectMultiple()
+        widget=ModelSelect2MultipleWidget(
+            search_fields=['name__icontains'],
+        ),
     )
 
     # KEEP BELOW FOR NOW IN CASE CODES ABOVE DO NOT WORK
