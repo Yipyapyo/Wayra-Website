@@ -1,7 +1,7 @@
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.shortcuts import redirect
 from django.urls import reverse
-from django.views.generic import ListView, UpdateView, CreateView, DeleteView
+from django.views.generic import ListView, UpdateView, CreateView, DeleteView, FormView
 
 from portfolio.forms import UserCreationForm, CreateGroupForm
 from portfolio.models import User
@@ -36,10 +36,10 @@ class UserSignUpFormView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
         return redirect('dashboard')
 
     def get_success_url(self):
-        return reverse('permission_list')
+        return reverse('permission_user_list')
 
 
-class GroupCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
+class GroupCreateView(LoginRequiredMixin, UserPassesTestMixin, FormView):
     template_name = 'permissions/permission_form_page.html'
     http_method_names = ['get', 'post']
     form_class = CreateGroupForm
@@ -51,7 +51,7 @@ class GroupCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
         return redirect('dashboard')
 
     def get_success_url(self):
-        return reverse('permission_list')
+        return reverse('permission_user_list')
 
 
 class UserDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
