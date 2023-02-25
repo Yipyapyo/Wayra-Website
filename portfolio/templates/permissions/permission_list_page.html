@@ -27,9 +27,14 @@
                         <td>{{ user.phone }}</td>
                         <td>
                             {% if user.groups.all %}
-                                {% for group in groups %}
-                                    {{ group }},
-                                {% endfor %}
+                                <div>
+
+                                    {% if user.groups.all|length > 1 %}
+                                        <span>{{ user.groups.first.name }},</span>
+                                    {% else %}
+                                         <span>{{ user.groups.first.name }}</span>
+                                    {% endif %}
+                                </div>
                             {% else %}
                                 None
                             {% endif %}

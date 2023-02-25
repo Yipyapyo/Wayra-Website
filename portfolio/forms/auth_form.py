@@ -17,25 +17,29 @@ class LogInForm(forms.Form):
             user = authenticate(email=email, password=password)
         return user
 
+
 class UserCreationForm(forms.ModelForm):
     class Meta:
         model = User
-        fields = ["first_name", "last_name", "phone", "is_active"]
+        fields = ["email", "first_name", "last_name", "password", "phone", "is_active"]
+        widgets = {
+            'password': forms.PasswordInput()
+        }
+
     group = forms.ModelChoiceField(
         label='Group',
         queryset=Group.objects.all(),
         empty_label=None,
     )
+
     def save(self, commit=True):
         user = super().save(commit=False)
         user.email = self.cleaned_data['email']
         group = self.cleaned_data['group']
+        user.set_password(self.cleaned_data['password'])
         user.save()
         user.groups.clear()
         user.groups.add(group)
         if commit:
             user.save()
         return user
-
-
-
