@@ -4,7 +4,27 @@ from django_select2.forms import Select2MultipleWidget
 from django.contrib.auth.models import Group, Permission
 
 MODEL_NAMES = ['company', 'individual']
+CHOICES = [
+        ("add_user", "Create user"),
+        ("change_user", "Edit user"),
+        ("delete_user", "Delete user"),
+        ("view_user", "View user"),
 
+        ("add_company", "Create company"),
+        ("change_company", "Edit company"),
+        ("delete_company", "Delete company"),
+        ("view_company", "View company"),
+
+        ("add_individual", "Create individual"),
+        ("change_individual", "Edit individual"),
+        ("delete_individual", "Delete individual"),
+        ("view_individual", "View individual"),
+
+        ("add_residentialaddress", "Create residential address"),
+        ("change_residentialaddress", "Edit residential address"),
+        ("delete_residentialaddress", "Delete residential address"),
+        ("view_residentialaddress", "View residential address")
+    ]
 #
 # class GroupWidget(ModelSelect2MultipleWidget):
 #     search_fields = ['name__icontains']
@@ -16,27 +36,7 @@ class CreateGroupForm(forms.ModelForm):
         fields = ('name', 'permissions')
 
     name = forms.CharField(label='Group Name', max_length=100)
-    CHOICES = [
-        ("portfolio.add_user", "Create user"),
-        ("portfolio.change_user", "Edit user"),
-        ("portfolio.delete_user", "Delete user"),
-        ("portfolio.view_user", "View user"),
-
-        ("portfolio.add_company", "Create company"),
-        ("portfolio.change_company", "Edit company"),
-        ("portfolio.delete_company", "Delete company"),
-        ("portfolio.view_company", "View company"),
-
-        ("portfolio.add_individual", "Create individual"),
-        ("portfolio.change_individual", "Edit individual"),
-        ("portfolio.delete_individual", "Delete individual"),
-        ("portfolio.view_individual", "View individual"),
-
-        ("portfolio.add_residentialaddress", "Create residential address"),
-        ("portfolio.change_residentialaddress", "Edit residential address"),
-        ("portfolio.delete_residentialaddress", "Delete residential address"),
-        ("portfolio.view_residentialaddress", "View residential address")
-    ]
+    
     permissions = forms.MultipleChoiceField(
         label='Permissions',
         # queryset=Permission.objects.filter(content_type__model__in=MODEL_NAMES),
@@ -54,9 +54,12 @@ class CreateGroupForm(forms.ModelForm):
         new_group = Group.objects.create(
             name = self.cleaned_data.get("name"),
         )
-        for permission in self.cleaned_data.get("permissions"):
+        for permission_name in self.cleaned_data.get("permissions"):
+            permission = Permission.objects.get(codename=permission_name)
             new_group.permissions.add(permission)
         new_group.save()
+
+        
 
 
     # KEEP BELOW FOR NOW IN CASE CODES ABOVE DO NOT WORK

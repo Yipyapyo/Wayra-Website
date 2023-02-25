@@ -11,7 +11,7 @@ class CreatePermissionGroupFormTestCase(TestCase):
     def setUp(self):
         self.form_input = {
              "name" : "TestGroup",
-             "permissions" : [Permission.objects.filter(content_type__model__in=MODEL_NAMES).first()],
+             "permissions" : ["add_company"]
         }
 
     # Test if the form accepts valid input
@@ -24,7 +24,7 @@ class CreatePermissionGroupFormTestCase(TestCase):
         form = CreateGroupForm()
         self.assertIn("name", form.fields)
         self.assertIn("permissions", form.fields)
-        self.assertTrue(isinstance(form.fields['permissions'], forms.ModelMultipleChoiceField))
+        self.assertTrue(isinstance(form.fields['permissions'], forms.MultipleChoiceField))
 
 
     # Test the form using model validation
@@ -42,7 +42,8 @@ class CreatePermissionGroupFormTestCase(TestCase):
         after_count = Group.objects.count()
         self.assertEqual(after_count, before_count + 1)
         new_group = Group.objects.get(name='TestGroup')
-        self.assertEqual(new_group.permissions, [Permission.objects.filter(content_type__model__in=MODEL_NAMES).first()])
+        print(new_group.permissions)
+        self.assertEqual(new_group.permissions, [Permission.objects.get(codename="add_company")])
 
 
 
