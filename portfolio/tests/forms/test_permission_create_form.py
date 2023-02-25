@@ -42,7 +42,6 @@ class CreatePermissionGroupFormTestCase(TestCase):
         after_count = Group.objects.count()
         self.assertEqual(after_count, before_count + 1)
         new_group = Group.objects.get(name='TestGroup')
-        print(new_group.permissions)
         self.assertEqual(new_group.permissions, [Permission.objects.get(codename="add_company")])
 
 
