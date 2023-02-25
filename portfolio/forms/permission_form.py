@@ -25,7 +25,7 @@ class CreateGroupForm(forms.ModelForm):
         ("portfolio.add_company", "Create company"),
         ("portfolio.change_company", "Edit company"),
         ("portfolio.delete_company", "Delete company"),
-        ("portfolio.view_", "View company"),
+        ("portfolio.view_company", "View company"),
 
         ("portfolio.add_individual", "Create individual"),
         ("portfolio.change_individual", "Edit individual"),
