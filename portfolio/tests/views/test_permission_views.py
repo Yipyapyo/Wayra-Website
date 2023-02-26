@@ -224,7 +224,7 @@ class UserDeleteViewTestCase(TestCase):
         self.url = reverse('permission_delete_user', kwargs={'id':self.test_user.id})
 
     def test_delete_user_url(self):
-        self.assertEqual(self.url, f'/permissions/{self.test_user.id}/delete/')
+        self.assertEqual(self.url, f'/permissions/{self.test_user.id}/delete_user/')
 
     def test_non_admin_cannot_get_page(self):
         redirect_url = reverse('dashboard')
