@@ -53,10 +53,13 @@ class UserDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
         return self.request.user.is_staff
 
     def dispatch(self, request, id, *args, **kwargs):
-        response = super().dispatch(request, id, *args, **kwargs)
-        if self.get_object().is_staff:
+        try:
+            user = User.objects.get(id=id)
+            if user.is_staff:
+                return redirect('permission_user_list')
+            return super().dispatch(request, id, *args, **kwargs)
+        except ObjectDoesNotExist:
             return redirect('permission_user_list')
-        return response
 
     def handle_no_permission(self):
         return redirect('dashboard')
@@ -82,7 +85,7 @@ class GroupCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
         return redirect('dashboard')
 
     def get_success_url(self):
-        return reverse('permission_user_list')
+        return reverse('permission_group_list')
 
 
 class GroupEditView(LoginRequiredMixin, UserPassesTestMixin, FindObjectMixin, UpdateView):
@@ -125,7 +128,8 @@ class GroupListView(LoginRequiredMixin, UserPassesTestMixin, ListView):
 
 
 class GroupDeleteView(LoginRequiredMixin, UserPassesTestMixin, FindObjectMixin, DeleteView):
-    http_method_names = ['get']
+    template_name = 'permissions/group_delete_page.html'
+    http_method_names = ['get', 'post']
     model = Group
     pk_url_kwarg = 'id'
     redirect_when_no_object_found_url = 'permission_group_list'
@@ -135,3 +139,6 @@ class GroupDeleteView(LoginRequiredMixin, UserPassesTestMixin, FindObjectMixin, 
 
     def handle_no_permission(self):
         return redirect('dashboard')
+
+    def get_success_url(self):
+        return reverse('permission_group_list')
