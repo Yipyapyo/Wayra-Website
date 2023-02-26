@@ -5,7 +5,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.test import TestCase
 from django.urls import reverse
 
-from portfolio.forms import UserCreationForm
+from portfolio.forms import UserCreationForm, CreateGroupForm
 from portfolio.models import User, Company
 from portfolio.tests.helpers import reverse_with_next
 from vcpms import settings
@@ -122,7 +122,7 @@ class UserSignUpFormViewTestCase(TestCase):
         response = self.client.get(self.url, follow=True)
         self.assertRedirects(response, redirect_url, status_code=302, target_status_code=200)
 
-    def test_get_user_list_redirects_when_not_logged_in(self):
+    def test_get_user_sign_up_redirects_when_not_logged_in(self):
         redirect_url = reverse_with_next('login', reverse('dashboard'))
         response = self.client.get(self.url, follow=True)
         self.assertRedirects(response, redirect_url, status_code=302, target_status_code=200)
@@ -161,9 +161,88 @@ class UserSignUpFormViewTestCase(TestCase):
 
 class GroupCreationViewTestCase(TestCase):
     """ Unit test for GroupCreationView"""
-    pass
+    fixtures = ['portfolio/tests/fixtures/default_user.json',
+                'portfolio/tests/fixtures/other_users.json']
+
+    def setUp(self) -> None:
+        self.url = reverse('permission_create_group')
+        self.form_input = {
+            "name": "UserGrp",
+            "permissions": ['add_user', 'change_user', 'view_user', 'delete_user']
+        }
+
+    def test_create_group_url(self):
+        self.assertEqual(self.url, '/permissions/create_group/')
+
+    def test_non_admin_cannot_get_page(self):
+        redirect_url = reverse('dashboard')
+        self.client.login(username='john.doe@example.org', password="Password123")
+        response = self.client.get(self.url, follow=True)
+        self.assertRedirects(response, redirect_url, status_code=302, target_status_code=200)
+
+    def test_get_user_sign_up_redirects_when_not_logged_in(self):
+        redirect_url = reverse_with_next('login', reverse('dashboard'))
+        response = self.client.get(self.url, follow=True)
+        self.assertRedirects(response, redirect_url, status_code=302, target_status_code=200)
+
+    def test_successful_group_create(self):
+        before_count = Group.objects.count()
+        self.client.login(username='petra.pickles@example.org', password="Password123")
+        response = self.client.post(self.url, self.form_input, follow=True)
+        after_count = Group.objects.count()
+        self.assertEqual(after_count, before_count + 1)
+        response_url = reverse('permission_user_list')
+        self.assertRedirects(response, response_url, status_code=302, target_status_code=200)
+        self.assertTemplateUsed(response, 'permissions/permission_list_page.html')
+        group = Group.objects.get(name="UserGrp")
+        self.assertEqual(group.name, 'UserGrp')
+
+        content_type = ContentType.objects.get_for_model(User)
+        self.assertEqual(set(group.permissions.all()), set(Permission.objects.filter(content_type=content_type)))
+
+    def test_unsuccessful_group_create(self):
+        before_count = Group.objects.count()
+        self.form_input["permissions"] = []
+        self.client.login(username='petra.pickles@example.org', password="Password123")
+        response = self.client.post(self.url, self.form_input, follow=True)
+        after_count = Group.objects.count()
+        self.assertEqual(after_count, before_count)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'permissions/permission_form_page.html')
+        form = response.context['form']
+        self.assertTrue(isinstance(form, CreateGroupForm))
+        self.assertTrue(form.is_bound)
 
 
 class UserDeleteViewTestCase(TestCase):
     """ Unit test for UserDeleteView"""
-    pass
+    fixtures = ['portfolio/tests/fixtures/default_user.json',
+                'portfolio/tests/fixtures/other_users.json']
+
+    def setUp(self) -> None:
+        self.test_user = User.objects.get(email="john.doe@example.org")
+        self.url = reverse('permission_delete_user', kwargs={'id':self.test_user.id})
+
+    def test_delete_user_url(self):
+        self.assertEqual(self.url, f'/permissions/{self.test_user.id}/delete/')
+
+    def test_non_admin_cannot_get_page(self):
+        redirect_url = reverse('dashboard')
+        self.client.login(username='john.doe@example.org', password="Password123")
+        response = self.client.get(self.url, follow=True)
+        self.assertRedirects(response, redirect_url, status_code=302, target_status_code=200)
+
+    def test_get_delete_user_redirects_when_not_logged_in(self):
+        redirect_url = reverse_with_next('login', reverse('dashboard'))
+        response = self.client.get(self.url, follow=True)
+        self.assertRedirects(response, redirect_url, status_code=302, target_status_code=200)
+
+    def test_successful_user_delete(self):
+        before_count = User.objects.count()
+        self.client.login(username='petra.pickles@example.org', password="Password123")
+        response = self.client.post(self.url, follow=True)
+        after_count = User.objects.count()
+        self.assertEqual(after_count, before_count - 1)
+        response_url = reverse('permission_user_list')
+        self.assertRedirects(response, response_url, status_code=302, target_status_code=200)
+        self.assertTemplateUsed(response, 'permissions/permission_list_page.html')

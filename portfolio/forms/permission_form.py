@@ -51,8 +51,8 @@ class CreateGroupForm(forms.ModelForm):
         
     def save(self):
         super().save(commit=False)
-        new_group, created = Group.objects.get_or_create(
-            name = self.cleaned_data.get("name"),
+        new_group = Group.objects.create(
+            name=self.cleaned_data.get("name"),
         )
         for permission_name in self.cleaned_data.get("permissions"):
             permission = Permission.objects.get(codename=permission_name)

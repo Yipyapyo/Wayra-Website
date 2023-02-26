@@ -39,7 +39,7 @@ class UserSignUpFormView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
         return reverse('permission_user_list')
 
 
-class GroupCreateView(LoginRequiredMixin, UserPassesTestMixin, FormView):
+class GroupCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
     template_name = 'permissions/permission_form_page.html'
     http_method_names = ['get', 'post']
     form_class = CreateGroupForm
