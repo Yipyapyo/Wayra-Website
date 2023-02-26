@@ -16,6 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from portfolio import views
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('dashboard', views.dashboard, name='dashboard'),
@@ -31,7 +32,7 @@ urlpatterns = [
     path("individual_page/<int:id>/update/", views.individual_update, name='individual_update'),
     path("individual_page/<int:id>/delete/", views.individual_delete, name='individual_delete'),
 
-    #Permissions
+    # Permissions
     path("select2/", include("django_select2.urls")),
     path("permissions/users/", views.UserListView.as_view(), name='permission_user_list'),
     path("permissions/create_user/", views.UserSignUpFormView.as_view(), name='permission_create_user'),
@@ -40,6 +41,6 @@ urlpatterns = [
     path("permissions/group_list/", views.GroupListView.as_view(), name='permission_group_list'),
     path("permissions/<int:id>/edit_group/", views.GroupEditView.as_view(), name='permission_edit_group'),
     path("permissions/<int:id>/delete_group/", views.GroupDeleteView.as_view(), name='permission_delete_group'),
+    path("permissions/<int:id>/edit_user/", views.UserEditFormView.as_view(), name='permission_edit_user')
 
 ]
-

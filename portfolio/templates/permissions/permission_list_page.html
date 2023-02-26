@@ -40,7 +40,7 @@
                             {% endif %}
                         </td>
                         <td>
-                            <a href="" class="btn btn-primary">Update</a>
+                            <a href="{% url 'permission_edit_user' id=user.id %}" class="btn btn-primary">Update</a>
                             <a href="{% url 'permission_delete_user' id=user.id %}" class="btn btn-danger">Delete</a>
                         </td>
                     </tr>

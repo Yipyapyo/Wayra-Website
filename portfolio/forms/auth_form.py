@@ -57,7 +57,7 @@ class EditUserForm(forms.ModelForm):
         label='Group',
         queryset=Group.objects.all(),
         empty_label=None,
-        required = False
+        required=False
     )
 
     def save(self):

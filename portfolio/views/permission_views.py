@@ -5,7 +5,7 @@ from django.shortcuts import redirect
 from django.urls import reverse
 from django.views.generic import ListView, UpdateView, CreateView, DeleteView
 
-from portfolio.forms import UserCreationForm, CreateGroupForm, EditGroupForm
+from portfolio.forms import UserCreationForm, CreateGroupForm, EditGroupForm, EditUserForm
 from portfolio.models import User
 from portfolio.views.mixins import FindObjectMixin
 from vcpms import settings
@@ -68,6 +68,23 @@ class UserDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
         context = super().get_context_data()
         context['id'] = self.get_object().id
         return context
+
+    def get_success_url(self):
+        return reverse('permission_user_list')
+
+
+class UserEditFormView(LoginRequiredMixin, UserPassesTestMixin, FindObjectMixin, UpdateView):
+    template_name = 'permissions/user_edit.html'
+    model = User
+    pk_url_kwarg = 'id'
+    redirect_when_no_object_found_url = 'permission_user_list'
+    form_class = EditUserForm
+
+    def test_func(self):
+        return self.request.user.is_staff
+
+    def handle_no_permission(self):
+        return redirect('dashboard')
 
     def get_success_url(self):
         return reverse('permission_user_list')
