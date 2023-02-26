@@ -5,16 +5,18 @@
         <p>Telefonica Innovations</p>
         <h2 class="pb-3">{{ programme.name }}</h2>
 
+        <div class="container-fluid py-3">
+            <div class="row mb-3">
+                {% include 'partials/utilities/programme_card.html' with programme=programme%}
+            </div>
+        </div>
+
         <div class="row align-items-md-stretch">
             <div class="col-md-6">
                 <div class="container-fluid pt-2">
                     <h5>Details</h5>
-
+                    
                     <ul class="list-group list-group-flush">
-                        <li class="list-group-item mb-2 mt-2">
-                            <h6>Programme Name</h6>
-                            <h7>{{ programme.name }}</h7>
-                        </li>
                         <li class="list-group-item my-2">
                             <h6>Cohort</h6>
                             <h7>{{ programme.cohort }}</h7>
@@ -29,26 +31,32 @@
                         </li>
                         <li class="list-group-item my-2">
                             <h6>Participants</h6>
-                            <h7>{{ programme.participants }}</h7>
+                            {% for participant in participants %}
+                                <h7>{% include 'partials/utilities/individual_card.html' %}</h7>
+                            {% endfor %}
+                        </li>
+                        <li class="list-group-item my-2">
+                            <h6>Coaches and Mentors</h6>
+                            {% for coach in coaches_mentors %}
+                                <h7>{% include 'partials/utilities/individual_card.html' %}</h7>
+                            {% endfor %}
                         </li>
                     </ul>
 
                 </div>
             </div>
-            <div class="col-md-6">
-                <div class="h-100 px-5 py-2 rounded-3">
-                    <div class="pt-1 pb-3">
-                        <h4>Coaches and Mentors</h4>
-                        <div class="row mb-3">
-                            {% include 'partials/utilities/individual_card.html' %}
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
 
         <div class="container-fluid pt-3">
-            <a href="{% url 'programme_update' id=id %}" class="btn btn-primary"> Update Programme</a>
+            <div class="row">
+                <div class="col-auto mr-auto">
+                    <a href="{% url 'programme_update' id=id %}" class="btn btn-primary"> Update Programme</a>
+                </div>
+                <div class="col-auto ml-auto">
+                    <a href="{% url 'programme_delete' id=id %}" class="btn btn-danger"> Delete Programme</a>
+                </div>
+            </div>
+            
             <h2>Contracts and Rights</h2>
             <div class="px-5 pt-3 pb-2 mb-4 bg-light rounded-3">
                 <div class="container-fluid py-3">

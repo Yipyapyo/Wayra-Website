@@ -54,6 +54,8 @@ class ProgrammeListView(LoginRequiredMixin, ListView):
     def get_queryset(self):
         return Programme.objects.all()
 
+    
+
 
 class ProgrammeCreateView(LoginRequiredMixin, CreateView):
     model = Programme
@@ -103,6 +105,6 @@ class ProgrammeDetailView(LoginRequiredMixin, DetailView):
         instance = self.get_object()
         context['id'] = instance.id
         context['partners'] = instance.partners.all()
-        context['participants'] = []
-        context['coaches_mentors'] = []
+        context['participants'] = instance.participants.all()
+        context['coaches_mentors'] = instance.coaches_mentors.all()
         return context
