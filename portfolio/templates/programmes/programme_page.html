@@ -11,6 +11,7 @@
             </div>
         </div>
 
+    
         <div class="row align-items-md-stretch">
             <div class="col-md-6">
                 <div class="container-fluid pt-2">
@@ -29,26 +30,13 @@
                                 {% endfor %}
                             </div>
                         </li>
-                        <li class="list-group-item my-2">
-                            <h6>Participants</h6>
-                            {% for participant in participants %}
-                                <h7>{% include 'partials/utilities/individual_card.html' %}</h7>
-                            {% endfor %}
-                        </li>
-                        <li class="list-group-item my-2">
-                            <h6>Coaches and Mentors</h6>
-                            {% for coach in coaches_mentors %}
-                                <h7>{% include 'partials/utilities/individual_card.html' %}</h7>
-                            {% endfor %}
-                        </li>
                     </ul>
-
                 </div>
             </div>
         </div>
 
         <div class="container-fluid pt-3">
-            <div class="row">
+            <div class="row justify-content-end">
                 <div class="col-auto mr-auto">
                     <a href="{% url 'programme_update' id=id %}" class="btn btn-primary"> Update Programme</a>
                 </div>
@@ -56,14 +44,45 @@
                     <a href="{% url 'programme_delete' id=id %}" class="btn btn-danger"> Delete Programme</a>
                 </div>
             </div>
-            
+        </div>
+        
+        <div class="container text-center">
+            <li class="list-group-item my-2">
+                <h6>Participants</h6>
+                <div class="row mb-3">
+                    {% for participant in participants %}
+                        {% include 'partials/utilities/individual_card.html' %}
+                        {% include 'partials/utilities/individual_card.html' %}
+                        {% include 'partials/utilities/individual_card.html' %}
+                        {% include 'partials/utilities/individual_card.html' %}
+                        {% include 'partials/utilities/individual_card.html' %}
+
+                    {% endfor %}
+                </div>
+            </li>
+            <li class="list-group-item my-2">
+                <h6>Coaches and Mentors</h6>
+                <div class="row mb-3">
+                    {% for participant in participants %}
+                        {% include 'partials/utilities/individual_card.html' %}
+                        {% include 'partials/utilities/individual_card.html' %}
+                        {% include 'partials/utilities/individual_card.html' %}
+                    {% endfor %}
+                </div>
+            </li>
+        </div>
+
+        
+        <div class="container-fluid pt-3">
             <h2>Contracts and Rights</h2>
             <div class="px-5 pt-3 pb-2 mb-4 bg-light rounded-3">
                 <div class="container-fluid py-3">
                     <div class="row mb-3">
-                        {% for count in contract_counter %}
-                            {% include 'partials/utilities/document_card.html' %}
-                        {% endfor %}
+                        {% include 'partials/utilities/document_card.html' %}
+                        {% include 'partials/utilities/document_card.html' %}
+                        {% include 'partials/utilities/document_card.html' %}
+                        {% include 'partials/utilities/document_card.html' %}
+
                     </div>
                     <div class="row pt-2">
                         {% include 'partials/utilities/see_all_button.html' %}
