@@ -3,8 +3,6 @@ from django.test import TestCase
 from portfolio.forms import CreateGroupForm
 from django.contrib.auth.models import Group, Permission
 
-MODEL_NAMES = ['company', 'individual']
-
 
 class CreatePermissionGroupFormTestCase(TestCase):
 

@@ -30,6 +30,7 @@ class UserCreationForm(forms.ModelForm):
         label='Group',
         queryset=Group.objects.all(),
         empty_label=None,
+        required = False
     )
 
     def save(self, commit=True):
@@ -43,3 +44,27 @@ class UserCreationForm(forms.ModelForm):
         if commit:
             user.save()
         return user
+
+class EditUserForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ["email", "first_name", "last_name", "password", "phone", "is_active"]
+        widgets = {
+            'password': forms.PasswordInput()
+        }
+
+    group = forms.ModelChoiceField(
+        label='Group',
+        queryset=Group.objects.all(),
+        empty_label=None,
+        required = False
+    )
+
+    def save(self):
+        super().save(commit=False)
+        user = self.instance
+        user.email = self.cleaned_data['email']
+        user.groups.clear()
+        user.groups.add(self.cleaned_data['group'])
+        user.set_password(self.cleaned_data['password'])
+        user.save()
