@@ -8,3 +8,4 @@ from .investor_company_model import InvestorCompany
 from .investor_individual_model import InvestorIndividual
 from .past_experience_model import PastExperience
 from .programme_model import Programme
+from .document_model import Document
