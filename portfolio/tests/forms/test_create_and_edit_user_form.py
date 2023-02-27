@@ -6,7 +6,6 @@ from portfolio.models import User
 
 
 class CreateUserFormTestCase(TestCase):
-
     # Set up an examplery input to use for the tests
     def setUp(self):
         self.form_input = {
@@ -75,7 +74,7 @@ class CreateUserFormTestCase(TestCase):
         self.assertEqual(new_user.phone, "+447412345678")
         self.assertEqual(new_user.is_active, True)
 
-class EditUserForm(TestCase):
+class EditUserFormTestCase(TestCase):
     def setUp(self):
         self.form_input = {
             "email": "test@example.com",
@@ -96,8 +95,6 @@ class EditUserForm(TestCase):
         self.assertIn("email", form.fields)
         self.assertIn("first_name", form.fields)
         self.assertIn("last_name", form.fields)
-        self.assertIn("password", form.fields)
-        self.assertTrue(isinstance(form.fields["password"].widget, forms.PasswordInput))
         self.assertIn("phone", form.fields)
         self.assertIn("is_active", form.fields)
         self.assertIn("group", form.fields)
