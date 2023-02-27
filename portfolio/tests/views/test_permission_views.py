@@ -628,7 +628,7 @@ class UserResetPasswordViewTestCase(TestCase):
         self.assertTrue(is_password_equal)
         self.client.login(username='petra.pickles@example.org', password="Password123")
         response = self.client.post(self.url, follow=True)
-        response_url = reverse('permission_edit_user', kwargs={'id': self.test_user.id})
+        response_url = reverse('permission_user_list')
         self.assertRedirects(response, response_url, status_code=302, target_status_code=200)
         user = User.objects.get(email = self.test_user.email)
         is_new_password_equal = check_password('Password123', user.password)

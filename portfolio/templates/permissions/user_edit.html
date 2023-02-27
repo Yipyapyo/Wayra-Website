@@ -18,7 +18,6 @@
             {% include 'partials/utilities/form_input.html' %}
             <div class="mb-3">
                 <button type="submit" class="btn btn-primary">Submit</button>
-                <a type="button" class="btn btn-secondary" href="{% url 'permission_reset_password' user.id %}">Reset Password</a>
                 <a type="button" class="btn btn-secondary" href="{% url 'permission_user_list' %}">Cancel</a>
             </div>
         </form>

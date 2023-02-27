@@ -114,17 +114,12 @@ class UserResetPasswordView(LoginRequiredMixin, UserPassesTestMixin, FindObjectM
                 return redirect('permission_user_list')
             user.set_password("Password123")
             user.save()
-            return redirect('permission_edit_user', id = user.id)
+            return redirect('permission_user_list')
         except ObjectDoesNotExist:
             return redirect('permission_user_list')
 
     def handle_no_permission(self):
         return redirect('dashboard')
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data()
-        context['id'] = self.get_object().id
-        return context
 
     def get_success_url(self):
         return reverse('permission_user_list')
