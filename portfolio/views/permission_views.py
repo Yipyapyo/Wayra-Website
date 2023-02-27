@@ -98,6 +98,36 @@ class UserEditFormView(LoginRequiredMixin, UserPassesTestMixin, FindObjectMixin,
     def get_success_url(self):
         return reverse('permission_user_list')
 
+class UserResetPasswordView(LoginRequiredMixin, UserPassesTestMixin, FindObjectMixin, UpdateView):
+    http_method_names = ['get', 'post']
+    model = User
+    pk_url_kwarg = 'id'
+    redirect_when_no_object_found_url = 'permission_user_list'
+
+    def test_func(self):
+        return self.request.user.is_staff
+
+    def dispatch(self, request, id, *args, **kwargs):
+        try:
+            user = User.objects.get(id=id)
+            if user.is_staff:
+                return redirect('permission_user_list')
+            user.set_password("Password123")
+            return redirect('permission_edit_user', id = user.id)
+        except ObjectDoesNotExist:
+            return redirect('permission_user_list')
+
+    def handle_no_permission(self):
+        return redirect('dashboard')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data()
+        context['id'] = self.get_object().id
+        return context
+
+    def get_success_url(self):
+        return reverse('permission_user_list')
+
 
 class GroupCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
     template_name = 'permissions/permission_form_page.html'
