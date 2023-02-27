@@ -86,6 +86,15 @@ class UserEditFormView(LoginRequiredMixin, UserPassesTestMixin, FindObjectMixin,
     def handle_no_permission(self):
         return redirect('dashboard')
 
+    def dispatch(self, request, id, *args, **kwargs):
+        try:
+            user = User.objects.get(id=id)
+            if user.is_staff:
+                return redirect('permission_user_list')
+            return super().dispatch(request, id, *args, **kwargs)
+        except ObjectDoesNotExist:
+            return redirect('permission_user_list')
+
     def get_success_url(self):
         return reverse('permission_user_list')
 
@@ -156,6 +165,7 @@ class GroupDeleteView(LoginRequiredMixin, UserPassesTestMixin, FindObjectMixin, 
 
     def handle_no_permission(self):
         return redirect('dashboard')
+
 
     def get_success_url(self):
         return reverse('permission_group_list')
