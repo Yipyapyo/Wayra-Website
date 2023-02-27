@@ -10,6 +10,7 @@ class IndividualTests(TestCase):
     # Sets up example individual to be used for tests
     def setUp(self):
         self.individual = Individual.objects.create(
+                name="Jemma Doe",
              AngelListLink = "https://www.AngelList.com",
              CrunchbaseLink = "https://www.Crunchbase.com",
              LinkedInLink = "https://www.LinkedIn.com",
