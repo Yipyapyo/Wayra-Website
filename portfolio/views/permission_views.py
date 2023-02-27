@@ -113,6 +113,7 @@ class UserResetPasswordView(LoginRequiredMixin, UserPassesTestMixin, FindObjectM
             if user.is_staff:
                 return redirect('permission_user_list')
             user.set_password("Password123")
+            user.save()
             return redirect('permission_edit_user', id = user.id)
         except ObjectDoesNotExist:
             return redirect('permission_user_list')

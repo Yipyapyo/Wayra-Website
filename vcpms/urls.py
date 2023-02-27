@@ -42,6 +42,6 @@ urlpatterns = [
     path("permissions/<int:id>/edit_group/", views.GroupEditView.as_view(), name='permission_edit_group'),
     path("permissions/<int:id>/delete_group/", views.GroupDeleteView.as_view(), name='permission_delete_group'),
     path("permissions/<int:id>/edit_user/", views.UserEditFormView.as_view(), name='permission_edit_user'),
-    path("permissions/<int:id>/reset_password", views.UserResetPasswordView.as_view(), name="permission_reset_password")
+    path("permissions/<int:id>/reset_password/", views.UserResetPasswordView.as_view(), name="permission_reset_password")
 
 ]

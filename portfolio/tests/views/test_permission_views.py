@@ -572,3 +572,67 @@ class EditUserViewTestCase(TestCase):
         form = response.context['form']
         self.assertTrue(isinstance(form, EditUserForm))
         self.assertTrue(form.is_bound)
+
+
+
+class UserResetPasswordViewTestCase(TestCase):
+    """ Unit tests for UserResetPasswordView"""
+    fixtures = ['portfolio/tests/fixtures/default_user.json',
+                'portfolio/tests/fixtures/other_users.json']
+
+    def setUp(self) -> None:
+        self.test_user = User.objects.get(email="john.doe@example.org")
+        self.url = reverse('permission_reset_password', kwargs={'id': self.test_user.id})
+
+
+    def test_get_edit_user_url(self):
+        self.assertEqual(self.url, f'/permissions/{self.test_user.id}/reset_password/')
+
+    def test_get_redirects_when_not_logged_in(self):
+        redirect_url = reverse_with_next('login', reverse('dashboard'))
+        response = self.client.get(self.url, follow=True)
+        self.assertRedirects(response, redirect_url, status_code=302, target_status_code=200)
+
+    def test_cannot_get_invalid_id(self):
+        redirect_url = reverse('permission_user_list')
+        self.url = reverse('permission_edit_user', kwargs={'id': 99999})
+        self.client.login(username='petra.pickles@example.org', password="Password123")
+        response = self.client.get(self.url, follow=True)
+        self.assertRedirects(response, redirect_url, status_code=302, target_status_code=200)
+
+    def test_cannot_post_invalid_id(self):
+        redirect_url = reverse('permission_user_list')
+        self.url = reverse('permission_edit_user', kwargs={'id': 99999})
+        self.client.login(username='petra.pickles@example.org', password="Password123")
+        response = self.client.post(self.url, follow=True)
+        self.assertRedirects(response, redirect_url, status_code=302, target_status_code=200)
+
+    def test_cannot_get_admin_id(self):
+        redirect_url = reverse('permission_user_list')
+        self.url = reverse('permission_edit_user', kwargs={'id': 2})
+        self.client.login(username='petra.pickles@example.org', password="Password123")
+        response = self.client.get(self.url, follow=True)
+        self.assertRedirects(response, redirect_url, status_code=302, target_status_code=200)
+
+    def test_cannot_post_admin_id(self):
+        redirect_url = reverse('permission_user_list')
+        self.url = reverse('permission_edit_user', kwargs={'id': 2})
+        self.client.login(username='petra.pickles@example.org', password="Password123")
+        response = self.client.post(self.url, follow=True)
+        self.assertRedirects(response, redirect_url, status_code=302, target_status_code=200)
+
+    def test_successful_password_reset(self):
+        self.test_user.set_password('Aa12345678')
+        self.test_user.save()
+        is_password_equal = check_password('Aa12345678', self.test_user.password)
+        self.assertTrue(is_password_equal)
+        self.client.login(username='petra.pickles@example.org', password="Password123")
+        response = self.client.post(self.url, follow=True)
+        response_url = reverse('permission_edit_user', kwargs={'id': self.test_user.id})
+        self.assertRedirects(response, response_url, status_code=302, target_status_code=200)
+        user = User.objects.get(email = self.test_user.email)
+        is_new_password_equal = check_password('Password123', user.password)
+        self.assertTrue(is_new_password_equal)
+
+
+
