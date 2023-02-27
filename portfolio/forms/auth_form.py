@@ -48,10 +48,7 @@ class UserCreationForm(forms.ModelForm):
 class EditUserForm(forms.ModelForm):
     class Meta:
         model = User
-        fields = ["email", "first_name", "last_name", "password", "phone", "is_active"]
-        widgets = {
-            'password': forms.PasswordInput()
-        }
+        fields = ["email", "first_name", "last_name", "phone", "is_active"]
 
     group = forms.ModelChoiceField(
         label='Group',
@@ -66,5 +63,4 @@ class EditUserForm(forms.ModelForm):
         user.email = self.cleaned_data['email']
         user.groups.clear()
         user.groups.add(self.cleaned_data['group'])
-        user.set_password(self.cleaned_data['password'])
         user.save()
