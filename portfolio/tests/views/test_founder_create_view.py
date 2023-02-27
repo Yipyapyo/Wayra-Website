@@ -4,6 +4,7 @@ from portfolio.models import Individual, ResidentialAddress, PastExperience, Fou
 from portfolio.forms import IndividualCreateForm, AddressCreateForm, PastExperienceForm, FounderForm
 from django_countries.fields import Country, LazyTypedChoiceField 
 from phonenumber_field.phonenumber import PhoneNumber
+from django_countries.fields import Country
 
 
 class FounderCreateTestCase(TestCase):
@@ -18,28 +19,28 @@ class FounderCreateTestCase(TestCase):
         self.client.login(email=self.user.email, password="Password123")
         self.url = reverse('founder_create')
         self.founder_data = {
-            'name': "Ben", 
-            "AngelListLink" : "https://www.AngelList.com",
-            "CrunchbaseLink" : "https://www.Crunchbase.com",
-            "LinkedInLink" : "https://www.LinkedIn.com",
-            "Company" : "exampleCompany",
-            "Position" : "examplePosition",
-            "Email" : "test@gmail.com",
-            "PrimaryNumber_0": "UK",
-            "PrimaryNumber_1": "+447975777666",
-            "SecondaryNumber_0": "UK",
-            "SecondaryNumber_1": "+441325777655",
-            "companyFounded": "startup",
-            "additionalInformation": "Founder founded a startup firm."
+            'name': 'John Doe',
+            'AngelListLink': 'https://angel.co/johndoe',
+            'CrunchbaseLink': 'https://www.crunchbase.com/person/john-doe',
+            'LinkedInLink': 'https://www.linkedin.com/in/john-doe/',
+            'Company': 'Example Company',
+            'Position': 'CEO',
+            'Email': 'johndoe@example.com',
+            'PrimaryNumber': '+491633418226',
+            'SecondaryNumber': '+886903475533',
+            'companyFounded': 'startup',
+            'additionalInformation': 'Some additional information',
         }
+
         self.address_data = {
             "address_line1" : "testAdress1",
             "address_line2" : "testAdress2",
             "postal_code" : "testCode",
             "city" : "testCity",
             "state" : "testState",
-            "country" : Country("AD")
+            "country" : Country(code="US")
         }
+
         self.past_experience_data = [
             {
                 'companyName': "Startup",
@@ -62,30 +63,18 @@ class FounderCreateTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'individual/founder_create.html')
         self.assertIsInstance(response.context['founderForm'], FounderForm)
-        # self.assertIsInstance(response.context['addressForms'], AddressCreateForm)
+        self.assertIsInstance(response.context['addressForms'], AddressCreateForm)
         # self.assertIsInstance(response.context['pastExperienceForms'][0], PastExperienceForm)
         # self.assertIsInstance(response.context['pastExperienceForms'][1], PastExperienceForm)
 
     def test_founder_create_post(self):
-        data = {
-            'name': 'John Doe',
-            'AngelListLink': 'https://angel.co/johndoe',
-            'CrunchbaseLink': 'https://www.crunchbase.com/person/john-doe',
-            'LinkedInLink': 'https://www.linkedin.com/in/john-doe/',
-            'Company': 'Example Company',
-            'Position': 'CEO',
-            'Email': 'johndoe@example.com',
-            'PrimaryNumber_0': '+1',
-            'PrimaryNumber_1': '+447975777666',
-            'SecondaryNumber_0': '+1',
-            'SecondaryNumber_1': '+447975777666',
-            'companyFounded': 'startup',
-            'additionalInformation': 'Some additional information',
-        }
-        # Modify the phone number fields to use valid phone numbers
-        form = FounderForm(data=data)
-        if form.is_valid():
-            before_count = Founder.objects.count()
-            response = self.client.post(self.url, data, follow=True)
-            after_count = Founder.objects.count()
-            self.assertEqual(before_count+1, after_count)
+        before_count = Founder.objects.count()
+        before_count2 = ResidentialAddress.objects.count()
+        response = self.client.post(self.url, {'form1': self.founder_data, 'form2': self.address_data}, follow=True)
+        print(response.content)
+        after_count = Founder.objects.count()
+        after_count2 = ResidentialAddress.objects.count()
+        self.assertEqual(before_count+1, after_count)
+        self.assertEqual(before_count2+1, after_count2)
+
+        
