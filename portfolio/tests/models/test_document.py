@@ -2,14 +2,19 @@ from django.test import TestCase
 from django.core.exceptions import ValidationError
 from django.core.files.uploadedfile import SimpleUploadedFile
 from portfolio.models import Document
+from portfolio.models import Company
 
 
 class DocumentModelTestCase(TestCase):
     """Unit tests for the Document model."""
 
+    fixtures = ["portfolio/tests/fixtures/default_company.json"]
+
     def setUp(self):
         self.document = Document.objects.create(
-            name="test.document",
+            file_name="test",
+            file_type="document",
+            company=Company.objects.get(id=1),
             file=SimpleUploadedFile("test.document", b"file contents")
         )
 
@@ -33,7 +38,9 @@ class DocumentModelTestCase(TestCase):
     # Create a second document
     def _create_second_document(self):
         document = Document.objects.create(
-            name="test-2.document",
-            file=SimpleUploadedFile("test-2.document", b"file contents")
+            file_name="test2",
+            file_type="document",
+            company=Company.objects.get(id=1),
+            file=SimpleUploadedFile("test2.document", b"file contents")
         )
         return document
