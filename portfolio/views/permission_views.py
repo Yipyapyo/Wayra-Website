@@ -24,7 +24,7 @@ class UserListView(LoginRequiredMixin, UserPassesTestMixin, ListView):
         return redirect('dashboard')
 
     def get_queryset(self):
-        return User.objects.filter(is_staff=False)
+        return User.objects.filter(is_staff=False).order_by('id')
 
 
 class UserSignUpFormView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
@@ -171,6 +171,9 @@ class GroupListView(LoginRequiredMixin, UserPassesTestMixin, ListView):
     model = Group
     context_object_name = 'groups'
     paginate_by = settings.ADMINS_USERS_PER_PAGE
+
+    def get_queryset(self):
+        return Group.objects.all().order_by('id')
 
     def test_func(self):
         return self.request.user.is_staff
