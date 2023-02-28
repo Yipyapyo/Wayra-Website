@@ -8,10 +8,7 @@
             <form class="mb-2">
                 <div class="row mb-3">
                     <div class="col-md-6">
-                        <div class="">
-                            <label class="form-label" for="first_name">First name</label>
-                            <input type="text" class="form-control" id="first_name" value="{{user.first_name}}">
-                        </div>
+                        {% include 'partials/utilities/settings_form_input.html' with field=form.first_name %}
                     </div>
                     <div class="col-md-6">
                         <div class="">
@@ -20,7 +17,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="row gy-2">
+                <div class="row gy-2 pb-3">
                     <div class="col-md-6">
                         <div class="">
                             <label class="form-label" for="email">Email</label>
@@ -33,7 +30,7 @@
                             <input type="tel" class="form-control" id="phone_number" value="{{user.phone}}">
                         </div>
                     </div>
-                    <div class="col-12">
+                    <!-- <div class="col-12">
                         <div class="">
                             <label class="form-label" for="address">Address</label>
                             <input type="text" class="form-control" id="address">
@@ -71,7 +68,7 @@
                                 Make this my default address
                             </label>
                         </div>
-                    </div>
+                    </div> -->
                 </div>
                 <div class="text-end">
                     <button type="submit" class="btn btn-sm btn-primary">Save</button>

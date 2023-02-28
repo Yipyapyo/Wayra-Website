@@ -1,6 +1,6 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
-from portfolio.forms import ChangePasswordForm
+from portfolio.forms import ChangePasswordForm, ContactDetailsForm
 from portfolio.models import User
 import logging
 from django.http import HttpResponse
@@ -21,9 +21,11 @@ View and Update user settings
 def account_settings(request):
     current_user = request.user
     change_password_form = ChangePasswordForm(user=current_user)
+    contact_details_form = ContactDetailsForm(user= current_user)
     context = {
         "user":current_user,
-        "change_password_form":change_password_form,
+        "change_password_form": change_password_form,
+        "contact_details_form": contact_details_form,
     }
     return render(request, 'settings/account_settings.html', context)
 
