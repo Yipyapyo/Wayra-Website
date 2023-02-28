@@ -17,6 +17,9 @@ from django.contrib import admin
 from django.urls import path, include
 from portfolio import views
 
+
+
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('dashboard', views.dashboard, name='dashboard'),
@@ -36,12 +39,13 @@ urlpatterns = [
     path("select2/", include("django_select2.urls")),
     path("permissions/users/", views.UserListView.as_view(), name='permission_user_list'),
     path("permissions/create_user/", views.UserSignUpFormView.as_view(), name='permission_create_user'),
-    path("permissions/create_group/", views.GroupCreateView.as_view(), name='permission_create_group'),
+    path("permissions/<int:id>/edit_user/", views.UserEditFormView.as_view(), name='permission_edit_user'),
     path("permissions/<int:id>/delete_user/", views.UserDeleteView.as_view(), name='permission_delete_user'),
+    path("permissions/<int:id>/reset_password/", views.UserResetPasswordView.as_view(),
+         name="permission_reset_password"),
     path("permissions/group_list/", views.GroupListView.as_view(), name='permission_group_list'),
+    path("permissions/create_group/", views.GroupCreateView.as_view(), name='permission_create_group'),
     path("permissions/<int:id>/edit_group/", views.GroupEditView.as_view(), name='permission_edit_group'),
     path("permissions/<int:id>/delete_group/", views.GroupDeleteView.as_view(), name='permission_delete_group'),
-    path("permissions/<int:id>/edit_user/", views.UserEditFormView.as_view(), name='permission_edit_user'),
-    path("permissions/<int:id>/reset_password/", views.UserResetPasswordView.as_view(), name="permission_reset_password")
 
 ]

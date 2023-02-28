@@ -29,7 +29,7 @@ class UserListViewTestCase(TestCase):
         self._create_test_users(15 - 1)
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'permissions/permission_list_page.html')
+        self.assertTemplateUsed(response, 'permissions/user_list.html')
         self.assertEqual(len(response.context['users']), 15)
         for user_id in range(15 - 1):
             self.assertContains(response, f'First{user_id}')
@@ -44,13 +44,13 @@ class UserListViewTestCase(TestCase):
 
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'permissions/permission_list_page.html')
+        self.assertTemplateUsed(response, 'permissions/user_list.html')
 
         page_obj = response.context['page_obj']
         page_one_url = reverse('permission_user_list') + '?page=1'
         response = self.client.get(page_one_url)
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'permissions/permission_list_page.html')
+        self.assertTemplateUsed(response, 'permissions/user_list.html')
         self.assertEqual(len(response.context['users']), settings.ADMINS_USERS_PER_PAGE)
         self.assertFalse(page_obj.has_previous())
         self.assertTrue(page_obj.has_next())
@@ -59,7 +59,7 @@ class UserListViewTestCase(TestCase):
         response = self.client.get(page_two_url)
         page_obj = response.context['page_obj']
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'permissions/permission_list_page.html')
+        self.assertTemplateUsed(response, 'permissions/user_list.html')
         self.assertEqual(len(response.context['users']), settings.ADMINS_USERS_PER_PAGE)
         self.assertTrue(page_obj.has_previous())
         self.assertTrue(page_obj.has_next())
@@ -68,7 +68,7 @@ class UserListViewTestCase(TestCase):
         response = self.client.get(page_three_url)
         page_obj = response.context['page_obj']
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'permissions/permission_list_page.html')
+        self.assertTemplateUsed(response, 'permissions/user_list.html')
         self.assertEqual(len(response.context['users']), 1)
         self.assertTrue(page_obj.has_previous())
         self.assertFalse(page_obj.has_next())
@@ -136,7 +136,7 @@ class UserSignUpFormViewTestCase(TestCase):
         self.assertEqual(after_count, before_count + 1)
         response_url = reverse('permission_user_list')
         self.assertRedirects(response, response_url, status_code=302, target_status_code=200)
-        self.assertTemplateUsed(response, 'permissions/permission_list_page.html')
+        self.assertTemplateUsed(response, 'permissions/user_list.html')
         user = User.objects.get(email='jane.doe@example.org')
         self.assertEqual(user.first_name, 'Jane')
         self.assertEqual(user.last_name, 'Doe')
@@ -209,7 +209,7 @@ class GroupCreationViewTestCase(TestCase):
         after_count = Group.objects.count()
         self.assertEqual(after_count, before_count)
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'permissions/permission_form_page.html')
+        self.assertTemplateUsed(response, 'permissions/group_create.html')
         form = response.context['form']
         self.assertTrue(isinstance(form, CreateGroupForm))
         self.assertTrue(form.is_bound)
@@ -246,7 +246,7 @@ class UserDeleteViewTestCase(TestCase):
         self.assertEqual(after_count, before_count - 1)
         response_url = reverse('permission_user_list')
         self.assertRedirects(response, response_url, status_code=302, target_status_code=200)
-        self.assertTemplateUsed(response, 'permissions/permission_list_page.html')
+        self.assertTemplateUsed(response, 'permissions/user_list.html')
 
     def test_cannot_get_invalid_id(self):
         redirect_url = reverse('permission_user_list')
@@ -431,7 +431,7 @@ class GroupEditViewTestCase(TestCase):
         after_count = Group.objects.count()
         self.assertEqual(after_count, before_count)
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'permissions/permission_form_page.html')
+        self.assertTemplateUsed(response, 'permissions/group_create.html')
         form = response.context['form']
         self.assertTrue(isinstance(form, EditGroupForm))
         self.assertTrue(form.is_bound)
@@ -556,7 +556,7 @@ class EditUserViewTestCase(TestCase):
         self.assertEqual(after_count, before_count)
         response_url = reverse('permission_user_list')
         self.assertRedirects(response, response_url, status_code=302, target_status_code=200)
-        self.assertTemplateUsed(response, 'permissions/permission_list_page.html')
+        self.assertTemplateUsed(response, 'permissions/user_list.html')
         user = User.objects.get(email=self.test_user.email)
         self.assertEqual(user.first_name, 'Jane')
 

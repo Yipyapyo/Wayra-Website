@@ -12,7 +12,7 @@ from vcpms import settings
 
 
 class UserListView(LoginRequiredMixin, UserPassesTestMixin, ListView):
-    template_name = 'permissions/permission_list_page.html'
+    template_name = 'permissions/user_list.html'
     http_method_names = ['get']
     context_object_name = 'users'
     paginate_by = settings.ADMINS_USERS_PER_PAGE
@@ -126,7 +126,7 @@ class UserResetPasswordView(LoginRequiredMixin, UserPassesTestMixin, FindObjectM
 
 
 class GroupCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
-    template_name = 'permissions/permission_form_page.html'
+    template_name = 'permissions/group_create.html'
     http_method_names = ['get', 'post']
     form_class = CreateGroupForm
 
@@ -141,7 +141,7 @@ class GroupCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
 
 
 class GroupEditView(LoginRequiredMixin, UserPassesTestMixin, FindObjectMixin, UpdateView):
-    template_name = 'permissions/permission_form_page.html'
+    template_name = 'permissions/group_create.html'
     http_method_names = ['get', 'post']
     model = Group
     form_class = EditGroupForm
