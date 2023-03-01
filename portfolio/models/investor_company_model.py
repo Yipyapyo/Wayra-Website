@@ -2,7 +2,7 @@ from django.db import models
 from portfolio.models.company_model import Company
 
 
-class InvestorCompany(Company):
+class InvestorCompany(models.Model):
     VENTURE_CAPITAL = 'VC'
     PRIVATE_EQUITY_FIRM = 'PEF'
     ACCELERATOR = 'A'
@@ -52,13 +52,9 @@ class InvestorCompany(Company):
     AngelListLink = models.URLField("Angellist link", max_length=200)
     CrunchbaseLink = models.URLField("Crunchbase link", max_length=200)
     LinkedInLink = models.URLField("Linkedin link", max_length=200)
-    InvestedCompanies = models.ManyToManyField(Company, related_name="companies")
     Type = models.CharField(
         max_length=50,
         choices=INVESTOR_TYPES,
         default=VENTURE_CAPITAL,
     )
-    NumberOfInvestments = models.PositiveIntegerField()
-    NumberOfLeadInvestments = models.PositiveIntegerField()
-    NumberOfDiversityInvestments = models.PositiveIntegerField()
-    NumberOfExits = models.PositiveIntegerField()
+   
