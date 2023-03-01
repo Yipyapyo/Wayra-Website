@@ -1,11 +1,11 @@
 from django.test import TestCase
 from django.urls import reverse
-from portfolio.models import Individual, ResidentialAddress, PastExperience, Founder, User
-from portfolio.forms import IndividualCreateForm, AddressCreateForm, PastExperienceForm, FounderForm
-from django_countries.fields import Country, LazyTypedChoiceField 
-from phonenumber_field.phonenumber import PhoneNumber
+from portfolio.models import ResidentialAddress, PastExperience, Founder, User
+from portfolio.forms import AddressCreateForm, PastExperienceForm, FounderForm
+from django_countries.fields import Country
 from django_countries.fields import Country
 from portfolio.tests.helpers import reverse_with_next
+
 
 
 class FounderCreateTestCase(TestCase):
@@ -234,7 +234,7 @@ class FounderCreateTestCase(TestCase):
         after_count2 = ResidentialAddress.objects.count()
         after_count3 = PastExperience.objects.count()
         self.assertEqual(before_count, after_count)
-        self.assertEqual(before_count, after_count2)
+        self.assertEqual(before_count2, after_count2)
         self.assertEqual(before_count3, after_count3)
         self.assertEqual(response.status_code, 200)
 
@@ -252,6 +252,188 @@ class FounderCreateTestCase(TestCase):
         self.assertEqual(before_count3+2, after_count3)
         self.assertEqual(response.status_code, 302)
     
+    def test_post_address_line_1_cannot_be_blank(self):
+        self.post_input['form2-address_line1'] = ""
+        before_count = Founder.objects.count()
+        before_count2 = ResidentialAddress.objects.count()
+        before_count3 = PastExperience.objects.count()
+        response = self.client.post(self.url, self.post_input)
+        after_count = Founder.objects.count()
+        after_count2 = ResidentialAddress.objects.count()
+        after_count3 = PastExperience.objects.count()
+        self.assertEqual(before_count, after_count)
+        self.assertEqual(before_count2, after_count2)
+        self.assertEqual(before_count3, after_count3)
+        self.assertEqual(response.status_code, 200)
+    
+    def test_post_address_line_2_cannot_be_blank(self):
+        self.post_input['form1-address_line2'] = ""
+        before_count = Founder.objects.count()
+        before_count2 = ResidentialAddress.objects.count()
+        before_count3 = PastExperience.objects.count()
+        response = self.client.post(self.url, self.post_input)
+        after_count = Founder.objects.count()
+        after_count2 = ResidentialAddress.objects.count()
+        after_count3 = PastExperience.objects.count()
+        self.assertEqual(before_count+1, after_count)
+        self.assertEqual(before_count2+1, after_count2)
+        self.assertEqual(before_count3+2, after_count3)
+        self.assertEqual(response.status_code, 302)
+    
+    def test_post_postal_code_cannot_be_blank(self):
+        self.post_input['form2-postal_code'] = ""
+        before_count = Founder.objects.count()
+        before_count2 = ResidentialAddress.objects.count()
+        before_count3 = PastExperience.objects.count()
+        response = self.client.post(self.url, self.post_input)
+        after_count = Founder.objects.count()
+        after_count2 = ResidentialAddress.objects.count()
+        after_count3 = PastExperience.objects.count()
+        self.assertEqual(before_count, after_count)
+        self.assertEqual(before_count2, after_count2)
+        self.assertEqual(before_count3, after_count3)
+        self.assertEqual(response.status_code, 200)
+    
+    def test_post_city_cannot_be_blank(self):
+        self.post_input['form2-city'] = ""
+        before_count = Founder.objects.count()
+        before_count2 = ResidentialAddress.objects.count()
+        before_count3 = PastExperience.objects.count()
+        response = self.client.post(self.url, self.post_input)
+        after_count = Founder.objects.count()
+        after_count2 = ResidentialAddress.objects.count()
+        after_count3 = PastExperience.objects.count()
+        self.assertEqual(before_count, after_count)
+        self.assertEqual(before_count2, after_count2)
+        self.assertEqual(before_count3, after_count3)
+        self.assertEqual(response.status_code, 200)
+    
+    def test_post_state_can_be_blank(self):
+        self.post_input['form2-state'] = ""
+        before_count = Founder.objects.count()
+        before_count2 = ResidentialAddress.objects.count()
+        before_count3 = PastExperience.objects.count()
+        response = self.client.post(self.url, self.post_input)
+        after_count = Founder.objects.count()
+        after_count2 = ResidentialAddress.objects.count()
+        after_count3 = PastExperience.objects.count()
+        self.assertEqual(before_count+1, after_count)
+        self.assertEqual(before_count2+1, after_count2)
+        self.assertEqual(before_count3+2, after_count3)
+        self.assertEqual(response.status_code, 302)
+    
+    def test_post_country_cannot_be_invalid(self):
+        self.post_input['form2-country'] = "hi"
+        before_count = Founder.objects.count()
+        before_count2 = ResidentialAddress.objects.count()
+        before_count3 = PastExperience.objects.count()
+        response = self.client.post(self.url, self.post_input)
+        after_count = Founder.objects.count()
+        after_count2 = ResidentialAddress.objects.count()
+        after_count3 = PastExperience.objects.count()
+        self.assertEqual(before_count, after_count)
+        self.assertEqual(before_count2, after_count2)
+        self.assertEqual(before_count3, after_count3)
+        self.assertEqual(response.status_code, 200)
+    
+    def test_post_country_cannot_be_blank(self):
+        self.post_input['form2-country'] = ""
+        before_count = Founder.objects.count()
+        before_count2 = ResidentialAddress.objects.count()
+        before_count3 = PastExperience.objects.count()
+        response = self.client.post(self.url, self.post_input)
+        after_count = Founder.objects.count()
+        after_count2 = ResidentialAddress.objects.count()
+        after_count3 = PastExperience.objects.count()
+        self.assertEqual(before_count, after_count)
+        self.assertEqual(before_count2, after_count2)
+        self.assertEqual(before_count3, after_count3)
+        self.assertEqual(response.status_code, 200)
+    
+    def test_post_past_experience_companyName_cannot_be_blank(self):
+        self.post_input['0-companyName'] = ""
+        self.post_input['1-companyName'] = ""
+        before_count = Founder.objects.count()
+        before_count2 = ResidentialAddress.objects.count()
+        before_count3 = PastExperience.objects.count()
+        response = self.client.post(self.url, self.post_input)
+        after_count = Founder.objects.count()
+        after_count2 = ResidentialAddress.objects.count()
+        after_count3 = PastExperience.objects.count()
+        self.assertEqual(before_count, after_count)
+        self.assertEqual(before_count2, after_count2)
+        self.assertEqual(before_count3, after_count3)
+        self.assertEqual(response.status_code, 200)
+    
+    def test_post_past_experience_workTitle_cannot_be_blank(self):
+        self.post_input['0-workTitle'] = ""
+        self.post_input['1-workTitle'] = ""
+        before_count = Founder.objects.count()
+        before_count2 = ResidentialAddress.objects.count()
+        before_count3 = PastExperience.objects.count()
+        response = self.client.post(self.url, self.post_input)
+        after_count = Founder.objects.count()
+        after_count2 = ResidentialAddress.objects.count()
+        after_count3 = PastExperience.objects.count()
+        self.assertEqual(before_count, after_count)
+        self.assertEqual(before_count2, after_count2)
+        self.assertEqual(before_count3, after_count3)
+        self.assertEqual(response.status_code, 200)
+    
+    def test_post_past_experience_start_year_cannot_be_blank(self):
+        self.post_input['0-start_year'] = ""
+        self.post_input['1-start_year'] = ""
+        before_count = Founder.objects.count()
+        before_count2 = ResidentialAddress.objects.count()
+        before_count3 = PastExperience.objects.count()
+        response = self.client.post(self.url, self.post_input)
+        after_count = Founder.objects.count()
+        after_count2 = ResidentialAddress.objects.count()
+        after_count3 = PastExperience.objects.count()
+        self.assertEqual(before_count, after_count)
+        self.assertEqual(before_count2, after_count2)
+        self.assertEqual(before_count3, after_count3)
+        self.assertEqual(response.status_code, 200)
+    
+    def test_post_past_experience_end_year_can_be_blank(self):
+        self.post_input['0-end_year'] = ""
+        self.post_input['1-end_year'] = ""
+        before_count = Founder.objects.count()
+        before_count2 = ResidentialAddress.objects.count()
+        before_count3 = PastExperience.objects.count()
+        response = self.client.post(self.url, self.post_input)
+        after_count = Founder.objects.count()
+        after_count2 = ResidentialAddress.objects.count()
+        after_count3 = PastExperience.objects.count()
+        self.assertEqual(before_count, after_count)
+        self.assertEqual(before_count2, after_count2)
+        self.assertEqual(before_count3, after_count3)
+        self.assertEqual(response.status_code, 200)
+    
+    def test_post_past_description_can_be_blank(self):
+        self.post_input['0-Description'] = ""
+        self.post_input['1-Description'] = ""
+        before_count = Founder.objects.count()
+        before_count2 = ResidentialAddress.objects.count()
+        before_count3 = PastExperience.objects.count()
+        response = self.client.post(self.url, self.post_input)
+        after_count = Founder.objects.count()
+        after_count2 = ResidentialAddress.objects.count()
+        after_count3 = PastExperience.objects.count()
+        self.assertEqual(before_count+1, after_count)
+        self.assertEqual(before_count2+1, after_count2)
+        self.assertEqual(before_count3+2, after_count3)
+        self.assertEqual(response.status_code, 302)
+    
+
+    
+
+
+
+    
+
+    
+
 
     
 

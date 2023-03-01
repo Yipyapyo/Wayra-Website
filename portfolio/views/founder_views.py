@@ -29,6 +29,8 @@ def founder_create(request):
                 new_past_experience.individual = founder
                 new_past_experience.duration = new_past_experience.end_year - new_past_experience.start_year
                 new_past_experience.save()
+                new_past_experience.duration = "To present"
+                new_past_experience.save()
             return redirect("individual_page")
     else:
         founder_form = FounderForm(prefix="form1")
@@ -47,7 +49,7 @@ Delete a founder.
 """
 
 @login_required
-def founder_delete(request):
+def founder_delete(request, id):
     founderInstance = Founder.objects.get(id=id)
     if request.method == 'POST':
         founderInstance.delete()
