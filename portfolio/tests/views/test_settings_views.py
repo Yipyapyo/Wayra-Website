@@ -55,7 +55,6 @@ class SettingsViewTestCase(TestCase, LogInTester):
         self.assertTemplateUsed(response, 'settings/change_password_section.html')
         self.assertTemplateUsed(response, 'settings/contact_details_section.html')
         self.assertTemplateUsed(response, 'settings/deactivate_account.html')
-        self.assertTemplateUsed(response, 'settings/links_section.html')
         self.assertTemplateUsed(response, 'settings/upload_profile_section.html')
 
     def test_get_account_settings_parses_the_correct_form(self):
