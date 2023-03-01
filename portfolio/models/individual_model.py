@@ -1,6 +1,5 @@
 from django.db import models
 from phonenumber_field.modelfields import PhoneNumberField
-from django_countries.fields import CountryField
 
 
 class Individual(models.Model):

@@ -1,8 +1,10 @@
 """Forms for the VC portfolio management site"""
 from django import forms
 from portfolio.models import Individual, ResidentialAddress
+from portfolio.models.past_experience_model import PastExperience
 from django_countries.widgets import CountrySelectWidget
 from phonenumber_field.widgets import PhoneNumberPrefixWidget
+from django.forms.models import inlineformset_factory
 
 
 # Form for creating an individual / client
@@ -11,10 +13,6 @@ class IndividualCreateForm(forms.ModelForm):
         model = Individual
         fields = ["name", "AngelListLink", "CrunchbaseLink", "LinkedInLink",
                   "Company", "Position", "Email", "PrimaryNumber", "SecondaryNumber"]
-        # widgets = {
-        #     "PrimaryNumber": PhoneNumberPrefixWidget(initial="UK"),
-        #     "SecondaryNumber": PhoneNumberPrefixWidget(initial="UK")
-        # }
 
     def __init__(self, *args, **kwargs):
         super(IndividualCreateForm, self).__init__(*args, **kwargs)
@@ -31,3 +29,11 @@ class AddressCreateForm(forms.ModelForm):
         widgets = {
             "country": CountrySelectWidget()
         }
+
+
+# Form for creating past experience of individual
+class PastExperienceForm(forms.ModelForm):
+    class Meta:
+        model = PastExperience
+        fields = ['companyName', 'workTitle', 'start_year', 'end_year', 'Description']
+        exclude = ('individual', 'duration',)

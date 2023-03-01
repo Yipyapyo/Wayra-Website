@@ -14,8 +14,13 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
 from portfolio import views
+from portfolio.views import founder_views
+
+
+
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('dashboard', views.dashboard, name='dashboard'),
@@ -36,6 +41,9 @@ urlpatterns = [
     path("individual_page/", views.individual_page, name="individual_page"),
     path("individual_page/<int:id>/update/", views.individual_update, name='individual_update'),
     path("individual_page/<int:id>/delete/", views.individual_delete, name='individual_delete'),
+    path("individual_page/founder_create/", founder_views.founder_create, name="founder_create"),
+    path("individual_page/<int:id>/deleteFounder/", founder_views.founder_delete, name="founder_delete"),
+    path("individual_page/<int:id>/modifyFounder/", founder_views.founder_modify, name="founder_modify"),
     path("individual_profile_page/<int:id>/", views.individual_profile, name='individual_profile'),
     path('individual_page/archive/<int:id>', views.archive_individual, name='archive_individual'),
     path('individual_page/unarchive/<int:id>', views.unarchive_individual, name='unarchive_individual'),
@@ -57,6 +65,19 @@ urlpatterns = [
     path("account_settings/contact_details", views.contact_details, name="contact_details"),
     path("deactivate_account", views.deactivate_account, name="deactivate_account"),
 
+
+    # Permissions
+    path("select2/", include("django_select2.urls")),
+    path("permissions/users/", views.UserListView.as_view(), name='permission_user_list'),
+    path("permissions/create_user/", views.UserSignUpFormView.as_view(), name='permission_create_user'),
+    path("permissions/<int:id>/edit_user/", views.UserEditFormView.as_view(), name='permission_edit_user'),
+    path("permissions/<int:id>/delete_user/", views.UserDeleteView.as_view(), name='permission_delete_user'),
+    path("permissions/<int:id>/reset_password/", views.UserResetPasswordView.as_view(),
+         name="permission_reset_password"),
+    path("permissions/group_list/", views.GroupListView.as_view(), name='permission_group_list'),
+    path("permissions/create_group/", views.GroupCreateView.as_view(), name='permission_create_group'),
+    path("permissions/<int:id>/edit_group/", views.GroupEditView.as_view(), name='permission_edit_group'),
+    path("permissions/<int:id>/delete_group/", views.GroupDeleteView.as_view(), name='permission_delete_group'),
 
 ]
 
