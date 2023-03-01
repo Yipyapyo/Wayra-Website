@@ -48,6 +48,10 @@ urlpatterns = [
     path('individual_page/archive/<int:id>', views.archive_individual, name='archive_individual'),
     path('individual_page/unarchive/<int:id>', views.unarchive_individual, name='unarchive_individual'),
 
+    #Individual Search
+
+    path('individual_search_result', views.individual_search, name='individual_search_result'),
+
     # Programme CRUD
     path("programme_page/", views.ProgrammeListView.as_view(), name="programme_list"),
     path("programme_page/create/", views.ProgrammeCreateView.as_view(), name="programme_create"),
