@@ -27,7 +27,7 @@ class InvestorCompanyCreateForm(forms.ModelForm):
 
     company = CompanyChoiceField(
         queryset = Company.objects.filter(~Exists(Investment.objects.filter(investor=OuterRef('pk')))),
-        widget = forms.Select()
+        widget=forms.Select()
     )
 
 class InvestorCompanyEditForm(forms.ModelForm):

@@ -26,7 +26,7 @@ urlpatterns = [
     path('search_result', views.searchcomp, name='search_result'),
 
     path('portfolio_company/', views.portfolio_company, name='portfolio_company'),
-    path('portfolio_company/<int:company_id>', views.portfolio_company, name='portfolio_company'),
+    path('portfolio_company/<int:company_id>', views.CompanyDetailView.as_view(), name='portfolio_company'),
     path('portfolio_company/company_create/', views.create_company, name='create_company'),
     path('portfolio_company/company_update/<int:company_id>', views.update_company, name='update_company'),
     path('portfolio_company/company_delete/<int:company_id>', views.delete_company, name='delete_company'),
@@ -70,8 +70,10 @@ urlpatterns = [
     path("permissions/<int:id>/delete_group/", views.GroupDeleteView.as_view(), name='permission_delete_group'),
 
     # Investments
-    path("investment/update/<int:company_id>/<int:id>", views.InvestmentUpdateView.as_view(), name='investment_update'),
-    path("investment/delete/<int:company_id>/<int:id>", views.InvestmentDeleteView.as_view(), name='investment_delete'),
+    path("investment/update/<int:id>", views.InvestmentUpdateView.as_view(), name='investment_update'),
+    path("investment/delete/<int:id>", views.InvestmentDeleteView.as_view(), name='investment_delete'),
     path("investment/create/<int:company_id>", views.InvestmentCreateView.as_view(), name='investment_create'),
+    path("investment/create_investor_company/", views.InvestorCompanyCreateView.as_view(), name='investor_company_create'),
+    path("investment/update_investor_company/<int:company_id>", views.InvestorCompanyUpdateView.as_view(), name='investor_company_update'),
 
 ]

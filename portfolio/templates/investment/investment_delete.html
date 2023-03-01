@@ -5,9 +5,9 @@
 
     <h1>Delete Investment</h1>
     <p class="individual_delete">Are you sure you want to delete this investment record?</p>
-    <form method="post">
+    <form action="{% url 'investment_delete' investment_id %}" method="post">
         {% csrf_token %}
-        <input type="submit" value="Submit" class="btn mb-2 home_button btn-lg btn-secondary mb=2">
+        <input type="submit" value="Submit" class="btn btn-primary">
         <a href="{% url 'portfolio_company' company_id %}" class="btn btn-secondary">Cancel</a>
     </form>
 
