@@ -37,9 +37,9 @@ class ExperienceModelTestCase(TestCase):
         self.pastExperience.workTitle = "x" * 101
         self._assert_past_experience_is_invalid()
     
-    def test_end_year_can_be_blank(self):
+    def test_end_year_cannot_be_blank(self):
         self.pastExperience.end_year = ""
-        self._assert_past_experience_is_valid()
+        self._assert_past_experience_is_invalid()
     
     def test_duration_has_max_length_of_50_characters(self):
         self.pastExperience.duration = "x" * 51

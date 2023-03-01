@@ -65,10 +65,11 @@ def founder_modify(request, id):
     founder_form = Founder.objects.get(id=id)
     address_forms = ResidentialAddress.objects.get(id=id)
     past_experience_list = PastExperience.objects.filter(individual=founder_form)
+    past_experience_forms = [PastExperienceForm(instance=p, prefix="past_experience") for p in past_experience_list]
     if request.method == 'POST':
         form1 = FounderForm(request.POST, instance=founder_form, prefix="form1")
         form2 = AddressCreateForm(request.POST, instance=address_forms, prefix="form2")
-        forms3 = [PastExperienceForm(request.POST, instance=p, prefix="past_experience_{}".format(p.id)) for p in past_experience_list]
+        forms3 = [PastExperienceForm(request.POST, instance=p, prefix="past_experience") for p in past_experience_list]
         if form1.is_valid() and form2.is_valid() and all([pf.is_valid() for pf in forms3]):
             updated_founder = form1.save()
             updated_address = form2.save(commit=False)
@@ -83,7 +84,7 @@ def founder_modify(request, id):
     else:
         form1 = FounderForm(instance=founder_form, prefix="form1")
         form2 = AddressCreateForm(instance=address_forms, prefix="form2")
-        forms3 = [PastExperienceForm(instance=p, prefix="past_experience_{}".format(p.id)) for p in past_experience_list]
+        forms3 = past_experience_forms
     context = {
         'founderForm': form1,
         'addressForms': form2,
