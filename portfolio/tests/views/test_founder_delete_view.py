@@ -2,9 +2,6 @@
 from django.test import TestCase
 from django.urls import reverse
 from portfolio.models import ResidentialAddress, PastExperience, Founder, User
-from portfolio.forms import IndividualCreateForm, AddressCreateForm, PastExperienceForm, FounderForm
-from django_countries.fields import Country, LazyTypedChoiceField 
-from phonenumber_field.phonenumber import PhoneNumber
 from django_countries.fields import Country
 from portfolio.tests.helpers import reverse_with_next
 
