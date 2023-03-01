@@ -49,10 +49,11 @@ class InvestorCompany(models.Model):
         ('PENSION_FUNDS', ' Pension Funds'),
     ]
 
-    AngelListLink = models.URLField("Angellist link", max_length=200)
-    CrunchbaseLink = models.URLField("Crunchbase link", max_length=200)
-    LinkedInLink = models.URLField("Linkedin link", max_length=200)
-    Type = models.CharField(
+    company = models.ForeignKey(Company, on_delete=models.CASCADE)
+    angelListLink = models.URLField("Angellist link", max_length=200)
+    crunchbaseLink = models.URLField("Crunchbase link", max_length=200)
+    linkedInLink = models.URLField("Linkedin link", max_length=200)
+    classification = models.CharField(
         max_length=50,
         choices=INVESTOR_TYPES,
         default=VENTURE_CAPITAL,

@@ -22,6 +22,6 @@ class Investment(models.Model):
     startup = models.ForeignKey(Portfolio_Company, on_delete=models.CASCADE, related_name="startup")
     typeOfFoundingRounds = models.CharField(max_length=50, choices=FOUNDING_ROUNDS)
     investmentAmount = models.DecimalField(max_digits=15, decimal_places=2)
-    dateInvested = models.DateTimeField(auto_now=True, validators=[MaxValueValidator(limit_value=timezone.now)])
-    dateExit = models.DateTimeField(blank=True, null=True)
+    dateInvested = models.DateField(validators=[MaxValueValidator(limit_value=timezone.now)])
+    dateExit = models.DateField(blank=True, null=True)
 
