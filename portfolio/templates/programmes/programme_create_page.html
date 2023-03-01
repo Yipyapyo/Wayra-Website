@@ -4,6 +4,15 @@
 <html>
     <head>
         <link rel="stylesheet" type="text/css" href="{% static 'css/styles_create.css' %}">
+        {{ form.media.css }}
+        <style>
+            input, select {
+                width: 100%
+            }
+        </style>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        {{ form.media.js }}
     </head>
     <body>
         <header class="pb-3 mb-4 border-bottom">
@@ -14,7 +23,7 @@
         <div class="modal-body p-5 pt-0">
             <form action="{% url 'programme_create' %}" method="post" enctype='multipart/form-data'>
                 {% csrf_token %}
-                {{ form.as_p }}
+                {% include 'partials/utilities/form_input.html' with form=form %}
                 <div class="mb-3">
                     <button type="submit" class="btn btn-primary">Submit</button>
                     <a type="button" class="btn btn-secondary" href="{% url 'programme_list' %}">Cancel</a>

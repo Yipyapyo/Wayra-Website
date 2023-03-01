@@ -1,10 +1,19 @@
 from django import forms
+from django_select2 import forms as d2forms
 from portfolio.models import Company, Individual, Portfolio_Company, Programme
 
 
 class MultipleChoiceField(forms.ModelMultipleChoiceField):
     def label_from_instance(self, obj):
         return obj.name
+
+
+class CompanySelectWidget(d2forms.ModelSelect2MultipleWidget):
+    search_fields = ['name__icontains']
+
+
+class IndividualSelectWidget(d2forms.ModelSelect2MultipleWidget):
+    search_fields = ['name__icontains']
 
 
 class CreateProgrammeForm(forms.ModelForm):
@@ -18,17 +27,32 @@ class CreateProgrammeForm(forms.ModelForm):
 
     partners = MultipleChoiceField(
         queryset=Company.objects.all(),
-        widget=forms.CheckboxSelectMultiple
+        # widget=forms.CheckboxSelectMultiple
+        widget=CompanySelectWidget(
+            attrs={'data-minimum-input-length': 3},
+            options={'placeholder': 'Search for a company...',
+                     'minimumInputLength': 3
+                     })
     )
 
     participants = MultipleChoiceField(
         queryset=Portfolio_Company.objects.all(),
-        widget=forms.CheckboxSelectMultiple
+        # widget=forms.CheckboxSelectMultiple
+        widget=CompanySelectWidget(
+            attrs={'data-minimum-input-length': 3},
+            options={'placeholder': 'Search for a company...',
+                     'minimumInputLength': 3
+                     })
     )
 
     coaches_mentors = MultipleChoiceField(
         queryset=Individual.objects.all(),
-        widget=forms.CheckboxSelectMultiple
+        # widget=forms.CheckboxSelectMultiple
+        widget=IndividualSelectWidget(attrs={'data-minimum-input-length': 3},
+                                      options={'placeholder': 'Search for an Individual...',
+                                               'minimumInputLength': 3
+                                               })
+
     )
 
     def clean(self):
@@ -89,17 +113,32 @@ class EditProgrammeForm(forms.ModelForm):
 
     partners = MultipleChoiceField(
         queryset=Company.objects.all(),
-        widget=forms.CheckboxSelectMultiple
+        # widget=forms.CheckboxSelectMultiple
+        widget=CompanySelectWidget(
+            attrs={'data-minimum-input-length': 3},
+            options={'placeholder': 'Search for a company...',
+                     'minimumInputLength': 3
+                     })
     )
 
     participants = MultipleChoiceField(
         queryset=Portfolio_Company.objects.all(),
-        widget=forms.CheckboxSelectMultiple
+        # widget=forms.CheckboxSelectMultiple
+        widget=CompanySelectWidget(
+            attrs={'data-minimum-input-length': 3},
+            options={'placeholder': 'Search for a company...',
+                     'minimumInputLength': 3
+                     })
     )
 
     coaches_mentors = MultipleChoiceField(
         queryset=Individual.objects.all(),
-        widget=forms.CheckboxSelectMultiple
+        # widget=forms.CheckboxSelectMultiple
+        widget=IndividualSelectWidget(attrs={'data-minimum-input-length': 3},
+                                      options={'placeholder': 'Search for an Individual...',
+                                               'minimumInputLength': 3
+                                               })
+
     )
 
     def save(self):
