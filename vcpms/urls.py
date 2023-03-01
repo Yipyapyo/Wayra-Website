@@ -63,6 +63,8 @@ urlpatterns = [
     path("account_settings/", views.account_settings, name="account_settings"),
     path("account_settings/change_password", views.change_password, name="change_password"),
     path("account_settings/contact_details", views.contact_details, name="contact_details"),
+    path("account_settings/upload_profile_picture", views.uplaod_profile_picture, name="uplaod_profile_picture"),
+    path("account_settings/remove_profile_picture", views.remove_profile_picture, name="remove_profile_picture"),
     path("deactivate_account", views.deactivate_account, name="deactivate_account"),
 
 

@@ -30,6 +30,14 @@ def account_settings(request):
     return render(request, 'settings/account_settings.html', context)
 
 @login_required
+def uplaod_profile_picture(request):
+    return redirect("account_settings")
+
+@login_required
+def remove_profile_picture(request):
+    return redirect("account_settings")
+
+@login_required
 def change_password(request):
     if request.method == "POST":
         form = ChangePasswordForm(data=request.POST, user=request.user)
