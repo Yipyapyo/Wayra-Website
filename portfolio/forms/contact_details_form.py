@@ -16,7 +16,7 @@ class ContactDetailsForm(forms.ModelForm):
         validators=[
             RegexValidator(
                 regex=r'^(?:0|\+?44)(?:\d\s?){9,10}$',
-                message="Your phone number should be of the format: 0712345678 or +44712345678 or"
+                message="Your phone number should be of the format: 0712345678 or +44712345678"
             )
         ])
     

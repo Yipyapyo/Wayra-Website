@@ -21,7 +21,7 @@ View and Update user settings
 def account_settings(request):
     current_user = request.user
     change_password_form = ChangePasswordForm(user=current_user)
-    contact_details_form = ContactDetailsForm(user= current_user)
+    contact_details_form = ContactDetailsForm(user= current_user, instance=request.user)
     context = {
         "user":current_user,
         "change_password_form": change_password_form,
@@ -36,7 +36,6 @@ def change_password(request):
         if form.is_valid():
             #Change the user's password
             form.save()
-            from django.contrib.auth import update_session_auth_hash
             update_session_auth_hash(request, form.user)
 
             messages.add_message(request, messages.SUCCESS, "Password Updated Successfully!")
@@ -44,9 +43,32 @@ def change_password(request):
         else:
             messages.add_message(request, messages.ERROR, "Unable to change your password!")
             current_user = request.user
+            contact_details_form = ContactDetailsForm(user= current_user, instance=request.user)
             context = {
                 "user":current_user,
                 "change_password_form":form,
+                "contact_details_form": contact_details_form,
+            }
+            return render(request, 'settings/account_settings.html', context)
+    else:
+        return HttpResponse("404, Unable to make this call")
+    
+@login_required
+def contact_details(request):
+    if request.method == "POST":
+        form = ContactDetailsForm(data=request.POST, user=request.user, instance=request.user)
+        if form.is_valid():
+            form.save()
+            messages.add_message(request, messages.SUCCESS, "Details Updated Successfully!")
+            return redirect('account_settings')
+        else:
+            messages.add_message(request, messages.ERROR, "Unable to change your details!")
+            current_user = request.user
+            change_password_form = ChangePasswordForm(user=current_user)
+            context = {
+                "user":current_user,
+                "change_password_form":change_password_form,
+                "contact_details_form": form,
             }
             return render(request, 'settings/account_settings.html', context)
     else:

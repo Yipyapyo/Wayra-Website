@@ -3,7 +3,7 @@ from django.test import TestCase
 from django.urls import reverse
 from portfolio.models import User
 from portfolio.tests.helpers import LogInTester, reverse_with_next
-from portfolio.forms import ChangePasswordForm
+from portfolio.forms import ChangePasswordForm, ContactDetailsForm
 from django.contrib.auth.hashers import check_password
 from django.http import HttpResponse
 
@@ -17,11 +17,18 @@ class SettingsViewTestCase(TestCase, LogInTester):
     def setUp(self) -> None:
         self.url = reverse('account_settings')
         self.change_password_url = reverse('change_password')
+        self.contact_details_url = reverse('contact_details')
         self.user = User.objects.get(email="john.doe@example.org")
-        self.form_input = {
+        self.change_password_form_input = {
              "old_password" : "Password123",
              "new_password" : "Password321",
              "confirm_password" : "Password321",
+        }
+        self.contact_details_form_input = {
+             "first_name" : "Johnny",
+             "last_name" : "Doe",
+             "email" : "john.doe@example.org",
+             "phone" : "0712345678",
         }
 
     def test_account_settings_url(self):
@@ -55,7 +62,7 @@ class SettingsViewTestCase(TestCase, LogInTester):
         self.client.login(email=self.user.email, password="Password123")
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
-        form = response.context['form']
+        form = response.context['change_password_form']
         self.assertTrue(isinstance(form, ChangePasswordForm))
         self.assertFalse(form.is_bound)
 
@@ -66,17 +73,17 @@ class SettingsViewTestCase(TestCase, LogInTester):
         self.assertEqual(response.status_code, 200)
         self.assertIsInstance(response, HttpResponse)
 
-        form = ChangePasswordForm(data=self.form_input, user=self.user)
+        form = ChangePasswordForm(data=self.change_password_form_input, user=self.user)
         self.assertTrue(form.is_valid())
         self.assertEqual(len(form.errors), 0)
-        self.assertTrue(check_password(self.form_input["old_password"], self.user.password))
+        self.assertTrue(check_password(self.change_password_form_input["old_password"], self.user.password))
 
-        response = self.client.post(self.change_password_url, self.form_input, follow=True)
+        response = self.client.post(self.change_password_url, self.change_password_form_input, follow=True)
         user = User.objects.get(email=self.user.email)
         self.assertTrue(user)
         response_url = reverse('account_settings')
         self.assertRedirects(response, response_url, status_code=302, target_status_code=200)
-        self.assertTrue(check_password(self.form_input["new_password"], user.password))
+        self.assertTrue(check_password(self.change_password_form_input["new_password"], user.password))
 
     def test_password_changed_unsuccessful(self):
         self.client.login(email=self.user.email, password='Password123')
@@ -84,17 +91,59 @@ class SettingsViewTestCase(TestCase, LogInTester):
         self.assertEqual(response.status_code, 200)
         self.assertIsInstance(response, HttpResponse)
 
-        form = ChangePasswordForm(data=self.form_input, user=self.user)
+        form = ChangePasswordForm(data=self.change_password_form_input, user=self.user)
         self.assertTrue(form.is_valid())
         self.assertEqual(len(form.errors), 0)
-        self.assertTrue(check_password(self.form_input["old_password"], self.user.password))
+        self.assertTrue(check_password(self.change_password_form_input["old_password"], self.user.password))
 
-        self.form_input["confirm_password"] = "WrongPassword"
+        self.change_password_form_input["confirm_password"] = "WrongPassword"
 
-        response = self.client.post(self.change_password_url, self.form_input, follow=True)
+        response = self.client.post(self.change_password_url, self.change_password_form_input, follow=True)
         self.assertEqual(response.status_code, 200)
-        self.assertTrue(check_password(self.form_input["old_password"], self.user.password))
-        self.assertFalse(check_password(self.form_input["new_password"], self.user.password))
-        form=response.context['form']
+        self.assertTrue(check_password(self.change_password_form_input["old_password"], self.user.password))
+        self.assertFalse(check_password(self.change_password_form_input["new_password"], self.user.password))
+        form=response.context['change_password_form']
         self.assertFalse(form.is_valid())
         self.assertEqual(form.errors['confirm_password'][0], 'Confirmation does not match password.')
+
+        #Contact details Tests
+    def test_contact_details_changed_successful(self):
+        self.client.login(email=self.user.email, password='Password123')
+        response = self.client.get(self.contact_details_url)
+        self.assertEqual(response.status_code, 200)
+        self.assertIsInstance(response, HttpResponse)
+
+        form = ContactDetailsForm(data=self.contact_details_form_input, user=self.user, instance=self.user)
+        self.assertTrue(form.is_valid())
+        self.assertEqual(len(form.errors), 0)
+        self.user = User.objects.get(email="john.doe@example.org")
+        self.assertEqual(self.user.first_name, "John")
+
+        response = self.client.post(self.contact_details_url, self.contact_details_form_input, follow=True)
+        user = User.objects.get(email=self.user.email)
+        self.assertTrue(user)
+        response_url = reverse('account_settings')
+        self.assertRedirects(response, response_url, status_code=302, target_status_code=200)
+        self.assertEqual(user.first_name, self.contact_details_form_input["first_name"])
+
+    def test_contact_details_changed_unsuccessful(self):
+        self.client.login(email=self.user.email, password='Password123')
+        response = self.client.get(self.contact_details_url)
+        self.assertEqual(response.status_code, 200)
+        self.assertIsInstance(response, HttpResponse)
+
+        self.contact_details_form_input["phone"] = "wrong phone number"
+        form = ContactDetailsForm(data=self.contact_details_form_input, user=self.user, instance=self.user)
+        self.assertFalse(form.is_valid())
+        self.assertGreater(len(form.errors), 0)
+        self.user = User.objects.get(email="john.doe@example.org")
+        self.assertEqual(self.user.first_name, "John")
+
+        response = self.client.post(self.contact_details_url, self.contact_details_form_input, follow=True)
+        self.assertEqual(response.status_code, 200)
+        self.user = User.objects.get(email="john.doe@example.org")
+        self.assertEqual(self.user.first_name, "John")
+        self.assertNotEqual(self.user.first_name, self.contact_details_form_input["first_name"])
+        form=response.context['contact_details_form']
+        self.assertFalse(form.is_valid())
+        self.assertEqual(form.errors['phone'][0], 'Your phone number should be of the format: 0712345678 or +44712345678')

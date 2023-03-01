@@ -54,6 +54,7 @@ urlpatterns = [
     # Settings views
     path("account_settings/", views.account_settings, name="account_settings"),
     path("account_settings/change_password", views.change_password, name="change_password"),
+    path("account_settings/contact_details", views.contact_details, name="contact_details"),
     path("deactivate_account", views.deactivate_account, name="deactivate_account"),
 
 

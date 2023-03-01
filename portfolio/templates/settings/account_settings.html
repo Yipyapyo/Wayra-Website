@@ -12,21 +12,16 @@
 
     <div class="container-fluid">
         <div class="col">
+            <div class="row mb-2 gx-5">
+                {% include 'settings/upload_profile_section.html' %}
+                {% include 'settings/contact_details_section.html' with form=contact_details_form %}
+            </div>
 
-            <form class="file-upload">
-                <div class="row mb-2 gx-5">
-                    {% include 'settings/upload_profile_section.html' %}
-                    {% include 'settings/contact_details_section.html' with forrm=contact_details_form %}
-                </div>
-
-                <div class="row mb-2 gx-5">
-                    {% include 'settings/change_password_section.html' with form=change_password_form %}
-                    {% include 'settings/links_section.html' %}
-                </div>
-                {% include 'settings/deactivate_account.html' %}
-
-            </form>
-
+            <div class="row mb-2 gx-5">
+                {% include 'settings/change_password_section.html' with form=change_password_form %}
+                {% include 'settings/links_section.html' %}
+            </div>
+            {% include 'settings/deactivate_account.html' %}
         </div>
     </div>
 
