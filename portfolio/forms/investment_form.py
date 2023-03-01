@@ -16,6 +16,11 @@ class InvestmentForm(forms.ModelForm):
     class Meta:
         model = Investment
         fields = ["investor", "startup", "typeOfFoundingRounds", "investmentAmount", "dateInvested"]
+        widgets = {
+            'dateInvested':forms.DateInput(attrs={
+                'type':'date'
+            })
+        }
     
     investor = InvestorChoiceField(
         queryset = InvestorCompany.objects.all(),

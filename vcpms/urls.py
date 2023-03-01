@@ -18,9 +18,6 @@ from django.urls import path, include
 from portfolio import views
 from portfolio.views import founder_views
 
-
-
-
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('dashboard', views.dashboard, name='dashboard'),
@@ -35,7 +32,7 @@ urlpatterns = [
     path('portfolio_company/company_delete/<int:company_id>', views.delete_company, name='delete_company'),
     path('portfolio_company/archive/<int:company_id>', views.archive_company, name='archive_company'),
     path('portfolio_company/unarchive/<int:company_id>', views.unarchive_company, name='unarchive_company'),
-    
+
     # Individual CRUD
     path("individual_page/individual_create/", views.individual_create, name="individual_create"),
     path("individual_page/", views.individual_page, name="individual_page"),
@@ -59,7 +56,6 @@ urlpatterns = [
     path("archive_page/", views.archive, name="archive_page"),
     path('archive/search', views.archive_search, name='archive_search'),
 
-
     # Permissions
     path("select2/", include("django_select2.urls")),
     path("permissions/users/", views.UserListView.as_view(), name='permission_user_list'),
@@ -73,5 +69,9 @@ urlpatterns = [
     path("permissions/<int:id>/edit_group/", views.GroupEditView.as_view(), name='permission_edit_group'),
     path("permissions/<int:id>/delete_group/", views.GroupDeleteView.as_view(), name='permission_delete_group'),
 
-]
+    # Investments
+    path("investment/update/<int:company_id>/<int:id>", views.InvestmentUpdateView.as_view(), name='investment_update'),
+    path("investment/delete/<int:company_id>/<int:id>", views.InvestmentDeleteView.as_view(), name='investment_delete'),
+    path("investment/create/<int:company_id>", views.InvestmentCreateView.as_view(), name='investment_create'),
 
+]

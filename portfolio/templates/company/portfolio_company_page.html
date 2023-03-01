@@ -7,6 +7,9 @@
             <p>Telefonica Innovations</p>
             <h2 class="pb-3">{{company.name}}</h2>
         </div>
+        <div class="col">
+            <a href="{% url 'investment_create' company.id %}" class="btn btn-sm btn-outline-secondary">Create investment</a>
+        </div>
         <div class="btn-group me-2">
             {% if company.is_archived %}
                 <a type="button" class="btn btn-sm btn-outline-secondary" href="{% url 'unarchive_company' company.id %}">Unarchive</a>

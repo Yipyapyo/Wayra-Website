@@ -5,3 +5,4 @@ from .permission_views import *
 from .founder_views import *
 from .programme_views import *
 from .archive_views import *
+from .investment_views import *
