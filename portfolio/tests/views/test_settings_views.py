@@ -105,7 +105,7 @@ class SettingsViewTestCase(TestCase, LogInTester):
         self.assertFalse(form.is_valid())
         self.assertEqual(form.errors['confirm_password'][0], 'Confirmation does not match password.')
 
-        #Contact details Tests
+    #Contact details Tests
     def test_contact_details_changed_successful(self):
         self.client.login(email=self.user.email, password='Password123')
         response = self.client.get(self.contact_details_url)
