@@ -1,3 +1,4 @@
+{% load static %}
 <div class="container-fluid pe-5">
     <div class="row pe-5 me-5">
         <div class="col-xl-7 mx-5 w-100 pe-5">
@@ -7,12 +8,21 @@
                     <div class="d-flex align-items-center">
                         <div>
                             <div class="d-flex align-items-center">
-                                <a href="#" class="avatar avatar-lg bg-warning rounded-circle text-white">
+                                <a class="avatar avatar-lg bg-warning rounded-circle text-white">
+                                    {% if user.profile_picture %}
                                     <img alt="..."
-                                        src="https://images.unsplash.com/photo-1579463148228-138296ac3b98?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=3&w=256&h=256&q=80"
+                                        src="{{ user.profile_picture.url }}"
                                         class="rounded-circle"
                                         style="width: 100px; height: 100px"
                                     >
+                                    {% else %}
+                                    <!-- <i class="fas fa-fw fa-user rounded-circle fa-5x pt-1 bg-secondary" style="width: 100px; height: 100px"></i> -->
+                                    <img alt="..."
+                                        src="{% static 'images/default_profile_picture.jpeg' %}"
+                                        class="rounded-circle"
+                                        style="width: 100px; height: 100px"
+                                    >
+                                    {% endif %}
                                 </a>
                                 <div class="ms-4">
                                     <span class="h4 d-block mb-0">{{user.first_name}} {{user.last_name}}</span>
@@ -22,9 +32,13 @@
                         </div>
                         <div class="ms-auto">
                             <!-- <button type="button" class="btn btn-primary">Upload</button> -->
-                            <input type="file" accept="image/png, image/gif, image/jpeg" id="customFile" name="file" hidden="">
-                            <label class="btn btn-success btn-block" for="customFile">Upload</label>
-                            <button type="button" class="btn btn-danger">Remove</button>
+                            <form class="mb-2" action="{% url 'uplaod_profile_picture' %}" method="post"  enctype="multipart/form-data">
+                                {% csrf_token %}
+                                {% include 'partials/utilities/settings_form_input.html' with field=form.profile_picture%}
+                                <button type="submit" class="btn btn-primary">Upload</button>
+                                <a type="button" class="btn btn-danger" href="{% url 'remove_profile_picture' %}">Remove</a>
+                            </form>
+                            
                         </div>
                     </div>
                 </div>

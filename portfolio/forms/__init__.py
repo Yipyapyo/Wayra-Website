@@ -7,3 +7,4 @@ from .investment_form import *
 from .programme_form import *
 from .change_password_form import *
 from .contact_details_form import *
+from .profile_picture_form import *

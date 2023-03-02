@@ -13,7 +13,7 @@
     <div class="container-fluid">
         <div class="col">
             <div class="row mb-2 gx-5">
-                {% include 'settings/upload_profile_section.html' %}
+                {% include 'settings/upload_profile_section.html' with form=profile_picture_form %}
                 {% include 'settings/contact_details_section.html' with form=contact_details_form %}
             </div>
 
