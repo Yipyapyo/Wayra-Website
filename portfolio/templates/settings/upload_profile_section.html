@@ -32,7 +32,7 @@
                         </div>
                         <div class="ms-auto">
                             <!-- <button type="button" class="btn btn-primary">Upload</button> -->
-                            <form class="mb-2" action="{% url 'uplaod_profile_picture' %}" method="post"  enctype="multipart/form-data">
+                            <form class="mb-2" action="{% url 'upload_profile_picture' %}" method="post"  enctype="multipart/form-data">
                                 {% csrf_token %}
                                 {% include 'partials/utilities/settings_form_input.html' with field=form.profile_picture%}
                                 <button type="submit" class="btn btn-primary">Upload</button>

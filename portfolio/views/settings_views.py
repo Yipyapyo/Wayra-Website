@@ -32,18 +32,14 @@ def account_settings(request):
     return render(request, 'settings/account_settings.html', context)
 
 @login_required
-def uplaod_profile_picture(request):
+def upload_profile_picture(request):
     if request.method == "POST":
         form = ProfilePictureForm(request.POST, request.FILES, instance=request.user)
         if form.is_valid():
-            #Change the user's password
             form.save()
-            print("Photo is valid")
-
             messages.add_message(request, messages.SUCCESS, "Profile Pictuer Updated Successfully!")
             return redirect('account_settings')
         else:
-            print(form.errors)
             messages.add_message(request, messages.ERROR, "Unable to update your profile picture!")
             current_user = request.user
             change_password_form = ChangePasswordForm(user=current_user)

@@ -4,9 +4,9 @@ from django.test import TestCase
 from portfolio.models import User
 from portfolio.forms import ProfilePictureForm
 from io import BytesIO
-from PIL.Image import Image
 from django.core.files.uploadedfile import SimpleUploadedFile
-from django.db.models.fields.files import ImageFieldFile
+import logging
+logging.getLogger("PIL").setLevel(logging.WARNING)
 
 class CompanyCreateFormTestCase(TestCase):
 
