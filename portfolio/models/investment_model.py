@@ -25,4 +25,5 @@ class Investment(models.Model):
     investmentAmount = models.DecimalField(max_digits=15, decimal_places=2)
     dateInvested = models.DateField(validators=[MaxValueValidator(limit_value=get_current_date().date())])
     dateExit = models.DateField(blank=True, null=True)
+    contractRight = models.CharField(max_length=1000)
 
