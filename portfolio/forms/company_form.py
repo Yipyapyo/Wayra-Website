@@ -25,10 +25,15 @@ class InvestorCompanyCreateForm(forms.ModelForm):
         model = InvestorCompany
         fields = ["company", "angelListLink", "crunchbaseLink", "linkedInLink", "classification"]
 
+    def __init__(self, *args, **kwargs):
+        super(InvestorCompanyCreateForm, self).__init__(*args, **kwargs)
+    #investors = InvestorCompany.objects.all().values_list('company__id', flat=True)
     company = CompanyChoiceField(
-        queryset = Company.objects.filter(~Exists(Investment.objects.filter(investor=OuterRef('pk')))),
+        queryset = Company.objects.filter(~Exists(InvestorCompany.objects.filter(company=OuterRef('id')))),
+        #queryset = Company.objects.exclude(id__in=investors),
         widget=forms.Select()
     )
+    
 
 class InvestorCompanyEditForm(forms.ModelForm):
     class Meta:
