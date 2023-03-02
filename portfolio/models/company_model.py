@@ -3,6 +3,8 @@ from django.core.validators import RegexValidator, MinLengthValidator
 
 class Company(models.Model):
     """A company to store information about."""
+    def __str__(self):
+        return f'{self.name}'
 
     name = models.CharField(
         max_length=60,
