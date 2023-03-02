@@ -5,14 +5,16 @@ from portfolio.models.past_experience_model import PastExperience
 from portfolio.models.founder_model import Founder
 from portfolio.forms.founder_form import FounderForm
 from django.shortcuts import redirect, render
+from django_countries.fields import Country
+from django.contrib.auth.decorators import login_required
 
 """
 Create a founder.
 """
 
-
+@login_required
 def founder_create(request):
-    if request.method == "POST":
+    if request.method == 'POST':
         address_forms = AddressCreateForm(request.POST, prefix="form2")
         past_experience_forms = [PastExperienceForm(request.POST, prefix=str(x)) for x in range(0,2)]
         founder_form = FounderForm(request.POST, prefix="form1")
@@ -20,11 +22,14 @@ def founder_create(request):
             founder = founder_form.save()     
             new_address = address_forms.save(commit=False)
             new_address.individual = founder
+            new_address.country = Country(new_address.country)
             new_address.save()
             for pf in past_experience_forms:
                 new_past_experience = pf.save(commit=False)
                 new_past_experience.individual = founder
                 new_past_experience.duration = new_past_experience.end_year - new_past_experience.start_year
+                new_past_experience.save()
+                new_past_experience.duration = "To present"
                 new_past_experience.save()
             return redirect("individual_page")
     else:
@@ -43,8 +48,8 @@ def founder_create(request):
 Delete a founder.
 """
 
-
-def founder_delete(request):
+@login_required
+def founder_delete(request, id):
     founderInstance = Founder.objects.get(id=id)
     if request.method == 'POST':
         founderInstance.delete()
@@ -55,15 +60,16 @@ def founder_delete(request):
 """
 Modify a founder.
 """
-
+@login_required
 def founder_modify(request, id):
     founder_form = Founder.objects.get(id=id)
     address_forms = ResidentialAddress.objects.get(id=id)
     past_experience_list = PastExperience.objects.filter(individual=founder_form)
+    past_experience_forms = [PastExperienceForm(instance=p, prefix="past_experience") for p in past_experience_list]
     if request.method == 'POST':
         form1 = FounderForm(request.POST, instance=founder_form, prefix="form1")
         form2 = AddressCreateForm(request.POST, instance=address_forms, prefix="form2")
-        forms3 = [PastExperienceForm(request.POST, instance=p, prefix="past_experience_{}".format(p.id)) for p in past_experience_list]
+        forms3 = [PastExperienceForm(request.POST, instance=p, prefix="past_experience") for p in past_experience_list]
         if form1.is_valid() and form2.is_valid() and all([pf.is_valid() for pf in forms3]):
             updated_founder = form1.save()
             updated_address = form2.save(commit=False)
@@ -78,7 +84,7 @@ def founder_modify(request, id):
     else:
         form1 = FounderForm(instance=founder_form, prefix="form1")
         form2 = AddressCreateForm(instance=address_forms, prefix="form2")
-        forms3 = [PastExperienceForm(instance=p, prefix="past_experience_{}".format(p.id)) for p in past_experience_list]
+        forms3 = past_experience_forms
     context = {
         'founderForm': form1,
         'addressForms': form2,

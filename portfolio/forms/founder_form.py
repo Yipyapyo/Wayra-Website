@@ -6,7 +6,10 @@ from phonenumber_field.widgets import PhoneNumberPrefixWidget
 class FounderForm(forms.ModelForm):
     class Meta:
         model = Founder
-        fields = '__all__'
+        fields = ["name", "AngelListLink", "CrunchbaseLink", "LinkedInLink",
+                  "Company", "Position", "Email", "PrimaryNumber", "SecondaryNumber", "companyFounded", "additionalInformation"]
+        exclude = ('is_archived',)
+
 
     def __init__(self, *args, **kwargs):
         super(FounderForm, self).__init__(*args, **kwargs)
