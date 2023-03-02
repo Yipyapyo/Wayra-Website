@@ -191,6 +191,7 @@ class ProgrammeDeleteViewTestCase(TestCase, LogInTester):
 
     def test_successful_delete(self):
         before_count = Programme.objects.count()
+        self.client.login(email=self.user.email, password="Password123")
         self.client.post(self.url, {})
         after_count = Programme.objects.count()
         self.assertEqual(before_count-1, after_count)
