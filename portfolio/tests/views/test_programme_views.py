@@ -142,8 +142,43 @@ class ProgrammeUpdateViewTestCase(TestCase, LogInTester):
         response = self.client.get(self.url)
         self.assertRedirects(response, redirect_url, status_code=302, target_status_code=200)
     
+    def test_successful_update_programme(self):
+        self.client.login(email=self.user.email, password="Password123")
+        image_file = BytesIO()
+        image_file.write(open("portfolio/tests/forms/wayra_logo.png", 'rb').read())
+        image_file.seek(0)
+        self.file_data = SimpleUploadedFile("wayra_logo.png", image_file.read(), content_type="image/png")
+        self.form_input = {
+            "name": "Different Name",
+            "cohort": 2,  # avoid pk of default_programme
+            "partners": [1],  # for pk of default_company
+            "participants": [1],  # for pk of default_portfolio_company
+            "coaches_mentors": [1],  # for pk of default_individual
+            "cover": self.file_data
+        }
+        response = self.client.post(self.url, self.form_input, follow=True)
+        self.assertTemplateUsed(response, 'programmes/programme_list_page.html')
+        self.assertEqual(Programme.objects.get(id=1).name, 'Different Name')
 
+    def test_unsuccessful_update_programme(self):
+        self.client.login(email=self.user.email, password="Password123")
+        image_file = BytesIO()
+        image_file.write(open("portfolio/tests/forms/wayra_logo.png", 'rb').read())
+        image_file.seek(0)
+        self.file_data = SimpleUploadedFile("wayra_logo.png", image_file.read(), content_type="image/png")
+        self.form_input = {
+            "name": "",
+            "cohort": 2,  # avoid pk of default_programme
+            "partners": [1],  # for pk of default_company
+            "participants": [1],  # for pk of default_portfolio_company
+            "coaches_mentors": [1],  # for pk of default_individual
+            "cover": self.file_data
+        }
+        response = self.client.post(self.url, self.form_input, follow=True)
+        self.assertTemplateUsed(response, 'programmes/programme_update_page.html')
+        self.assertEqual(Programme.objects.get(id=1).name, 'Accelerator Programme')
 
+        
 class ProgrammeDeleteViewTestCase(TestCase, LogInTester):
     """Unit tests of the programme list view"""
     DEFAULT_FIXTURES = ['portfolio/tests/fixtures/default_company.json',
@@ -190,10 +225,13 @@ class ProgrammeDeleteViewTestCase(TestCase, LogInTester):
         self.assertRedirects(response, redirect_url, status_code=302, target_status_code=200)
 
     def test_successful_delete(self):
+        self.client.login(email=self.user.email, password="Password123")
         before_count = Programme.objects.count()
         self.client.post(self.url, {})
         after_count = Programme.objects.count()
         self.assertEqual(before_count-1, after_count)
+    
+    
 class ProgrammeViewTestCase(TestCase, LogInTester):
     """Unit tests of the programme list view"""
     fixtures = [
