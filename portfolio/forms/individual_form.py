@@ -13,6 +13,7 @@ class IndividualCreateForm(forms.ModelForm):
         model = Individual
         fields = ["name", "AngelListLink", "CrunchbaseLink", "LinkedInLink",
                   "Company", "Position", "Email", "PrimaryNumber", "SecondaryNumber"]
+        exclude = ('is_archived',)
 
     def __init__(self, *args, **kwargs):
         super(IndividualCreateForm, self).__init__(*args, **kwargs)

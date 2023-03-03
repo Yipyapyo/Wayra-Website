@@ -1,4 +1,5 @@
 from django import forms
+from django_select2 import forms as d2forms
 from portfolio.models import Company, Individual, Portfolio_Company, Programme
 
 
@@ -7,27 +8,51 @@ class MultipleChoiceField(forms.ModelMultipleChoiceField):
         return obj.name
 
 
+class CompanySelectWidget(d2forms.ModelSelect2MultipleWidget):
+    search_fields = ['name__icontains']
+
+
+class IndividualSelectWidget(d2forms.ModelSelect2MultipleWidget):
+    search_fields = ['name__icontains']
+
+
 class CreateProgrammeForm(forms.ModelForm):
     class Meta:
         model = Programme
-        fields = ["name", "cohort"]
+        fields = ["name", "cohort", "cover"]
         widgets = {
-            'cohort': forms.NumberInput(attrs={'min': 1})
+            'cohort': forms.NumberInput(attrs={'min': 1}),
+            'cover': forms.FileInput()
         }
 
     partners = MultipleChoiceField(
         queryset=Company.objects.all(),
-        widget=forms.CheckboxSelectMultiple
+        # widget=forms.CheckboxSelectMultiple
+        widget=CompanySelectWidget(
+            attrs={'data-minimum-input-length': 3},
+            options={'placeholder': 'Search for a company...',
+                     'minimumInputLength': 3
+                     })
     )
 
     participants = MultipleChoiceField(
         queryset=Portfolio_Company.objects.all(),
-        widget=forms.CheckboxSelectMultiple
+        # widget=forms.CheckboxSelectMultiple
+        widget=CompanySelectWidget(
+            attrs={'data-minimum-input-length': 3},
+            options={'placeholder': 'Search for a company...',
+                     'minimumInputLength': 3
+                     })
     )
 
     coaches_mentors = MultipleChoiceField(
         queryset=Individual.objects.all(),
-        widget=forms.CheckboxSelectMultiple
+        # widget=forms.CheckboxSelectMultiple
+        widget=IndividualSelectWidget(attrs={'data-minimum-input-length': 3},
+                                      options={'placeholder': 'Search for an Individual...',
+                                               'minimumInputLength': 3
+                                               })
+
     )
 
     def clean(self):
@@ -44,15 +69,15 @@ class CreateProgrammeForm(forms.ModelForm):
         new_programme = Programme.objects.create(
             name=self.cleaned_data.get("name"),
             cohort=self.cleaned_data.get("cohort"),
+            cover=self.cleaned_data.get("cover")
         )
         for partner in self.cleaned_data.get("partners"):
-
             new_programme.partners.add(partner)
         for participant in self.cleaned_data.get("participants"):
             new_programme.participants.add(participant)
         for coach in self.cleaned_data.get("coaches_mentors"):
             new_programme.coaches_mentors.add(coach)
-
+        new_programme.save()
     # SAVE THE BELOW FOR NOW IN CASE THIS DOESN'T WORK
 
     # #Populating partner choices
@@ -80,24 +105,40 @@ class CreateProgrammeForm(forms.ModelForm):
 class EditProgrammeForm(forms.ModelForm):
     class Meta:
         model = Programme
-        fields = ["name", "cohort"]
+        fields = ["name", "cohort", "cover"]
         widgets = {
-            'cohort': forms.NumberInput(attrs={'min': 1})
+            'cohort': forms.NumberInput(attrs={'min': 1}),
+            'cover': forms.FileInput()
         }
 
     partners = MultipleChoiceField(
         queryset=Company.objects.all(),
-        widget=forms.CheckboxSelectMultiple
+        # widget=forms.CheckboxSelectMultiple
+        widget=CompanySelectWidget(
+            attrs={'data-minimum-input-length': 3},
+            options={'placeholder': 'Search for a company...',
+                     'minimumInputLength': 3
+                     })
     )
 
     participants = MultipleChoiceField(
         queryset=Portfolio_Company.objects.all(),
-        widget=forms.CheckboxSelectMultiple
+        # widget=forms.CheckboxSelectMultiple
+        widget=CompanySelectWidget(
+            attrs={'data-minimum-input-length': 3},
+            options={'placeholder': 'Search for a company...',
+                     'minimumInputLength': 3
+                     })
     )
 
     coaches_mentors = MultipleChoiceField(
         queryset=Individual.objects.all(),
-        widget=forms.CheckboxSelectMultiple
+        # widget=forms.CheckboxSelectMultiple
+        widget=IndividualSelectWidget(attrs={'data-minimum-input-length': 3},
+                                      options={'placeholder': 'Search for an Individual...',
+                                               'minimumInputLength': 3
+                                               })
+
     )
 
     def save(self):
@@ -114,3 +155,5 @@ class EditProgrammeForm(forms.ModelForm):
             programme.participants.add(participant)
         for coach in self.cleaned_data.get("coaches_mentors"):
             programme.coaches_mentors.add(coach)
+        programme.cover = self.cleaned_data.get("cover")
+        programme.save()

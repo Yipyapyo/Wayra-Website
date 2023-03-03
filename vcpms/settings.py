@@ -15,6 +15,11 @@ from pathlib import Path
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+#Media links for development use
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'
+
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
@@ -129,6 +134,9 @@ AUTH_USER_MODEL = 'portfolio.User'
 REDIRECT_URL_WHEN_LOGGED_IN = 'dashboard'
 LOGIN_URL = 'login'
 
+
+ITEM_ON_PAGE = 6
+
 ADMINS_USERS_PER_PAGE = 15
 
 # Setting Cache for faster retrieval
@@ -139,3 +147,4 @@ ADMINS_USERS_PER_PAGE = 15
 #     }
 # }
 # SELECT2_CACHE_BACKEND = 'default'
+

@@ -1,9 +1,0 @@
-{% extends 'dashboard_template.html' %}
-{% block main %}
-    <h1>Delete programme</h1>
-    <form method="post">
-        {% csrf_token %}
-        <input type="submit" value="Submit"/>
-        <a href="{% url 'programme_list' %}">Cancel</a>
-    </form>
-{% endblock %}
