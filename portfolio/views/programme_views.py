@@ -52,7 +52,7 @@ class ProgrammeListView(LoginRequiredMixin, ListView):
     paginate_by = settings.ITEM_ON_PAGE
 
     def get_queryset(self):
-        return Programme.objects.all()
+        return Programme.objects.all().order_by('id')
 
     
 

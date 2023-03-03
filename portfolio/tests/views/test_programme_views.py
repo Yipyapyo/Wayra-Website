@@ -1,4 +1,7 @@
 """Unit tests of the dashboard views"""
+import os
+import shutil
+
 from django.test import TestCase
 from django.urls import reverse
 
@@ -14,6 +17,7 @@ from django.forms.fields import *
 from django.test import TestCase
 from portfolio.forms import CreateProgrammeForm, MultipleChoiceField, EditProgrammeForm
 from portfolio.models import Company, Portfolio_Company, Individual, Programme
+from vcpms.settings import MEDIA_ROOT
 
 
 class ProgrammeCreateViewTestCase(TestCase, LogInTester):
@@ -51,6 +55,9 @@ class ProgrammeCreateViewTestCase(TestCase, LogInTester):
             "cover": self.file_data
         }
         self.default_programme = Programme.objects.get(id=1)
+        # TODO: Reset media directory should write a proper way soon
+        shutil.rmtree(MEDIA_ROOT)
+        os.mkdir(MEDIA_ROOT)
 
     def test_create_programme_url(self):
         self.assertEqual(self.url, '/programme_page/create/')
@@ -61,7 +68,7 @@ class ProgrammeCreateViewTestCase(TestCase, LogInTester):
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'programmes/programme_create_page.html')
-        form = response.context['form'] 
+        form = response.context['form']
         self.assertTrue(isinstance(form, CreateProgrammeForm))
         self.assertFalse(form.is_bound)
 
@@ -69,7 +76,7 @@ class ProgrammeCreateViewTestCase(TestCase, LogInTester):
         redirect_url = reverse_with_next('login', self.url)
         response = self.client.get(self.url)
         self.assertRedirects(response, redirect_url, status_code=302, target_status_code=200)
-    
+
     def test_successful_form(self):
         self.client.login(email=self.user.email, password="Password123")
         response = self.client.post(self.url, self.form_input, follow=True)
@@ -124,16 +131,19 @@ class ProgrammeUpdateViewTestCase(TestCase, LogInTester):
 
         self.target_programme = Programme.objects.get(id=1)
         self.url = reverse('programme_update', kwargs={'id': self.target_programme.id})
+        # TODO: Reset media directory should write a proper way soon
+        shutil.rmtree(MEDIA_ROOT)
+        os.mkdir(MEDIA_ROOT)
 
     def test_update_programme_url(self):
-        self.assertEqual(self.url,f'/programme_page/{self.target_programme.id}/update/')
+        self.assertEqual(self.url, f'/programme_page/{self.target_programme.id}/update/')
 
     def test_get_programme_update_view(self):
         self.client.login(email=self.user.email, password="Password123")
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'programmes/programme_update_page.html')
-        form = response.context['form'] 
+        form = response.context['form']
         self.assertTrue(isinstance(form, EditProgrammeForm))
         self.assertFalse(form.is_bound)
 
@@ -141,7 +151,7 @@ class ProgrammeUpdateViewTestCase(TestCase, LogInTester):
         redirect_url = reverse_with_next('login', self.url)
         response = self.client.get(self.url)
         self.assertRedirects(response, redirect_url, status_code=302, target_status_code=200)
-    
+
     def test_successful_update_programme(self):
         self.client.login(email=self.user.email, password="Password123")
         image_file = BytesIO()
@@ -178,7 +188,7 @@ class ProgrammeUpdateViewTestCase(TestCase, LogInTester):
         self.assertTemplateUsed(response, 'programmes/programme_update_page.html')
         self.assertEqual(Programme.objects.get(id=1).name, 'Accelerator Programme')
 
-        
+
 class ProgrammeDeleteViewTestCase(TestCase, LogInTester):
     """Unit tests of the programme list view"""
     DEFAULT_FIXTURES = ['portfolio/tests/fixtures/default_company.json',
@@ -215,9 +225,12 @@ class ProgrammeDeleteViewTestCase(TestCase, LogInTester):
         self.default_programme = Programme.objects.get(id=1)
         self.target_programme = Programme.objects.get(id=1)
         self.url = reverse('programme_delete', kwargs={'id': self.target_programme.id})
+        # TODO: Reset media directory should write a proper way soon
+        shutil.rmtree(MEDIA_ROOT)
+        os.mkdir(MEDIA_ROOT)
 
     def test_delete_programme_url(self):
-        self.assertEqual(self.url,f'/programme_page/{self.target_programme.id}/delete/')
+        self.assertEqual(self.url, f'/programme_page/{self.target_programme.id}/delete/')
 
     def test_programme_delete_redirects_when_not_logged_in(self):
         redirect_url = reverse_with_next('login', self.url)
@@ -229,8 +242,8 @@ class ProgrammeDeleteViewTestCase(TestCase, LogInTester):
         before_count = Programme.objects.count()
         self.client.post(self.url, {})
         after_count = Programme.objects.count()
-        self.assertEqual(before_count-1, after_count)
-    
+        self.assertEqual(before_count - 1, after_count)
+
 
 class ProgrammeViewTestCase(TestCase, LogInTester):
     """Unit tests of the programme list view"""
@@ -244,7 +257,6 @@ class ProgrammeViewTestCase(TestCase, LogInTester):
         self.user = User.objects.get(email="john.doe@example.org")
         self.admin_user = User.objects.get(email="petra.pickles@example.org")
 
-    
     def test_programme_url(self):
         self.assertEqual(self.url, '/programme_page/')
 
