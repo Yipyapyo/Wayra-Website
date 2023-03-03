@@ -1,4 +1,4 @@
-from asyncio.windows_events import NULL
+
 from django.test import TestCase
 from django.urls import reverse
 from portfolio.models import ResidentialAddress, PastExperience, InvestorIndividual, User
