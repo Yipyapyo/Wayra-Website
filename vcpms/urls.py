@@ -17,6 +17,8 @@ from django.contrib import admin
 from django.urls import path, include
 from portfolio import views
 from portfolio.views import founder_views
+from django.conf import settings
+from django.conf.urls.static import static
 
 
 
@@ -59,6 +61,14 @@ urlpatterns = [
     path("archive_page/", views.archive, name="archive_page"),
     path('archive/search', views.archive_search, name='archive_search'),
 
+    # Settings views
+    path("account_settings/", views.account_settings, name="account_settings"),
+    path("account_settings/change_password", views.change_password, name="change_password"),
+    path("account_settings/contact_details", views.contact_details, name="contact_details"),
+    path("account_settings/upload_profile_picture", views.upload_profile_picture, name="upload_profile_picture"),
+    path("account_settings/remove_profile_picture", views.remove_profile_picture, name="remove_profile_picture"),
+    path("deactivate_account", views.deactivate_account, name="deactivate_account"),
+
 
     # Permissions
     path("select2/", include("django_select2.urls")),
@@ -75,3 +85,5 @@ urlpatterns = [
 
 ]
 
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
