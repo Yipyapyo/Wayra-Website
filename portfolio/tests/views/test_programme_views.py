@@ -227,12 +227,11 @@ class ProgrammeDeleteViewTestCase(TestCase, LogInTester):
     def test_successful_delete(self):
         self.client.login(email=self.user.email, password="Password123")
         before_count = Programme.objects.count()
-        self.client.login(email=self.user.email, password="Password123")
         self.client.post(self.url, {})
         after_count = Programme.objects.count()
         self.assertEqual(before_count-1, after_count)
     
-    
+
 class ProgrammeViewTestCase(TestCase, LogInTester):
     """Unit tests of the programme list view"""
     fixtures = [
