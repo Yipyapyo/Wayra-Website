@@ -19,8 +19,8 @@
                     <td>{{ investment.dateInvested }}</td>
                     <td>{{ investment.dateExit }}</td>
                     <td>
-                        <a href="{% url 'investment_update' investment.id %}" class="btn btn-primary">Update</a>
-                        <a href="{% url 'investment_delete' investment.id %}" class="btn btn-primary">Delete</a>
+                        <a href="{% url 'investment_update' investment.id %}" class="btn btn-sm btn-primary">Update</a>
+                        <a href="{% url 'investment_delete' investment.id %}" class="btn btn-sm btn-primary">Delete</a>
                     </td>
                 {% endfor %}
                 </tbody>
