@@ -17,6 +17,7 @@ from django.contrib import admin
 from django.urls import path, include
 from portfolio import views
 from portfolio.views import founder_views
+from portfolio.views import investor_individual_views
 from django.conf import settings
 from django.conf.urls.static import static
 
@@ -49,6 +50,9 @@ urlpatterns = [
     path("individual_profile_page/<int:id>/", views.individual_profile, name='individual_profile'),
     path('individual_page/archive/<int:id>', views.archive_individual, name='archive_individual'),
     path('individual_page/unarchive/<int:id>', views.unarchive_individual, name='unarchive_individual'),
+
+    # Individual Investor CRUD
+    path("individual_page/investor_individual_create/", investor_individual_views.investor_individual_create, name="investor_individual_create"),
 
     # Programme CRUD
     path("programme_page/", views.ProgrammeListView.as_view(), name="programme_list"),

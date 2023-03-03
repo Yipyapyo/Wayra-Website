@@ -5,13 +5,14 @@ from portfolio.models.past_experience_model import PastExperience
 from portfolio.models.investor_individual_model import InvestorIndividual
 from portfolio.forms.investor_individual_form import InvestorIndividualForm
 from django.shortcuts import redirect, render
+from django.contrib.auth.decorators import login_required
 
 """
 Create a investor_individual.
 """
 
-
-def individual_investor_create(request):
+@login_required
+def investor_individual_create(request):
     if request.method == "POST":
         address_forms = AddressCreateForm(request.POST, prefix="form2")
         past_experience_forms = [PastExperienceForm(request.POST, prefix=str(x)) for x in range(0,2)]
@@ -43,7 +44,7 @@ def individual_investor_create(request):
 Delete a investor_individual.
 """
 
-
+@login_required
 def investor_individual_delete(request):
     investor_individual_instance = InvestorIndividual.objects.get(id=id)
     if request.method == 'POST':
@@ -56,6 +57,7 @@ def investor_individual_delete(request):
 Modify a investor_individual.
 """
 
+@login_required
 def investor_individual_modify(request, id):
     investor_individual_form = InvestorIndividual.objects.get(id=id)
     address_forms = ResidentialAddress.objects.get(id=id)
