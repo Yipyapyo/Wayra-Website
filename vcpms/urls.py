@@ -20,9 +20,6 @@ from portfolio import views
 from django.conf import settings
 from django.conf.urls.static import static
 
-from django.conf import settings
-from django.conf.urls.static import static
-
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('dashboard', views.dashboard, name='dashboard'),
@@ -31,13 +28,13 @@ urlpatterns = [
     path('search_result', views.searchcomp, name='company_search_result'),
 
     path('portfolio_company/', views.portfolio_company, name='portfolio_company'),
-    path('portfolio_company/<int:company_id>', views.portfolio_company, name='portfolio_company'),
+    path('portfolio_company/<int:company_id>', views.CompanyDetailView.as_view(), name='portfolio_company'),
     path('portfolio_company/company_create/', views.create_company, name='create_company'),
     path('portfolio_company/company_update/<int:company_id>', views.update_company, name='update_company'),
     path('portfolio_company/company_delete/<int:company_id>', views.delete_company, name='delete_company'),
     path('portfolio_company/archive/<int:company_id>', views.archive_company, name='archive_company'),
     path('portfolio_company/unarchive/<int:company_id>', views.unarchive_company, name='unarchive_company'),
-    
+
     # Individual CRUD
     path("individual_page/individual_create/", views.individual_create, name="individual_create"),
     path("individual_page/", views.individual_page, name="individual_page"),
@@ -68,6 +65,7 @@ urlpatterns = [
     path("archive_page/", views.archive, name="archive_page"),
     path('archive/search', views.archive_search, name='archive_search'),
 
+
     # Settings views
     path("account_settings/", views.account_settings, name="account_settings"),
     path("account_settings/change_password", views.change_password, name="change_password"),
@@ -75,7 +73,6 @@ urlpatterns = [
     path("account_settings/upload_profile_picture", views.upload_profile_picture, name="upload_profile_picture"),
     path("account_settings/remove_profile_picture", views.remove_profile_picture, name="remove_profile_picture"),
     path("deactivate_account", views.deactivate_account, name="deactivate_account"),
-
 
     # Permissions
     path("permissions/users/", views.UserListView.as_view(), name='permission_user_list'),
@@ -89,7 +86,12 @@ urlpatterns = [
     path("permissions/<int:id>/edit_group/", views.GroupEditView.as_view(), name='permission_edit_group'),
     path("permissions/<int:id>/delete_group/", views.GroupDeleteView.as_view(), name='permission_delete_group'),
 
+    # Investments
+    path("investment/update/<int:id>", views.InvestmentUpdateView.as_view(), name='investment_update'),
+    path("investment/delete/<int:id>", views.InvestmentDeleteView.as_view(), name='investment_delete'),
+    path("investment/create/<int:company_id>", views.InvestmentCreateView.as_view(), name='investment_create'),
+    path("investment/create_investor_company/", views.InvestorCompanyCreateView.as_view(), name='investor_company_create'),
+    path("investment/update_investor_company/<int:company_id>", views.InvestorCompanyUpdateView.as_view(), name='investor_company_update'),
 ]
-
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

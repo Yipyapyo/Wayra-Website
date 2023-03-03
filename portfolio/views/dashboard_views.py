@@ -1,14 +1,15 @@
 from django.contrib.auth.decorators import login_required
-from django.db.models import Q
-from django.shortcuts import render, redirect
-from portfolio.forms.company_form import CompanyCreateForm
-from portfolio.models import Company, Programme
-import logging
-from django.http import HttpResponse
-from django.template.loader import render_to_string
-import json
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.paginator import Paginator, EmptyPage
+from django.db.models import Q
+from django.http import HttpResponse
+from django.shortcuts import render, redirect
+from django.template.loader import render_to_string
 from django.urls import reverse
+from django.views.generic import ListView
+
+from portfolio.forms.company_form import CompanyCreateForm
+from portfolio.models import Company, Programme, Investment, InvestorCompany
 
 
 # Create your views here.
@@ -86,6 +87,29 @@ def portfolio_company(request, company_id):
                    'company': company,
                    'programmes': programmes
                    })
+
+
+class CompanyDetailView(LoginRequiredMixin, ListView):
+    template_name = 'company/portfolio_company_page.html'
+    context_object_name = 'investments'
+    paginate_by = 10
+
+    def dispatch(self, request, company_id, *args, **kwargs):
+        self.company = Company.objects.get(id=company_id)
+        return super().dispatch(request, company_id, *args, **kwargs)
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['company'] = self.company
+        context['is_investor_company'] = InvestorCompany.objects.filter(company=self.company).exists()
+        context['counter'] = [1, 2, 3]
+        context['contract_counter'] = [1, 2, 3, 4]
+        return context
+
+    def get_queryset(self):
+        self.investments = Investment.objects.filter(investor__company=self.company).order_by('id')
+        self.is_investor_company = self.investments.count() > 0
+        return self.investments
 
 
 @login_required
