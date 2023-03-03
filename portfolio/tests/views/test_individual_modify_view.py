@@ -1,4 +1,4 @@
-from pickle import NONE
+
 from django.test import TestCase
 from django.urls import reverse
 from portfolio.models import ResidentialAddress, PastExperience, Individual, User

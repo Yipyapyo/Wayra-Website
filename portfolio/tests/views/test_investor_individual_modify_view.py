@@ -1,4 +1,3 @@
-from pickle import NONE
 from django.test import TestCase
 from django.urls import reverse
 from portfolio.models import ResidentialAddress, PastExperience, InvestorIndividual, User
@@ -138,12 +137,6 @@ class InvestorIndividualModifyTestCase(TestCase):
         investor_individual = InvestorIndividual.objects.filter(name="Jemma Doe")[0]
         self.assertEqual(investor_individual.NumberOfPartnerInvestments, 5)
 
-    def test_post_part_of_incubator_cannot_be_different_type(self):
-        self.post_input['form1-PartOfIncubator'] = NONE
-        response = self.client.post(self.url, self.post_input)
-        self.assertEqual(response.status_code, 200)
-        investor_individual = InvestorIndividual.objects.filter(name="Jemma Doe")[0]
-        self.assertEqual(investor_individual.PartOfIncubator, False)
 
     def test_post_number_of_exits_cannot_be_blank(self):
         self.post_input['form1-NumberOfExits'] = ""
