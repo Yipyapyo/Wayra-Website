@@ -1,16 +1,24 @@
 """Tests of the sign up view."""
 from django.test import TestCase
 from django.urls import reverse
-from portfolio.models import Individual, ResidentialAddress, PastExperience
+from portfolio.models import Individual, ResidentialAddress, PastExperience, User
 from phonenumber_field.formfields import PhoneNumberField
 from django_countries.fields import Country
 from portfolio.forms import IndividualCreateForm, AddressCreateForm, PastExperienceForm
+from portfolio.tests.helpers import reverse_with_next
 
 
 class IndividualCreateViewTestCase(TestCase):
+    fixtures = [
+        "portfolio/tests/fixtures/default_user.json",
+        "portfolio/tests/fixtures/other_users.json",
+    ]
 
     def setUp(self):
+        self.user = User.objects.get(email="john.doe@example.org")
+        self.client.login(email=self.user.email, password="Password123")
         self.url = reverse('individual_create')
+
         self.post_input = {
             "form1-name": "Jemma Doe",
             "form1-AngelListLink": "https://www.AngelList.com",
@@ -60,6 +68,12 @@ class IndividualCreateViewTestCase(TestCase):
         self.assertFalse(adress_form.is_bound)
         self.assertFalse(individual_form.is_bound)
 
+    def test_redirect_when_user_access_investor_individual_create_not_loggedin(self):
+        self.client.logout()
+        redirect_url = reverse_with_next('login', self.url)
+        response = self.client.get(self.url)
+        self.assertRedirects(response, redirect_url, status_code=302, target_status_code=200)
+
     def test_unsuccessful_individual_create_view_due_to_individual_form(self):
         self.post_input['form1-AngelListLink'] = 'A'
         before_count = Individual.objects.count()
@@ -73,7 +87,7 @@ class IndividualCreateViewTestCase(TestCase):
         self.assertTrue(form.is_bound)
 
     def test_unsuccessful_individual_create_view_due_to_adress_form(self):
-        self.post_input['0-start_year'] = -1
+        self.post_input['form2-country'] = Country("")
         before_count = ResidentialAddress.objects.count()
         response = self.client.post(self.url, self.post_input)
         after_count = ResidentialAddress.objects.count()

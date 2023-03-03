@@ -45,7 +45,7 @@ Delete a investor_individual.
 """
 
 @login_required
-def investor_individual_delete(request):
+def investor_individual_delete(request, id):
     investor_individual_instance = InvestorIndividual.objects.get(id=id)
     if request.method == 'POST':
         investor_individual_instance.delete()

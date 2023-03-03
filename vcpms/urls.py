@@ -53,6 +53,8 @@ urlpatterns = [
 
     # Individual Investor CRUD
     path("individual_page/investor_individual_create/", investor_individual_views.investor_individual_create, name="investor_individual_create"),
+    path("individual_page/<int:id>/investor_individual_delete/", investor_individual_views.investor_individual_delete, name='investor_individual_delete'),
+    path("individual_page/<int:id>/investor_individual_modify/", investor_individual_views.investor_individual_modify, name='investor_individual_modify'),
 
     # Programme CRUD
     path("programme_page/", views.ProgrammeListView.as_view(), name="programme_list"),

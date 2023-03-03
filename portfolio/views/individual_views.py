@@ -12,6 +12,7 @@ from django.core.paginator import Paginator, EmptyPage
 Create an individual.
 """
 
+@login_required
 def individual_create(request):
 
     if request.method == "POST":
@@ -66,7 +67,7 @@ def individual_page(request):
 """
 Update a particular individual's information
 """
-
+@login_required
 def individual_update(request, id):
     individual_form = Individual.objects.get(id=id)
     address_forms = ResidentialAddress.objects.get(id=id)
@@ -102,7 +103,7 @@ def individual_update(request, id):
 """
 Delete a particular individual
 """
-
+@login_required
 def individual_delete(request, id):
     individual_form = Individual.objects.get(id=id)
     if request.method == 'POST':
