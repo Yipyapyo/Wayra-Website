@@ -1,0 +1,59 @@
+{% extends 'dashboard_template.html' %}
+{% load static %}
+{% block main %}
+<link href="{% static 'css/styles.css' %}" rel="stylesheet" />
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 mb-3 border-bottom">
+    <h1 class="h2">Archive</h1>
+    <!-- Nav -->
+    <ul class="nav nav-tabs mt-4 overflow-x border-0">
+        <li class="nav-item ">
+            <a href="#" class="nav-link active">All files</a>
+        </li>
+        <li class="nav-item">
+            <a href="#" class="nav-link font-regular text-dark">Shared</a>
+        </li>
+        <li class="nav-item">
+            <a href="#" class="nav-link font-regular text-dark">File requests</a>
+        </li>
+    </ul>
+</div>
+
+<div class="px-5 pb-2 rounded-3">
+    <div class="container-fluid pt-2 px-0 search-div-styling">
+
+      <div class="row">
+
+        <div style="max-width: 50%;">
+            {% include 'partials/search/searchbar.html' with search_url=search_url %}
+        </div>
+
+        <button class="btn w-auto align-self-start" data-bs-toggle="offcanvas" data-bs-target="#filterOffCanvas" aria-controls="filterOffCanvas"><i class="fa-solid fa-filter"></i> Filter</button>
+
+      </div>
+
+    </div>
+</div>
+
+<div class="mt-5 pt-4">
+    <div class="p-2 mb-4 bg-light rounded mx-3">
+        <div class="container-fluid py-2">
+          <h3 class="display-7 mb-2">Archived Companies</h3>
+          {% include 'archive/archived_company_table.html' with companies=companies%}
+          {% include 'partials/utilities/pagination.html' with page=companies page_number=1%}
+        </div>
+      </div>
+</div>
+
+<div class="mt-5 pt-4">
+    <div class="p-2 mb-4 bg-light rounded mx-3">
+        <div class="container-fluid py-2">
+          <h3 class="display-7 mb-2">Archived Individuals</h3>
+          {% include 'archive/archived_individual_table.html' with individuals=individuals%}
+          {% include 'partials/utilities/pagination.html' with page=individuals page_number=2%}
+        </div>
+      </div>
+</div>
+
+{% include 'archive/archive_filter_offcanvas.html'%}
+
+{% endblock %}

@@ -7,6 +7,7 @@ document.addEventListener('click', function(event) {
     if (isClickInside) {
     //Show the search results container
     if (results_container.style.display === "none") {
+        console.log("it workds")
         results_container.style.display = "block";
     }
     }
@@ -24,7 +25,7 @@ $('.search_input').keyup(function(){
     $.ajax(
     {
         type:"GET",
-        url: "/search_result",
+        url: search_url,
         data:{
                 searchresult: search_input.value
         },
