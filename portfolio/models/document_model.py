@@ -1,6 +1,15 @@
 from django.db import models
 from django.core.validators import RegexValidator
 from portfolio.models import Company
+import os
+
+
+DEFAULT_PATH = "documents/"
+
+
+# Returns the storage path of a file.
+def get_path(instance, file_name):
+    return os.path.join(DEFAULT_PATH, instance.company.name, file_name)
 
 
 class Document(models.Model):
@@ -26,7 +35,7 @@ class Document(models.Model):
         )]
     )
     file_size = models.PositiveIntegerField(default=0)
-    file = models.FileField(upload_to="documents/")
+    file = models.FileField(upload_to=get_path)
     company = models.ForeignKey(Company, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
