@@ -1,15 +1,24 @@
 {% load static %}
 <div class="card mb-3">
     <div class="row no-gutters">
-      <div class="col-md-4">
-        <img src="{% static 'images/edison_programme_image.svg' %}" class="card-img" alt="...">
-      </div>
-      <div class="col-md-8">
-        <div class="card-body">
-          <h5 class="card-title">Edison Programme</h5>
-          <p class="card-text">The Edison™ Accelerator is a start-up and scale-up acceleration & healthcare provider collaboration programme designed by GE Healthcare in partnership with Wayra UK. It brings together healthcare providers, start-ups and scale-ups who want to leverage the GE Healthcare environment and mentoring to enhance their value proposition. It is designed to introduce GE Healthcare’s Intelligence Platform Edison, to a growing developer community and create a stronger value proposition in the healthcare sector.</p>
-          <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+        <div class="col-md-4">
+            {% if programme.cover %}
+                <img src="{{ programme.cover.url }}" class="card-img" alt="...">
+            {% else %}
+                <img src="" class="card-img" alt="...">
+            {% endif %}
         </div>
-      </div>
+        <div class="col-md-8">
+            <div class="card-body">
+                <h5 class="card-title">Edison Programme</h5>
+                <p class="card-text">The Edison™ Accelerator is a start-up and scale-up acceleration & healthcare
+                    provider collaboration programme designed by GE Healthcare in partnership with Wayra UK. It brings
+                    together healthcare providers, start-ups and scale-ups who want to leverage the GE Healthcare
+                    environment and mentoring to enhance their value proposition. It is designed to introduce GE
+                    Healthcare’s Intelligence Platform Edison, to a growing developer community and create a stronger
+                    value proposition in the healthcare sector.</p>
+                <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+            </div>
+        </div>
     </div>
-  </div>
+</div>

@@ -4,6 +4,8 @@ from phonenumber_field.modelfields import PhoneNumberField
 
 class Individual(models.Model):
     """Individual model used by admins to create new client/individual."""
+    def __str__(self):
+        return f'{self.name}'
 
     name = models.CharField("name", max_length=200)
     AngelListLink = models.URLField("Angellist link", max_length=200)

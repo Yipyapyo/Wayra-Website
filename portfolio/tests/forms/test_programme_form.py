@@ -1,4 +1,9 @@
-from django.forms import model_to_dict
+from io import BytesIO
+
+from PIL.Image import Image
+from django.core.files.uploadedfile import SimpleUploadedFile
+from django.db.models.fields.files import ImageFieldFile
+from django.forms import model_to_dict, FileInput
 from django.forms.fields import *
 from django.test import TestCase
 from portfolio.forms import CreateProgrammeForm, MultipleChoiceField, EditProgrammeForm
@@ -14,17 +19,23 @@ class CreateProgrammeFormTestCase(TestCase):
                 ]
 
     def setUp(self) -> None:
+        image_file = BytesIO()
+        image_file.write(open("portfolio/tests/forms/wayra_logo.png", 'rb').read())
+        image_file.seek(0)
+
+        self.file_data = SimpleUploadedFile("wayra_logo.png", image_file.read(), content_type="image/png")
         self.form_input = {
             "name": "Accelerator Programme",
             "cohort": 2,  # avoid pk of default_programme
             "partners": [1],  # for pk of default_company
             "participants": [1],  # for pk of default_portfolio_company
-            "coaches_mentors": [1]  # for pk of default_individual
+            "coaches_mentors": [1],  # for pk of default_individual
+            "cover": self.file_data
         }
         self.default_programme = Programme.objects.get(id=1)
 
     def test_valid_programme_create_form(self):
-        form = CreateProgrammeForm(data=self.form_input)
+        form = CreateProgrammeForm(data=self.form_input, files=self.form_input)
         self.assertTrue(form.is_bound)
         self.assertTrue(form.is_valid())
 
@@ -40,6 +51,9 @@ class CreateProgrammeFormTestCase(TestCase):
         self.assertTrue(isinstance(form.fields['participants'], MultipleChoiceField))
         self.assertIn("coaches_mentors", form.fields)
         self.assertTrue(isinstance(form.fields['coaches_mentors'], MultipleChoiceField))
+        self.assertIn("cover", form.fields)
+        self.assertTrue(isinstance(form.fields['cover'], ImageField))
+        self.assertTrue(isinstance(form.fields['cover'].widget, FileInput))
 
     def test_form_uses_model_validation(self):
         self.form_input['name'] = self.default_programme.name
@@ -48,7 +62,7 @@ class CreateProgrammeFormTestCase(TestCase):
         self.assertFalse(form.is_valid())
 
     def test_create_form_must_save_correctly(self):
-        form = CreateProgrammeForm(data=self.form_input)
+        form = CreateProgrammeForm(data=self.form_input, files=self.form_input)
         before_count = Programme.objects.count()
         form.save()
         after_count = Programme.objects.count()
@@ -65,6 +79,9 @@ class CreateProgrammeFormTestCase(TestCase):
         coaches_mentors = set([Individual.objects.get(id=ID) for ID in self.form_input['coaches_mentors']])
         self.assertTrue(set(programme.coaches_mentors.all()) == coaches_mentors)
 
+        with open("portfolio/tests/forms/wayra_logo.png", "rb") as f:
+            self.assertEqual(programme.cover.read(), f.read())
+
 
 class EditProgrammeFormTestCase(TestCase):
     fixtures = ['portfolio/tests/fixtures/default_company.json',
@@ -75,11 +92,18 @@ class EditProgrammeFormTestCase(TestCase):
                 ]
 
     def setUp(self) -> None:
+        image_file = BytesIO()
+        image_file.write(open("portfolio/tests/forms/wayra_logo.png", 'rb').read())
+        image_file.seek(0)
+
+        self.file_data = SimpleUploadedFile("wayra_logo.png", image_file.read(), content_type="image/png")
+
         self.default_programme = Programme.objects.get(id=1)
         self.partner = Company.objects.first()
         self.participant = Portfolio_Company.objects.first()
         self.coach = Individual.objects.first()
 
+        self.default_programme.cover = self.file_data
         self.default_programme.partners.add(self.partner)
         self.default_programme.participants.add(self.participant)
         self.default_programme.coaches_mentors.add(self.coach)
@@ -101,15 +125,29 @@ class EditProgrammeFormTestCase(TestCase):
         self.assertTrue(isinstance(form.fields['participants'], MultipleChoiceField))
         self.assertIn("coaches_mentors", form.fields)
         self.assertTrue(isinstance(form.fields['coaches_mentors'], MultipleChoiceField))
+        self.assertIn("cover", form.fields)
+        self.assertTrue(isinstance(form.fields['cover'], ImageField))
+        self.assertTrue(isinstance(form.fields['cover'].widget, FileInput))
 
     def test_form_uses_model_validation(self):
         self.default_programme.name = "A" * 256
         form = EditProgrammeForm(instance=self.default_programme, data=model_to_dict(self.default_programme))
         self.assertFalse(form.is_valid())
 
-    def test_create_form_must_save_correctly(self):
+    def test_edit_form_must_save_correctly(self):
+        """TODO:Still missing cover image test but functioning currently"""
         original = self.default_programme
-        form = EditProgrammeForm(instance=self.default_programme, data=model_to_dict(original))
+        original_data = model_to_dict(original)
+        #
+        # image_file = BytesIO()
+        # image_file.write(open("portfolio/tests/forms/original_image.jpeg", 'rb').read())
+        # image_file.seek(0)
+        # file_data = SimpleUploadedFile("original_image.png", image_file.read(), content_type="image/png")
+        #
+        # original_data["cover"] = file_data
+
+        form = EditProgrammeForm(instance=self.default_programme, data=original_data)
+
         before_count = Programme.objects.count()
         form.save()
         after_count = Programme.objects.count()
@@ -125,3 +163,5 @@ class EditProgrammeFormTestCase(TestCase):
 
         coaches_mentors = set([coach_mentor for coach_mentor in original.coaches_mentors.all()])
         self.assertTrue(set(programme.coaches_mentors.all()) == coaches_mentors)
+
+        # self.assertEqual(programme.cover.read(), file_data.read())

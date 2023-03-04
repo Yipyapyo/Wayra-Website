@@ -1,9 +1,9 @@
 {% extends 'dashboard_template.html' %}
-{% block main %}
 {% load static %}
+{% block main %}
 <link href="{% static 'css/styles.css' %}" rel="stylesheet" />
 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-    <h1 class="h2">Individual</h1>
+    <h1 class="h2">Programmes</h1>
     <div class="btn-toolbar mb-2 mb-md-0">
       <div class="btn-group me-2">
         <button type="button" class="btn btn-sm btn-outline-secondary">Share</button>
@@ -21,18 +21,17 @@
 
       <div class="row">
 
-        {% include 'partials/search/individual_searchbar.html' with search_url=search_url %}
+        {% include 'programmes/search/searchbar.html' %}
 
       </div>
 
     </div>
 </div>
-<!--<h4 id = "create_button"><a href = '{% url 'individual_create' %}' class="create_button_home">
-  Create
-</a></h4>>-->
 
 <div class="px-5 pt-5">
-    {% include 'partials/individual/individual_card_collection.html' with individuals=individuals %}
+    {% include 'programmes/programme/programme_card_collection.html' with programmes=programmes %}
 </div>
+
+<a href="{% url 'programme_create' %}" class="create-company-plus-button"><i class="fas fa-plus-circle fa-3x pt-3 pb-3"></i></a>
 
 {% endblock %}

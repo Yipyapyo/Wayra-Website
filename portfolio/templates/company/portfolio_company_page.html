@@ -1,80 +1,95 @@
 {% extends 'dashboard_template.html' %}
 {% block main %}
 
-<div class="px-5 py-2 rounded-3">
+    <div class="px-5 py-2 rounded-3">
     <div class="d-flex justify-content-between align-items-center border-bottom mb-3">
         <div class="col">
             <p>Telefonica Innovations</p>
-            <h2 class="pb-3">{{company.name}}</h2>
+            <h2 class="pb-3">{{ company.name }}</h2>
+        </div>
+        <div class="btn-group me-1">
+            {% if is_investor_company %}
+                <a href="{% url 'investor_company_update' company.id %}" class="btn btn-sm btn-outline-primary">
+                    Update Investor Company detail
+                </a>
+                <a href="{% url 'investment_create' company.id %}" class="btn btn-sm btn-outline-primary">Create
+                    investment</a>
+            {% endif %}
         </div>
         <div class="btn-group me-2">
             {% if company.is_archived %}
-                <a type="button" class="btn btn-sm btn-outline-secondary" href="{% url 'unarchive_company' company.id %}">Unarchive</a>
+                <a type="button" class="btn btn-sm btn-outline-secondary"
+                   href="{% url 'unarchive_company' company.id %}">Unarchive</a>
             {% else %}
-                <a type="button" class="btn btn-sm btn-outline-success" href="{% url 'archive_company' company.id %}">Archive</a>
+                <a type="button" class="btn btn-sm btn-outline-success"
+                   href="{% url 'archive_company' company.id %}">Archive</a>
             {% endif %}
-            <a type="button" class="btn btn-sm btn-outline-primary" href="{% url 'update_company' company.id %}">Update</a>
-            <button type="button" class="btn btn-sm btn-outline-danger" data-toggle="modal" data-target="#deleteCompanyModal">Delete</button>
+            <a type="button" class="btn btn-sm btn-outline-primary"
+               href="{% url 'update_company' company.id %}">Update</a>
+            <button type="button" class="btn btn-sm btn-outline-danger" data-toggle="modal"
+                    data-target="#deleteCompanyModal">Delete
+            </button>
         </div>
-        {% include 'partials/company/company_delete_modal.html'%}
-        
+        {% include 'partials/company/company_delete_modal.html' %}
+
     </div>
-    
+
     <div class="row align-items-md-stretch">
         <div class="col-md-6">
             <div class="container-fluid pt-2">
                 <h5>Details</h5>
-        
+
                 <ul class="list-group list-group-flush">
                     <li class="list-group-item mb-2 mt-2">
-                            <h6>Company Name</h6>
-                            <h7>{{company.name}}</h7>
+
+                        <h6>Company Name</h6>
+                        <h7>{{ company.name }}</h7>
                     </li>
                     <li class="list-group-item my-2">
                         <h6>Company Registration Number(CRN)</h6>
-                        <h7>{{company.company_registration_number}}</h7>
+                        <h7>{{ company.company_registration_number }}</h7>
                     </li>
                     <li class="list-group-item my-2">
                         <div class="col">
                             <h6>Jurisdiction</h6>
-                            <h7>{{company.jurisdiction}}</h7>
+                            <h7>{{ company.jurisdiction }}</h7>
                         </div>
                     </li>
                     <li class="list-group-item my-2">
                         <h6>Trading Names</h6>
-                        <h7>{{company.trading_names}}</h7>
+                        <h7>{{ company.trading_names }}</h7>
                     </li>
                     <li class="list-group-item my-2">
                         <h6>Previous Names</h6>
-                        <h7>{{company.previous_names}}</h7>
+                        <h7>{{ company.previous_names }}</h7>
                     </li>
                     <li class="list-group-item my-2">
                         <h6>Registered Address</h6>
-                        <h7>{{company.registered_address}}</h7>
+                        <h7>{{ company.registered_address }}</h7>
                     </li>
                 </ul>
-        
+
             </div>
         </div>
         <div class="col-md-6">
-          <div class="h-100 px-5 py-2 rounded-3">
-            <div class="pt-1 pb-3">
-                <h4>Founders</h4>
-                <div class="row mb-3">
-                    {% for count in counter %}
-                        {% include 'partials/utilities/individual_card.html'%}
-                    {% endfor %}
+            <div class="h-100 px-5 py-2 rounded-3">
+                <div class="pt-1 pb-3">
+                    <h4>Founders</h4>
+                    <div class="row mb-3">
+                        {% for count in counter %}
+                            {% include 'partials/utilities/individual_card.html' %}
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="pt-1 pb-3">
+                    <h4>Investors</h4>
+                    <div class="row mb-3">
+                        {% for count in counter %}
+                            {% include 'partials/utilities/individual_card.html' %}
+                        {% endfor %}
+                    </div>
                 </div>
             </div>
-            <div class="pt-1 pb-3">
-                <h4>Investors</h4>
-                <div class="row mb-3">
-                    {% for count in counter %}
-                        {% include 'partials/utilities/individual_card.html'%}
-                    {% endfor %}
-                </div>
-            </div>
-          </div>
         </div>
     </div>
 
@@ -84,43 +99,62 @@
             <div class="container-fluid py-3">
                 <div class="row mb-3">
                     {% for count in contract_counter %}
-                        {% include 'partials/utilities/document_card.html'%}
+                        {% include 'partials/utilities/document_card.html' %}
                     {% endfor %}
                 </div>
                 <div class="row pt-2">
-                    {% include 'partials/utilities/see_all_button.html'%}
+                    {% include 'partials/utilities/see_all_button.html' %}
                 </div>
             </div>
         </div>
     </div>
+
 
     <div class="container-fluid pt-3">
-        <h2>Programmes</h2>
-        <div class="px-5 pt-3 pb-2 mb-4 bg-light rounded-3">
-            <div class="container-fluid py-3">
-                <p>Wayra UK Limited is currently enrolled in the following programmes:</p>
-                <div class="row mb-3">
-                    {% include 'partials/utilities/programme_card.html'%}
+    <h2>Programmes</h2>
+    <div class="px-5 pt-3 pb-2 mb-4 bg-light rounded-3">
+    <div class="container-fluid py-3">
+    <p>Wayra UK Limited is currently enrolled in the following programmes:</p>
+    <div class="row mb-3">
+        {% include 'partials/utilities/programme_card.html' %}
+
+        {% if programmes %}
+            <div class="container-fluid pt-3">
+                <h2>Programmes</h2>
+                <div class="px-5 pt-3 pb-2 mb-4 bg-light rounded-3">
+                    <div class="container-fluid py-3">
+                        <p>Wayra UK Limited is currently enrolled in the following programmes:</p>
+                        <div class="row mb-3">
+                            {% for programme in programmes %}
+                                {% include 'partials/utilities/programme_card.html' with programme=programme %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+
+        <div class="container-fluid pt-3">
+            <h2>Coaches/Mentors</h2>
+            <div class="px-5 pt-3 pb-2 mb-4 bg-light rounded-3">
+                <div class="container-fluid py-3">
+                    <p>These are the coaches and mentors associated with Wayra UK Limited:</p>
+                    <div class="row mb-3">
+                        {% for count in counter %}
+                            {% include 'partials/utilities/individual_card.html' %}
+                        {% endfor %}
+                    </div>
                 </div>
             </div>
         </div>
+
+        {% if is_investor_company %}
+            {% block investments %}
+                {% include 'investment/investments_list.html' with investments=investments %}
+            {% endblock %}
+        {% endif %}
+
     </div>
 
-    <div class="container-fluid pt-3">
-        <h2>Coaches/Mentors</h2>
-        <div class="px-5 pt-3 pb-2 mb-4 bg-light rounded-3">
-            <div class="container-fluid py-3">
-                <p>These are the coaches and mentors associated with Wayra UK Limited:</p>
-                <div class="row mb-3">
-                    {% for count in counter %}
-                        {% include 'partials/utilities/individual_card.html'%}
-                    {% endfor %}
-                </div>
-            </div>
-        </div>
-    </div>
-
-    
-</div>
 
 {% endblock %}

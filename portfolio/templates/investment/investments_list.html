@@ -1,0 +1,32 @@
+<div class="container-fluid pt-3">
+    <h2>Investments</h2>
+    <div class="px-5 pt-3 pb-2 mb-4 bg-light rounded-3">
+        <div class="container-fluid py-3">
+            <table class="table table-hover">
+                <thead>
+                <th>Start ups</th>
+                <th>typeOfFoundingRounds</th>
+                <th>investmentAmount</th>
+                <th>dateInvested</th>
+                <th>dateExit</th>
+                <th>Actions</th>
+                </thead>
+                <tbody>
+                {% for investment in investments %}
+                    <td>{{ investment.startup.name }}</td>
+                    <td>{{ investment.typeOfFoundingRounds }}</td>
+                    <td>{{ investment.investmentAmount }}</td>
+                    <td>{{ investment.dateInvested }}</td>
+                    <td>{{ investment.dateExit }}</td>
+                    <td>
+                        <a href="{% url 'investment_update' investment.id %}" class="btn btn-sm btn-primary">Update</a>
+                        <a href="{% url 'investment_delete' investment.id %}" class="btn btn-sm btn-primary">Delete</a>
+                    </td>
+                {% endfor %}
+                </tbody>
+            </table>
+            {% include 'partials/utilities/pagination.html' with page_obj=investments %}
+        </div>
+
+    </div>
+</div>
