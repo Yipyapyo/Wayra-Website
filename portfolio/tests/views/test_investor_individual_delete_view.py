@@ -1,7 +1,8 @@
 """Unit tests for the investor individual delete page."""
 from django.test import TestCase
 from django.urls import reverse
-from portfolio.models import ResidentialAddress, PastExperience, InvestorIndividual, User
+from portfolio.models import ResidentialAddress, PastExperience, User
+from portfolio.models.investor_individual_model import InvestorIndividual
 from django_countries.fields import Country
 from portfolio.tests.helpers import reverse_with_next
 

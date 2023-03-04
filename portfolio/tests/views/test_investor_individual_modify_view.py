@@ -1,6 +1,7 @@
 from django.test import TestCase
 from django.urls import reverse
-from portfolio.models import ResidentialAddress, PastExperience, InvestorIndividual, User
+from portfolio.models import ResidentialAddress, PastExperience, User
+from portfolio.models.investor_individual_model import InvestorIndividual
 from portfolio.forms import AddressCreateForm, PastExperienceForm
 from portfolio.forms.investor_individual_form import InvestorIndividualForm
 from django_countries.fields import Country
