@@ -3,8 +3,9 @@ from django.core.management.base import BaseCommand
 from django.utils import timezone
 from django_countries.fields import Country
 from phonenumber_field.phonenumber import PhoneNumber
+from django.core.files.uploadedfile import SimpleUploadedFile
 
-from portfolio.models import User, Individual, Company, Portfolio_Company, Programme, ResidentialAddress
+from portfolio.models import User, Individual, Company, Portfolio_Company, Programme, ResidentialAddress, Document
 from faker import Faker
 from portfolio.models import User, Company, ResidentialAddress, Individual
 import random
@@ -35,6 +36,8 @@ class Command(BaseCommand):
         self.create_porfolio_company()
 
         self.create_programme()
+
+        self.create_document()
 
         self.populate_companies()
 
@@ -109,7 +112,7 @@ class Command(BaseCommand):
             User.objects.get(email="john.doe@example.org")
             print("john doe has already seeded.")
 
-        except (ObjectDoesNotExist):
+        except ObjectDoesNotExist:
             user_john = User.objects.create_user(
                 email="john.doe@example.org",
                 password="Password123",
@@ -125,7 +128,7 @@ class Command(BaseCommand):
             User.objects.get(email="petra.pickles@example.org")
             print("petra pickles has already seeded.")
 
-        except (ObjectDoesNotExist):
+        except ObjectDoesNotExist:
             user_petra = User.objects.create_superuser(
                 email="petra.pickles@example.org",
                 password="Password123",
@@ -161,7 +164,6 @@ class Command(BaseCommand):
         try:
             ResidentialAddress.objects.get(individual=jemma_individual)
             print("Jemma's address has already seeded.")
-        
 
         except ObjectDoesNotExist:
             addr = ResidentialAddress.objects.create(
@@ -175,6 +177,23 @@ class Command(BaseCommand):
             )
             addr.save()
             print("Jemma's address has been seeded.")
+
+    def create_document(self):
+        """Create a single "default" document."""
+
+        try:
+            Document.objects.get(file_name="default.document")
+            print("The default document already exists.")
+
+        except ObjectDoesNotExist:
+            document = Document.objects.create(
+                file_name="default.document",
+                file_type="document",
+                company=Company.objects.get(id=1),
+                file=SimpleUploadedFile("default.document", b"file contents")
+            )
+            document.save()
+            print("The default document has been seeded.")
 
     def populate_companies(self):
         self.stdout.write('seeding companies...')
