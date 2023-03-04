@@ -35,10 +35,24 @@ class Document(models.Model):
         )]
     )
     file_size = models.PositiveIntegerField(default=0)
-    file = models.FileField(upload_to=get_path)
+    file_url = models.URLField(max_length=200, null=True)
+    file = models.FileField(upload_to=get_path, null=True)
     company = models.ForeignKey(Company, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return self.file_name
+
+    class Meta:
+        """Define a constraint to ensure either a file url or file is not null."""
+
+        constraints = [
+            models.CheckConstraint(
+                name="%(app_label)s_%(class)s_file_url_or_file",
+                check=(
+                        models.Q(file_url__isnull=True, file__isnull=False)
+                        | models.Q(file_url__isnull=False, file__isnull=True)
+                ),
+            )
+        ]
