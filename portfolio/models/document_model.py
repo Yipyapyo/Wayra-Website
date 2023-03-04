@@ -46,7 +46,7 @@ class Document(models.Model):
         return self.file_name
 
     class Meta:
-        """Define a constraint to ensure either an url or file is not null."""
+        """Define a constraint to ensure both the url and file fields are not null."""
 
         constraints = [
             models.CheckConstraint(
