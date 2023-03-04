@@ -1,4 +1,5 @@
 from django.db import models
+from django.dispatch import receiver
 from django.core.validators import RegexValidator
 from portfolio.models import Company
 import os
@@ -55,3 +56,30 @@ class Document(models.Model):
                 ),
             )
         ]
+
+
+@receiver(models.signals.post_delete, sender=Document)
+def auto_delete_file_on_delete(sender, instance, **kwargs):
+    """Deletes the file from local storage when the corresponding "Document" object is deleted."""
+
+    if instance.file:
+        if os.path.isfile(instance.file.path):
+            os.remove(instance.file.path)
+
+
+@receiver(models.signals.pre_save, sender=Document)
+def auto_delete_file_on_change(sender, instance, **kwargs):
+    """Deletes the old file from local storage when corresponding "Document" object is updated with a new file."""
+
+    if not instance.pk:
+        return False
+
+    try:
+        old_file = Document.objects.get(pk=instance.pk).file
+    except Document.DoesNotExist:
+        return False
+
+    new_file = instance.file
+    if not old_file == new_file and old_file:
+        if os.path.isfile(old_file.path):
+            os.remove(old_file.path)
