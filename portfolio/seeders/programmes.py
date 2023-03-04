@@ -26,16 +26,14 @@ class ProgrammeSeeder(Seeder):
         return objects
 
     def _create_programme(self, count):
+        # TODO: Reset media directory should write a proper way soon
+        shutil.rmtree(MEDIA_ROOT)
+        os.mkdir(MEDIA_ROOT)
         for i in range(1,count+1):
             try:
                 Programme.objects.get(name=f"Accelerator Programme {i}", cohort=1)
                 print(f"Accelerator Programme {i} has already been seeded.")
-
             except ObjectDoesNotExist:
-                # TODO: Reset media directory should write a proper way soon
-                shutil.rmtree(MEDIA_ROOT)
-                os.mkdir(MEDIA_ROOT)
-
                 image_file = BytesIO()
                 image_file.write(open(os.path.join(BASE_DIR,'portfolio\\seeders\\resource\\edison_programme.png'), 'rb').read())
                 image_file.seek(0)
@@ -48,8 +46,7 @@ class ProgrammeSeeder(Seeder):
                 )
                 for company in self._get_objects_from_models(Company, i, Company.objects.count() // count):
                     accelerator_1.partners.add(company)
-                for p_company in self._get_objects_from_models(Portfolio_Company, i,
-                                                               Portfolio_Company.objects.count() // count):
+                for p_company in self._get_objects_from_models(Portfolio_Company, i, Portfolio_Company.objects.count() // count):
                     accelerator_1.participants.add(p_company)
                 for individual in self._get_objects_from_models(Individual, i, Individual.objects.count() // count):
                     accelerator_1.coaches_mentors.add(individual)

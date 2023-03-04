@@ -44,20 +44,20 @@ class InvestmentSeeder(Seeder):
         return objects
 
     def _create_investments(self, count):
+        company_count = 1
         for i in range(1, count + 1):
             try:
                 Investment.objects.get(id=i)
                 print(f"InvestorCompany with id({i}) has already seeded.")
             except ObjectDoesNotExist:
-                company_count = 1
                 Investment.objects.create(
                     investor=InvestorCompany.objects.get(id=company_count),
                     startup=Portfolio_Company.objects.get(wayra_number=f'WN-{i}'),
-                    typeOfFoundingRounds=random.choices(FOUNDING_ROUNDS),
+                    typeOfFoundingRounds=random.choice(FOUNDING_ROUNDS)[1],
                     investmentAmount=random.randint(10_000, 10_000_000),
                     dateInvested=self.faker.date_this_century(),
                 )
-                if random.randint(0, 2) > 0:
+                if random.randint(0, 101) > 30 and company_count != 5:
                     company_count += 1
 
                 print(f"Investment with id({i}) has been seeded.")
