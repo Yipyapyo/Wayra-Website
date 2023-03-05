@@ -14,8 +14,6 @@ FOUNDING_ROUNDS = [
     ('Debt financing', 'Debt financing'),
     ('Post-IPO Equity', 'Post-IPO Equity')
 ]
-def get_current_date():
-    return timezone.now()
 
 class Investment(models.Model):
     """Investment model for a investment from an investor to a startups"""
@@ -23,7 +21,7 @@ class Investment(models.Model):
     startup = models.ForeignKey(Portfolio_Company, on_delete=models.CASCADE, related_name="startup")
     typeOfFoundingRounds = models.CharField(max_length=50, choices=FOUNDING_ROUNDS)
     investmentAmount = models.DecimalField(max_digits=15, decimal_places=2)
-    dateInvested = models.DateField(validators=[MaxValueValidator(limit_value=get_current_date().date())])
+    dateInvested = models.DateField(validators=[MaxValueValidator(limit_value=timezone.now().date())])
     dateExit = models.DateField(blank=True, null=True)
     contractRight = models.CharField(max_length=1000)
 
