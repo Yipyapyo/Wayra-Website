@@ -10,6 +10,7 @@ class IndividualTests(TestCase):
     # Sets up example individual to be used for tests
     def setUp(self):
         self.individual = Individual.objects.create(
+             name="Jemma Doe",
              AngelListLink = "https://www.AngelList.com",
              CrunchbaseLink = "https://www.Crunchbase.com",
              LinkedInLink = "https://www.LinkedIn.com",
@@ -23,6 +24,18 @@ class IndividualTests(TestCase):
     # Tests if individual is valid
     def test_valid_individual(self):
         self._assert_individual_is_valid()
+
+    def test_name_cannot_be_blank(self):
+        self.individual.name = ''
+        self._assert_individual_is_invalid()
+
+    def test_name_can_be_200_characters_long(self):
+        self.individual.name = 'A' * 200
+        self._assert_individual_is_valid()
+
+    def test_name_cannot_exceed_200_characters(self):
+        self.individual.name = 'A' * 201
+        self._assert_individual_is_invalid()
 
     def test_angellistlink_cannot_be_blank(self):
         self.individual.AngelListLink = ''
@@ -120,13 +133,13 @@ class IndividualTests(TestCase):
     # Create a second individual
     def _create_second_individual(self):
         individual = Individual.objects.create(
-             AngelListLink="www.AngelList2.com",
-             CrunchbaseLink="www.Crunchbase2.com",
-             LinkedInLink="www.LinkedInLink2.com",
-             Company="exampleCompany2",
-             Position="examplePosition2",
-             Email="test2@gmail.com",
-             PrimaryNumber=PhoneNumber.from_string("+447975777662"),
-             SecondaryNumber=PhoneNumber.from_string("+441325777651")
+            AngelListLink="www.AngelList2.com",
+            CrunchbaseLink="www.Crunchbase2.com",
+            LinkedInLink="www.LinkedInLink2.com",
+            Company="exampleCompany2",
+            Position="examplePosition2",
+            Email="test2@gmail.com",
+            PrimaryNumber=PhoneNumber.from_string("+447975777662"),
+            SecondaryNumber=PhoneNumber.from_string("+441325777651")
         )
         return individual

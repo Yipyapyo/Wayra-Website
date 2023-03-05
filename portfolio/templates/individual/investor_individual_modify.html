@@ -1,0 +1,16 @@
+{% extends 'dashboard_template.html' %}
+{% block main %}
+<h1>Update Investor Individual</h1>
+<p><p></p>
+
+<form action="" method="post">
+    {% csrf_token %}
+    {{ investorIndividualForm.as_p }}
+    
+    {{ addressForms.as_p }}
+    {% for form in pastExperienceForms %}
+        {{ form.as_p }}
+    {% endfor %}
+    <input type="submit" value="Update" class="btn btn-primary">
+</form>
+{% endblock %}

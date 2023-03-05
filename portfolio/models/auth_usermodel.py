@@ -1,8 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.core.validators import EmailValidator
-
-from portfolio.manager import UserManager
+from django.core.validators import validate_image_file_extension
+from portfolio.models.manager import UserManager
 
 # Create your models here.
 class User(AbstractUser):
@@ -15,6 +15,7 @@ class User(AbstractUser):
     first_name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255)
     phone = models.CharField(max_length=255)
+    profile_picture = models.ImageField(blank=True, validators=[validate_image_file_extension])
     is_active = models.BooleanField(default=True)
     objects = UserManager()
     
