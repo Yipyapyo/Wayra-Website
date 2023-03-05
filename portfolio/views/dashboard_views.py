@@ -104,11 +104,11 @@ class CompanyDetailView(LoginRequiredMixin, ListView):
         context['is_investor_company'] = InvestorCompany.objects.filter(company=self.company).exists()
         context['counter'] = [1, 2, 3]
         context['contract_counter'] = [1, 2, 3, 4]
+        context['programmes'] = Programme.objects.filter(participants__name=self.company.name)
         return context
 
     def get_queryset(self):
         self.investments = Investment.objects.filter(investor__company=self.company).order_by('id')
-        self.is_investor_company = self.investments.count() > 0
         return self.investments
 
 
