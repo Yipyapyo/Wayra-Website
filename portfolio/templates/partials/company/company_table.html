@@ -11,7 +11,7 @@
       </thead>
       <tbody>
           {%for cell in companies%}
-              {% include 'archive/archived_company_table_cell.html' with company=cell %}
+              {% include 'partials/company/company_table_cell.html' with company=cell %}
           {%endfor%}
       </tbody>
     </table>

@@ -168,3 +168,7 @@ def unarchive_company(request, company_id):
     company = Company.objects.get(id=company_id)
     company.unarchive()
     return redirect('archive_page')
+
+@login_required
+def change_layout(request, layout_number):
+    return redirect('dashboard')
