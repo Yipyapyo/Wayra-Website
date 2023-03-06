@@ -10,9 +10,9 @@
                     company</a>
             </div>
             <div class="btn-group me-2">
-                <button type="button" class="btn btn-sm btn-outline-secondary px-3"><i class="fa-solid fa-border-all"></i></button>
-                <button type="button" class="btn btn-sm btn-outline-secondary px-3"><i class="fa-solid fa-list"></i></button>
-                <button type="button" class="btn btn-sm btn-outline-secondary px-3"><i class="fa-solid fa-table-list"></i></button>
+                <a type="button" class="btn btn-sm btn-outline-secondary px-3" href="{% url 'change_company_layout' 1 %}"><i class="fa-solid fa-border-all pt-2"></i></a>
+                <a type="button" class="btn btn-sm btn-outline-secondary px-3" href="{% url 'change_company_layout' 2 %}"><i class="fa-solid fa-list pt-2"></i></a>
+                <a type="button" class="btn btn-sm btn-outline-secondary px-3" href="{% url 'change_company_layout' 3 %}"><i class="fa-solid fa-table-list pt-2"></i></a>
             </div>
         </div>
     </div>
@@ -44,8 +44,11 @@
     </div>
 
     <div class="px-5 pt-5">
+      {% if request.session.company_layout <= 2 %}
         {% include 'partials/company/company_card_collection.html' with companies=companies %}
-        <!-- {% include 'partials/company/company_table.html' with companies=companies %} -->
+      {% else %}
+        {% include 'partials/company/company_table.html' with companies=companies %}
+      {% endif %}
 
     </div>
 

@@ -170,5 +170,6 @@ def unarchive_company(request, company_id):
     return redirect('archive_page')
 
 @login_required
-def change_layout(request, layout_number):
+def change_company_layout(request, layout_number):
+    request.session['company_layout'] = layout_number
     return redirect('dashboard')
