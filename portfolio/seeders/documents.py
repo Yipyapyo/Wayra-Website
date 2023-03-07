@@ -13,7 +13,6 @@ class DocumentSeeder(Seeder):
 
     def seed(self):
         if self.COMPANY_COUNT:
-            print(f"Companies in db: {self.COMPANY_COUNT}")
             self._create_documents(self.DOCUMENT_COUNT)
             print(f"{Document.objects.count()} documents in the db.\n")
         else:
