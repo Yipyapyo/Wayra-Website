@@ -12,7 +12,7 @@ class DocumentSeeder(Seeder):
     COMPANY_COUNT = Company.objects.count()
 
     def seed(self):
-        if self.COMPANY_COUNT > 0:
+        if self.COMPANY_COUNT:
             print(f"Companies in db: {self.COMPANY_COUNT}")
             self._create_documents(self.DOCUMENT_COUNT)
             print(f"{Document.objects.count()} documents in the db.\n")
@@ -28,19 +28,19 @@ class DocumentSeeder(Seeder):
             except ObjectDoesNotExist:
                 is_file = random.choice([True, False])
                 name = self.faker.file_name(category=None)
-                extension = self.faker.file_extension(category=None)
+                extension = name.split(".")[-1]
                 company_id = random.randint(1, self.COMPANY_COUNT)
 
                 if is_file:
                     document = Document.objects.create(
-                        file_name=f"{name}.{extension}",
+                        file_name=f"{name}",
                         file_type=extension,
                         company=Company.objects.get(id=company_id),
-                        file=SimpleUploadedFile(f"{name}.{extension}", b"file contents")
+                        file=SimpleUploadedFile(f"{name}", b"file contents")
                     )
                 else:
                     document = Document.objects.create(
-                        file_name=f"{name}.{extension}",
+                        file_name=f"{name}",
                         file_type=extension,
                         company=Company.objects.get(id=company_id),
                         url="https://www.wayra.uk"
