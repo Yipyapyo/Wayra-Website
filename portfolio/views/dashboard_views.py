@@ -54,7 +54,14 @@ def searchcomp(request):
         if (searched == ""):
             response = []
         else:
-            search_result = Company.objects.filter(name__contains=searched, is_archived=False).values()[:5]
+            # search_result = Company.objects.filter(name__contains=searched, is_archived=False).values()[:5]
+            if request.session['company_filter'] == 3:
+                investor_companies = InvestorCompany.objects.all()
+                search_result = Company.objects.filter(id__in=investor_companies.values('company'), is_archived=False, name__contains=searched)[:5]
+            elif request.session['company_filter'] == 2:
+                search_result = Portfolio_Company.objects.filter(is_archived=False, name__contains=searched)[:5]
+            else:
+                search_result = Company.objects.filter(name__contains=searched, is_archived=False).values()[:5]
             response.append(("Companies", list(search_result)))
 
         search_results_table_html = render_to_string('partials/search/search_results_table.html', {
