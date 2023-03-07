@@ -5,7 +5,7 @@ from portfolio.models import Individual, ResidentialAddress, PastExperience, Use
 from phonenumber_field.formfields import PhoneNumberField
 from django_countries.fields import Country
 from portfolio.forms import IndividualCreateForm, AddressCreateForm, PastExperienceForm
-from portfolio.tests.helpers import reverse_with_next
+from portfolio.tests.helpers import reverse_with_next, set_session_variables
 
 
 class IndividualCreateViewTestCase(TestCase):
@@ -18,6 +18,7 @@ class IndividualCreateViewTestCase(TestCase):
         self.user = User.objects.get(email="john.doe@example.org")
         self.client.login(email=self.user.email, password="Password123")
         self.url = reverse('individual_create')
+        set_session_variables(self.client)
 
         self.post_input = {
             "form1-name": "Jemma Doe",

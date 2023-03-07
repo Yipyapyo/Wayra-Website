@@ -38,8 +38,7 @@ class ProgrammeSeeder(Seeder):
                 print(f"Accelerator Programme {i} has already been seeded.")
             except ObjectDoesNotExist:
                 image_file = BytesIO()
-                image_file.write(
-                    open(os.path.join(BASE_DIR, 'portfolio/seeders/resource/edison_programme.png'), 'rb').read())
+                image_file.write(open(os.path.join(BASE_DIR,'portfolio/seeders/resource/edison_programme.png'), 'rb').read())
                 image_file.seek(0)
                 file_data = SimpleUploadedFile("edison_programme.png", image_file.read(), content_type="image/png")
 

@@ -5,6 +5,7 @@ from django.urls import reverse
 from portfolio.models import User
 from portfolio.tests.helpers import LogInTester, reverse_with_next
 
+from portfolio.tests.helpers import set_session_variables
 
 class DashboardViewTestCase(TestCase, LogInTester):
     """Unit tests of the dashboard view"""
@@ -17,6 +18,7 @@ class DashboardViewTestCase(TestCase, LogInTester):
         self.url = reverse('dashboard')
         self.user = User.objects.get(email="john.doe@example.org")
         self.admin_user = User.objects.get(email="petra.pickles@example.org")
+        set_session_variables(self.client)
 
     def test_dashboard_url(self):
         self.assertEqual(self.url, '/dashboard')

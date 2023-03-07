@@ -11,6 +11,7 @@ from django.core.files.uploadedfile import SimpleUploadedFile
 from django.contrib.messages import get_messages
 import logging
 logging.getLogger("PIL").setLevel(logging.WARNING)
+from django.conf import settings as django_settings
 
 
 class SettingsViewTestCase(TestCase, LogInTester):
@@ -44,6 +45,7 @@ class SettingsViewTestCase(TestCase, LogInTester):
         self.upload_profile_picture_form_input = {
              "profile_picture" : self.file_data,
         }
+        self.set_session_variables()
 
     def test_account_settings_urls(self):
         self.assertEqual(self.url, '/account_settings/')
@@ -222,3 +224,23 @@ class SettingsViewTestCase(TestCase, LogInTester):
         messages = list(get_messages(response.wsgi_request))
         self.assertEqual(len(messages), 1)
         self.assertEqual(str(messages[0]), "You do not have a profile picture!")
+
+    #Helper functions
+    def set_session_cookies(self, session):
+        # Set the cookie to represent the session
+        session_cookie = django_settings.SESSION_COOKIE_NAME
+        self.client.cookies[session_cookie] = session.session_key
+        cookie_data = {
+            'max-age': None,
+            'path': '/',
+            'domain': django_settings.SESSION_COOKIE_DOMAIN,
+            'secure': django_settings.SESSION_COOKIE_SECURE or None,
+            'expires': None}
+        self.client.cookies[session_cookie].update(cookie_data)
+
+    def set_session_variables(self):
+        session = self.client.session
+        session['company_filter'] = 1
+        session['company_layout'] = 1
+        session.save()
+        self.set_session_cookies(session)
