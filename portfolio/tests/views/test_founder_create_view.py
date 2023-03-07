@@ -3,7 +3,7 @@ from django.urls import reverse
 from portfolio.models import ResidentialAddress, PastExperience, Founder, User
 from portfolio.forms import AddressCreateForm, PastExperienceForm, FounderForm
 from django_countries.fields import Country
-from portfolio.tests.helpers import reverse_with_next
+from portfolio.tests.helpers import reverse_with_next, set_session_variables
 
 
 
@@ -18,6 +18,7 @@ class FounderCreateTestCase(TestCase):
         self.user = User.objects.get(email="john.doe@example.org")
         self.client.login(email=self.user.email, password="Password123")
         self.url = reverse('founder_create')
+        set_session_variables(self.client)
         
         self.post_input = {
             "form1-name": "Jemma Doe",

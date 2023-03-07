@@ -4,7 +4,7 @@ from django.urls import reverse
 from portfolio.models import ResidentialAddress, PastExperience, User
 from portfolio.models.investor_individual_model import InvestorIndividual
 from django_countries.fields import Country
-from portfolio.tests.helpers import reverse_with_next
+from portfolio.tests.helpers import reverse_with_next, set_session_variables
 
 class InvestorIndividualDeleteTestCase(TestCase):
     fixtures = [
@@ -15,6 +15,7 @@ class InvestorIndividualDeleteTestCase(TestCase):
     def setUp(self):
         self.user = User.objects.get(email="john.doe@example.org")
         self.client.login(email=self.user.email, password="Password123")
+        set_session_variables(self.client)
 
         self.post_input = {
             "form1-name": "Jemma Doe",
