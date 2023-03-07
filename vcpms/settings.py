@@ -140,9 +140,9 @@ REDIRECT_URL_WHEN_LOGGED_IN = 'dashboard'
 # Login URL for redirecting users from login protected views
 LOGIN_URL = 'login'
 
-# Media path
-MEDIA_URL = "documents/"
-
+# Media paths
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'
 
 
 ITEM_ON_PAGE = 6
@@ -157,4 +157,3 @@ ADMINS_USERS_PER_PAGE = 15
 #     }
 # }
 # SELECT2_CACHE_BACKEND = 'default'
-
