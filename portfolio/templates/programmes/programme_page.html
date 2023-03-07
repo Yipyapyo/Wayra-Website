@@ -1,0 +1,96 @@
+{% extends 'dashboard_template.html' %}
+{% block main %}
+
+    <div class="px-5 py-2 rounded-3">
+        <p>Telefonica Innovations</p>
+        <h2 class="pb-3">{{ programme.name }}</h2>
+
+        <div class="container-fluid py-3">
+            <div class="row mb-3">
+                {% include 'partials/utilities/programme_card.html' with programme=programme%}
+            </div>
+        </div>
+
+    
+        <div class="row align-items-md-stretch">
+            <div class="col-md-6">
+                <div class="container-fluid pt-2">
+                    <h5>Details</h5>
+                    
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item my-2">
+                            <h6>Cohort</h6>
+                            <h7>{{ programme.cohort }}</h7>
+                        </li>
+                        <li class="list-group-item my-2">
+                            <div class="col">
+                                <h6>Partners</h6>
+                                {% for partner in partners %}
+                                    <h7>{{partner.name}}</h7>
+                                {% endfor %}
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container-fluid pt-3">
+            <div class="row justify-content-end">
+                <div class="col-auto mr-auto">
+                    <a href="{% url 'programme_update' id=id %}" class="btn btn-primary"> Update Programme</a>
+                </div>
+                <div class="col-auto ml-auto">
+                    <a href="{% url 'programme_delete' id=id %}" class="btn btn-danger"> Delete Programme</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="container text-center">
+            <li class="list-group-item my-2">
+                <h6>Participants</h6>
+                <div class="row mb-3">
+                    {% for participant in participants %}
+                        {% include 'partials/utilities/individual_card.html' %}
+                        {% include 'partials/utilities/individual_card.html' %}
+                        {% include 'partials/utilities/individual_card.html' %}
+                        {% include 'partials/utilities/individual_card.html' %}
+                        {% include 'partials/utilities/individual_card.html' %}
+
+                    {% endfor %}
+                </div>
+            </li>
+            <li class="list-group-item my-2">
+                <h6>Coaches and Mentors</h6>
+                <div class="row mb-3">
+                    {% for participant in participants %}
+                        {% include 'partials/utilities/individual_card.html' %}
+                        {% include 'partials/utilities/individual_card.html' %}
+                        {% include 'partials/utilities/individual_card.html' %}
+                    {% endfor %}
+                </div>
+            </li>
+        </div>
+
+        
+        <div class="container-fluid pt-3">
+            <h2>Contracts and Rights</h2>
+            <div class="px-5 pt-3 pb-2 mb-4 bg-light rounded-3">
+                <div class="container-fluid py-3">
+                    <div class="row mb-3">
+                        {% include 'partials/utilities/document_card.html' %}
+                        {% include 'partials/utilities/document_card.html' %}
+                        {% include 'partials/utilities/document_card.html' %}
+                        {% include 'partials/utilities/document_card.html' %}
+
+                    </div>
+                    <div class="row pt-2">
+                        {% include 'partials/utilities/see_all_button.html' %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+{% endblock %}

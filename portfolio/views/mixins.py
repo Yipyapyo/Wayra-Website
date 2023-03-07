@@ -1,4 +1,5 @@
-from django.core.exceptions import ImproperlyConfigured
+from django.contrib.auth.models import Group
+from django.core.exceptions import ImproperlyConfigured, ObjectDoesNotExist
 from django.shortcuts import redirect
 
 
@@ -27,3 +28,41 @@ class LoginProhibitedMixin:
             )
         else:
             return self.redirect_when_logged_in_url
+
+
+
+
+
+class FindObjectMixin:
+    redirect_when_no_object_found_url = None
+    model = None
+
+    def get_redirect_when_no_object_found_url(self):
+        """Returns the url to redirect to when not logged in."""
+        if self.redirect_when_no_object_found_url is None:
+            raise ImproperlyConfigured(
+                "FindObjectMixin requires either a value for "
+                "'redirect_when_no_object_found_url', or an implementation for "
+                "'get_redirect_when_no_object_found_url()'."
+            )
+        else:
+            return self.redirect_when_no_object_found_url
+
+    def get_model(self):
+        if self.model is None:
+            raise ImproperlyConfigured(
+                "FindObjectMixin requires either a value for "
+                "'model', or an implementation for "
+                "'get_model()'."
+            )
+        return self.model
+
+    def dispatch(self, request, id, *args, **kwargs):
+
+        try:
+            model = self.get_model()
+            model.objects.get(id=id)
+        except ObjectDoesNotExist:
+            url = self.get_redirect_when_no_object_found_url()
+            return redirect(url)
+        return super().dispatch(request, id, *args, **kwargs)

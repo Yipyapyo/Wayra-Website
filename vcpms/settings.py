@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'phonenumber_field',
     'django_countries',
     'django.contrib.humanize',
+    'django_select2',
 ]
 
 MIDDLEWARE = [
@@ -141,3 +142,19 @@ LOGIN_URL = 'login'
 
 # Media path
 MEDIA_URL = "documents/"
+
+
+
+ITEM_ON_PAGE = 6
+
+ADMINS_USERS_PER_PAGE = 15
+
+# Setting Cache for faster retrieval
+# CACHES = {
+#     'default': {
+#         'BACKEND': 'django.core.cache.backends.memcached.PyMemcacheCache',
+#         'LOCATION': 'localhost:8080',
+#     }
+# }
+# SELECT2_CACHE_BACKEND = 'default'
+

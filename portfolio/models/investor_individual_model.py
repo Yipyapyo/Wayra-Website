@@ -8,5 +8,5 @@ class InvestorIndividual(Individual):
     NumberOfPortfolioCompanies = models.PositiveIntegerField()
     NumberOfPersonalInvestments = models.PositiveIntegerField()
     NumberOfPartnerInvestments = models.PositiveIntegerField()
-    PartOfIncubator = models.BooleanField(blank=False)
+    PartOfIncubator = models.BooleanField()
     NumberOfExits = models.PositiveIntegerField()

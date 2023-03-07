@@ -6,12 +6,60 @@ from portfolio.models.past_experience_model import PastExperience
 from portfolio.forms.founder_form import FounderForm
 from django.shortcuts import redirect, render
 from django.core.paginator import Paginator, EmptyPage
+from django.http import HttpResponse
+from django.template.loader import render_to_string
+
 
 
 """
 Create an individual.
 """
 
+
+def individual_search(request):
+    if request.method == "GET":
+
+        searched = request.GET['individualsearchresult']
+        
+        response = []
+
+        if(searched == ""):
+            response = []
+        else:
+            search_result = Individual.objects.filter(name__contains=searched).values()
+            response.append(("Individual", list(search_result)))
+        
+
+        individual_search_results_table_html = render_to_string('partials/search/individual_search_results_table.html', {
+        'search_results': response, 'searched':searched, 'destination_url':'individual'})
+
+        return HttpResponse(individual_search_results_table_html)
+
+
+    elif request.method == "POST":
+        page_number = request.POST.get('page', 1)
+        searched = request.POST['individualsearchresult']
+
+        if searched == "":
+            return redirect('individual_page')
+        else:
+            individuals = Individual.objects.filter(name__contains=searched).values()
+            paginator = Paginator(individuals, 6)
+
+        try:
+            individual_page = paginator.page(page_number)
+        except EmptyPage:
+            individual_page = []
+
+        return render(request, 'individual/individual_page.html', {"individuals": individual_page, "searched":searched})
+
+    else:
+        return HttpResponse("Request method is not a GET")
+
+
+
+
+@login_required
 def individual_create(request):
 
     if request.method == "POST":
@@ -66,7 +114,7 @@ def individual_page(request):
 """
 Update a particular individual's information
 """
-
+@login_required
 def individual_update(request, id):
     individual_form = Individual.objects.get(id=id)
     address_forms = ResidentialAddress.objects.get(id=id)
@@ -102,7 +150,7 @@ def individual_update(request, id):
 """
 Delete a particular individual
 """
-
+@login_required
 def individual_delete(request, id):
     individual_form = Individual.objects.get(id=id)
     if request.method == 'POST':

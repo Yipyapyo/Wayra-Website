@@ -1,22 +1,36 @@
-{% load widget_tweaks %} 
+{% load widget_tweaks %}
 <div class="mb-4">
     {% for field in form %}
         <div class="mb-3">
-            {{ field.label_tag }} 
+            {{ field.label_tag }}
             {% if form.is_bound %}
                 {% if field.errors %}
-                    {% render_field field class="form-control is-invalid" %}
-                {% else %} 
-                    {% render_field field class="form-control is-valid" %}
+                    {% if field.field.widget.input_type == "checkbox" %}
+                        {% render_field field class="form-check" %}
+                    {% else %}
+                        {% render_field field class="form-control is-invalid" %}
+                    {% endif %}
+                {% else %}
+                    {% if field.field.widget.input_type == "checkbox" %}
+                        {% render_field field class="form-check" %}
+                    {% else %}
+                        {% render_field field class="form-control is-valid" %}
+                    {% endif %}
                 {% endif %}
-            {% else %} 
-                {% render_field field class="form-control" %} 
+            {% else %}
+                {% if field.field.widget.input_type == "select" %}
+                    {% render_field field class="form-select" %}
+                {% elif field.field.widget.input_type == "checkbox" %}
+                    {% render_field field class="form-check" %}
+                {% else %}
+                    {% render_field field class="form-control" %}
+                {% endif %}
             {% endif %}
             <div class="valid-feedback">
                 Looks good!
             </div>
-            <div class="invalid-feedback"> 
-                {{field.errors}}
+            <div class="invalid-feedback">
+                {{ field.errors }}
             </div>
         </div>
     {% endfor %}
