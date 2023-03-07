@@ -9,7 +9,7 @@ from django.urls import reverse
 from django.views.generic import ListView
 
 from portfolio.forms.company_form import CompanyCreateForm
-from portfolio.models import Company, Programme, Investment, InvestorCompany
+from portfolio.models import Company, Programme, Investment, InvestorCompany, Portfolio_Company
 
 
 # Create your views here.
@@ -20,7 +20,13 @@ def dashboard(request):
     # Data for the each company will be listed here.
     page_number = request.GET.get('page', 1)
 
-    companies = Company.objects.filter(is_archived=False).order_by('id')
+    if request.session['company_filter'] == 3:
+        investor_companies = InvestorCompany.objects.all()
+        companies = Company.objects.filter(id__in=investor_companies.values('company'), is_archived=False)
+    elif request.session['company_filter'] == 2:
+        companies = Portfolio_Company.objects.filter(is_archived=False)
+    else:
+        companies = Company.objects.filter(is_archived=False).order_by('id')
 
     paginator = Paginator(companies, 6)
 
@@ -48,7 +54,7 @@ def searchcomp(request):
         if (searched == ""):
             response = []
         else:
-            search_result = Company.objects.filter(name__contains=searched).values()
+            search_result = Company.objects.filter(name__contains=searched, is_archived=False).values()[:5]
             response.append(("Companies", list(search_result)))
 
         search_results_table_html = render_to_string('partials/search/search_results_table.html', {
@@ -62,7 +68,7 @@ def searchcomp(request):
         if (searched == ""):
             return redirect('dashboard')
         else:
-            companies = Company.objects.filter(name__contains=searched).values()
+            companies = Company.objects.filter(name__contains=searched, is_archived=False).values()[:5]
 
         paginator = Paginator(companies, 6)
         try:
@@ -172,4 +178,9 @@ def unarchive_company(request, company_id):
 @login_required
 def change_company_layout(request, layout_number):
     request.session['company_layout'] = layout_number
+    return redirect('dashboard')
+
+@login_required
+def change_company_filter(request, filter_number):
+    request.session['company_filter'] = filter_number
     return redirect('dashboard')

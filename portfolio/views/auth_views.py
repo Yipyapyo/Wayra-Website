@@ -31,6 +31,7 @@ class LogInCBV(LoginProhibitedMixin, View):
         if user is not None:
             login(request, user)
             request.session['company_layout'] = 1
+            request.session['company_filter'] = 1
             return redirect(self.next)
         messages.add_message(request, messages.ERROR, "The credentials provided were invalid!")
         return self.render()
@@ -45,6 +46,7 @@ def log_out(request):
     """sign out the current user"""
     try:
       del request.session['company_layout']
+      del request.session['company_filter']
     except:
         pass
     logout(request)

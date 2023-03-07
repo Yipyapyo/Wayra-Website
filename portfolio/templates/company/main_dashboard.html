@@ -32,9 +32,9 @@
                 Filter
               </button>
               <div class="dropdown-menu dropdown-menu-right">
-                <button class="dropdown-item" type="button">All</button>
-                <button class="dropdown-item" type="button">Portfolio Companies</button>
-                <button class="dropdown-item" type="button">Investors</button>
+                <a class="dropdown-item" type="button" href="{% url 'change_company_filter' 1 %}">All</a>
+                <a class="dropdown-item" type="button" href="{% url 'change_company_filter' 2 %}">Portfolio Companies</a>
+                <a class="dropdown-item" type="button" href="{% url 'change_company_filter' 3 %}">Investors</a>
               </div>
             </div>
     

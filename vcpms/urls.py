@@ -37,6 +37,7 @@ urlpatterns = [
     path('portfolio_company/archive/<int:company_id>', views.archive_company, name='archive_company'),
     path('portfolio_company/unarchive/<int:company_id>', views.unarchive_company, name='unarchive_company'),
     path('portfolio_company/change_company_layout/<int:layout_number>', views.change_company_layout, name='change_company_layout'),
+    path('portfolio_company/change_company_filter/<int:filter_number>', views.change_company_filter, name='change_company_filter'),
 
     # Individual CRUD
     path("individual_page/individual_create/", views.individual_create, name="individual_create"),
