@@ -13,6 +13,7 @@ class DocumentSeeder(Seeder):
 
     def seed(self):
         if self.COMPANY_COUNT > 0:
+            print(f"Companies in db: {self.COMPANY_COUNT}")
             self._create_documents(self.DOCUMENT_COUNT)
             print(f"{Document.objects.count()} documents in the db.\n")
         else:
@@ -21,7 +22,7 @@ class DocumentSeeder(Seeder):
     def _create_documents(self, count):
         for i in range(1, count + 1):
             try:
-                Document.objects.get(id=i)
+                Document.objects.get(file_id=i)
                 print(f"Document with the id {i} is already seeded.")
 
             except ObjectDoesNotExist:
