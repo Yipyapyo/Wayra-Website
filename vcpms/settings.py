@@ -15,10 +15,6 @@ from pathlib import Path
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-#Media links for development use
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-MEDIA_URL = '/media/'
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
@@ -30,6 +26,7 @@ SECRET_KEY = 'django-insecure-e_*^(e^z4(t7tyz@7w@6tn7j=nbmhuuex1$y=d9y&$v!l_a65=
 DEBUG = True
 
 ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
+
 
 # Application definition
 
@@ -44,6 +41,7 @@ INSTALLED_APPS = [
     'widget_tweaks',
     'phonenumber_field',
     'django_countries',
+    'django.contrib.humanize',
     'django_select2',
 ]
 
@@ -77,6 +75,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'vcpms.wsgi.application'
 
+
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
@@ -86,6 +85,7 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
@@ -105,6 +105,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/
 
@@ -115,6 +116,7 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 
 USE_TZ = True
+
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
@@ -129,10 +131,18 @@ STATICFILES_DIRS = (
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+# User model for authentication and login purposes
 AUTH_USER_MODEL = 'portfolio.User'
 
+# Default URL for redirecting authenticated users
 REDIRECT_URL_WHEN_LOGGED_IN = 'dashboard'
+
+# Login URL for redirecting users from login protected views
 LOGIN_URL = 'login'
+
+# Media paths
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'
 
 
 ITEM_ON_PAGE = 6
@@ -147,4 +157,3 @@ ADMINS_USERS_PER_PAGE = 15
 #     }
 # }
 # SELECT2_CACHE_BACKEND = 'default'
-
