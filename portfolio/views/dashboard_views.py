@@ -197,8 +197,6 @@ def change_company_filter(request):
         else:
             request.session['company_filter'] = 1
 
-        print(f"company layout: {request.session['company_layout']}")
-
         if request.session['company_filter'] == '3':
             investor_companies = InvestorCompany.objects.all()
             result = Company.objects.filter(id__in=investor_companies.values('company'), is_archived=False)
@@ -208,9 +206,6 @@ def change_company_filter(request):
             result = Company.objects.filter(is_archived=False).values()
         else:
             result = Company.objects.none()
-        
-        print(len(result))
-        print(type(request.session["company_layout"]))
 
         paginator = Paginator(result, 6)
 

@@ -21,7 +21,7 @@ class DashboardViewTestCase(TestCase, LogInTester):
         set_session_variables(self.client)
 
     def test_dashboard_url(self):
-        self.assertEqual(self.url, '/dashboard')
+        self.assertEqual(self.url, '/dashboard/')
 
     def test_get_dashboard(self):
         self.client.login(email=self.user.email, password="Password123")
