@@ -22,9 +22,9 @@ def dashboard(request):
 
     if request.session['company_filter'] == 3:
         investor_companies = InvestorCompany.objects.all()
-        companies = Company.objects.filter(id__in=investor_companies.values('company'), is_archived=False)
+        companies = Company.objects.filter(id__in=investor_companies.values('company'), is_archived=False).order_by('id')
     elif request.session['company_filter'] == 2:
-        companies = Portfolio_Company.objects.filter(is_archived=False)
+        companies = Portfolio_Company.objects.filter(is_archived=False).order_by('id')
     else:
         companies = Company.objects.filter(is_archived=False).order_by('id')
 
@@ -75,7 +75,13 @@ def searchcomp(request):
         if (searched == ""):
             return redirect('dashboard')
         else:
-            companies = Company.objects.filter(name__contains=searched, is_archived=False).values()[:5]
+            if request.session['company_filter'] == 3:
+                investor_companies = InvestorCompany.objects.all()
+                companies = Company.objects.filter(id__in=investor_companies.values('company'), is_archived=False, name__contains=searched).order_by('id')[:5]
+            elif request.session['company_filter'] == 2:
+                companies = Portfolio_Company.objects.filter(is_archived=False, name__contains=searched).order_by('id')[:5]
+            else:
+                companies = Company.objects.filter(name__contains=searched, is_archived=False).values().order_by('id')[:5]
 
         paginator = Paginator(companies, 6)
         try:
@@ -84,9 +90,6 @@ def searchcomp(request):
             companies_page = []
 
         return render(request, 'company/main_dashboard.html', {"companies": companies_page, "searched": searched})
-
-    else:
-        return HttpResponse("Request method is not a GET")
 
 
 @login_required
@@ -199,13 +202,11 @@ def change_company_filter(request):
 
         if request.session['company_filter'] == '3':
             investor_companies = InvestorCompany.objects.all()
-            result = Company.objects.filter(id__in=investor_companies.values('company'), is_archived=False)
+            result = Company.objects.filter(id__in=investor_companies.values('company'), is_archived=False).order_by('id')
         elif request.session['company_filter'] == '2':
-            result = Portfolio_Company.objects.filter(is_archived=False)
+            result = Portfolio_Company.objects.filter(is_archived=False).order_by('id')
         elif request.session['company_filter'] == '1':
-            result = Company.objects.filter(is_archived=False).values()
-        else:
-            result = Company.objects.none()
+            result = Company.objects.filter(is_archived=False).values().order_by('id')
 
         paginator = Paginator(result, 6)
 
