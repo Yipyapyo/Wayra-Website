@@ -15,6 +15,8 @@ FOUNDING_ROUNDS = [
     ('Post-IPO Equity', 'Post-IPO Equity')
 ]
 
+
+
 class Investment(models.Model):
     """Investment model for a investment from an investor to a startups"""
     investor = models.ForeignKey(InvestorCompany, on_delete=models.CASCADE, related_name="investor")
@@ -23,5 +25,9 @@ class Investment(models.Model):
     investmentAmount = models.DecimalField(max_digits=15, decimal_places=2)
     dateInvested = models.DateField(validators=[MaxValueValidator(limit_value=timezone.now().date())])
     dateExit = models.DateField(blank=True, null=True)
-    contractRight = models.CharField(max_length=1000)
+
+class ContractRight(models.Model):
+    investment = models.ForeignKey(Investment)
+    right = models.CharField(max_length = 255)
+    details = models.CharField(max_length = 255)
 
