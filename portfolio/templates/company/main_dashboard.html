@@ -9,17 +9,17 @@
                 <a href="{% url 'investor_company_create' %}" class="btn btn-sm btn-outline-primary"> Assign investor
                     company</a>
             </div>
-            <div class="btn-group me-2">
+            <div class="btn-group me-2 mb-2">
                 <a type="button" class="btn btn-sm btn-outline-secondary px-3" href="{% url 'change_company_layout' 1 %}"><i class="fa-solid fa-border-all pt-2"></i></a>
                 <a type="button" class="btn btn-sm btn-outline-secondary px-3" href="{% url 'change_company_layout' 2 %}"><i class="fa-solid fa-list pt-2"></i></a>
                 <a type="button" class="btn btn-sm btn-outline-secondary px-3" href="{% url 'change_company_layout' 3 %}"><i class="fa-solid fa-table-list pt-2"></i></a>
             </div>
         </div>
         <!-- Nav -->
-        <ul id="tabs" class="nav nav-tabs pb-0 mb-0">
-          <li class="nav-item"><a href="" data-target="#all-companies" data-toggle="tab" class="nav-link active font-regular text-dark" onclick="reload_companies(1, '#all-companies')">All Companies</a></li>
-          <li class="nav-item"><a href="" data-target="#portfolio" data-toggle="tab" class="nav-link font-regular text-dark" onclick="reload_companies(2, '#portfolio')">Portfolio</a></li>
-          <li class="nav-item"><a href="" data-target="#investors" data-toggle="tab" class="nav-link font-regular text-dark" onclick="reload_companies(3, '#investors')">Investors</a></li>
+        <ul id="tabs" class="nav nav-tabs pb-0 mt-auto overflow-x border-0">
+          <li class="nav-item"><a data-target="#all-companies" data-toggle="tab" class="nav-link active font-regular text-dark" onclick="reload_companies(1, '#all-companies')">All Companies</a></li>
+          <li class="nav-item"><a data-target="#portfolio" data-toggle="tab" class="nav-link font-regular text-dark" onclick="reload_companies(2, '#portfolio')">Portfolio</a></li>
+          <li class="nav-item"><a data-target="#investors" data-toggle="tab" class="nav-link font-regular text-dark" onclick="reload_companies(3, '#investors')">Investors</a></li>
       </ul>
     </div>
 
@@ -28,10 +28,10 @@
           {% include 'company/company_dashboard_content_reusable.html' with companies=companies %}
         </div>
         <div id="portfolio" class="tab-pane fade">
-            <h3>Portfolio Companies</h3>
+          {% include 'company/company_dashboard_content_reusable.html' with companies=companies %}
         </div>
         <div id="investors" class="tab-pane fade">
-            <h3>Investors</h3>
+          {% include 'company/company_dashboard_content_reusable.html' with companies=companies %}
         </div>
     </div>
 
