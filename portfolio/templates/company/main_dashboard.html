@@ -2,9 +2,9 @@
 {% load static %}
 {% block main %}
     <link href="{% static 'css/styles.css' %}" rel="stylesheet"/>
-    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 mb-3 border-bottom">
         <h1 class="h2">Dashboard</h1>
-        <div class="btn-toolbar mb-2 mb-md-0">
+        <div class="btn-toolbar">
             <div class="btn btn-group me-1">
                 <a href="{% url 'investor_company_create' %}" class="btn btn-sm btn-outline-primary"> Assign investor
                     company</a>
@@ -15,44 +15,55 @@
                 <a type="button" class="btn btn-sm btn-outline-secondary px-3" href="{% url 'change_company_layout' 3 %}"><i class="fa-solid fa-table-list pt-2"></i></a>
             </div>
         </div>
+        <!-- Nav -->
+        <ul id="tabs" class="nav nav-tabs pb-0 mb-0">
+          <li class="nav-item"><a href="" data-target="#all-companies" data-toggle="tab" class="nav-link active font-regular text-dark" onclick="reload_companies(1, '#all-companies')">All Companies</a></li>
+          <li class="nav-item"><a href="" data-target="#portfolio" data-toggle="tab" class="nav-link font-regular text-dark" onclick="reload_companies(2, '#portfolio')">Portfolio</a></li>
+          <li class="nav-item"><a href="" data-target="#investors" data-toggle="tab" class="nav-link font-regular text-dark" onclick="reload_companies(3, '#investors')">Investors</a></li>
+      </ul>
     </div>
 
-    <div class="px-5 pb-2 rounded-3">
-        <div class="container-fluid pt-2 px-0 search-div-styling">
-    
-          <div class="row">
-    
-            <div style="max-width: 85%;">
-                {% include 'partials/search/searchbar.html' with search_url=search_url %}
-            </div>
-
-            <div class="btn-group w-auto mb-auto">
-              <button type="button" class="btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <i class="fa-solid fa-filter"></i>
-                Filter
-              </button>
-              <div class="dropdown-menu dropdown-menu-right">
-                <a class="dropdown-item" type="button" href="{% url 'change_company_filter' 1 %}">All</a>
-                <a class="dropdown-item" type="button" href="{% url 'change_company_filter' 2 %}">Portfolio Companies</a>
-                <a class="dropdown-item" type="button" href="{% url 'change_company_filter' 3 %}">Investors</a>
-              </div>
-            </div>
-    
-          </div>
-    
+    <div id="tabsContent" class="tab-content">
+        <div id="all-companies" class="tab-pane fade active show">
+          {% include 'company/company_dashboard_content_reusable.html' with companies=companies %}
+        </div>
+        <div id="portfolio" class="tab-pane fade">
+            <h3>Portfolio Companies</h3>
+        </div>
+        <div id="investors" class="tab-pane fade">
+            <h3>Investors</h3>
         </div>
     </div>
 
-    <div class="px-5 pt-5">
-      {% if request.session.company_layout <= 2 %}
-        {% include 'partials/company/company_card_collection.html' with companies=companies %}
-      {% else %}
-        {% include 'partials/company/company_table.html' with companies=companies %}
-      {% endif %}
-
-    </div>
 
     <a href="{% url 'create_company' %}" class="create-company-plus-button"><i
             class="fas fa-plus-circle fa-3x pt-3 pb-3"></i></a>
+
+    <!-- Ajax function call -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+    <script>
+      var filter_search_url = "{% url 'change_company_filter' %}";
+      function reload_companies(number, id) {
+          $.ajax(
+          {
+              type:"GET",
+              url: filter_search_url,
+              data:{
+                  filter_number: number
+              },
+              success: function( data ) 
+              {
+                  $(id).html(data);
+                  console.log("Success")
+              }
+          })
+      }
+
+      function change_tab() {
+        alert("tab_changed")
+      }
+    </script>
+
+    <!-- <script src="{% static 'js/company_async.js' %}"></script> -->
 
 {% endblock %}
