@@ -30,7 +30,7 @@ class DashboardViewTestCase(TestCase, LogInTester):
         self.delete_company_url = reverse('delete_company', kwargs={'company_id':1})
         self.archive_company_url = reverse('archive_company', kwargs={'company_id':1})
         self.unarchive_company_url = reverse('unarchive_company', kwargs={'company_id':1})
-        self.change_company_layout_url = reverse('change_company_layout', kwargs={'layout_number':1})
+        self.change_company_layout_url = reverse('change_company_layout')
         self.change_company_filter_url = reverse('change_company_filter')
         self.user = User.objects.get(email="john.doe@example.org")
         self.admin_user = User.objects.get(email="petra.pickles@example.org")
@@ -53,7 +53,7 @@ class DashboardViewTestCase(TestCase, LogInTester):
         self.assertEqual(self.delete_company_url, '/portfolio_company/company_delete/1')
         self.assertEqual(self.archive_company_url, '/portfolio_company/archive/1')
         self.assertEqual(self.unarchive_company_url, '/portfolio_company/unarchive/1')
-        self.assertEqual(self.change_company_layout_url, '/portfolio_company/change_company_layout/1')
+        self.assertEqual(self.change_company_layout_url, '/change_company_layout/')
         self.assertEqual(self.change_company_filter_url, '/change_company_filter/')
 
     ##  Dashboard tests
@@ -243,9 +243,40 @@ class DashboardViewTestCase(TestCase, LogInTester):
     ## Change layout Number Tests
     def test_get_change_layout(self):
         self.client.login(email=self.user.email, password="Password123")
-        response = self.client.get(self.change_company_layout_url)
-        self.assertEqual(response.status_code, 302)
-        self.assertEqual(self.client.session['company_layout'], 1)
+        response = self.client.get(self.change_company_layout_url, data={'layout_number': 1})
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(int(self.client.session['company_layout']), 1)
+
+    def test_get_change_layout_returns_correct_data_for_all_companies(self):
+        self.client.login(email=self.user.email, password="Password123")
+        response = self.client.get(self.change_company_layout_url, data={'layout_number': 1})
+        self.assertEqual(response.status_code, 200)
+        self.assertIsInstance(response, HttpResponse) 
+        company_search_result = Company.objects.filter(is_archived=False).values()
+        self.assertEqual(len(company_search_result), 6)
+        
+    def test_get_change_layout_returns_correct_data_for_portfolio_companies(self):
+        self.client.login(email=self.user.email, password="Password123")
+        set_session_company_filter_variable(self.client, 2)
+        response = self.client.get(self.change_company_layout_url, data={'layout_number': 2})
+        self.assertEqual(response.status_code, 200)
+        self.assertIsInstance(response, HttpResponse) 
+        company_search_result = Portfolio_Company.objects.filter(is_archived=False)
+        for company in company_search_result:
+            self.assertContains(response, company.name)
+        self.assertEqual(len(company_search_result), 3)
+    
+    def test_get_cahnge_layout_returns_correct_data_for_investor_companies(self):
+        self.client.login(email=self.user.email, password="Password123")
+        set_session_company_filter_variable(self.client, 3)
+        response = self.client.get(self.change_company_layout_url, data={'layout_number': 3})
+        self.assertEqual(response.status_code, 200)
+        self.assertIsInstance(response, HttpResponse) 
+        investor_companies = InvestorCompany.objects.all()
+        company_search_result = Company.objects.filter(id__in=investor_companies.values('company'), is_archived=False)
+        for company in company_search_result:
+            self.assertContains(response, company.name)
+        self.assertEqual(len(company_search_result), 3)
 
     ## Change filter Number Tests
     def test_get_change_filter(self):
@@ -270,7 +301,7 @@ class DashboardViewTestCase(TestCase, LogInTester):
             self.assertContains(response, company['name'])
         self.assertEqual(len(company_search_result), 6)
         
-    def test_get_search_company_returns_correct_data_for_portfolio_companies(self):
+    def test_get_change_filter_returns_correct_data_for_portfolio_companies(self):
         self.client.login(email=self.user.email, password="Password123")
         set_session_company_filter_variable(self.client, 2)
         response = self.client.get(self.change_company_filter_url, data={'filter_number': 2})
@@ -281,7 +312,7 @@ class DashboardViewTestCase(TestCase, LogInTester):
             self.assertContains(response, company.name)
         self.assertEqual(len(company_search_result), 3)
     
-    def test_get_search_company_returns_correct_data_for_investor_companies(self):
+    def test_get_change_filtetr_returns_correct_data_for_investor_companies(self):
         self.client.login(email=self.user.email, password="Password123")
         set_session_company_filter_variable(self.client, 3)
         response = self.client.get(self.change_company_filter_url, data={'filter_number': 3})

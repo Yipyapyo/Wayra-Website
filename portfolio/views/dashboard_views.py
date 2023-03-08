@@ -200,7 +200,7 @@ def change_company_layout(request):
             result = Company.objects.filter(id__in=investor_companies.values('company'), is_archived=False).order_by('id')
         elif request.session['company_filter'] == '2':
             result = Portfolio_Company.objects.filter(is_archived=False).order_by('id')
-        elif request.session['company_filter'] == '1':
+        else:
             result = Company.objects.filter(is_archived=False).values().order_by('id')
 
         paginator = Paginator(result, 6)
