@@ -10,9 +10,9 @@
                     company</a>
             </div>
             <div class="btn-group me-2 mb-2">
-                <a type="button" class="btn btn-sm btn-outline-secondary px-3" href="{% url 'change_company_layout' 1 %}"><i class="fa-solid fa-border-all pt-2"></i></a>
-                <a type="button" class="btn btn-sm btn-outline-secondary px-3" href="{% url 'change_company_layout' 2 %}"><i class="fa-solid fa-list pt-2"></i></a>
-                <a type="button" class="btn btn-sm btn-outline-secondary px-3" href="{% url 'change_company_layout' 3 %}"><i class="fa-solid fa-table-list pt-2"></i></a>
+                <a type="button" class="btn btn-sm btn-outline-secondary px-3" onclick="change_layout(1)"><i class="fa-solid fa-border-all pt-2"></i></a>
+                <a type="button" class="btn btn-sm btn-outline-secondary px-3" onclick="change_layout(2)"><i class="fa-solid fa-list pt-2"></i></a>
+                <a type="button" class="btn btn-sm btn-outline-secondary px-3" onclick="change_layout(3)"><i class="fa-solid fa-table-list pt-2"></i></a>
             </div>
         </div>
         <!-- Nav -->
@@ -43,27 +43,10 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
     <script>
       var filter_search_url = "{% url 'change_company_filter' %}";
-      function reload_companies(number, id) {
-          $.ajax(
-          {
-              type:"GET",
-              url: filter_search_url,
-              data:{
-                  filter_number: number
-              },
-              success: function( data ) 
-              {
-                  $(id).html(data);
-                  console.log("Success")
-              }
-          })
-      }
-
-      function change_tab() {
-        alert("tab_changed")
-      }
+      var layout_search_url = "{% url 'change_company_layout' %}";
+      var active_tab = "#all-companies";
     </script>
 
-    <!-- <script src="{% static 'js/company_async.js' %}"></script> -->
+    <script src="{% static 'js/companies_async.js' %}"></script>
 
 {% endblock %}
