@@ -18,12 +18,11 @@ class StartupChoiceField(forms.ModelChoiceField):
 class InvestmentForm(forms.ModelForm):
     class Meta:
         model = Investment
-        fields = ["investor", "startup", "typeOfFoundingRounds", "investmentAmount", "dateInvested", "contractRight"]
+        fields = ["investor", "startup", "typeOfFoundingRounds", "investmentAmount", "dateInvested"]
         widgets = {
             'dateInvested': forms.DateInput(attrs={
                 'type': 'date'
             }),
-            'contractRight': forms.Textarea()
         }
 
     investor = InvestorChoiceField(
