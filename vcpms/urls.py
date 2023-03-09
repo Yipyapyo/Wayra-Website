@@ -24,7 +24,7 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('dashboard', views.dashboard, name='dashboard'),
+    path('dashboard/', views.dashboard, name='dashboard'),
     path('', views.LogInCBV.as_view(), name='login'),
     path('logout', views.log_out, name='logout'),
     path('search_result', views.searchcomp, name='company_search_result'),
@@ -36,8 +36,8 @@ urlpatterns = [
     path('portfolio_company/company_delete/<int:company_id>', views.delete_company, name='delete_company'),
     path('portfolio_company/archive/<int:company_id>', views.archive_company, name='archive_company'),
     path('portfolio_company/unarchive/<int:company_id>', views.unarchive_company, name='unarchive_company'),
-    path('portfolio_company/change_company_layout/<int:layout_number>', views.change_company_layout, name='change_company_layout'),
-    path('portfolio_company/change_company_filter/<int:filter_number>', views.change_company_filter, name='change_company_filter'),
+    path('change_company_layout/', views.change_company_layout, name='change_company_layout'),
+    path('change_company_filter/', views.change_company_filter, name='change_company_filter'),
 
     # Individual CRUD
     path("individual_page/individual_create/", views.individual_create, name="individual_create"),
