@@ -1,0 +1,41 @@
+{% extends 'dashboard_template.html' %}
+{% block main %}
+    {% load static %}
+    <div class="container-fluid pt-3">
+        <h2 class="pb-3">Contract Right</h2>
+        <div class="col-12 d-flex justify-content-end">
+            <div class="btn-group mt-3">
+                <a href="{% url 'contract_right_create' investment_id%}" class="btn btn-outline-primary">Create Contract Right</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid pt-3">
+
+        <div class="px-5 pt-3 pb-2 mb-4 bg-light rounded-3">
+            <table class="table table-hover">
+                <thead>
+                <th>Right</th>
+                <th colspan="3">Details</th>
+                <th colspan="2"> Action</th>
+                </thead>
+                <tbody>
+                {% for contract_right in contract_rights %}
+                    <tr>
+                        <td>{{ contract_right.right }}</td>
+                        <td colspan="3">{{ contract_right.detail }}</td>
+                        <td></td>
+                        <td colspan="2">
+                            <a href="{% url 'contract_right_update' contract_right.id %}"
+                               class="btn btn-sm btn-primary">Update</a>
+                            <a href="{% url 'contract_right_delete' contract_right.id %}"
+                               class="btn btn-sm btn-primary">Delete</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            {% include 'partials/utilities/pagination.html' with page_obj=contract_rights %}
+        </div>
+    </div>
+{% endblock %}
