@@ -1,13 +1,15 @@
 """Forms to input investment between an investor and a startup"""
 from django import forms
-from portfolio.models.investment_model import Investment
-from portfolio.models.investor_company_model import InvestorCompany
-from portfolio.models.company_model import Portfolio_Company
+from portfolio.models.investment_model import Investment, Investor, ContractRight
+from portfolio.models.company_model import Portfolio_Company, Company
 
 
 class InvestorChoiceField(forms.ModelChoiceField):
     def label_from_instance(self, obj):
-        return obj.company.name
+        if obj.company is not null:
+            return obj.company.name
+        else:
+            return obj.individual.name
 
 
 class StartupChoiceField(forms.ModelChoiceField):
@@ -18,16 +20,15 @@ class StartupChoiceField(forms.ModelChoiceField):
 class InvestmentForm(forms.ModelForm):
     class Meta:
         model = Investment
-        fields = ["investor", "startup", "typeOfFoundingRounds", "investmentAmount", "dateInvested", "contractRight"]
+        fields = ["investor", "startup", "typeOfFoundingRounds", "investmentAmount", "dateInvested"]
         widgets = {
             'dateInvested': forms.DateInput(attrs={
                 'type': 'date'
             }),
-            'contractRight': forms.Textarea()
         }
 
     investor = InvestorChoiceField(
-        queryset=InvestorCompany.objects.all(),
+        queryset=Investor.objects.all(),
         widget=forms.Select()
     )
 
@@ -35,3 +36,26 @@ class InvestmentForm(forms.ModelForm):
         queryset=Portfolio_Company.objects.all(),
         widget=forms.Select()
     )
+
+class ContractRightForm(forms.ModelForm):
+    class Meta: 
+        model = ContractRight
+        fields = ["right", "details"]
+
+    right_investment = None
+
+    def saveInvestment(self, invest):
+        self.right_investment = invest
+    
+    def save(self):
+        super().save(commit = False)
+        ContractRight.objects.create(
+            investment = right_investment,
+            right = self.cleaned_data.get("right"),
+            details = self.cleaned_data.get("details")
+        )
+
+
+    
+
+
