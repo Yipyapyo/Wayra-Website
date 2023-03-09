@@ -10,6 +10,7 @@ from portfolio.forms import UserCreationForm, CreateGroupForm, EditGroupForm, Ed
 from portfolio.models import User, Company
 from portfolio.tests.helpers import reverse_with_next
 from vcpms import settings
+from portfolio.tests.helpers import set_session_variables
 
 
 class UserListViewTestCase(TestCase):
@@ -20,6 +21,7 @@ class UserListViewTestCase(TestCase):
     def setUp(self):
         self.url = reverse('permission_user_list')
         self.user = User.objects.get(email='petra.pickles@example.org')
+        set_session_variables(self.client)
 
     def test_user_list_url(self):
         self.assertEqual(self.url, '/permissions/users/')
@@ -92,7 +94,7 @@ class UserListViewTestCase(TestCase):
                                      last_name=f'Last{user_id}',
                                      phone=f'+447312345678'
                                      )
-
+            
 
 class UserSignUpFormViewTestCase(TestCase):
     """ Unit test for UserSignUpFormView"""
@@ -113,6 +115,7 @@ class UserSignUpFormViewTestCase(TestCase):
                            "is_active": True,
                            "group": [1],
                            }
+        set_session_variables(self.client)
 
     def test_sign_up_url(self):
         self.assertEqual(self.url, '/permissions/create_user/')
@@ -158,7 +161,7 @@ class UserSignUpFormViewTestCase(TestCase):
         form = response.context['form']
         self.assertTrue(isinstance(form, UserCreationForm))
         self.assertTrue(form.is_bound)
-
+    
 
 class GroupCreationViewTestCase(TestCase):
     """ Unit test for GroupCreationView"""
@@ -171,6 +174,7 @@ class GroupCreationViewTestCase(TestCase):
             "name": "UserGrp",
             "permissions": ['add_user', 'change_user', 'view_user', 'delete_user']
         }
+        set_session_variables(self.client)
 
     def test_create_group_url(self):
         self.assertEqual(self.url, '/permissions/create_group/')
@@ -223,6 +227,7 @@ class UserDeleteViewTestCase(TestCase):
     def setUp(self) -> None:
         self.test_user = User.objects.get(email="john.doe@example.org")
         self.url = reverse('permission_delete_user', kwargs={'id': self.test_user.id})
+        set_session_variables(self.client)
 
     def test_delete_user_url(self):
         self.assertEqual(self.url, f'/permissions/{self.test_user.id}/delete_user/')
@@ -275,7 +280,7 @@ class UserDeleteViewTestCase(TestCase):
         self.client.login(username='petra.pickles@example.org', password="Password123")
         response = self.client.post(self.url, follow=True)
         self.assertRedirects(response, redirect_url, status_code=302, target_status_code=200)
-
+    
 
 class GroupListViewTestCase(TestCase):
     """ Unit test for group list """
@@ -285,6 +290,7 @@ class GroupListViewTestCase(TestCase):
     def setUp(self) -> None:
         self.url = reverse('permission_group_list')
         self.user = User.objects.get(email='petra.pickles@example.org')
+        set_session_variables(self.client)
 
     def test_group_list_url(self):
         self.assertEqual(self.url, '/permissions/group_list/')
@@ -351,7 +357,7 @@ class GroupListViewTestCase(TestCase):
         self.assertEqual(len(response.context['groups']), 1)
         self.assertTrue(page_obj.has_previous())
         self.assertFalse(page_obj.has_next())
-
+    
 
 class GroupEditViewTestCase(TestCase):
     fixtures = ['portfolio/tests/fixtures/default_user.json',
@@ -365,6 +371,7 @@ class GroupEditViewTestCase(TestCase):
             "permissions": ['add_user', 'change_user', 'view_user', 'delete_user']
         }
         self.url = reverse('permission_edit_group', kwargs={'id': self.test_group.id})
+        set_session_variables(self.client)
 
     def test_group_edit_url(self):
         self.assertEqual(self.url, f'/permissions/{self.test_group.id}/edit_group/')
@@ -446,6 +453,7 @@ class GroupDeleteViewTestCase(TestCase):
         self.test_group = Group.objects.create(name="OriginalGroup")
         self.test_group.permissions.add(Permission.objects.get(codename='add_user'))
         self.url = reverse('permission_delete_group', kwargs={'id': self.test_group.id})
+        set_session_variables(self.client)
 
     def test_delete_user_url(self):
         self.assertEqual(self.url, f'/permissions/{self.test_group.id}/delete_group/')
@@ -504,6 +512,7 @@ class EditUserViewTestCase(TestCase):
                            "is_active": self.test_user.is_active,
                            'group': [1]
                            }
+        set_session_variables(self.client)
 
     def test_get_edit_user_url(self):
         self.assertEqual(self.url, f'/permissions/{self.test_user.id}/edit_user/')
@@ -583,6 +592,7 @@ class UserResetPasswordViewTestCase(TestCase):
     def setUp(self) -> None:
         self.test_user = User.objects.get(email="john.doe@example.org")
         self.url = reverse('permission_reset_password', kwargs={'id': self.test_user.id})
+        set_session_variables(self.client)
 
 
     def test_get_edit_user_url(self):

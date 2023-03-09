@@ -1,12 +1,14 @@
 from django.test import TestCase
 from django.urls import reverse
-from portfolio.models import ResidentialAddress, PastExperience, Founder, User
-from portfolio.forms import AddressCreateForm, PastExperienceForm, FounderForm
+from portfolio.models import ResidentialAddress, PastExperience, User
+from portfolio.models.investor_individual_model import InvestorIndividual
+from portfolio.forms import AddressCreateForm, PastExperienceForm
+from portfolio.forms.investor_individual_form import InvestorIndividualForm
 from django_countries.fields import Country
 from django_countries.fields import Country
 from portfolio.tests.helpers import reverse_with_next, set_session_variables
 
-class FounderModifyTestCase(TestCase):
+class InvestorIndividualModifyTestCase(TestCase):
     fixtures = [
         "portfolio/tests/fixtures/default_user.json",
         "portfolio/tests/fixtures/other_users.json",
@@ -29,8 +31,11 @@ class FounderModifyTestCase(TestCase):
             "form1-PrimaryNumber_1": "+447975777666",
             "form1-SecondaryNumber_0": "UK",
             "form1-SecondaryNumber_1": "+441325777655",
-            "form1-companyFounded": "Companyname",
-            "form1-additionalInformation": "Info",
+            "form1-NumberOfPortfolioCompanies": 5,
+            "form1-NumberOfPersonalInvestments": 5,
+            "form1-NumberOfPartnerInvestments": 5,
+            "form1-PartOfIncubator": False,
+            "form1-NumberOfExits": 5,
             "form2-address_line1": "testAdress1",
             "form2-address_line2": "testAdress2",
             "form2-postal_code": "testCode",
@@ -46,16 +51,16 @@ class FounderModifyTestCase(TestCase):
             "1-workTitle" : "exampleWork2",
             "1-start_year" : 2034,
             "1-end_year" : 2036,
-            "1-Description" : "testCase2",
+            "1-Description" : "testCase2"
         }
 
-        self.url2 = reverse('founder_create')
+        self.url2 = reverse('investor_individual_create')
         self.client.post(self.url2, self.post_input)
-        self.listUsed = Founder.objects.filter(name="Jemma Doe")[0]
-        self.url = reverse('founder_modify', kwargs={'id': self.listUsed.id})
+        self.listUsed = InvestorIndividual.objects.filter(name="Jemma Doe")[0]
+        self.url = reverse('investor_individual_modify', kwargs={'id': self.listUsed.id})
     
-    def test_founder_modify_url(self):
-        self.assertEqual(self.url, '/individual_page/{}/modifyFounder/'.format(self.listUsed.id))
+    def test_investor_individual_modify_url(self):
+        self.assertEqual(self.url, '/individual_page/{}/investor_individual_modify/'.format(self.listUsed.id))
     
     def test_redirect_when_user_not_logged_in(self):
         self.client.logout()
@@ -63,75 +68,92 @@ class FounderModifyTestCase(TestCase):
         response = self.client.get(self.url)
         self.assertRedirects(response, redirect_url, status_code=302, target_status_code=200)
     
-    def test_post_founder_update_with_blank_name(self):
+    def test_post_investor_individual_update_with_blank_name(self):
         self.post_input['form1-name'] = ""
         response = self.client.post(self.url, self.post_input)
         self.assertEqual(response.status_code, 200)
-        founder = Founder.objects.filter(Company="exampleCompany")[0]
-        self.assertEqual(founder.name, "Jemma Doe")
+        investor_individual = InvestorIndividual.objects.filter(Company="exampleCompany")[0]
+        self.assertEqual(investor_individual.name, "Jemma Doe")
     
-    def test_post_founder_update_angellist_link_invalid(self):
+    def test_post_investor_individual_update_angellist_link_invalid(self):
         self.post_input['form1-AngelListLink'] = "hi"
         response = self.client.post(self.url, self.post_input)
         self.assertEqual(response.status_code, 200)
-        founder = Founder.objects.filter(name="Jemma Doe")[0]
-        self.assertEqual(founder.AngelListLink, "https://www.AngelList.com")
+        investor_individual = InvestorIndividual.objects.filter(name="Jemma Doe")[0]
+        self.assertEqual(investor_individual.AngelListLink, "https://www.AngelList.com")
 
-    def test_post_founder_udpate_crunchbase_link_invalid(self):
+    def test_post_investor_individual_update_crunchbase_link_invalid(self):
         self.post_input['form1-CrunchbaseLink'] = "hi"
         response = self.client.post(self.url, self.post_input)
         self.assertEqual(response.status_code, 200)
-        founder = Founder.objects.filter(name="Jemma Doe")[0]
-        self.assertEqual(founder.CrunchbaseLink, "https://www.Crunchbase.com")
+        investor_individual = InvestorIndividual.objects.filter(name="Jemma Doe")[0]
+        self.assertEqual(investor_individual.CrunchbaseLink, "https://www.Crunchbase.com")
 
-    def test_post_founder_update_linkedin_link_invalid(self):
+    def test_post_investor_individual_update_linkedin_link_invalid(self):
         self.post_input['form1-LinkedInLink'] = "hi"
         response = self.client.post(self.url, self.post_input)
         self.assertEqual(response.status_code, 200)
-        founder = Founder.objects.filter(name="Jemma Doe")[0]
-        self.assertEqual(founder.LinkedInLink, "https://www.LinkedIn.com")
+        investor_individual = InvestorIndividual.objects.filter(name="Jemma Doe")[0]
+        self.assertEqual(investor_individual.LinkedInLink, "https://www.LinkedIn.com")
 
-    def test_post_founder_update_company_cannot_be_blank(self):
+    def test_post_investor_individual_update_company_cannot_be_blank(self):
         self.post_input['form1-Company'] = ""
         response = self.client.post(self.url, self.post_input)
         self.assertEqual(response.status_code, 200)
-        founder = Founder.objects.filter(name="Jemma Doe")[0]
-        self.assertEqual(founder.Company, "exampleCompany")
+        investor_individual = InvestorIndividual.objects.filter(name="Jemma Doe")[0]
+        self.assertEqual(investor_individual.Company, "exampleCompany")
     
-    def test_post_founder_update_position_cannot_be_blank(self):
+    def test_post_investor_individual_update_position_cannot_be_blank(self):
         self.post_input['form1-Position'] = ""
         response = self.client.post(self.url, self.post_input)
         self.assertEqual(response.status_code, 200)
-        founder = Founder.objects.filter(name="Jemma Doe")[0]
-        self.assertEqual(founder.Position, "examplePosition")
+        investor_individual = InvestorIndividual.objects.filter(name="Jemma Doe")[0]
+        self.assertEqual(investor_individual.Position, "examplePosition")
     
-    def test_post_founder_update_email_cannot_be_blank(self):
+    def test_post_investor_individual_update_email_cannot_be_blank(self):
         self.post_input['form1-Email'] = ""
         response = self.client.post(self.url, self.post_input)
         self.assertEqual(response.status_code, 200)
-        founder = Founder.objects.filter(name="Jemma Doe")[0]
-        self.assertEqual(founder.Email, "test@gmail.com")
+        investor_individual = InvestorIndividual.objects.filter(name="Jemma Doe")[0]
+        self.assertEqual(investor_individual.Email, "test@gmail.com")
     
-    def test_post_founder_update_email_cannot_be_invalid(self):
-        self.post_input['form1-Email'] = "hi"
+        
+    def test_post_number_of_portfolio_companies_cannot_be_blank(self):
+        self.post_input['form1-NumberOfPortfolioCompanies'] = ""
         response = self.client.post(self.url, self.post_input)
         self.assertEqual(response.status_code, 200)
-        founder = Founder.objects.filter(name="Jemma Doe")[0]
-        self.assertEqual(founder.Email, "test@gmail.com")
-    
-    def test_post_founder_update_primary_number_cannot_be_invalid(self):
+        investor_individual = InvestorIndividual.objects.filter(name="Jemma Doe")[0]
+        self.assertEqual(investor_individual.NumberOfPortfolioCompanies, 5)
+
+    def test_post_number_of_personal_investments_cannot_be_blank(self):
+        self.post_input['form1-NumberOfPersonalInvestments'] = ""
+        response = self.client.post(self.url, self.post_input)
+        self.assertEqual(response.status_code, 200)
+        investor_individual = InvestorIndividual.objects.filter(name="Jemma Doe")[0]
+        self.assertEqual(investor_individual.NumberOfPersonalInvestments, 5)
+
+    def test_post_number_of_partner_investments_cannot_be_blank(self):
+        self.post_input['form1-NumberOfPartnerInvestments'] = ""
+        response = self.client.post(self.url, self.post_input)
+        self.assertEqual(response.status_code, 200)
+        investor_individual = InvestorIndividual.objects.filter(name="Jemma Doe")[0]
+        self.assertEqual(investor_individual.NumberOfPartnerInvestments, 5)
+
+
+    def test_post_number_of_exits_cannot_be_blank(self):
+        self.post_input['form1-NumberOfExits'] = ""
+        response = self.client.post(self.url, self.post_input)
+        self.assertEqual(response.status_code, 200)
+        investor_individual = InvestorIndividual.objects.filter(name="Jemma Doe")[0]
+        self.assertEqual(investor_individual.NumberOfExits, 5)
+
+    def test_post_investor_individual_update_primary_number_cannot_be_invalid(self):
         self.post_input['form1-PrimaryNumber_1'] = "02"
         response = self.client.post(self.url, self.post_input)
         self.assertEqual(response.status_code, 200)
-        founder = Founder.objects.filter(name="Jemma Doe")[0]
-        self.assertEqual(founder.PrimaryNumber, "+447975777666")
+        investor_individual = InvestorIndividual.objects.filter(name="Jemma Doe")[0]
+        self.assertEqual(investor_individual.PrimaryNumber, "+447975777666")
     
-    def test_post_founder_update_company_founded_cannot_be_blank(self):
-        self.post_input['form1-companyFounded'] = ""
-        response = self.client.post(self.url, self.post_input)
-        self.assertEqual(response.status_code, 200)
-        founder = Founder.objects.filter(name="Jemma Doe")[0]
-        self.assertEqual(founder.companyFounded, "Companyname")
     
     def test_address_update_post_address_line_1_cannot_be_blank(self):
         self.post_input['form2-address_line1'] = ""
@@ -154,6 +176,7 @@ class FounderModifyTestCase(TestCase):
         address = ResidentialAddress.objects.filter(address_line1="testAdress1")[0]
         self.assertEqual(address.postal_code, "testCode")
     
+
     def test_post_city_cannot_be_blank(self):
         self.post_input['form2-city'] = ""
         response = self.client.post(self.url, self.post_input)
@@ -177,6 +200,7 @@ class FounderModifyTestCase(TestCase):
         address = ResidentialAddress.objects.filter(address_line1="testAdress1")[0]
         self.assertEqual(address.country, Country(code="AD"))
     
+
     def test_post_past_experience_companyName_cannot_be_blank(self):
         self.post_input['0-companyName'] = ""
         self.post_input['1-companyName'] = ""
@@ -206,6 +230,7 @@ class FounderModifyTestCase(TestCase):
         pastExp2 = PastExperience.objects.filter(companyName="exampleCompany2")[0]
         self.assertEqual(pastExp1.start_year, 2033)
         self.assertEqual(pastExp2.start_year, 2034)
+
     
     
     

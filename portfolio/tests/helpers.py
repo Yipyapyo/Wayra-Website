@@ -1,4 +1,5 @@
 from django.urls import reverse
+from django.conf import settings as django_settings
 
 
 class LogInTester:
@@ -10,3 +11,23 @@ def reverse_with_next(url_name, next_url):
     url = reverse(url_name)
     url += f"?next={next_url}"
     return url
+
+#Helper functions
+def set_session_cookies(client, session):
+    # Set the cookie to represent the session
+    session_cookie = django_settings.SESSION_COOKIE_NAME
+    client.cookies[session_cookie] = session.session_key
+    cookie_data = {
+        'max-age': None,
+        'path': '/',
+        'domain': django_settings.SESSION_COOKIE_DOMAIN,
+        'secure': django_settings.SESSION_COOKIE_SECURE or None,
+        'expires': None}
+    client.cookies[session_cookie].update(cookie_data)
+
+def set_session_variables(client):
+    session = client.session
+    session['company_filter'] = 1
+    session['company_layout'] = 1
+    session.save()
+    set_session_cookies(client, session)

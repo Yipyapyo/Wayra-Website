@@ -1,11 +1,11 @@
-"""Unit tests for the founder delete page."""
+"""Unit tests for the individual delete page."""
 from django.test import TestCase
 from django.urls import reverse
-from portfolio.models import ResidentialAddress, PastExperience, Founder, User
+from portfolio.models import ResidentialAddress, PastExperience, Individual, User
 from django_countries.fields import Country
 from portfolio.tests.helpers import reverse_with_next, set_session_variables
 
-class FounderDeleteTestCase(TestCase):
+class IndividualDeleteTestCase(TestCase):
     fixtures = [
         "portfolio/tests/fixtures/default_user.json",
         "portfolio/tests/fixtures/other_users.json",
@@ -28,8 +28,6 @@ class FounderDeleteTestCase(TestCase):
             "form1-PrimaryNumber_1": "+447975777666",
             "form1-SecondaryNumber_0": "UK",
             "form1-SecondaryNumber_1": "+441325777655",
-            "form1-companyFounded": "Companyname",
-            "form1-additionalInformation": "Info",
             "form2-address_line1": "testAdress1",
             "form2-address_line2": "testAdress2",
             "form2-postal_code": "testCode",
@@ -48,13 +46,13 @@ class FounderDeleteTestCase(TestCase):
             "1-Description" : "testCase2",
         }
 
-        self.url2 = reverse('founder_create')
+        self.url2 = reverse('individual_create')
         self.client.post(self.url2, self.post_input)
-        self.listUsed = Founder.objects.filter(name="Jemma Doe")[0]
-        self.url = reverse('founder_delete', kwargs={'id': self.listUsed.id})
+        self.listUsed = Individual.objects.filter(name="Jemma Doe")[0]
+        self.url = reverse('individual_delete', kwargs={'id': self.listUsed.id})
     
-    def test_founder_delete_url(self):
-        self.assertEqual(self.url, '/individual_page/{}/deleteFounder/'.format(self.listUsed.id))
+    def test_individual_delete_url(self):
+        self.assertEqual(self.url, '/individual_page/{}/delete/'.format(self.listUsed.id))
     
     def test_redirect_when_user_not_logged_in(self):
         self.client.logout()
@@ -63,11 +61,11 @@ class FounderDeleteTestCase(TestCase):
         self.assertRedirects(response, redirect_url, status_code=302, target_status_code=200)
         
     def test_successful_delete(self):
-        before_count = Founder.objects.count()
+        before_count = Individual.objects.count()
         before_count2 = ResidentialAddress.objects.count()
         before_count3 = PastExperience.objects.count()
         self.client.post(self.url, {})
-        after_count = Founder.objects.count()
+        after_count = Individual.objects.count()
         after_count2 = ResidentialAddress.objects.count()
         after_count3 = PastExperience.objects.count()
         self.assertEqual(before_count-1, after_count)

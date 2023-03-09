@@ -18,6 +18,7 @@ from django.test import TestCase
 from portfolio.forms import CreateProgrammeForm, MultipleChoiceField, EditProgrammeForm
 from portfolio.models import Company, Portfolio_Company, Individual, Programme
 from vcpms.settings import MEDIA_ROOT
+from portfolio.tests.helpers import set_session_variables
 
 
 class ProgrammeCreateViewTestCase(TestCase, LogInTester):
@@ -44,6 +45,7 @@ class ProgrammeCreateViewTestCase(TestCase, LogInTester):
         image_file = BytesIO()
         image_file.write(open("portfolio/tests/forms/wayra_logo.png", 'rb').read())
         image_file.seek(0)
+        set_session_variables(self.client)
 
         self.file_data = SimpleUploadedFile("wayra_logo.png", image_file.read(), content_type="image/png")
         self.form_input = {
@@ -116,6 +118,7 @@ class ProgrammeUpdateViewTestCase(TestCase, LogInTester):
         image_file = BytesIO()
         image_file.write(open("portfolio/tests/forms/wayra_logo.png", 'rb').read())
         image_file.seek(0)
+        set_session_variables(self.client)
 
         self.file_data = SimpleUploadedFile("wayra_logo.png", image_file.read(), content_type="image/png")
 
@@ -212,6 +215,7 @@ class ProgrammeDeleteViewTestCase(TestCase, LogInTester):
         image_file = BytesIO()
         image_file.write(open("portfolio/tests/forms/wayra_logo.png", 'rb').read())
         image_file.seek(0)
+        set_session_variables(self.client)
 
         self.file_data = SimpleUploadedFile("wayra_logo.png", image_file.read(), content_type="image/png")
         self.form_input = {
@@ -256,6 +260,7 @@ class ProgrammeViewTestCase(TestCase, LogInTester):
         self.url = reverse('programme_list')
         self.user = User.objects.get(email="john.doe@example.org")
         self.admin_user = User.objects.get(email="petra.pickles@example.org")
+        set_session_variables(self.client)
 
     def test_programme_url(self):
         self.assertEqual(self.url, '/programme_page/')
