@@ -7,6 +7,7 @@ from django.contrib import messages
 from portfolio.forms import LogInForm
 from portfolio.models import User
 from portfolio.tests.helpers import LogInTester
+from portfolio.tests.helpers import set_session_variables
 
 
 class LogInViewTestCase(TestCase, LogInTester):
@@ -21,6 +22,7 @@ class LogInViewTestCase(TestCase, LogInTester):
         self.url = reverse('login')
         self.user = User.objects.get(email="john.doe@example.org")
         self.admin_user = User.objects.get(email="petra.pickles@example.org")
+        set_session_variables(self.client)
 
     def test_log_in_url(self):
         self.assertEqual(self.url, '/')

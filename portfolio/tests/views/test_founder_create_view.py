@@ -3,8 +3,7 @@ from django.urls import reverse
 from portfolio.models import ResidentialAddress, PastExperience, Founder, User
 from portfolio.forms import AddressCreateForm, PastExperienceForm, FounderForm
 from django_countries.fields import Country
-from django_countries.fields import Country
-from portfolio.tests.helpers import reverse_with_next
+from portfolio.tests.helpers import reverse_with_next, set_session_variables
 
 
 
@@ -19,6 +18,7 @@ class FounderCreateTestCase(TestCase):
         self.user = User.objects.get(email="john.doe@example.org")
         self.client.login(email=self.user.email, password="Password123")
         self.url = reverse('founder_create')
+        set_session_variables(self.client)
         
         self.post_input = {
             "form1-name": "Jemma Doe",
@@ -267,7 +267,7 @@ class FounderCreateTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
     
     def test_post_address_line_2_cannot_be_blank(self):
-        self.post_input['form1-address_line2'] = ""
+        self.post_input['form2-address_line2'] = ""
         before_count = Founder.objects.count()
         before_count2 = ResidentialAddress.objects.count()
         before_count3 = PastExperience.objects.count()

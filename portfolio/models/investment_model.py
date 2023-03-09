@@ -80,6 +80,7 @@ class Investment(models.Model):
     dateExit = models.DateField(blank=True, null=True)
 
 
+
 class ContractRight(models.Model):
     investment = models.ForeignKey(Investment, on_delete=models.CASCADE)
     right = models.CharField(max_length = 255)

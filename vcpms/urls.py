@@ -17,6 +17,8 @@ from django.contrib import admin
 from django.urls import path, include
 from portfolio import views
 
+from portfolio.views import founder_views
+from portfolio.views import investor_individual_views
 from django.conf import settings
 from django.conf.urls.static import static
 
@@ -34,6 +36,8 @@ urlpatterns = [
     path('portfolio_company/company_delete/<int:company_id>', views.delete_company, name='delete_company'),
     path('portfolio_company/archive/<int:company_id>', views.archive_company, name='archive_company'),
     path('portfolio_company/unarchive/<int:company_id>', views.unarchive_company, name='unarchive_company'),
+    path('portfolio_company/change_company_layout/<int:layout_number>', views.change_company_layout, name='change_company_layout'),
+    path('portfolio_company/change_company_filter/<int:filter_number>', views.change_company_filter, name='change_company_filter'),
 
     # Individual CRUD
     path("individual_page/individual_create/", views.individual_create, name="individual_create"),
@@ -50,6 +54,11 @@ urlpatterns = [
     #Individual Search
 
     path('individual_search_result', views.individual_search, name='individual_search_result'),
+
+    # Individual Investor CRUD
+    path("individual_page/investor_individual_create/", investor_individual_views.investor_individual_create, name="investor_individual_create"),
+    path("individual_page/<int:id>/investor_individual_delete/", investor_individual_views.investor_individual_delete, name='investor_individual_delete'),
+    path("individual_page/<int:id>/investor_individual_modify/", investor_individual_views.investor_individual_modify, name='investor_individual_modify'),
 
     # Programme CRUD
     path("select2/", include("django_select2.urls")),
@@ -92,6 +101,12 @@ urlpatterns = [
     path("investment/create/<int:company_id>", views.InvestmentCreateView.as_view(), name='investment_create'),
     path("investment/create_investor_company/", views.InvestorCompanyCreateView.as_view(), name='investor_company_create'),
     path("investment/update_investor_company/<int:company_id>", views.InvestorCompanyUpdateView.as_view(), name='investor_company_update'),
+
+    #ContractRights
+    path("contract_right_list/<int:investment_id>", views.ContractRightsListView.as_view(), name='contract_right_list'),
+    path("contract_right/create/<int:investment_id>", views.ContractRightCreateView.as_view(), name='contract_right_create'),
+    path("contract_right/delete/<int:id>", views.ContractRightDeleteView.as_view(), name='contract_right_delete'),
+
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -35,6 +35,7 @@ class LoginProhibitedMixin:
 
 class FindObjectMixin:
     redirect_when_no_object_found_url = None
+    redirect_when_no_object_found_url_kwargs = {}
     model = None
 
     def get_redirect_when_no_object_found_url(self):
@@ -58,11 +59,10 @@ class FindObjectMixin:
         return self.model
 
     def dispatch(self, request, id, *args, **kwargs):
-
         try:
             model = self.get_model()
             model.objects.get(id=id)
         except ObjectDoesNotExist:
             url = self.get_redirect_when_no_object_found_url()
-            return redirect(url)
+            return redirect(url,kwargs=self.redirect_when_no_object_found_url_kwargs)
         return super().dispatch(request, id, *args, **kwargs)

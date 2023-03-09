@@ -22,7 +22,6 @@ class InvestmentFormTestCase(TestCase):
                            'typeOfFoundingRounds': '',
                            'intestmentAmount': 10_000_000,
                            'dateInvested': '2023-03-05',
-                           'contractRight': 'Default Contract Right',
         }
 
     def test_valid_investment_create_form(self):

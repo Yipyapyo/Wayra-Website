@@ -24,8 +24,8 @@ class InvestmentModelTestCase(TestCase):
             startup=self.portfolio_company,
             typeOfFoundingRounds='Series A',
             dateInvested=timezone.now().date(),
+            investmentAmount=1_000_000_000,
             dateExit=None,
-            contractRight="Template - Contract - Right"
         )
 
     def _assert_valid_investment(self):
@@ -98,8 +98,10 @@ class InvestmentModelTestCase(TestCase):
     def test_startup_delete_deletes_investment(self):
         pass
 
+
 class InvestorCompanyModelTestCase(TestCase):
     fixtures = ['portfolio/tests/fixtures/default_company.json']
+
     def setUp(self) -> None:
         self.defaultCompany = Company.objects.get(id=1)
         self.investorCompany = InvestorCompany.objects.create(
@@ -109,6 +111,7 @@ class InvestorCompanyModelTestCase(TestCase):
             linkedInLink='https://www.linked-in.com',
             classification='VC'
         )
+
     def _assert_valid_investment(self):
         try:
             self.investorCompany.full_clean()

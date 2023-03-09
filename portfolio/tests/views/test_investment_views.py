@@ -26,7 +26,6 @@ class InvestmentCreateViewTestCase(TestCase, LogInTester):
                            'typeOfFoundingRounds': 'Series A',
                            'intestmentAmount': 10_000_000,
                            'dateInvested': '2023-03-05',
-                           'contractRight': 'Default Contract Right',
                            }
 
     def test_create_investment_url(self):
@@ -69,15 +68,14 @@ class InvestmentUpdateViewTestCase(TestCase, LogInTester):
             startup=self.portfolioCompany,
             typeOfFoundingRounds='Series A',
             dateInvested=timezone.now().date(),
+            investmentAmount=1_000_000_000,
             dateExit=None,
-            contractRight="Template - Contract - Right"
         )
         self.form_input = {'investor': self.defaultCompany,
                            'startup': self.portfolioCompany,
                            'typeOfFoundingRounds': 'Series A',
                            'intestmentAmount': 10_000_000,
                            'dateInvested': '2023-03-05',
-                           'contractRight': 'Default Contract Right',
                            }
 
     def test_update_investment_url(self):
@@ -120,8 +118,8 @@ class InvestmentDeleteViewTestCase(TestCase, LogInTester):
             startup=self.portfolioCompany,
             typeOfFoundingRounds='Series A',
             dateInvested=timezone.now().date(),
+            investmentAmount=1_000_000_000,
             dateExit=None,
-            contractRight="Template - Contract - Right"
         )
 
     def test_delete_investment_url(self):
