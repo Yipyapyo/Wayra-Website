@@ -5,11 +5,21 @@
                 <div class="d-flex text-black">
                     <div class="flex-shrink-0">
                         <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-profiles/avatar-1.webp"
-                        alt="Generic placeholder image" class="img-fluid"
-                        style="width: 180px; border-radius: 10px;">
+                             alt="Generic placeholder image" class="img-fluid"
+                             style="width: 180px; border-radius: 10px;">
                     </div>
                     <div class="flex-grow-1 ms-3">
-                        <h5 class="mb-1">{{individual.name}}</h5>
+                        {% load util %}
+                        {% if individual|is_founder %}
+                        <h4 class="mb-1">Founder </h4>
+                        {% elif individual|is_investor %}
+                        <h4 class="mb-1">Investor </h4>
+                        {% else %}
+                        <h4 class="mb-1">Individual</h4>
+                        {% endif %}
+                        <h5 class="mb-1">
+                            {{individual.name}}
+                        </h5>
                         <h7>{{individual.Position}}</h7>
                         <div class="d-flex justify-content-start rounded-3 p-2 mb-2 mt-2" style="background-color: #efefef;">
                             <div>
