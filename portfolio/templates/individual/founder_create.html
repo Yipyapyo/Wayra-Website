@@ -11,10 +11,10 @@
         <form action="{%url 'founder_create' %}" method="post">
             {% csrf_token %}
             {{ founderForm.as_p }}
-            {{ addressForms.as_p }}
+            <!-- {{ addressForms.as_p }}
             {% for form in pastExperienceForms %}
                 {{ form.as_p }}
-            {% endfor %}
+            {% endfor %} -->
             <input type="submit" value="Create" class="btn mb-2 home_button btn-lg btn-secondary mb=2">
         </form>
         
