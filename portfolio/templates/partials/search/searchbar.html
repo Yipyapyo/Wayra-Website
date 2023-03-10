@@ -3,7 +3,7 @@
 <div class="border px-1">
   
   <!-- Search bar -->
-  <form method = "POST" action="{%url 'search_result'%}" class="input-group col-md-4 pb-1">
+  <form method = "POST" action="{%url 'company_search_result'%}" class="input-group col-md-4 pb-1">
     {% csrf_token %}
 
     <input class="search_input form-control py-2" type="search" placeholder="{{placeholder}}" id="search_input" name="searchresult" autocomplete="off" style="border: 0;" spellcheck="false" value="{{searched}}">

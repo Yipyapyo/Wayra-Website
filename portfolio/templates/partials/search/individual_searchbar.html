@@ -3,10 +3,10 @@
 <div class="border px-1">
   
   <!-- Search bar -->
-  <form method = "POST" action="#" class="input-group col-md-4 pb-1">
+  <form method = "POST" action="{%url 'individual_search_result'%}" class="input-group col-md-4 pb-1">
     {% csrf_token %}
 
-    <input class="search_input form-control py-2" type="search" placeholder="Search for an Individual" id="search_input" name="searchresult" autocomplete="off" style="border: 0;" spellcheck="false" value="{{searched}}">
+    <input class="search_input form-control py-2" type="search" placeholder="Search for an Individual" id="search_input" name="individualsearchresult" autocomplete="off" style="border: 0;" spellcheck="false" value="{{searched}}">
     <span class="input-group-append">
 
 
@@ -21,6 +21,12 @@
   <div id="results_container" style="display: block;"></div>
 
   <!-- Ajax function call -->
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+  <script>
+    var search_url = "{{individual_search_url}}";
+  </script>
+  
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
   
 </div>

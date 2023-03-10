@@ -41,6 +41,8 @@ INSTALLED_APPS = [
     'widget_tweaks',
     'phonenumber_field',
     'django_countries',
+    'django.contrib.humanize',
+    'django_select2',
 ]
 
 MIDDLEWARE = [
@@ -129,8 +131,29 @@ STATICFILES_DIRS = (
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+# User model for authentication and login purposes
 AUTH_USER_MODEL = 'portfolio.User'
 
-
+# Default URL for redirecting authenticated users
 REDIRECT_URL_WHEN_LOGGED_IN = 'dashboard'
+
+# Login URL for redirecting users from login protected views
 LOGIN_URL = 'login'
+
+# Media paths
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'
+
+
+ITEM_ON_PAGE = 6
+
+ADMINS_USERS_PER_PAGE = 15
+
+# Setting Cache for faster retrieval
+# CACHES = {
+#     'default': {
+#         'BACKEND': 'django.core.cache.backends.memcached.PyMemcacheCache',
+#         'LOCATION': 'localhost:8080',
+#     }
+# }
+# SELECT2_CACHE_BACKEND = 'default'

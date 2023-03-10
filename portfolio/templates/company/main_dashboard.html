@@ -1,37 +1,47 @@
 {% extends 'dashboard_template.html' %}
 {% load static %}
 {% block main %}
-<link href="{% static 'css/styles.css' %}" rel="stylesheet" />
-<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-    <h1 class="h2">Dashboard</h1>
-    <div class="btn-toolbar mb-2 mb-md-0">
-      <div class="btn-group me-2">
-        <button type="button" class="btn btn-sm btn-outline-secondary">Share</button>
-        <button type="button" class="btn btn-sm btn-outline-secondary">Export</button>
-      </div>
-      <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle">
-        <span data-feather="calendar" class="align-text-bottom"></span>
-        This week
-      </button>
+    <link href="{% static 'css/styles.css' %}" rel="stylesheet"/>
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 mb-3 border-bottom">
+        <h1 class="h2">Dashboard</h1>
+        <div class="btn-toolbar">
+            <div class="btn btn-group me-1">
+                <a href="{% url 'investor_company_create' %}" class="btn btn-sm btn-outline-primary"> Assign investor
+                    company</a>
+            </div>
+        </div>
+        <!-- Nav -->
+        <ul id="tabs" class="nav nav-tabs pb-0 mt-auto overflow-x border-0">
+          <li class="nav-item"><a data-target="#all-companies" data-toggle="tab" class="nav-link active font-regular text-dark" onclick="reload_companies(1, '#all-companies')">All Companies</a></li>
+          <li class="nav-item"><a data-target="#portfolio" data-toggle="tab" class="nav-link font-regular text-dark" onclick="reload_companies(2, '#portfolio')">Portfolio</a></li>
+          <li class="nav-item"><a data-target="#investors" data-toggle="tab" class="nav-link font-regular text-dark" onclick="reload_companies(3, '#investors')">Investors</a></li>
+      </ul>
     </div>
-</div>
 
-<div class="px-5 py-2 rounded-3">
-    <div class="container-fluid pt-2 px-0 search-div-styling" style="position:absolute;z-index: 1;max-width: 75%;">
-
-      <div class="row">
-
-        {% include 'partials/search/searchbar.html' with search_url=search_url %}
-
-      </div>
-
+    <div id="tabsContent" class="tab-content">
+        <div id="all-companies" class="tab-pane fade active show">
+          {% include 'company/company_dashboard_content_reusable.html' with companies=companies %}
+        </div>
+        <div id="portfolio" class="tab-pane fade">
+          {% include 'company/company_dashboard_content_reusable.html' with companies=companies %}
+        </div>
+        <div id="investors" class="tab-pane fade">
+          {% include 'company/company_dashboard_content_reusable.html' with companies=companies %}
+        </div>
     </div>
-</div>
 
-<div class="px-5 pt-5">
-    {% include 'partials/company/company_card_collection.html' with companies=companies %}
-</div>
 
-<a href="{% url 'create_company' %}" class="create-company-plus-button"><i class="fas fa-plus-circle fa-3x pt-3 pb-3"></i></a>
+    <a href="{% url 'create_company' %}" class="create-company-plus-button"><i
+            class="fas fa-plus-circle fa-3x pt-3 pb-3"></i></a>
+
+    <!-- Ajax function call -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+    <script>
+      var filter_search_url = "{% url 'change_company_filter' %}";
+      var layout_search_url = "{% url 'change_company_layout' %}";
+      var active_tab = "#all-companies";
+    </script>
+
+    <script src="{% static 'js/companies_async.js' %}"></script>
 
 {% endblock %}

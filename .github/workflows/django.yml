@@ -22,6 +22,9 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         pip install -r requirements.txt
+    - name: Update DB
+      run: |
+        python manage.py migrate
     - name: Run Tests
       run: |
         python manage.py test

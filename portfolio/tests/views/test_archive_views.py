@@ -5,6 +5,7 @@ from django.urls import reverse
 from portfolio.models import Company, Individual, User
 from portfolio.tests.helpers import LogInTester, reverse_with_next
 from django.http import HttpResponse
+from portfolio.tests.helpers import set_session_variables
 
 
 class ArchiveViewTestCase(TestCase):
@@ -19,6 +20,7 @@ class ArchiveViewTestCase(TestCase):
         self.search_url = reverse('archive_search')
         self.user = User.objects.get(email="john.doe@example.org")
         self.admin_user = User.objects.get(email="petra.pickles@example.org")
+        set_session_variables(self.client)
 
     def test_archive_url(self):
         self.assertEqual(self.url, '/archive_page/')
