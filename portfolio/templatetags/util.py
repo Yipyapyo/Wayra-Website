@@ -6,11 +6,12 @@ register = template.Library()
 
 @register.filter
 def is_investor(value):
+    print(hasattr(value, "NumberOfPortfolioCompanies"))
     if isinstance(value, InvestorIndividual):
         return True
 
 @register.filter
 def is_founder(value):
-    if isinstance(value, Founder):
+    if hasattr(value, 'founder'):
         return True
 
