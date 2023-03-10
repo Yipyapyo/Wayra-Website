@@ -62,8 +62,8 @@ class Investor(models.Model):
         ('PENSION_FUNDS', ' Pension Funds'),
     ]
     
-    company = models.ForeignKey(Company, on_delete=models.CASCADE, null = True, blank = True, related_name = "company")
-    individual = models.ForeignKey(Individual, on_delete=models.CASCADE, null = True, blank = True, related_name = "individual")
+    company = models.ForeignKey(Company, on_delete=models.CASCADE, null = True, blank = True, related_name = "company", default=None)
+    individual = models.ForeignKey(Individual, on_delete=models.CASCADE, null = True, blank = True, related_name = "individual", default=None)
     classification = models.CharField(
         max_length=50,
         choices=INVESTOR_TYPES,
@@ -79,11 +79,10 @@ class Investment(models.Model):
     dateInvested = models.DateField(validators=[MaxValueValidator(limit_value=timezone.now().date())])
     dateExit = models.DateField(blank=True, null=True)
 
-
-
 class ContractRight(models.Model):
     investment = models.ForeignKey(Investment, on_delete=models.CASCADE)
     right = models.CharField(max_length = 255)
     details = models.CharField(max_length = 255)
+
 
 
