@@ -12,6 +12,7 @@ class Command(BaseCommand):
                InvestmentSeeder(),
                ProgrammeSeeder(),
                DocumentSeeder(),
+               InvestorIndividualSeeder(),
                ]
 
     def handle(self, *args, **options):

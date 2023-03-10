@@ -1,7 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from portfolio.forms import IndividualCreateForm, AddressCreateForm, PastExperienceForm
-from portfolio.models import Individual, ResidentialAddress
+from portfolio.models import Individual, ResidentialAddress, InvestorIndividual
 from portfolio.models.past_experience_model import PastExperience
 from portfolio.forms.founder_form import FounderForm
 from django.shortcuts import redirect, render
