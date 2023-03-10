@@ -9,6 +9,7 @@ class Command(BaseCommand):
                PortfolioCompaniesSeeder(),
                IndividualSeeder(),
                InvestorCompanySeeder(),
+               InvestorIndividualSeeder(),
                InvestmentSeeder(),
                ProgrammeSeeder(),
                DocumentSeeder(),

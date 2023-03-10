@@ -37,8 +37,9 @@ class InvestmentForm(forms.ModelForm):
         widget=forms.Select()
     )
 
+
 class ContractRightForm(forms.ModelForm):
-    class Meta: 
+    class Meta:
         model = ContractRight
         fields = ["right", "details"]
 
@@ -46,16 +47,11 @@ class ContractRightForm(forms.ModelForm):
 
     def saveInvestment(self, invest):
         self.right_investment = invest
-    
+
     def save(self):
-        super().save(commit = False)
+        super().save(commit=False)
         ContractRight.objects.create(
-            investment = right_investment,
-            right = self.cleaned_data.get("right"),
-            details = self.cleaned_data.get("details")
+            investment=self.right_investment,
+            right=self.cleaned_data.get("right"),
+            details=self.cleaned_data.get("details")
         )
-
-
-    
-
-
