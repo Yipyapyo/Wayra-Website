@@ -10,6 +10,7 @@ from django.views.generic import ListView
 
 from portfolio.forms.company_form import CompanyCreateForm
 from portfolio.models import Company, Programme, Investment, InvestorCompany, Portfolio_Company
+from portfolio.models.investment_model import Investor
 
 
 # Create your views here.
@@ -114,7 +115,7 @@ class CompanyDetailView(LoginRequiredMixin, ListView):
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
         context['company'] = self.company
-        context['is_investor_company'] = InvestorCompany.objects.filter(company=self.company).exists()
+        context['is_investor_company'] = Investor.objects.filter(company=self.company).exists()
         context['counter'] = [1, 2, 3]
         context['contract_counter'] = [1, 2, 3, 4]
         context['programmes'] = Programme.objects.filter(participants__name=self.company.name)

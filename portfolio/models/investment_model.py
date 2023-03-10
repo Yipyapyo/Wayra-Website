@@ -1,4 +1,6 @@
 from django.db import models
+from django.db.models import Q
+
 from portfolio.models import Portfolio_Company, Company, Individual
 from django.core.validators import MaxValueValidator
 from django.utils import timezone
@@ -14,6 +16,7 @@ FOUNDING_ROUNDS = [
     ('Debt financing', 'Debt financing'),
     ('Post-IPO Equity', 'Post-IPO Equity')
 ]
+
 
 class Investor(models.Model):
     VENTURE_CAPITAL = 'VC'
@@ -70,6 +73,15 @@ class Investor(models.Model):
         default=VENTURE_CAPITAL,
     )
 
+    class Meta:
+        constraints = [
+            models.CheckConstraint(
+                check=(Q(company__isnull=True) | Q(individual__isnull=True)),
+                name='only_one_field_set'
+            )
+        ]
+
+
 class Investment(models.Model):
     """Investment model for a investment from an investor to a startups"""
     investor = models.ForeignKey(Investor, on_delete=models.CASCADE, related_name="investor")
@@ -81,8 +93,5 @@ class Investment(models.Model):
 
 class ContractRight(models.Model):
     investment = models.ForeignKey(Investment, on_delete=models.CASCADE)
-    right = models.CharField(max_length = 255)
-    details = models.CharField(max_length = 255)
-
-
-
+    right = models.CharField(max_length=255)
+    details = models.CharField(max_length=255)

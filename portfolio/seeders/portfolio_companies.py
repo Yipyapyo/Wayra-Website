@@ -16,7 +16,7 @@ class PortfolioCompaniesSeeder(Seeder):
     def _create_portfolio_companies(self, count):
         for i in range(1, count + 1):
             try:
-                Portfolio_Company.objects.get(name="Child Ltd")
+                Portfolio_Company.objects.get(wayra_number=f"WN-{i}")
                 print(f"Portfolio_Company with id({i}) has already seeded.")
 
             except ObjectDoesNotExist:
