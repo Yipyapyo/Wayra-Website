@@ -202,26 +202,30 @@ def change_individual_filter(request):
             request.session['individual_filter'] = 1
 
         if request.session['individual_filter'] == '3':
-            result = Founder.objects.filter(is_archived=False).order_by('id')
+            print("A")
+            founder_individuals = Founder.objects.all()
+            result = Individual.objects.filter(id__in=founder_individuals.values('individualFounder'), is_archived=False).order_by('id')
         elif request.session['individual_filter'] == '2':
+            print("B")
             result = InvestorIndividual.objects.filter(is_archived=False).order_by('id')
         elif request.session['individual_filter'] == '1':
+            print("C")
             result = Individual.objects.filter(is_archived=False).values().order_by('id')
 
         paginator = Paginator(result, 6)
 
         try:
-            companies_page = paginator.page(page_number)
+            individual_page = paginator.page(page_number)
         except EmptyPage:
-            companies_page = []
+            individual_page = []
 
         context = {
-            "companies": companies_page,
-            "search_url": reverse('company_search_result'),
-            "placeholder": "Search for a Company",
-            "async_company_layout": int(request.session["company_layout"]),
+            "individuals": individual_page,
+            "search_url": reverse('individual_search_result'),
+            "placeholder": "Search for a Individual",
+            # "async_individual_layout": int(request.session["individual_layout"]),
         }
 
-        search_results_table_html = render_to_string('company/company_dashboard_content_reusable.html', context)
+        search_results_table_html = render_to_string('individual/individual_page_content_reusable.html', context)
 
         return HttpResponse(search_results_table_html)
