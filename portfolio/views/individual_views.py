@@ -173,12 +173,20 @@ def individual_profile(request, id):
     individual = Individual.objects.get(id=id)
     return render(request, 'individual/individual_about_page.html', {"individual": individual})
 
+"""
+Archive an Individual
+"""
+
 @login_required
 def archive_individual(request, id):
     """Handles the deletion of a company"""
     individual = Individual.objects.get(id=id)
     individual.archive()
     return redirect('individual_profile', id=individual.id)
+
+"""
+Unarchive an Individual
+"""
 
 @login_required
 def unarchive_individual(request, id):
@@ -206,7 +214,7 @@ def change_individual_filter(request):
             result = Individual.objects.filter(id__in=founder_individuals.values('individualFounder'), is_archived=False).order_by('id')
         elif request.session['individual_filter'] == '3':
             result = InvestorIndividual.objects.filter(is_archived=False).order_by('id')
-        elif request.session['individual_filter'] == '1':
+        else:
             result = Individual.objects.filter(is_archived=False).values().order_by('id')
 
         paginator = Paginator(result, 6)
@@ -242,7 +250,7 @@ def change_individual_layout(request):
             result = Individual.objects.filter(id__in=founder_individuals.values('individualFounder'), is_archived=False).order_by('id')
         elif request.session['individual_filter'] == '3':
             result = InvestorIndividual.objects.filter(is_archived=False).order_by('id')
-        elif request.session['individual_filter'] == '1':
+        else:
             result = Individual.objects.filter(is_archived=False).values().order_by('id')
 
         paginator = Paginator(result, 6)
