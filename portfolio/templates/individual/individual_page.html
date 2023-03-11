@@ -2,9 +2,9 @@
 {% block main %}
 {% load static %}
 <link href="{% static 'css/styles.css' %}" rel="stylesheet" />
-<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 mb-3 border-bottom">
     <h1 class="h2">Individual</h1>
-    <div class="btn-toolbar mb-2 mb-md-0">
+    <!-- <div class="btn-toolbar mb-2 mb-md-0">
       <div class="btn-group me-2">
         <button type="button" class="btn btn-sm btn-outline-secondary">Share</button>
         <button type="button" class="btn btn-sm btn-outline-secondary">Export</button>
@@ -21,19 +21,46 @@
           <a class="dropdown-item" href="#">Individual</a>
           <a class="dropdown-item" href="#">Founder & Individual</a>
       </div>
-    </div>
+    </div> -->
+    <!-- Nav -->
+    <ul id="tabs" class="nav nav-tabs pb-0 mt-auto overflow-x border-0">
+      <li class="nav-item"><a data-target="#all-companies" data-toggle="tab" class="nav-link active font-regular text-dark" onclick="">All Individuals</a></li>
+      <li class="nav-item"><a data-target="#portfolio" data-toggle="tab" class="nav-link font-regular text-dark" onclick="">Founders</a></li>
+      <li class="nav-item"><a data-target="#investors" data-toggle="tab" class="nav-link font-regular text-dark" onclick="">Investors</a></li>
+  </ul>
 </div>
 
-<div class="px-5 py-2 rounded-3">
-    <div class="container-fluid pt-2 px-0 search-div-styling" style="position:absolute;z-index: 1;max-width: 75%;">
+<div class="px-5 pb-2 rounded-3">
+  <div class="container-fluid pt-2 px-0 search-div-styling">
 
-      <div class="row">
+    <div class="row">
 
-        {% include 'partials/search/individual_searchbar.html' with search_url=search_url %}
+      <div style="max-width: 73%;">
+          {% include 'partials/search/searchbar.html' with search_url=search_url %}
+      </div>
+      
+      
+      <div class="btn-group w-auto mb-auto">
+        <button type="button" class="btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <i class="fa-solid fa-filter"></i>
+          Filter
+        </button>
+        <div class="dropdown-menu dropdown-menu-right">
+          <button class="dropdown-item" type="button" onclick="">All</button>
+          <button class="dropdown-item" type="button" onclick="">Portfolio Companies</button>
+          <button class="dropdown-item" type="button" onclick="">Investors</button>
+        </div>
+      </div>
 
+      <div class="btn-group me-2 mb-2 w-auto mb-auto">
+        <a type="button" class="btn btn-sm btn-outline-secondary px-3" onclick=""><i class="fa-solid fa-border-all pt-2"></i></a>
+        <a type="button" class="btn btn-sm btn-outline-secondary px-3" onclick=""><i class="fa-solid fa-list pt-2"></i></a>
+        <a type="button" class="btn btn-sm btn-outline-secondary px-3" onclick=""><i class="fa-solid fa-table-list pt-2"></i></a>
       </div>
 
     </div>
+
+  </div>
 </div>
 <!--<h4 id = "create_button"><a href = '{% url 'individual_create' %}' class="create_button_home">
   Create
