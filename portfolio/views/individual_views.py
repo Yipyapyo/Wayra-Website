@@ -38,7 +38,7 @@ def individual_search(request):
 
     elif request.method == "POST":
         page_number = request.POST.get('page', 1)
-        searched = request.POST['individualsearchresult']
+        searched = request.POST['searchresult']
 
         if searched == "":
             return redirect('individual_page')
