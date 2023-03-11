@@ -111,6 +111,7 @@ def individual_page(request):
     data = {
         'individuals': individuals_page,
         "search_url": reverse('individual_search_result'),
+        "placeholder": "Search for an Individual"
     }
 
     return render(request, "individual/individual_page.html", data)
