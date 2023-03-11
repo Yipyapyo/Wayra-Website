@@ -1,8 +1,7 @@
 from django.test import TestCase
 from django.urls import reverse
 from portfolio.models import Founder, User, Individual, Company
-from portfolio.forms import AddressCreateForm, PastExperienceForm, FounderForm
-from django_countries.fields import Country
+from portfolio.forms import FounderForm
 from portfolio.tests.helpers import reverse_with_next, set_session_variables
 from phonenumber_field.phonenumber import PhoneNumber
 from django.utils import timezone
