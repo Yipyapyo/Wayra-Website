@@ -1,14 +1,13 @@
-"""Founder form """
+"""Founder form test"""
 from django import forms
-from django.forms.fields import URLField
 from django.test import TestCase
-from phonenumber_field.formfields import PhoneNumberField
 from portfolio.models import Founder, Individual, Company
 from phonenumber_field.phonenumber import PhoneNumber
 from django.utils import timezone
 from portfolio.forms import FounderForm
 
 class FounderFormTestCase(TestCase):
+    """Founder form test"""
     def setUp(self):
         self.individual = Individual.objects.create(
              AngelListLink = "https://www.AngelList.com",
