@@ -5,7 +5,16 @@
         <div class="card h-100 p-3">
             <div class="d-flex w-30 justify-content-between mb-2 align-items-center">
                 <div>
-                    <div>Individual</div>
+                    {% load util %}
+                    {% if individual|is_founder_and_investor %}
+                    <h4 class="mb-1">Founder/Investor </h4>
+                    {% elif individual|is_founder %}
+                    <h4 class="mb-1">Founder </h4>
+                    {% elif individual|is_investor %}
+                    <h4 class="mb-1">Investor </h4>
+                    {% else %}
+                    <h4 class="mb-1">Individual</h4>
+                    {% endif %}
                     <div class="d-flex align-items-baseline align-items-baseline">
                         
                         <h5 class="mr-1">{{individual.name}}</h5>
