@@ -1,7 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from portfolio.forms import IndividualCreateForm, AddressCreateForm, PastExperienceForm
-from portfolio.models import Individual, ResidentialAddress, InvestorIndividual
+from portfolio.models import Individual, ResidentialAddress, InvestorIndividual, Founder
 from portfolio.models.past_experience_model import PastExperience
 from portfolio.forms.founder_form import FounderForm
 from django.shortcuts import redirect, render
@@ -186,3 +186,42 @@ def unarchive_individual(request, id):
     individual = Individual.objects.get(id=id)
     individual.unarchive()
     return redirect('individual_profile', id=individual.id)
+
+"""
+Asynchronously filter individuals on the individuals page
+"""
+
+@login_required
+def change_individual_filter(request):
+    if request.method == "GET":
+        filter_number = request.GET['filter_number']
+        page_number = request.GET.get('page', 1)
+        if filter_number:
+            request.session['individual_filter'] = filter_number
+        else:
+            request.session['individual_filter'] = 1
+
+        if request.session['individual_filter'] == '3':
+            result = Founder.objects.filter(is_archived=False).order_by('id')
+        elif request.session['individual_filter'] == '2':
+            result = InvestorIndividual.objects.filter(is_archived=False).order_by('id')
+        elif request.session['individual_filter'] == '1':
+            result = Individual.objects.filter(is_archived=False).values().order_by('id')
+
+        paginator = Paginator(result, 6)
+
+        try:
+            companies_page = paginator.page(page_number)
+        except EmptyPage:
+            companies_page = []
+
+        context = {
+            "companies": companies_page,
+            "search_url": reverse('company_search_result'),
+            "placeholder": "Search for a Company",
+            "async_company_layout": int(request.session["company_layout"]),
+        }
+
+        search_results_table_html = render_to_string('company/company_dashboard_content_reusable.html', context)
+
+        return HttpResponse(search_results_table_html)
