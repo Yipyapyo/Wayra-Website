@@ -1,9 +1,11 @@
 """Unit tests for the founder delete page."""
 from django.test import TestCase
 from django.urls import reverse
-from portfolio.models import ResidentialAddress, PastExperience, Founder, User
+from portfolio.models import Founder, User, Individual, Company
 from django_countries.fields import Country
 from portfolio.tests.helpers import reverse_with_next, set_session_variables
+from phonenumber_field.phonenumber import PhoneNumber
+from django.utils import timezone
 
 class FounderDeleteTestCase(TestCase):
     fixtures = [
@@ -16,41 +18,34 @@ class FounderDeleteTestCase(TestCase):
         self.client.login(email=self.user.email, password="Password123")
         set_session_variables(self.client)
 
+        self.individual = Individual.objects.create(
+             AngelListLink = "https://www.AngelList.com",
+             CrunchbaseLink = "https://www.Crunchbase.com",
+             LinkedInLink = "https://www.LinkedIn.com",
+             Company = "exampleCompany",
+             Position = "examplePosition",
+             Email = "test@gmail.com",
+             PrimaryNumber = PhoneNumber.from_string("+447975777666"),
+             SecondaryNumber = PhoneNumber.from_string("+441325777655")
+        )
+
+        self.company = Company.objects.create(
+            name="Default Ltd",
+            company_registration_number="00000000",
+            trading_names="Default Ltd",
+            previous_names="Default Ltd",
+            jurisdiction="United Kingdom",
+            incorporation_date=timezone.now(),
+        )
+
         self.post_input = {
-            "form1-name": "Jemma Doe",
-            "form1-AngelListLink": "https://www.AngelList.com",
-            "form1-CrunchbaseLink": "https://www.Crunchbase.com",
-            "form1-LinkedInLink": "https://www.LinkedIn.com",
-            "form1-Company": "exampleCompany",
-            "form1-Position": "examplePosition",
-            "form1-Email": "test@gmail.com",
-            "form1-PrimaryNumber_0": "UK",
-            "form1-PrimaryNumber_1": "+447975777666",
-            "form1-SecondaryNumber_0": "UK",
-            "form1-SecondaryNumber_1": "+441325777655",
-            "form1-companyFounded": "Companyname",
-            "form1-additionalInformation": "Info",
-            "form2-address_line1": "testAdress1",
-            "form2-address_line2": "testAdress2",
-            "form2-postal_code": "testCode",
-            "form2-city": "testCity",
-            "form2-state": "testState",
-            "form2-country": Country("AD"),
-            "0-companyName": "exampleCompany",
-            "0-workTitle" : "exampleWork",
-            "0-start_year" : 2033,
-            "0-end_year" : 2035,
-            "0-Description" : "testCase",
-            "1-companyName": "exampleCompany2",
-            "1-workTitle" : "exampleWork2",
-            "1-start_year" : 2034,
-            "1-end_year" : 2036,
-            "1-Description" : "testCase2",
+             "form1-companyFounded": self.company.id,
+             "form1-individualFounder": self.individual.id,
         }
 
         self.url2 = reverse('founder_create')
         self.client.post(self.url2, self.post_input)
-        self.listUsed = Founder.objects.filter(name="Jemma Doe")[0]
+        self.listUsed = Founder.objects.filter(companyFounded=self.company)[0]
         self.url = reverse('founder_delete', kwargs={'id': self.listUsed.id})
     
     def test_founder_delete_url(self):
@@ -64,15 +59,9 @@ class FounderDeleteTestCase(TestCase):
         
     def test_successful_delete(self):
         before_count = Founder.objects.count()
-        before_count2 = ResidentialAddress.objects.count()
-        before_count3 = PastExperience.objects.count()
         self.client.post(self.url, {})
         after_count = Founder.objects.count()
-        after_count2 = ResidentialAddress.objects.count()
-        after_count3 = PastExperience.objects.count()
         self.assertEqual(before_count-1, after_count)
-        self.assertEqual(before_count2-1, after_count2)
-        self.assertEqual(before_count3-2, after_count3)
 
     
     
