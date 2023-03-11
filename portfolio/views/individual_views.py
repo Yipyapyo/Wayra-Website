@@ -220,7 +220,7 @@ def change_individual_filter(request):
             "individuals": individual_page,
             "search_url": reverse('individual_search_result'),
             "placeholder": "Search for a Individual",
-            # "async_individual_layout": int(request.session["individual_layout"]),
+            "async_individual_layout": int(request.session["individual_layout"]),
         }
 
         search_results_table_html = render_to_string('individual/individual_page_content_reusable.html', context)
@@ -256,7 +256,7 @@ def change_individual_layout(request):
             "individuals": individuals_page,
             "search_url": reverse('individual_search_result'),
             "placeholder": "Search for a Individual",
-            # "async_company_layout": int(request.session["company_layout"]),
+            "async_individual_layout": int(request.session["individual_layout"]),
         }
 
         search_results_table_html = render_to_string('individual/individual_page_content_reusable.html', context)

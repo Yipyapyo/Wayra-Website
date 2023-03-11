@@ -29,11 +29,6 @@ function change_layout(number) {
         success: function( data ) 
         {
             $(active_tab).html(data);
-            alert("layout changed");
         }
     })
 }
-
-// $(document).on('click', '.individual_layout_dropdown_button', function(event){
-//     change_layout(layout_number)
-// });

@@ -35,5 +35,9 @@
   </a></h4>>-->
   
   <div class="px-5 pt-5">
-      {% include 'partials/individual/individual_card_collection.html' with individuals=individuals %}
+    {% if request.session.individual_layout == 3 or request.session.individual_layout == '3' or async_individual_layout == 3 %}
+        {% include 'partials/individual/individual_table.html' with individuals=individuals %}
+    {% else %}
+        {% include 'partials/individual/individual_card_collection.html' with individuals=individuals %}
+    {% endif %}
   </div>
