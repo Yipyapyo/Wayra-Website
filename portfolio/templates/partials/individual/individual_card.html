@@ -10,7 +10,9 @@
                     </div>
                     <div class="flex-grow-1 ms-3">
                         {% load util %}
-                        {% if individual|is_founder %}
+                        {% if individual|is_founder_and_investor %}
+                        <h4 class="mb-1">Founder/Investor </h4>
+                        {% elif individual|is_founder %}
                         <h4 class="mb-1">Founder </h4>
                         {% elif individual|is_investor %}
                         <h4 class="mb-1">Investor </h4>
