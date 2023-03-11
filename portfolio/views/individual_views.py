@@ -202,14 +202,11 @@ def change_individual_filter(request):
             request.session['individual_filter'] = 1
 
         if request.session['individual_filter'] == '2':
-            print("A")
             founder_individuals = Founder.objects.all()
             result = Individual.objects.filter(id__in=founder_individuals.values('individualFounder'), is_archived=False).order_by('id')
         elif request.session['individual_filter'] == '3':
-            print("B")
             result = InvestorIndividual.objects.filter(is_archived=False).order_by('id')
         elif request.session['individual_filter'] == '1':
-            print("C")
             result = Individual.objects.filter(is_archived=False).values().order_by('id')
 
         paginator = Paginator(result, 6)
@@ -224,6 +221,42 @@ def change_individual_filter(request):
             "search_url": reverse('individual_search_result'),
             "placeholder": "Search for a Individual",
             # "async_individual_layout": int(request.session["individual_layout"]),
+        }
+
+        search_results_table_html = render_to_string('individual/individual_page_content_reusable.html', context)
+
+        return HttpResponse(search_results_table_html)
+
+@login_required
+def change_individual_layout(request):
+    if request.method == "GET":
+        layout_number = request.GET['layout_number']
+        page_number = request.GET.get('page', 1)
+        if layout_number:
+            request.session['individual_layout'] = layout_number
+        else:
+            request.session['individual_layout'] = 1
+
+        if request.session['individual_filter'] == '2':
+            founder_individuals = Founder.objects.all()
+            result = Individual.objects.filter(id__in=founder_individuals.values('individualFounder'), is_archived=False).order_by('id')
+        elif request.session['individual_filter'] == '3':
+            result = InvestorIndividual.objects.filter(is_archived=False).order_by('id')
+        elif request.session['individual_filter'] == '1':
+            result = Individual.objects.filter(is_archived=False).values().order_by('id')
+
+        paginator = Paginator(result, 6)
+
+        try:
+            individuals_page = paginator.page(page_number)
+        except EmptyPage:
+            individuals_page = []
+
+        context = {
+            "individuals": individuals_page,
+            "search_url": reverse('individual_search_result'),
+            "placeholder": "Search for a Individual",
+            # "async_company_layout": int(request.session["company_layout"]),
         }
 
         search_results_table_html = render_to_string('individual/individual_page_content_reusable.html', context)

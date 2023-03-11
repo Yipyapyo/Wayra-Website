@@ -18,22 +18,21 @@ function reload_individuals(number, id) {
     })
 }
 
-// function change_layout(number) {
-//     $.ajax(
-//     {
-//         type:"GET",
-//         url: layout_search_url,
-//         data:{
-//             layout_number: number
-//         },
-//         success: function( data ) 
-//         {
-//             $(active_tab).html(data);
-
-//             console.log("Success")
-//         }
-//     })
-// }
+function change_layout(number) {
+    $.ajax(
+    {
+        type:"GET",
+        url: layout_search_url,
+        data:{
+            layout_number: number
+        },
+        success: function( data ) 
+        {
+            $(active_tab).html(data);
+            alert("layout changed");
+        }
+    })
+}
 
 // $(document).on('click', '.individual_layout_dropdown_button', function(event){
 //     change_layout(layout_number)
