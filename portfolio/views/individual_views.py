@@ -201,11 +201,11 @@ def change_individual_filter(request):
         else:
             request.session['individual_filter'] = 1
 
-        if request.session['individual_filter'] == '3':
+        if request.session['individual_filter'] == '2':
             print("A")
             founder_individuals = Founder.objects.all()
             result = Individual.objects.filter(id__in=founder_individuals.values('individualFounder'), is_archived=False).order_by('id')
-        elif request.session['individual_filter'] == '2':
+        elif request.session['individual_filter'] == '3':
             print("B")
             result = InvestorIndividual.objects.filter(is_archived=False).order_by('id')
         elif request.session['individual_filter'] == '1':
