@@ -8,6 +8,7 @@ from django.shortcuts import redirect, render
 from django.core.paginator import Paginator, EmptyPage
 from django.http import HttpResponse
 from django.template.loader import render_to_string
+from django.urls import reverse
 
 
 
@@ -18,20 +19,19 @@ Create an individual.
 
 def individual_search(request):
     if request.method == "GET":
-
-        searched = request.GET['individualsearchresult']
+        searched = request.GET['searchresult']
         
         response = []
 
         if(searched == ""):
             response = []
         else:
-            search_result = Individual.objects.filter(name__contains=searched).values()
+            search_result = Individual.objects.filter(name__contains=searched).values()[:5]
             response.append(("Individual", list(search_result)))
         
 
-        individual_search_results_table_html = render_to_string('partials/search/individual_search_results_table.html', {
-        'search_results': response, 'searched':searched, 'destination_url':'individual'})
+        individual_search_results_table_html = render_to_string('partials/search/search_results_table.html', {
+        'search_results': response, 'searched':searched, 'destination_url':'individual_profile'})
 
         return HttpResponse(individual_search_results_table_html)
 
@@ -110,6 +110,7 @@ def individual_page(request):
 
     data = {
         'individuals': individuals_page,
+        "search_url": reverse('individual_search_result'),
     }
 
     return render(request, "individual/individual_page.html", data)
