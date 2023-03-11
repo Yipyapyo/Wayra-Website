@@ -29,6 +29,8 @@ def set_session_variables(client):
     session = client.session
     session['company_filter'] = 1
     session['company_layout'] = 1
+    session['individual_filter'] = 1
+    session['individual_layout'] = 1
     session.save()
     set_session_cookies(client, session)
 
