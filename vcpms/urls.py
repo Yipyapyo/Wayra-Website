@@ -50,6 +50,8 @@ urlpatterns = [
     path("individual_profile_page/<int:id>/", views.individual_profile, name='individual_profile'),
     path('individual_page/archive/<int:id>', views.archive_individual, name='archive_individual'),
     path('individual_page/unarchive/<int:id>', views.unarchive_individual, name='unarchive_individual'),
+    path('change_individual_layout/', views.change_individual_layout, name='change_individual_layout'),
+    path('change_individual_filter/', views.change_individual_filter, name='change_individual_filter'),
 
     #Individual Search
 
