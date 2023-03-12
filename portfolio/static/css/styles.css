@@ -1,3 +1,9 @@
+#backgrouhd
+{
+  background-color: red;
+}
+
+
 .lesson-grid {
     display: grid; 
     grid-template-columns: 1fr 1fr 1fr;
@@ -115,4 +121,37 @@
   right:30px;
   margin:0;
   padding:5px 3px;
+}
+
+
+#companycard{
+
+  transition: all 0.2s ease;
+  cursor: pointer;
+  
+
+}
+  
+
+
+#companycard:hover{
+
+  /* box-shadow: 1px 1px 1px 1px #e9ecef; */
+  transform: scale(1.04);
+}
+
+#individualcard{
+
+  transition: all 0.2s ease;
+  cursor: pointer;
+  
+
+}
+  
+
+
+#individualcard:hover{
+
+  /* box-shadow: 1px 1px 1px 1px #e9ecef; */
+  transform: scale(1.04);
 }

@@ -12,7 +12,7 @@ class IndividualCreateForm(forms.ModelForm):
     class Meta:
         model = Individual
         fields = ["name", "AngelListLink", "CrunchbaseLink", "LinkedInLink",
-                  "Company", "Position", "Email", "PrimaryNumber", "SecondaryNumber"]
+                  "Company", "Position", "Email", "PrimaryNumber", "SecondaryNumber", "profile_pic"]
         exclude = ('is_archived',)
 
     def __init__(self, *args, **kwargs):
