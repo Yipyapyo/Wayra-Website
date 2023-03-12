@@ -1,3 +1,4 @@
+from django.core.exceptions import ValidationError
 from django.db import models
 from django.db.models import Q
 
@@ -64,22 +65,21 @@ class Investor(models.Model):
         ('SYNDICATE', 'Syndicate'),
         ('PENSION_FUNDS', ' Pension Funds'),
     ]
-    
-    company = models.ForeignKey(Company, on_delete=models.CASCADE, null = True, blank = True, related_name = "company", default=None)
-    individual = models.ForeignKey(Individual, on_delete=models.CASCADE, null = True, blank = True, related_name = "individual", default=None)
+
+    company = models.ForeignKey(Company, on_delete=models.CASCADE, null=True, blank=True, related_name="company",
+                                default=None)
+    individual = models.ForeignKey(Individual, on_delete=models.CASCADE, null=True, blank=True,
+                                   related_name="individual", default=None)
     classification = models.CharField(
         max_length=50,
         choices=INVESTOR_TYPES,
         default=VENTURE_CAPITAL,
     )
 
-    class Meta:
-        constraints = [
-            models.CheckConstraint(
-                check=(Q(company__isnull=True) | Q(individual__isnull=True)),
-                name='only_one_field_set'
-            )
-        ]
+    def clean(self):
+        if (self.company is None and self.individual is None) or \
+                (self.company and self.individual):
+            raise ValidationError('company and individual cannot both be null')
 
 
 class Investment(models.Model):
@@ -90,6 +90,11 @@ class Investment(models.Model):
     investmentAmount = models.DecimalField(max_digits=15, decimal_places=2)
     dateInvested = models.DateField(validators=[MaxValueValidator(limit_value=timezone.now().date())])
     dateExit = models.DateField(blank=True, null=True)
+
+    def clean(self):
+        if self.dateExit is not None and self.dateInvested > self.dateExit:
+            raise ValidationError('Date invest cannot be after date exit')
+
 
 class ContractRight(models.Model):
     investment = models.ForeignKey(Investment, on_delete=models.CASCADE)
