@@ -24,7 +24,7 @@ class ProgrammeModelTestCase(TestCase):
     def setUp(self) -> None:
         self.programme = Programme.objects.get(id=1)
         self.partner = Company.objects.get(id=1)
-        self.participant = Portfolio_Company.objects.get(id=1)
+        self.participant = Portfolio_Company.objects.get(pk=101)
         self.coach = Individual.objects.get(id=1)
         self.programme.partners.add(self.partner)
         self.programme.participants.add(self.participant)
@@ -32,8 +32,8 @@ class ProgrammeModelTestCase(TestCase):
 
     def _create_second_programme(self):
         second_programme = Programme.objects.get(id=2)
-        second_partner = Company.objects.get(id=2)
-        second_participant = Portfolio_Company.objects.get(id=2)
+        second_partner = Company.objects.get(id=201)
+        second_participant = Portfolio_Company.objects.get(pk=301)
         second_coach = Individual.objects.get(id=2)
         second_programme.partners.add(second_partner)
         second_programme.participants.add(second_participant)
@@ -96,7 +96,7 @@ class ProgrammeModelTestCase(TestCase):
         self._assert_programme_is_valid()
 
     def test_partners_can_be_added(self):
-        second_partner = Company.objects.get(id=2)
+        second_partner = Company.objects.get(id=201)
         self.programme.partners.add(second_partner)
         self.assertEqual(2, self.programme.partners.count())
         self._assert_programme_is_valid()
@@ -138,7 +138,7 @@ class ProgrammeModelTestCase(TestCase):
         self._assert_programme_is_valid()
 
     def test_participants_can_be_added(self):
-        second_participant = Portfolio_Company.objects.get(id=2)
+        second_participant = Portfolio_Company.objects.get(id=301)
         self.programme.participants.add(second_participant)
         self.assertEqual(2, self.programme.participants.count())
         self._assert_programme_is_valid()
@@ -165,7 +165,7 @@ class ProgrammeModelTestCase(TestCase):
         self.assertEqual(second_programme.participants.count(), self.programme.participants.count())
 
     def test_remove_participant_removes_from_programme_correctly(self):
-        Portfolio_Company.objects.get(id=1).delete()
+        Portfolio_Company.objects.get(pk=101).delete()
         self._assert_programme_is_valid()
         all_programmes = list(Programme.objects.all())
         self.assertIn(self.programme, all_programmes)

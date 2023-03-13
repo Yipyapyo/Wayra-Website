@@ -1,11 +1,23 @@
 [
   {
-    "model": "portfolio.portfolio_company",
-    "pk": 2,
+    "model": "portfolio.company",
+    "pk": 301,
     "fields": {
-      "name": "Child TWO Ltd",
+      "name": "Child 301 Ltd",
       "incorporation_date": "2023-02-17",
-      "wayra_number": "WN-2"
+      "company_registration_number":"00000301",
+      "trading_names": "D301_ltd",
+      "previous_names": "Ante301 LTD",
+      "registered_address": "Strand, London WC2R 2LS",
+      "jurisdiction": "United Kingdom",
+      "incorporation_date": "2023-02-16"
+    }
+  },
+  {
+    "model": "portfolio.portfolio_company",
+    "pk": 301,
+    "fields": {
+      "wayra_number": "WN-301"
     }
   }
 ]

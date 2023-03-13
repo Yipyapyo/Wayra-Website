@@ -20,7 +20,7 @@ class InvestmentModelTestCase(TestCase):
             company=self.defaultCompany,
             classification='VC'
         )
-        self.portfolio_company = Portfolio_Company.objects.get(name='Child Ltd')
+        self.portfolio_company = Portfolio_Company.objects.get(pk=101)
         self.investment = Investment.objects.create(
             investor=self.investorCompany,
             startup=self.portfolio_company,
