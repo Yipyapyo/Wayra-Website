@@ -7,3 +7,4 @@ from .programmes import *
 from .portfolio_companies import *
 from .documents import *
 from .investor_individuals import *
+from .founders import *
