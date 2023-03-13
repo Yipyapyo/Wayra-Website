@@ -18,7 +18,7 @@ class InvestmentFormTestCase(TestCase):
             company=self.defaultCompany,
             classification='VC'
         )
-        self.portfolioCompany = Portfolio_Company.objects.get(id=1)
+        self.portfolioCompany = Portfolio_Company.objects.get(name='Child Ltd')
         self.form_input = {'investor': self.investorCompany,
                            'startup': self.portfolioCompany,
                            'typeOfFoundingRounds': 'Series A',
@@ -76,7 +76,7 @@ class ContractRightFormTestCase(TestCase):
             company=self.defaultCompany,
             classification='VC'
         )
-        self.portfolioCompany = Portfolio_Company.objects.get(id=1)
+        self.portfolioCompany = Portfolio_Company.objects.get(name='Child Ltd')
         self.investment = Investment.objects.create(investor=self.investorCompany,
                                                     startup=self.portfolioCompany,
                                                     typeOfFoundingRounds='Series A',

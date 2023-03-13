@@ -1,8 +1,13 @@
+from datetime import date
+
 from django.test import TestCase
+from django.urls import reverse
 from django.utils import timezone
 
+from portfolio.forms import InvestmentForm, InvestorCompanyCreateForm, InvestorEditForm
 from portfolio.models import Company, Portfolio_Company, User, Investment, InvestorCompany
-from portfolio.tests.helpers import LogInTester
+from portfolio.models.investment_model import Investor
+from portfolio.tests.helpers import LogInTester, reverse_with_next
 
 
 class InvestmentCreateViewTestCase(TestCase, LogInTester):
@@ -12,39 +17,57 @@ class InvestmentCreateViewTestCase(TestCase, LogInTester):
 
     def setUp(self) -> None:
         self.user = User.objects.get(email='john.doe@example.org')
-        self.defaultCompany = Company.objects.get(id=1)
-        self.investorCompany = InvestorCompany.objects.create(
+        self.defaultCompany = Company.objects.get(name='Default Ltd')
+        self.investorCompany = Investor.objects.create(
             company=self.defaultCompany,
-            angelListLink='https://www.Angelist.com',
-            crunchbaseLink='https://www.crunchbase.com',
-            linkedInLink='https://www.linked-in.com',
-            classification='VC'
+            classification='VENTURE CAPITAL'
         )
-        self.portfolioCompany = Portfolio_Company.objects.get(id=1)
-        self.form_input = {'investor': self.investorCompany,
+        self.portfolioCompany = Portfolio_Company.objects.get(name='Child Ltd')
+        self.form_input = {'investor': 1,
                            'startup': self.portfolioCompany,
                            'typeOfFoundingRounds': 'Series A',
-                           'intestmentAmount': 10_000_000,
-                           'dateInvested': '2023-03-05',
+                           'investmentAmount': 10_000_000,
+                           'dateInvested': date(year=2023, month=3, day=5),
                            }
+        self.url = reverse('investment_create', kwargs={'company_id': self.defaultCompany.id})
 
     def test_create_investment_url(self):
-        pass
+        self.assertEqual(self.url, '/investment/create/1')
 
     def test_get_create_investment_url(self):
-        pass
+        self.client.login(email=self.user.email, password="Password123")
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'investment/investment_create.html')
+        form = response.context['form']
+        self.assertTrue(isinstance(form, InvestmentForm))
+        self.assertFalse(form.is_bound)
 
     def test_get_create_investment_redirects_when_not_logged_in(self):
-        pass
+        redirect_url = reverse_with_next('login', self.url)
+        response = self.client.get(self.url)
+        self.assertRedirects(response, redirect_url, status_code=302, target_status_code=200)
 
     def test_post_create_investment_redirects_when_not_logged_in(self):
-        pass
+        redirect_url = reverse_with_next('login', self.url)
+        response = self.client.post(self.url, self.form_input)
+        self.assertRedirects(response, redirect_url, status_code=302, target_status_code=200)
 
     def test_successful_form(self):
-        pass
+        self.client.login(email=self.user.email, password="Password123")
+        response = self.client.post(self.url, self.form_input, follow=True)
+        self.assertTemplateUsed(response, 'company/portfolio_company_page.html')
+        self.assertEqual(response.context['company'], self.defaultCompany)
 
     def test_unsuccessful_form(self):
-        pass
+        self.client.login(email=self.user.email, password="Password123")
+        self.form_input['investmentAmount'] = -1
+        response = self.client.post(self.url, self.form_input)
+        self.assertTrue(response.status_code, 200)
+        self.assertTemplateUsed(response, 'investment/investment_create.html')
+        form = response.context['form']
+        self.assertTrue(isinstance(form, InvestmentForm))
+        self.assertTrue(form.is_bound)
 
 
 class InvestmentUpdateViewTestCase(TestCase, LogInTester):
@@ -55,14 +78,11 @@ class InvestmentUpdateViewTestCase(TestCase, LogInTester):
     def setUp(self) -> None:
         self.user = User.objects.get(email='john.doe@example.org')
         self.defaultCompany = Company.objects.get(id=1)
-        self.investorCompany = InvestorCompany.objects.create(
+        self.investorCompany = Investor.objects.create(
             company=self.defaultCompany,
-            angelListLink='https://www.Angelist.com',
-            crunchbaseLink='https://www.crunchbase.com',
-            linkedInLink='https://www.linked-in.com',
             classification='VC'
         )
-        self.portfolioCompany = Portfolio_Company.objects.get(id=1)
+        self.portfolioCompany = Portfolio_Company.objects.get(name='Child Ltd')
         self.investment = Investment.objects.create(
             investor=self.investorCompany,
             startup=self.portfolioCompany,
@@ -74,27 +94,57 @@ class InvestmentUpdateViewTestCase(TestCase, LogInTester):
         self.form_input = {'investor': self.defaultCompany,
                            'startup': self.portfolioCompany,
                            'typeOfFoundingRounds': 'Series A',
-                           'intestmentAmount': 10_000_000,
+                           'investmentAmount': 10_000_000,
                            'dateInvested': '2023-03-05',
                            }
+        self.url = reverse('investment_update', kwargs={'id': 1})
 
     def test_update_investment_url(self):
-        pass
+        self.assertEqual(self.url, '/investment/update/1')
 
     def test_get_update_investment_url(self):
-        pass
+        self.client.login(email=self.user.email, password="Password123")
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'investment/investment_update.html')
+        form = response.context['form']
+        self.assertTrue(isinstance(form, InvestmentForm))
+        self.assertFalse(form.is_bound)
 
     def test_get_update_investment_redirects_when_not_logged_in(self):
-        pass
+        redirect_url = reverse_with_next('login', self.url)
+        response = self.client.get(self.url)
+        self.assertRedirects(response, redirect_url, status_code=302, target_status_code=200)
 
     def test_post_update_investment_redirects_when_not_logged_in(self):
-        pass
+        redirect_url = reverse_with_next('login', self.url)
+        response = self.client.post(self.url, self.form_input)
+        self.assertRedirects(response, redirect_url, status_code=302, target_status_code=200)
 
     def test_successful_form(self):
-        pass
+        self.client.login(email=self.user.email, password="Password123")
+        before_count = Investment.objects.count()
+        response = self.client.post(self.url, self.form_input, follow=True)
+        after_count = Investment.objects.count()
+        self.assertTemplateUsed(response, 'company/portfolio_company_page.html')
+        self.assertEqual(response.context['company'], self.defaultCompany)
+        self.assertEqual(before_count, after_count)
+        investment = Investment.objects.get(id=1)
+        self.assertEqual(investment.investor, self.form_input['investor'])
+        self.assertEqual(investment.startup, self.form_input['startup'])
+        self.assertEqual(investment.typeOfFoundingRounds, self.form_input['typeOfFoundingRounds'])
+        self.assertEqual(investment.investmentAmount, self.form_input['investmentAmount'])
+        self.assertEqual(investment.dateInvested, date(year=2023, month=3, day=5))
 
     def test_unsuccessful_form(self):
-        pass
+        self.client.login(email=self.user.email, password="Password123")
+        self.form_input['investmentAmount'] = -1
+        response = self.client.post(self.url, self.form_input)
+        self.assertTrue(response.status_code, 200)
+        self.assertTemplateUsed(response, 'investment/investment_update.html')
+        form = response.context['form']
+        self.assertTrue(isinstance(form, InvestmentForm))
+        self.assertTrue(form.is_bound)
 
 
 class InvestmentDeleteViewTestCase(TestCase, LogInTester):
@@ -105,14 +155,11 @@ class InvestmentDeleteViewTestCase(TestCase, LogInTester):
     def setUp(self) -> None:
         self.user = User.objects.get(email='john.doe@example.org')
         self.defaultCompany = Company.objects.get(id=1)
-        self.investorCompany = InvestorCompany.objects.create(
+        self.investorCompany = Investor.objects.create(
             company=self.defaultCompany,
-            angelListLink='https://www.Angelist.com',
-            crunchbaseLink='https://www.crunchbase.com',
-            linkedInLink='https://www.linked-in.com',
             classification='VC'
         )
-        self.portfolioCompany = Portfolio_Company.objects.get(id=1)
+        self.portfolioCompany = Portfolio_Company.objects.get(name='Child Ltd')
         self.investment = Investment.objects.create(
             investor=self.investorCompany,
             startup=self.portfolioCompany,
@@ -121,21 +168,35 @@ class InvestmentDeleteViewTestCase(TestCase, LogInTester):
             investmentAmount=1_000_000_000,
             dateExit=None,
         )
+        self.url = reverse('investment_delete', kwargs={'id': 1})
 
     def test_delete_investment_url(self):
-        pass
+        self.assertEqual(self.url, '/investment/delete/1')
 
     def test_get_delete_investment_url(self):
-        pass
+        self.client.login(email=self.user.email, password="Password123")
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'investment/investment_delete.html')
 
     def test_get_delete_investment_redirects_when_not_logged_in(self):
-        pass
+        redirect_url = reverse_with_next('login', self.url)
+        response = self.client.get(self.url)
+        self.assertRedirects(response, redirect_url, status_code=302, target_status_code=200)
 
     def test_post_delete_investment_redirects_when_not_logged_in(self):
-        pass
+        redirect_url = reverse_with_next('login', self.url)
+        response = self.client.post(self.url)
+        self.assertRedirects(response, redirect_url, status_code=302, target_status_code=200)
 
     def test_successful_delete(self):
-        pass
+        self.client.login(email=self.user.email, password="Password123")
+        before_count = Investment.objects.count()
+        response = self.client.post(self.url, follow=True)
+        after_count = Investment.objects.count()
+        self.assertTemplateUsed(response, 'company/portfolio_company_page.html')
+        self.assertEqual(response.context['company'], self.defaultCompany)
+        self.assertEqual(before_count - 1, after_count)
 
 
 class InvestorCreateViewTestCase(TestCase):
@@ -147,29 +208,49 @@ class InvestorCreateViewTestCase(TestCase):
         self.defaultCompany = Company.objects.get(id=1)
         self.form_input = {
             'company': self.defaultCompany,
-            'angelListLink': 'https://www.Angelist.com',
-            'crunchbaseLink': 'https://www.crunchbase.com',
-            'linkedInLink': 'https://www.linked-in.com',
             'classification': 'VC'
         }
+        self.url = reverse('investor_company_create')
 
     def test_create_investor_company_url(self):
-        pass
+        self.assertEqual(self.url, '/investment/create_investor_company/')
 
     def test_get_create_investor_company_url(self):
-        pass
+        self.client.login(email=self.user.email, password="Password123")
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'investment/investor_company_create.html')
+        form = response.context['form']
+        self.assertTrue(isinstance(form, InvestorCompanyCreateForm))
+        self.assertFalse(form.is_bound)
 
     def test_get_create_investor_company_redirects_when_not_logged_in(self):
-        pass
+        redirect_url = reverse_with_next('login', self.url)
+        response = self.client.get(self.url)
+        self.assertRedirects(response, redirect_url, status_code=302, target_status_code=200)
 
     def test_post_create_investor_company_redirects_when_not_logged_in(self):
-        pass
+        redirect_url = reverse_with_next('login', self.url)
+        response = self.client.post(self.url, self.form_input)
+        self.assertRedirects(response, redirect_url, status_code=302, target_status_code=200)
 
     def test_successful_form(self):
-        pass
+        self.client.login(email=self.user.email, password="Password123")
+        before_count = Investor.objects.count()
+        response = self.client.post(self.url, self.form_input, follow=True)
+        after_count = Investor.objects.count()
+        self.assertTemplateUsed(response, 'company/main_dashboard.html')
+        self.assertEqual(before_count + 1, after_count)
 
     def test_unsuccessful_form(self):
-        pass
+        self.client.login(email=self.user.email, password="Password123")
+        self.form_input['classification'] = ''
+        response = self.client.post(self.url, self.form_input)
+        self.assertTrue(response.status_code, 200)
+        self.assertTemplateUsed(response, 'investment/investor_company_create.html')
+        form = response.context['form']
+        self.assertTrue(isinstance(form, InvestorCompanyCreateForm))
+        self.assertTrue(form.is_bound)
 
 
 class InvestorUpdateViewTestCase(TestCase):
@@ -179,35 +260,53 @@ class InvestorUpdateViewTestCase(TestCase):
     def setUp(self) -> None:
         self.user = User.objects.get(email='john.doe@example.org')
         self.defaultCompany = Company.objects.get(id=1)
-        self.investorCompany = InvestorCompany.objects.create(
+        self.investorCompany = Investor.objects.create(
             company=self.defaultCompany,
-            angelListLink='https://www.Angelist.com',
-            crunchbaseLink='https://www.crunchbase.com',
-            linkedInLink='https://www.linked-in.com',
             classification='VC'
         )
         self.form_input = {
             'company': self.defaultCompany,
-            'angelListLink': 'https://www.Angelist.com',
-            'crunchbaseLink': 'https://www.crunchbase.com',
-            'linkedInLink': 'https://www.linked-in.com',
-            'classification': 'VC'
+            'classification': 'INCUBATOR'
         }
+        self.url = reverse('investor_company_update', kwargs={'company_id': 1})
 
     def test_update_investor_company_url(self):
-        pass
+        self.assertEqual(self.url, '/investment/update_investor_company/1')
 
     def test_get_update_investor_company_url(self):
-        pass
+        self.client.login(email=self.user.email, password="Password123")
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'investment/investor_company_update.html')
+        form = response.context['form']
+        self.assertTrue(isinstance(form, InvestorEditForm))
+        self.assertFalse(form.is_bound)
 
     def test_get_update_investor_company_redirects_when_not_logged_in(self):
-        pass
+        redirect_url = reverse_with_next('login', self.url)
+        response = self.client.get(self.url)
+        self.assertRedirects(response, redirect_url, status_code=302, target_status_code=200)
 
     def test_post_update_investor_company_redirects_when_not_logged_in(self):
-        pass
+        redirect_url = reverse_with_next('login', self.url)
+        response = self.client.post(self.url, self.form_input)
+        self.assertRedirects(response, redirect_url, status_code=302, target_status_code=200)
 
     def test_successful_form(self):
-        pass
+        self.client.login(email=self.user.email, password="Password123")
+        before_count = Investor.objects.count()
+        response = self.client.post(self.url, self.form_input, follow=True)
+        after_count = Investor.objects.count()
+        self.assertTemplateUsed(response, 'company/portfolio_company_page.html')
+        self.assertEqual(response.context['company'], self.defaultCompany)
+        self.assertEqual(before_count, after_count)
 
     def test_unsuccessful_form(self):
-        pass
+        self.client.login(email=self.user.email, password="Password123")
+        self.form_input['classification'] = ''
+        response = self.client.post(self.url, self.form_input)
+        self.assertTrue(response.status_code, 200)
+        self.assertTemplateUsed(response, 'investment/investor_company_update.html')
+        form = response.context['form']
+        self.assertTrue(isinstance(form, InvestorEditForm))
+        self.assertTrue(form.is_bound)
