@@ -98,19 +98,26 @@ List of individuals
 def individual_page(request):
     page_number = request.GET.get('page', 1)
     individuals = Individual.objects.filter(is_archived=False).order_by('id')
+
+
+
     cast_individuals = list()
     for individual in individuals:
         cast_individuals.append(individual.as_child_class)
 
     paginator = Paginator(cast_individuals, 6)
+
     try:
         individuals_page = paginator.page(page_number)
     except EmptyPage:
         individuals_page = []
 
     data = {
-        'individuals': individuals_page,
+        'individuals': individuals_page
+        
     }
+
+
 
     return render(request, "individual/individual_page.html", data)
 

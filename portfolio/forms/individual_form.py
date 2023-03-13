@@ -24,7 +24,7 @@ class IndividualCreateForm(forms.ModelForm):
 # Form for creating addresses
 class AddressCreateForm(forms.ModelForm):
     class Meta:
-        model = ResidentialAddress
+        model = ResidentialAddress  
         fields = ['address_line1', 'address_line2', 'postal_code', 'city', 'state', 'country']
         exclude = ('individual',)
         widgets = {

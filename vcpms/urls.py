@@ -101,6 +101,4 @@ urlpatterns = [
     path("investment/create/<int:company_id>", views.InvestmentCreateView.as_view(), name='investment_create'),
     path("investment/create_investor_company/", views.InvestorCompanyCreateView.as_view(), name='investor_company_create'),
     path("investment/update_investor_company/<int:company_id>", views.InvestorCompanyUpdateView.as_view(), name='investor_company_update'),
-]
-if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+]  + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
