@@ -1,0 +1,12 @@
+[
+    {
+      "model": "portfolio.investorcompany",
+      "pk": 1,
+      "fields": {
+        "company": 4,
+        "angelListLink":"www.angellist.com",
+        "crunchbaseLink":"www.crunchbase.com",
+        "linkedInLink":"www.linkedin.com"
+      }
+    }
+  ]

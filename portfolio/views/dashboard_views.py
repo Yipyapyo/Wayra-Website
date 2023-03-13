@@ -23,9 +23,9 @@ def dashboard(request):
 
     if request.session['company_filter'] == 3:
         investor_companies = InvestorCompany.objects.all()
-        companies = Company.objects.filter(id__in=investor_companies.values('company'), is_archived=False)
+        companies = Company.objects.filter(id__in=investor_companies.values('company'), is_archived=False).order_by('id')
     elif request.session['company_filter'] == 2:
-        companies = Portfolio_Company.objects.filter(is_archived=False)
+        companies = Portfolio_Company.objects.filter(is_archived=False).order_by('id')
     else:
         companies = Company.objects.filter(is_archived=False).order_by('id')
 
@@ -76,7 +76,13 @@ def searchcomp(request):
         if (searched == ""):
             return redirect('dashboard')
         else:
-            companies = Company.objects.filter(name__contains=searched, is_archived=False).values()[:5]
+            if request.session['company_filter'] == 3:
+                investor_companies = InvestorCompany.objects.all()
+                companies = Company.objects.filter(id__in=investor_companies.values('company'), is_archived=False, name__contains=searched).order_by('id')[:5]
+            elif request.session['company_filter'] == 2:
+                companies = Portfolio_Company.objects.filter(is_archived=False, name__contains=searched).order_by('id')[:5]
+            else:
+                companies = Company.objects.filter(name__contains=searched, is_archived=False).values().order_by('id')[:5]
 
         paginator = Paginator(companies, 6)
         try:
@@ -85,9 +91,6 @@ def searchcomp(request):
             companies_page = []
 
         return render(request, 'company/main_dashboard.html', {"companies": companies_page, "searched": searched})
-
-    else:
-        return HttpResponse("Request method is not a GET")
 
 
 @login_required
@@ -184,11 +187,74 @@ def unarchive_company(request, company_id):
     return redirect('archive_page')
 
 @login_required
-def change_company_layout(request, layout_number):
-    request.session['company_layout'] = layout_number
-    return redirect('dashboard')
+def change_company_layout(request):
+    if request.method == "GET":
+        layout_number = request.GET['layout_number']
+        page_number = request.GET.get('page', 1)
+        if layout_number:
+            request.session['company_layout'] = layout_number
+        else:
+            request.session['company_layout'] = 1
+
+        if request.session['company_filter'] == '3':
+            investor_companies = InvestorCompany.objects.all()
+            result = Company.objects.filter(id__in=investor_companies.values('company'), is_archived=False).order_by('id')
+        elif request.session['company_filter'] == '2':
+            result = Portfolio_Company.objects.filter(is_archived=False).order_by('id')
+        else:
+            result = Company.objects.filter(is_archived=False).values().order_by('id')
+
+        paginator = Paginator(result, 6)
+
+        try:
+            companies_page = paginator.page(page_number)
+        except EmptyPage:
+            companies_page = []
+
+        context = {
+            "companies": companies_page,
+            "search_url": reverse('company_search_result'),
+            "placeholder": "Search for a Company",
+            "async_company_layout": int(request.session["company_layout"]),
+        }
+
+        search_results_table_html = render_to_string('company/company_dashboard_content_reusable.html', context)
+
+        return HttpResponse(search_results_table_html)
 
 @login_required
-def change_company_filter(request, filter_number):
-    request.session['company_filter'] = filter_number
-    return redirect('dashboard')
+def change_company_filter(request):
+    if request.method == "GET":
+        filter_number = request.GET['filter_number']
+        page_number = request.GET.get('page', 1)
+        if filter_number:
+            request.session['company_filter'] = filter_number
+        else:
+            request.session['company_filter'] = 1
+
+        if request.session['company_filter'] == '3':
+            investor_companies = InvestorCompany.objects.all()
+            result = Company.objects.filter(id__in=investor_companies.values('company'), is_archived=False).order_by('id')
+        elif request.session['company_filter'] == '2':
+            result = Portfolio_Company.objects.filter(is_archived=False).order_by('id')
+        elif request.session['company_filter'] == '1':
+            result = Company.objects.filter(is_archived=False).values().order_by('id')
+
+        paginator = Paginator(result, 6)
+
+        try:
+            companies_page = paginator.page(page_number)
+        except EmptyPage:
+            companies_page = []
+
+        context = {
+            "companies": companies_page,
+            "search_url": reverse('company_search_result'),
+            "placeholder": "Search for a Company",
+            "async_company_layout": int(request.session["company_layout"]),
+        }
+
+        search_results_table_html = render_to_string('company/company_dashboard_content_reusable.html', context)
+
+        return HttpResponse(search_results_table_html)
+    

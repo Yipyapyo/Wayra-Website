@@ -19,5 +19,14 @@
     "fields": {
       "wayra_number": "WN-301"
     }
+  },
+  {
+    "model": "portfolio.portfolio_company",
+    "pk": 3,
+    "fields": {
+      "name": "Child THREE Ltd",
+      "incorporation_date": "2023-02-17",
+      "wayra_number": "WN-3"
+    }
   }
 ]
