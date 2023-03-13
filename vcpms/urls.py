@@ -103,4 +103,14 @@ urlpatterns = [
     path("investment/create/<int:company_id>", views.InvestmentCreateView.as_view(), name='investment_create'),
     path("investment/create_investor_company/", views.InvestorCompanyCreateView.as_view(), name='investor_company_create'),
     path("investment/update_investor_company/<int:company_id>", views.InvestorCompanyUpdateView.as_view(), name='investor_company_update'),
-]  + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+
+    #ContractRights
+    path("contract_right_list/<int:investment_id>", views.ContractRightsListView.as_view(), name='contract_right_list'),
+    path("contract_right/create/<int:investment_id>", views.ContractRightCreateView.as_view(), name='contract_right_create'),
+    path("contract_right/delete/<int:id>", views.ContractRightDeleteView.as_view(), name='contract_right_delete'),
+
+]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

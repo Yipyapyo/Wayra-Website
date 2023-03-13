@@ -20,7 +20,7 @@ class ProgrammeSeeder(Seeder):
         print(f"{Programme.objects.count()} programmes in the db.\n")
 
     def _get_objects_from_models(self, model, index, slice_size):
-        print(model, index, slice_size)
+        # print(model, index, slice_size)
         random_number_of_object = random.randint(1, slice_size + 1)
         start = index * slice_size
         end = start + random_number_of_object

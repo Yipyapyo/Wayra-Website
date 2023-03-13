@@ -3,7 +3,7 @@
     "model": "portfolio.company",
     "pk": 1,
     "fields": {
-      "name": "Default Ltd",
+      "name": "Default 1 Ltd",
       "company_registration_number":"00000001",
       "trading_names":"D1_LTD",
       "previous_names":"Ante 1 LTD",
