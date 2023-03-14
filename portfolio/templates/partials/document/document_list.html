@@ -1,0 +1,38 @@
+{% load humanize %}
+<table class="table">
+
+    <thead>
+        <tr>
+            <th scope="col">File Name</th>
+            <th scope="col">File Type</th>
+            <th scope="col">File Size</th>
+            <th scope="col">Uploaded At</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {% for document in documents %}
+            <tr>
+                <td>{{ document.file_name }}</td>
+                <td>{{ document.file_type }}</td>
+                <td>{{ document.file_size }}</td>
+                <td>{{ document.updated_at }}</td>
+                <td>
+                    <div class="dropdown">
+
+                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Options
+                        </button>
+
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <a class="dropdown-item" href="#">Download</a>
+                            <a class="dropdown-item" href="#">Delete</a>
+                        </div>
+
+                    </div>
+                </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+
+</table>
