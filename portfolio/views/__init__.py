@@ -7,4 +7,4 @@ from .programme_views import *
 from .archive_views import *
 from .investment_views import *
 from .settings_views import *
-
+from .document_views import *
