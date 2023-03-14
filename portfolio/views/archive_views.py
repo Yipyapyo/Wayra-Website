@@ -1,7 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
-from portfolio.models import Company, Individual, Portfolio_Company, InvestorCompany
+from portfolio.models import Company, Individual, Portfolio_Company, InvestorCompany, Founder, InvestorIndividual
 from django.template.loader import render_to_string
 from django.urls import reverse
 from django.core.paginator import Paginator, EmptyPage
@@ -76,7 +76,7 @@ def change_archived_company_filter(request):
             result = Company.objects.filter(id__in=investor_companies.values('company'), is_archived=True).order_by('id')
         elif request.session['archived_company_filter'] == '2':
             result = Portfolio_Company.objects.filter(is_archived=True).order_by('id')
-        elif request.session['archived_company_filter'] == '1':
+        else:
             result = Company.objects.filter(is_archived=True).order_by('id')
 
         paginator = Paginator(result, 6)
@@ -93,3 +93,36 @@ def change_archived_company_filter(request):
         archived_companies_table_html = render_to_string('archive/archived_companies_table.html', context)
 
         return HttpResponse(archived_companies_table_html)
+    
+@login_required
+def change_archived_individual_filter(request):
+    if request.method == "GET":
+        filter_number = request.GET['filter_number']
+        page_number = request.GET.get('page2', 1)
+        if filter_number:
+            request.session['archived_individual_filter'] = filter_number
+        else:
+            request.session['archived_individual_filter'] = 1
+
+        if request.session['archived_individual_filter'] == '2':
+            founder_individuals = Founder.objects.all()
+            result = Individual.objects.filter(id__in=founder_individuals.values('individualFounder'), is_archived=True).order_by('id')
+        elif request.session['archived_individual_filter'] == '3':
+            result = InvestorIndividual.objects.filter(is_archived=True).order_by('id')
+        else:
+            result = Individual.objects.filter(is_archived=True).values().order_by('id')
+
+        paginator = Paginator(result, 6)
+
+        try:
+            individuals_page = paginator.page(page_number)
+        except EmptyPage:
+            companiindividuals_pagees_page = []
+
+        context = {
+            "individuals":individuals_page,
+        }
+
+        archived_individuals_table_html = render_to_string('archive/archived_individuals_table.html', context)
+
+        return HttpResponse(archived_individuals_table_html)

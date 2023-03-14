@@ -21,7 +21,9 @@
       {% include 'archive/archived_companies_table.html' %}
     </div>
     
-    {% include 'archive/archived_individuals_table.html' %}
+    <div class="individuals-table">
+      {% include 'archive/archived_individuals_table.html' %}
+    </div>
     
   </div>
   <div id="companies" class="tab-pane fade">
@@ -37,7 +39,9 @@
 
     {% include 'archive/archived_search_functionality.html' %}
     
-    {% include 'archive/archived_individuals_table.html' %}
+    <div class="individuals-table">
+      {% include 'archive/archived_individuals_table.html' %}
+    </div>
 
   </div>
 </div>
@@ -46,6 +50,7 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
 <script>
   var filter_companies_url = "{% url 'change_archived_company_filter' %}";
+  var filter_individuals_url = "{% url 'change_archived_individual_filter' %}";
 </script>
 
 <script src="{% static 'js/archive_async.js' %}"></script>

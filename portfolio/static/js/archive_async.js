@@ -1,6 +1,5 @@
-// Handle the async company result calls to django backend
+// Handle the async archived company result calls to django backend
 function reload_archived_companies(number) {
-    alert('called');
     $.ajax(
     {
         type:"GET",
@@ -11,6 +10,23 @@ function reload_archived_companies(number) {
         success: function( data ) 
         {
             $(".companies-table").html(data);
+        }
+    })
+}
+
+// Handle the async archived individual result calls to django backend
+function reload_archived_individuals(number) {
+    alert('called');
+    $.ajax(
+    {
+        type:"GET",
+        url: filter_individuals_url,
+        data:{
+            filter_number: number
+        },
+        success: function( data ) 
+        {
+            $(".individuals-table").html(data);
             alert('success');
         }
     })
