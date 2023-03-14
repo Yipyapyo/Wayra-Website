@@ -75,6 +75,7 @@ urlpatterns = [
     # Archive views
     path("archive_page/", views.archive, name="archive_page"),
     path('archive/search', views.archive_search, name='archive_search'),
+    path('change_archived_company_filter/', views.change_archived_company_filter, name='change_archived_company_filter'),
 
 
     # Settings views

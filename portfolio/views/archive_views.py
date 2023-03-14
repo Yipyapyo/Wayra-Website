@@ -1,7 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
-from portfolio.models import Company, Individual
+from portfolio.models import Company, Individual, Portfolio_Company, InvestorCompany
 from django.template.loader import render_to_string
 from django.urls import reverse
 from django.core.paginator import Paginator, EmptyPage
@@ -60,3 +60,36 @@ def archive_search(request):
 
     else:
         return HttpResponse("Request method is not a GET")
+
+@login_required
+def change_archived_company_filter(request):
+    if request.method == "GET":
+        filter_number = request.GET['filter_number']
+        page_number = request.GET.get('page1', 1)
+        if filter_number:
+            request.session['archived_company_filter'] = filter_number
+        else:
+            request.session['archived_company_filter'] = 1
+
+        if request.session['archived_company_filter'] == '3':
+            investor_companies = InvestorCompany.objects.all()
+            result = Company.objects.filter(id__in=investor_companies.values('company'), is_archived=True).order_by('id')
+        elif request.session['archived_company_filter'] == '2':
+            result = Portfolio_Company.objects.filter(is_archived=True).order_by('id')
+        elif request.session['archived_company_filter'] == '1':
+            result = Company.objects.filter(is_archived=True).order_by('id')
+
+        paginator = Paginator(result, 6)
+
+        try:
+            companies_page = paginator.page(page_number)
+        except EmptyPage:
+            companies_page = []
+
+        context = {
+            "companies":companies_page,
+        }
+
+        archived_companies_table_html = render_to_string('archive/archived_companies_table.html', context)
+
+        return HttpResponse(archived_companies_table_html)
