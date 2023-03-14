@@ -27,11 +27,11 @@ def individual_search(request):
             response = []
         else:
             search_result = Individual.objects.filter(name__contains=searched).values()[:5]
-            response.append(("Individual", list(search_result)))
+            response.append(("Individual", list(search_result),{'destination_url':'individual_profile'}))
         
 
         individual_search_results_table_html = render_to_string('partials/search/search_results_table.html', {
-        'search_results': response, 'searched':searched, 'destination_url':'individual_profile'})
+        'search_results': response, 'searched':searched, "destination_url":"individual_profile"})
 
         return HttpResponse(individual_search_results_table_html)
 

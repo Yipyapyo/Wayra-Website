@@ -50,11 +50,11 @@ def archive_search(request):
         else:
             company_search_result = Company.objects.filter(name__contains=searched, is_archived=True).values()
             individual_search_result = Individual.objects.filter(name__contains=searched, is_archived=True).values()
-            response.append(("Companies",list(company_search_result[:4])))
-            response.append(("Individuals",list(individual_search_result[:4])))
+            response.append(("Companies",list(company_search_result[:4]),{'destination_url':'portfolio_company'}))
+            response.append(("Individuals",list(individual_search_result[:4]),{'destination_url':'individual_profile'}))
         
         search_results_table_html = render_to_string('partials/search/search_results_table.html', {
-        'search_results': response, 'searched':searched, 'destination_url':'portfolio_company'})
+        'search_results': response, 'searched':searched, "destination_url":"portfolio_company"})
  
         return HttpResponse(search_results_table_html)
 

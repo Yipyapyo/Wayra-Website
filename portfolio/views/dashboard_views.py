@@ -63,10 +63,10 @@ def searchcomp(request):
                 search_result = Portfolio_Company.objects.filter(is_archived=False, name__contains=searched)[:5]
             else:
                 search_result = Company.objects.filter(name__contains=searched, is_archived=False).values()[:5]
-            response.append(("Companies", list(search_result)))
+            response.append(("Companies", list(search_result),{'destination_url':'portfolio_company'}))
 
         search_results_table_html = render_to_string('partials/search/search_results_table.html', {
-            'search_results': response, 'searched': searched, 'destination_url': 'portfolio_company'})
+            'search_results': response, 'searched': searched, "destination_url":"portfolio_company"})
 
         return HttpResponse(search_results_table_html)
 
