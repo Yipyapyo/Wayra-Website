@@ -31,6 +31,8 @@ def set_session_variables(client):
     session['company_layout'] = 1
     session['individual_filter'] = 1
     session['individual_layout'] = 1
+    session['archived_company_filter'] = 1
+    session['archived_individual_filter'] = 1
     session.save()
     set_session_cookies(client, session)
 
@@ -43,5 +45,17 @@ def set_session_company_filter_variable(client, filter_number):
 def set_session_individual_filter_variable(client, filter_number):
     session = client.session
     session['individual_filter'] = filter_number
+    session.save()
+    set_session_cookies(client, session)
+
+def set_session_archived_individual_filter_variable(client, filter_number):
+    session = client.session
+    session['archived_individual_filter'] = filter_number
+    session.save()
+    set_session_cookies(client, session)
+
+def set_session_archived_company_filter_variable(client, filter_number):
+    session = client.session
+    session['archived_company_filter'] = filter_number
     session.save()
     set_session_cookies(client, session)
