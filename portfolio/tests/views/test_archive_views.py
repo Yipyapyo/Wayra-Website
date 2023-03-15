@@ -50,6 +50,12 @@ class ArchiveViewTestCase(TestCase):
         response = self.client.get(self.url)
         self.assertRedirects(response, redirect_url, status_code=302, target_status_code=200)
 
+    def test_get_archive_redirects_when_not_admin(self):
+        self.client.login(email=self.user.email, password="Password123")
+        redirect_url = reverse('logout')
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, 302)
+
     # def test_get_archive_redirects_when_not_admin(self):
     #     self.client.login(email=self.user.email, password="Password123")
     #     redirect_url = reverse('dashboard')
@@ -64,6 +70,17 @@ class ArchiveViewTestCase(TestCase):
         response = self.client.get(self.search_url, data={'searchresult': 'w'})
         self.assertEqual(response.status_code, 200)
         self.assertIsInstance(response, HttpResponse)
+
+    def test_get_archive_search_redirects_when_not_logged_in(self):
+        redirect_url = reverse_with_next('login', self.search_url)
+        response = self.client.get(self.search_url)
+        self.assertRedirects(response, redirect_url, status_code=302, target_status_code=200)
+
+    def test_get_archive_search_redirects_when_not_admin(self):
+        self.client.login(email=self.user.email, password="Password123")
+        redirect_url = reverse('logout')
+        response = self.client.get(self.search_url)
+        self.assertEqual(response.status_code, 302)
     
     def test_get_search_archive_returns_correct_data(self):
         self.client.login(email=self.admin_user.email, password="Password123")
@@ -132,13 +149,23 @@ class ArchiveViewTestCase(TestCase):
 
     ## Archived company filter tests
     def test_get_archived_change_filter(self):
-        self.client.login(email=self.user.email, password="Password123")
+        self.client.login(email=self.admin_user.email, password="Password123")
         response = self.client.get(self.company_filter_url, data={'filter_number': 1})
         self.assertEqual(response.status_code, 200)
         self.assertIsInstance(response, HttpResponse)
 
-    def test_get_change_archive_companies_filter_returns_correct_data_for_all_companies(self):
+    def test_get_archive_change_filter_redirects_when_not_logged_in(self):
+        redirect_url = reverse_with_next('login', self.company_filter_url)
+        response = self.client.get(self.company_filter_url)
+        self.assertRedirects(response, redirect_url, status_code=302, target_status_code=200)
+
+    def test_get_archive_company_filter_redirects_when_not_admin(self):
         self.client.login(email=self.user.email, password="Password123")
+        response = self.client.get(self.company_filter_url)
+        self.assertEqual(response.status_code, 302)
+
+    def test_get_change_archive_companies_filter_returns_correct_data_for_all_companies(self):
+        self.client.login(email=self.admin_user.email, password="Password123")
         response = self.client.get(self.company_filter_url, data={'filter_number': 1})
         self.assertEqual(response.status_code, 200)
         self.assertIsInstance(response, HttpResponse) 
@@ -146,7 +173,7 @@ class ArchiveViewTestCase(TestCase):
         self.assertEqual(len(company_search_result), 0)
 
     def test_get_change_archived_companies_filter_returns_correct_data_for_portfolio_companies(self):
-        self.client.login(email=self.user.email, password="Password123")
+        self.client.login(email=self.admin_user.email, password="Password123")
         set_session_archived_company_filter_variable(self.client, 2)
         response = self.client.get(self.company_filter_url, data={'filter_number': 2})
         self.assertEqual(response.status_code, 200)
@@ -157,7 +184,7 @@ class ArchiveViewTestCase(TestCase):
         self.assertEqual(len(company_search_result), 0)
 
     def test_get_change_archived_companies_filter_returns_correct_data_for_investor_companies(self):
-        self.client.login(email=self.user.email, password="Password123")
+        self.client.login(email=self.admin_user.email, password="Password123")
         set_session_archived_company_filter_variable(self.client, 3)
         response = self.client.get(self.company_filter_url, data={'filter_number': 3})
         self.assertEqual(response.status_code, 200)
@@ -170,13 +197,23 @@ class ArchiveViewTestCase(TestCase):
 
      ## Archived individual filter tests
     def test_get_archived_individual_change_filter(self):
-        self.client.login(email=self.user.email, password="Password123")
+        self.client.login(email=self.admin_user.email, password="Password123")
         response = self.client.get(self.individual_filter_url, data={'filter_number': 1})
         self.assertEqual(response.status_code, 200)
         self.assertIsInstance(response, HttpResponse)
 
-    def test_get_change_archive_individuals_filter_returns_correct_data_for_all_companies(self):
+    def test_get_archive_change_individual_filter_redirects_when_not_logged_in(self):
+        redirect_url = reverse_with_next('login', self.individual_filter_url)
+        response = self.client.get(self.individual_filter_url)
+        self.assertRedirects(response, redirect_url, status_code=302, target_status_code=200)
+
+    def test_get_archive_individual_filter_redirects_when_not_admin(self):
         self.client.login(email=self.user.email, password="Password123")
+        response = self.client.get(self.individual_filter_url)
+        self.assertEqual(response.status_code, 302)
+
+    def test_get_change_archive_individuals_filter_returns_correct_data_for_all_companies(self):
+        self.client.login(email=self.admin_user.email, password="Password123")
         response = self.client.get(self.individual_filter_url, data={'filter_number': 1})
         self.assertEqual(response.status_code, 200)
         self.assertIsInstance(response, HttpResponse) 
@@ -184,7 +221,7 @@ class ArchiveViewTestCase(TestCase):
         self.assertEqual(len(individual_search_result), 0)
 
     def test_get_change_archived_individuals_filter_returns_correct_data_for_portfolio_companies(self):
-        self.client.login(email=self.user.email, password="Password123")
+        self.client.login(email=self.admin_user.email, password="Password123")
         set_session_archived_individual_filter_variable(self.client, 2)
         response = self.client.get(self.individual_filter_url, data={'filter_number': 2})
         self.assertEqual(response.status_code, 200)
@@ -196,7 +233,7 @@ class ArchiveViewTestCase(TestCase):
         self.assertEqual(len(individual_search_result), 0)
 
     def test_get_change_archived_individuals_filter_returns_correct_data_for_investor_companies(self):
-        self.client.login(email=self.user.email, password="Password123")
+        self.client.login(email=self.admin_user.email, password="Password123")
         set_session_archived_individual_filter_variable(self.client, 3)
         response = self.client.get(self.individual_filter_url, data={'filter_number': 3})
         self.assertEqual(response.status_code, 200)
