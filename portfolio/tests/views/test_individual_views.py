@@ -37,6 +37,14 @@ class IndividualProfileViewTestCase(TestCase):
         response = self.client.get(self.url)
         self.assertRedirects(response, redirect_url, status_code=302, target_status_code=200)
 
+    def test_redirects_when_individual_archived_and_not_admin(self):
+        self.client.login(email=self.user.email, password="Password123")
+        individual = Individual.objects.get(id=1)
+        individual.is_archived = True
+        individual.save()
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, 302)
+
 class IndividualArchiveViewTestCase(TestCase):
     fixtures = [
         "portfolio/tests/fixtures/default_user.json",

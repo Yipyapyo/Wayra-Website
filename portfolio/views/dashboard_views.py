@@ -1,5 +1,5 @@
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.core.paginator import Paginator, EmptyPage
 from django.db.models import Q
 from django.http import HttpResponse
@@ -97,16 +97,21 @@ def searchcomp(request):
 def portfolio_company(request, company_id):
     """This page displays information about a single portfolio company"""
     company = Company.objects.get(id=company_id)
-    programmes = Programme.objects.filter(Q(participants=company) | Q(partners=company))
-    return render(request, 'company/portfolio_company_page.html',
-                  {'counter': {1, 2, 3},
-                   'contract_counter': {1, 2, 3, 4},
-                   'company': company,
-                   'programmes': programmes
-                   })
+    print(company.is_archived)
+    print("Called")
+    if(company.is_archived or (company.is_archived and request.user.is_staff)):
+        programmes = Programme.objects.filter(Q(participants=company) | Q(partners=company))
+        return render(request, 'company/portfolio_company_page.html',
+                    {'counter': {1, 2, 3},
+                    'contract_counter': {1, 2, 3, 4},
+                    'company': company,
+                    'programmes': programmes
+                    })
+    else:
+        redirect('dashboard')
 
 
-class CompanyDetailView(LoginRequiredMixin, ListView):
+class CompanyDetailView(LoginRequiredMixin, UserPassesTestMixin, ListView):
     template_name = 'company/portfolio_company_page.html'
     context_object_name = 'investments'
     paginate_by = 10
@@ -116,6 +121,7 @@ class CompanyDetailView(LoginRequiredMixin, ListView):
         return super().dispatch(request, company_id, *args, **kwargs)
 
     def get_context_data(self, *, object_list=None, **kwargs):
+        print(((not self.company.is_archived) or (self.company.is_archived and self.request.user.is_staff)))
         context = super().get_context_data(**kwargs)
         context['company'] = self.company
         context['is_investor_company'] = Investor.objects.filter(company=self.company).exists()
@@ -127,6 +133,12 @@ class CompanyDetailView(LoginRequiredMixin, ListView):
     def get_queryset(self):
         self.investments = Investment.objects.filter(investor__company=self.company).order_by('id')
         return self.investments
+    
+    def test_func(self):
+        return (not self.company.is_archived) or (self.company.is_archived and self.request.user.is_staff)
+    
+    def handle_no_permission(self):
+        return redirect('dashboard')
 
 
 @login_required
