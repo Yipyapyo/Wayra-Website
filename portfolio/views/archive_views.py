@@ -48,8 +48,21 @@ def archive_search(request):
         if(searched == ""):
             response = []
         else:
-            company_search_result = Company.objects.filter(name__contains=searched, is_archived=True).values()
-            individual_search_result = Individual.objects.filter(name__contains=searched, is_archived=True).values()
+            if request.session['archived_company_filter'] == '3':
+                investor_companies = InvestorCompany.objects.all()
+                company_search_result = Company.objects.filter(id__in=investor_companies.values('company'), is_archived=True).values().order_by('id')
+            elif request.session['archived_company_filter'] == '2':
+                company_search_result = Portfolio_Company.objects.filter(is_archived=True).values().order_by('id')
+            else:
+                company_search_result = Company.objects.filter(is_archived=True).values().order_by('id')
+            
+            if request.session['archived_individual_filter'] == '2':
+                founder_individuals = Founder.objects.all()
+                individual_search_result = Individual.objects.filter(id__in=founder_individuals.values('individualFounder'), is_archived=True).values().order_by('id')
+            elif request.session['archived_individual_filter'] == '3':
+                individual_search_result = InvestorIndividual.objects.filter(is_archived=True).values().order_by('id')
+            else:
+                individual_search_result = Individual.objects.filter(is_archived=True).values().order_by('id')
             response.append(("Companies",list(company_search_result[:4]),{'destination_url':'portfolio_company'}))
             response.append(("Individuals",list(individual_search_result[:4]),{'destination_url':'individual_profile'}))
         

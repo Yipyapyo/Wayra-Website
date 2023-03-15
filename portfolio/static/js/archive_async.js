@@ -16,7 +16,6 @@ function reload_archived_companies(number) {
 
 // Handle the async archived individual result calls to django backend
 function reload_archived_individuals(number) {
-    alert('called');
     $.ajax(
     {
         type:"GET",
@@ -27,7 +26,6 @@ function reload_archived_individuals(number) {
         success: function( data ) 
         {
             $(".individuals-table").html(data);
-            alert('success');
         }
     })
 }
