@@ -31,6 +31,8 @@ def set_session_variables(client):
     session['company_layout'] = 1
     session['individual_filter'] = 1
     session['individual_layout'] = 1
+    session['archived_company_filter'] = 1
+    session['archived_individual_filter'] = 1
     session.save()
     set_session_cookies(client, session)
 
