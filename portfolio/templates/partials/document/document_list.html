@@ -1,4 +1,6 @@
 {% load humanize %}
+{% load static %}
+
 <table class="table">
 
     <thead>
@@ -14,7 +16,9 @@
         {% for document in documents %}
             <tr>
                 <td>{{ document.file_name }}</td>
-                <td>{{ document.file_type }}</td>
+                <td>
+                    <div class="file-icon file-icon-lg" data-type="{{ document.file_type }}"></div>
+                </td>
                 <td>{{ document.file_size }}</td>
                 <td>{{ document.updated_at }}</td>
                 <td>
