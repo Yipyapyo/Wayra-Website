@@ -50,7 +50,7 @@ class DocumentSeeder(Seeder):
                 else:
                     document = Document.objects.create(
                         file_name=f"{name}",
-                        file_type=extension,
+                        file_type="URL",
                         company=Company.objects.get(id=company_id),
                         url="https://www.wayra.uk"
                     )
