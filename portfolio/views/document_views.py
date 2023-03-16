@@ -58,8 +58,8 @@ def download_document(request, file_id):
 
     if os.path.exists(file_path):
         with open(file_path, "rb") as download_file:
-            response = HttpResponse(download_file.read(), content_type='application/octet-stream')
-            response['Content-Disposition'] = 'attachment; filename=' + document.file_name
+            response = HttpResponse(download_file.read(), content_type="application/octet-stream")
+            response["Content-Disposition"] = "attachment; filename=" + document.file_name
 
             return response
     else:
@@ -76,4 +76,4 @@ def delete_document(request, file_id):
     except Document.DoesNotExist:
         print("Document does not exist.")
 
-    return redirect(request.META.get('HTTP_REFERER', '/'))
+    return redirect(request.META.get("HTTP_REFERER", "/"))

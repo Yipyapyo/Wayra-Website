@@ -28,7 +28,9 @@
         <div class="px-5 pt-3 pb-2 mb-4 bg-light rounded-3">
             {% if documents|length > 0 %}
                 {% include 'partials/document/document_list.html' with documents=documents %}
+                <!-- {% comment %}
                 {% include 'partials/utilities/pagination.html' with page_obj=documents page_number=1 %}
+                {% endcomment %} -->
             {% else %}
                 <p class="text-center">No documents uploaded.</p>
             {% endif %}
