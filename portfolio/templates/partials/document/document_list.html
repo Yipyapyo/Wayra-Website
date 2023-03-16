@@ -25,8 +25,12 @@
                         </button>
 
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                            <a class="dropdown-item" href="#">Download</a>
-                            <a class="dropdown-item" href="#">Delete</a>
+                            {% if document.url %}
+                                <a class="dropdown-item" href="{% url 'open_url' document.file_id %}">Go to file</a>
+                            {%  else %}
+                                <a class="dropdown-item" href="{% url 'download_document' document.file_id %}">Download</a>
+                            {% endif %}
+                            <a class="dropdown-item" data-toggle="modal" data-target="#deleteDocumentModal">Delete</a>
                         </div>
 
                         {% include 'partials/document/document_delete_modal.html' %}
