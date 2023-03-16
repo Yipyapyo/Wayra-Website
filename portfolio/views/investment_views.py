@@ -3,8 +3,9 @@ from django.forms import model_to_dict
 from django.urls import reverse
 from django.views.generic import CreateView, UpdateView, DeleteView
 
-from portfolio.forms import InvestmentForm, InvestorCompanyCreateForm, InvestorCompanyEditForm
+from portfolio.forms import InvestmentForm, InvestorCompanyCreateForm, InvestorEditForm
 from portfolio.models import Investment, InvestorCompany
+from portfolio.models.investment_model import Investor
 
 
 class InvestmentCreateView(LoginRequiredMixin, CreateView):
@@ -74,7 +75,7 @@ class InvestmentDeleteView(LoginRequiredMixin, DeleteView):
 
 class InvestorCompanyCreateView(LoginRequiredMixin, CreateView):
     template_name = 'investment/investor_company_create.html'
-    model = InvestorCompany
+    model = Investor
     form_class = InvestorCompanyCreateForm
     http_method_names = ['get', 'post']
 
@@ -88,8 +89,8 @@ class InvestorCompanyCreateView(LoginRequiredMixin, CreateView):
 
 class InvestorCompanyUpdateView(LoginRequiredMixin, UpdateView):
     template_name = 'investment/investor_company_update.html'
-    model = InvestorCompany
-    form_class = InvestorCompanyEditForm
+    model = Investor
+    form_class = InvestorEditForm
     http_method_names = ['get', 'post']
     pk_url_kwarg = 'company_id'
 

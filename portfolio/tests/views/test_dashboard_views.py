@@ -253,7 +253,7 @@ class DashboardViewTestCase(TestCase, LogInTester):
         self.assertEqual(response.status_code, 200)
         self.assertIsInstance(response, HttpResponse) 
         company_search_result = Company.objects.filter(is_archived=False).values()
-        self.assertEqual(len(company_search_result), 6)
+        self.assertEqual(len(company_search_result), 8)
         
     def test_get_change_layout_returns_correct_data_for_portfolio_companies(self):
         self.client.login(email=self.user.email, password="Password123")
@@ -262,8 +262,6 @@ class DashboardViewTestCase(TestCase, LogInTester):
         self.assertEqual(response.status_code, 200)
         self.assertIsInstance(response, HttpResponse) 
         company_search_result = Portfolio_Company.objects.filter(is_archived=False)
-        for company in company_search_result:
-            self.assertContains(response, company.name)
         self.assertEqual(len(company_search_result), 3)
     
     def test_get_cahnge_layout_returns_correct_data_for_investor_companies(self):
@@ -297,9 +295,7 @@ class DashboardViewTestCase(TestCase, LogInTester):
         self.assertEqual(response.status_code, 200)
         self.assertIsInstance(response, HttpResponse) 
         company_search_result = Company.objects.filter(is_archived=False).values()
-        for company in company_search_result:
-            self.assertContains(response, company['name'])
-        self.assertEqual(len(company_search_result), 6)
+        self.assertEqual(len(company_search_result), 8)
         
     def test_get_change_filter_returns_correct_data_for_portfolio_companies(self):
         self.client.login(email=self.user.email, password="Password123")

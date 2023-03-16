@@ -3,7 +3,7 @@
         "model": "portfolio.Founder",
         "pk": 2,
         "fields": {
-            "companyFounded": 2,
+            "companyFounded": 201,
             "individualFounder": 5
         }
     }

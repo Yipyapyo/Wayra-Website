@@ -27,11 +27,11 @@ def individual_search(request):
             response = []
         else:
             search_result = Individual.objects.filter(name__contains=searched).values()[:5]
-            response.append(("Individual", list(search_result)))
+            response.append(("Individual", list(search_result),{'destination_url':'individual_profile'}))
         
 
         individual_search_results_table_html = render_to_string('partials/search/search_results_table.html', {
-        'search_results': response, 'searched':searched, 'destination_url':'individual_profile'})
+        'search_results': response, 'searched':searched, "destination_url":"individual_profile"})
 
         return HttpResponse(individual_search_results_table_html)
 
@@ -98,11 +98,15 @@ List of individuals
 def individual_page(request):
     page_number = request.GET.get('page', 1)
     individuals = Individual.objects.filter(is_archived=False).order_by('id')
+
+
+
     cast_individuals = list()
     for individual in individuals:
         cast_individuals.append(individual.as_child_class)
 
     paginator = Paginator(cast_individuals, 6)
+
     try:
         individuals_page = paginator.page(page_number)
     except EmptyPage:
@@ -113,6 +117,8 @@ def individual_page(request):
         "search_url": reverse('individual_search_result'),
         "placeholder": "Search for an Individual"
     }
+
+
 
     return render(request, "individual/individual_page.html", data)
 
@@ -171,7 +177,10 @@ View an individual profile page
 @login_required
 def individual_profile(request, id):
     individual = Individual.objects.get(id=id)
-    return render(request, 'individual/individual_about_page.html', {"individual": individual})
+    if(not individual.is_archived or (individual.is_archived and request.user.is_staff)):
+        return render(request, 'individual/individual_about_page.html', {"individual": individual})
+    else: 
+        return redirect('individual_page')
 
 """
 Archive an Individual

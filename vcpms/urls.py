@@ -75,6 +75,10 @@ urlpatterns = [
     # Archive views
     path("archive_page/", views.archive, name="archive_page"),
     path('archive/search', views.archive_search, name="archive_search"),
+    path('archive/search', views.archive_search, name='archive_search'),
+    path('change_archived_company_filter/', views.change_archived_company_filter, name='change_archived_company_filter'),
+    path('change_archived_individual_filter/', views.change_archived_individual_filter, name='change_archived_individual_filter'),
+
 
 
     # Settings views
@@ -98,17 +102,26 @@ urlpatterns = [
     path("permissions/<int:id>/delete_group/", views.GroupDeleteView.as_view(), name="permission_delete_group"),
 
     # Investments
-    path("investment/update/<int:id>", views.InvestmentUpdateView.as_view(), name="investment_update"),
-    path("investment/delete/<int:id>", views.InvestmentDeleteView.as_view(), name="investment_delete"),
-    path("investment/create/<int:company_id>", views.InvestmentCreateView.as_view(), name="investment_create"),
-    path("investment/create_investor_company/", views.InvestorCompanyCreateView.as_view(), name="investor_company_create"),
-    path("investment/update_investor_company/<int:company_id>", views.InvestorCompanyUpdateView.as_view(), name="investor_company_update"),
+    path("investment/update/<int:id>", views.InvestmentUpdateView.as_view(), name='investment_update'),
+    path("investment/delete/<int:id>", views.InvestmentDeleteView.as_view(), name='investment_delete'),
+    path("investment/create/<int:company_id>", views.InvestmentCreateView.as_view(), name='investment_create'),
+    path("investment/create_investor_company/", views.InvestorCompanyCreateView.as_view(),
+         name='investor_company_create'),
+    path("investment/update_investor_company/<int:company_id>", views.InvestorCompanyUpdateView.as_view(),
+         name='investor_company_update'),
 
     # Documents
     path("portfolio_company/<int:company_id>/upload_document/", views.document_upload, name="document_upload"),
     path("redirect/<int:file_id>", views.open_url, name="open_url"),
     path("download_document/<int:file_id>", views.download_document, name="download_document"),
     path("delete_document/<int:file_id>", views.delete_document, name="delete_document"),
+
+    # ContractRights
+    path("contract_right_list/<int:investment_id>", views.ContractRightsListView.as_view(), name='contract_right_list'),
+    path("contract_right/create/<int:investment_id>", views.ContractRightCreateView.as_view(),
+         name='contract_right_create'),
+    path("contract_right/delete/<int:id>", views.ContractRightDeleteView.as_view(), name='contract_right_delete'),
+
 ]
 
 if settings.DEBUG:

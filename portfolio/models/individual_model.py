@@ -38,10 +38,13 @@ class Individual(models.Model):
     PrimaryNumber = PhoneNumberField("Primary phone number", blank=False)
     SecondaryNumber = PhoneNumberField("Secondary phone number", blank=True)
     is_archived = models.BooleanField(default=False)
+    profile_pic = models.ImageField("Profile picture", upload_to='profilepics',  blank=True)
 
     def save(self, *args, **kwargs):
         if(not self.content_type):
             self.content_type = ContentType.objects.get_for_model(self.__class__)
+
+        
         super(Individual, self).save(*args, **kwargs)
 
     def as_child_class(self):
@@ -58,3 +61,4 @@ class Individual(models.Model):
     def unarchive(self):
         self.is_archived = False
         self.save()
+

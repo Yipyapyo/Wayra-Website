@@ -7,32 +7,22 @@
         <link rel="stylesheet" type="text/css" href="{% static 'css/styles_create.css' %}">
     </head>
     <body>
-        
         <header class="pb-3 mb-4 border-bottom">
             <a href="#" class="d-flex align-items-center text-dark text-decoration-none">
-                <span class="fs-4">Create Company</span>
+                <span class="fs-4">Create Contract Right</span>
             </a>
         </header>
-
         <div class="modal-body p-5 pt-0">
-            <form action="{%url 'create_company' %}" method="post" enctype='multipart/form-data'>
-          
-                
+            <form method="post">
                 {% csrf_token %}
-                {{ individualForm.as_p }}
-                {{ addressForms.as_p }}
-                {% for form in pastExperienceForms %}
-                    {{ form.as_p }}
-                {% endfor %}
-
+                {% include 'partials/utilities/form_input.html' %}
                 <div class="mb-3">
                     <button type="submit" class="btn btn-primary">Submit</button>
-                    <a type="button" class="btn btn-secondary" href="{% url 'dashboard' %}">Cancel</a>
+                    <a type="button" class="btn btn-secondary" href="{% url 'contract_right_list' investment_id%}">Cancel</a>
                 </div>
             </form>
         </div>
-        
     </body>
-    
+
 </html>
 {% endblock %}
