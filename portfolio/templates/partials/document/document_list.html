@@ -1,0 +1,48 @@
+{% load humanize %}
+{% load static %}
+
+<table class="table">
+
+    <thead>
+        <tr>
+            <th scope="col">File Name</th>
+            <th scope="col">File Type</th>
+            <th scope="col">File Size</th>
+            <th scope="col">Uploaded At</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {% for document in documents %}
+            <tr>
+                <td>{{ document.file_name }}</td>
+                <td>
+                    <div class="file-icon file-icon-lg" data-type="{{ document.file_type }}"></div>
+                </td>
+                <td>{{ document.file_size }}</td>
+                <td>{{ document.updated_at }}</td>
+                <td>
+                    <div class="dropdown">
+
+                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Options
+                        </button>
+
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            {% if document.url %}
+                                <a class="dropdown-item" href="{% url 'open_url' document.file_id %}">Go to file</a>
+                            {%  else %}
+                                <a class="dropdown-item" href="{% url 'download_document' document.file_id %}">Download</a>
+                            {% endif %}
+                            <a class="dropdown-item" data-toggle="modal" data-target="#deleteDocumentModal">Delete</a>
+                        </div>
+
+                        {% include 'partials/document/document_delete_modal.html' %}
+
+                    </div>
+                </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+
+</table>

@@ -22,4 +22,3 @@ class Command(BaseCommand):
         for seeder in self.seeders:
             seeder.seed()
         print(f"done.")
-

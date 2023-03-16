@@ -9,7 +9,7 @@ from django.urls import reverse
 from django.views.generic import ListView
 
 from portfolio.forms.company_form import CompanyCreateForm
-from portfolio.models import Company, Programme, Investment, InvestorCompany, Portfolio_Company
+from portfolio.models import Company, Programme, Investment, InvestorCompany, Portfolio_Company, Document
 from portfolio.models.investment_model import Investor
 
 
@@ -52,7 +52,7 @@ def searchcomp(request):
 
         response = []
 
-        if (searched == ""):
+        if searched == "":
             response = []
         else:
             # search_result = Company.objects.filter(name__contains=searched, is_archived=False).values()[:5]
@@ -73,7 +73,7 @@ def searchcomp(request):
     elif request.method == "POST":
         page_number = request.POST.get('page', 1)
         searched = request.POST['searchresult']
-        if (searched == ""):
+        if searched == "":
             return redirect('dashboard')
         else:
             if request.session['company_filter'] == 3:
@@ -96,6 +96,7 @@ def searchcomp(request):
 @login_required
 def portfolio_company(request, company_id):
     """This page displays information about a single portfolio company"""
+
     company = Company.objects.get(id=company_id)
     print(company.is_archived)
     print("Called")
@@ -112,6 +113,8 @@ def portfolio_company(request, company_id):
 
 
 class CompanyDetailView(LoginRequiredMixin, UserPassesTestMixin, ListView):
+    """This page displays details about a single portfolio company"""
+
     template_name = 'company/portfolio_company_page.html'
     context_object_name = 'investments'
     paginate_by = 10
@@ -128,15 +131,16 @@ class CompanyDetailView(LoginRequiredMixin, UserPassesTestMixin, ListView):
         context['counter'] = [1, 2, 3]
         context['contract_counter'] = [1, 2, 3, 4]
         context['programmes'] = Programme.objects.filter(participants__name=self.company.name)
+        context['documents'] = Document.objects.filter(company=self.company)
         return context
 
     def get_queryset(self):
         self.investments = Investment.objects.filter(investor__company=self.company).order_by('id')
         return self.investments
-    
+
     def test_func(self):
         return (not self.company.is_archived) or (self.company.is_archived and self.request.user.is_staff)
-    
+
     def handle_no_permission(self):
         return redirect('dashboard')
 
@@ -144,6 +148,7 @@ class CompanyDetailView(LoginRequiredMixin, UserPassesTestMixin, ListView):
 @login_required
 def create_company(request):
     """This page presents a form to create a company"""
+
     if request.method == "POST":
         form = CompanyCreateForm(request.POST)
         if form.is_valid():
@@ -158,6 +163,7 @@ def create_company(request):
 @login_required
 def update_company(request, company_id):
     """This page presents a form to update a company"""
+
     company = Company.objects.get(id=company_id)
 
     if request.method == "POST":
@@ -174,6 +180,7 @@ def update_company(request, company_id):
 @login_required
 def delete_company(request, company_id):
     """Handles the deletion of a company"""
+
     company = Company.objects.get(id=company_id)
 
     try:
@@ -186,6 +193,7 @@ def delete_company(request, company_id):
 @login_required
 def archive_company(request, company_id):
     """Handles the deletion of a company"""
+
     company = Company.objects.get(id=company_id)
     company.archive()
     return redirect('portfolio_company', company_id=company.id)
@@ -194,12 +202,16 @@ def archive_company(request, company_id):
 @login_required
 def unarchive_company(request, company_id):
     """Handles the deletion of a company"""
+
     company = Company.objects.get(id=company_id)
     company.unarchive()
     return redirect('archive_page')
 
+
 @login_required
 def change_company_layout(request):
+    """This view handles the change of the layout of the company dashboard"""
+
     if request.method == "GET":
         layout_number = request.GET['layout_number']
         page_number = request.GET.get('page', 1)
@@ -234,8 +246,11 @@ def change_company_layout(request):
 
         return HttpResponse(search_results_table_html)
 
+
 @login_required
 def change_company_filter(request):
+    """This view handles the change of the filter of the company dashboard"""
+
     if request.method == "GET":
         filter_number = request.GET['filter_number']
         page_number = request.GET.get('page', 1)
@@ -269,4 +284,3 @@ def change_company_filter(request):
         search_results_table_html = render_to_string('company/company_dashboard_content_reusable.html', context)
 
         return HttpResponse(search_results_table_html)
-    
