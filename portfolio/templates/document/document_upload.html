@@ -7,28 +7,26 @@
         </div>
 
         <div class="d-flex border-bottom mb-3">
-            <form action="/upload" method="post" enctype="multipart/form-data">
+            <form method="post" enctype="multipart/form-data">
                 <div class="form-group mb-3">
-                    <label for="file">File:</label>
-                    <input type="file" class="form-control mb-3" id="file" name="file">
-                    <button type="submit" class="btn btn-primary">Submit</button>
+                    {% csrf_token %}
+                    {% include 'partials/utilities/form_input.html' with form=file_form %}
+                    <button type="submit" class="btn btn-primary" name="upload_file">Submit</button>
                 </div>
             </form>
         </div>
 
         <div class="d-flex border-bottom mb-3">
-            <form action="/upload" method="post" enctype="multipart/form-data">
+            <form method="post" enctype="multipart/form-data">
                 <div class="form-group mb-3">
-                    <label for="file_name">File name:</label>
-                    <input type="text" class="form-control" id="file_name" name="file_name">
-                    <label for="url">URL:</label>
-                    <input type="text" class="form-control mb-3" id="url" name="url">
-                    <button type="submit" class="btn btn-primary">Submit</button>
+                    {% csrf_token %}
+                    {% include 'partials/utilities/form_input.html' with form=url_form %}
+                    <button type="submit" class="btn btn-primary" name="upload_url">Submit</button>
                 </div>
             </form>
         </div>
 
-        <a type="button" class="btn btn-secondary" href="{% url 'dashboard' %}">Cancel</a>
+        <a type="button" class="btn btn-secondary" onclick="javascript:window.history.back(-1);return false;">Cancel</a>
 
     </div>
 
