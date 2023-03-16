@@ -54,4 +54,4 @@ $ python3 manage.py test
 The packages used by this application are specified in `requirements.txt`
 
 This project uses [fileicon.css](https://github.com/picturepan2/fileicon.css) by [picturepan2](https://github.com/picturepan2):
- - Copyright (c) 2014-2015 Picturepan2. MIT Licensed, see [LICENSE]() for details.
+ - Copyright (c) 2014-2015 Picturepan2. MIT Licensed, see [LICENSE](https://github.com/AdnanTurkay/team-kinkajou/blob/main/portfolio/static/css/LICENSE) for details.
