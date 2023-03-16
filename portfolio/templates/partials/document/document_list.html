@@ -1,6 +1,15 @@
 {% load humanize %}
 {% load static %}
 
+<script>
+function clicked(e)
+{
+    if(!confirm('Deleting file. Are you sure?')) {
+        e.preventDefault();
+    }
+}
+</script>
+
 <table class="table">
 
     <thead>
@@ -34,10 +43,12 @@
                             {%  else %}
                                 <a class="dropdown-item" href="{% url 'download_document' document.file_id %}">Download</a>
                             {% endif %}
-                            <a class="dropdown-item" data-toggle="modal" data-target="#deleteDocumentModal">Delete</a>
+                            <a class="dropdown-item" href="{% url 'delete_document' document.file_id %}" onclick="clicked(event)">Delete</a>
                         </div>
 
+                        <!-- {% comment %}
                         {% include 'partials/document/document_delete_modal.html' %}
+                        {% endcomment %} -->
 
                     </div>
                 </td>
