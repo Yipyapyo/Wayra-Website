@@ -58,8 +58,11 @@ class ProgrammeCreateViewTestCase(TestCase, LogInTester):
         }
         self.default_programme = Programme.objects.get(id=1)
         # TODO: Reset media directory should write a proper way soon
-        shutil.rmtree(MEDIA_ROOT)
-        os.mkdir(MEDIA_ROOT)
+        media_files = os.listdir(MEDIA_ROOT)
+        for file in media_files:
+            file_path = os.path.join(MEDIA_ROOT, file)
+            if os.path.isfile(file_path):
+                os.remove(file_path)
 
     def test_create_programme_url(self):
         self.assertEqual(self.url, '/programme_page/create/')
@@ -135,8 +138,11 @@ class ProgrammeUpdateViewTestCase(TestCase, LogInTester):
         self.target_programme = Programme.objects.get(id=1)
         self.url = reverse('programme_update', kwargs={'id': self.target_programme.id})
         # TODO: Reset media directory should write a proper way soon
-        shutil.rmtree(MEDIA_ROOT)
-        os.mkdir(MEDIA_ROOT)
+        media_files = os.listdir(MEDIA_ROOT)
+        for file in media_files:
+            file_path = os.path.join(MEDIA_ROOT, file)
+            if os.path.isfile(file_path):
+                os.remove(file_path)
 
     def test_update_programme_url(self):
         self.assertEqual(self.url, f'/programme_page/{self.target_programme.id}/update/')
@@ -230,8 +236,11 @@ class ProgrammeDeleteViewTestCase(TestCase, LogInTester):
         self.target_programme = Programme.objects.get(id=1)
         self.url = reverse('programme_delete', kwargs={'id': self.target_programme.id})
         # TODO: Reset media directory should write a proper way soon
-        shutil.rmtree(MEDIA_ROOT)
-        os.mkdir(MEDIA_ROOT)
+        media_files = os.listdir(MEDIA_ROOT)
+        for file in media_files:
+            file_path = os.path.join(MEDIA_ROOT, file)
+            if os.path.isfile(file_path):
+                os.remove(file_path)
 
     def test_delete_programme_url(self):
         self.assertEqual(self.url, f'/programme_page/{self.target_programme.id}/delete/')
