@@ -69,12 +69,12 @@ urlpatterns = [
     path("programme_page/<int:id>/update/", views.ProgrammeUpdateView.as_view(), name="programme_update"),
     path("programme_page/<int:id>/delete/", views.ProgrammeDeleteView.as_view(), name="programme_delete"),
     path("programme_page/<int:id>/programme_id/", views.ProgrammeDetailView.as_view(), name="programme_detail"),
-    path('programme_page/search_result', views.SearchProgramme.as_view(), name='programme_search_result'),
+    path('programme_page/search_result', views.SearchProgramme.as_view(), name="programme_search_result"),
 
 
     # Archive views
     path("archive_page/", views.archive, name="archive_page"),
-    path('archive/search', views.archive_search, name='archive_search'),
+    path('archive/search', views.archive_search, name="archive_search"),
 
 
     # Settings views
@@ -86,26 +86,29 @@ urlpatterns = [
     path("deactivate_account", views.deactivate_account, name="deactivate_account"),
 
     # Permissions
-    path("permissions/users/", views.UserListView.as_view(), name='permission_user_list'),
-    path("permissions/create_user/", views.UserSignUpFormView.as_view(), name='permission_create_user'),
-    path("permissions/<int:id>/edit_user/", views.UserEditFormView.as_view(), name='permission_edit_user'),
-    path("permissions/<int:id>/delete_user/", views.UserDeleteView.as_view(), name='permission_delete_user'),
+    path("permissions/users/", views.UserListView.as_view(), name="permission_user_list"),
+    path("permissions/create_user/", views.UserSignUpFormView.as_view(), name="permission_create_user"),
+    path("permissions/<int:id>/edit_user/", views.UserEditFormView.as_view(), name="permission_edit_user"),
+    path("permissions/<int:id>/delete_user/", views.UserDeleteView.as_view(), name="permission_delete_user"),
     path("permissions/<int:id>/reset_password/", views.UserResetPasswordView.as_view(),
          name="permission_reset_password"),
-    path("permissions/group_list/", views.GroupListView.as_view(), name='permission_group_list'),
-    path("permissions/create_group/", views.GroupCreateView.as_view(), name='permission_create_group'),
-    path("permissions/<int:id>/edit_group/", views.GroupEditView.as_view(), name='permission_edit_group'),
-    path("permissions/<int:id>/delete_group/", views.GroupDeleteView.as_view(), name='permission_delete_group'),
+    path("permissions/group_list/", views.GroupListView.as_view(), name="permission_group_list"),
+    path("permissions/create_group/", views.GroupCreateView.as_view(), name="permission_create_group"),
+    path("permissions/<int:id>/edit_group/", views.GroupEditView.as_view(), name="permission_edit_group"),
+    path("permissions/<int:id>/delete_group/", views.GroupDeleteView.as_view(), name="permission_delete_group"),
 
     # Investments
-    path("investment/update/<int:id>", views.InvestmentUpdateView.as_view(), name='investment_update'),
-    path("investment/delete/<int:id>", views.InvestmentDeleteView.as_view(), name='investment_delete'),
-    path("investment/create/<int:company_id>", views.InvestmentCreateView.as_view(), name='investment_create'),
-    path("investment/create_investor_company/", views.InvestorCompanyCreateView.as_view(), name='investor_company_create'),
-    path("investment/update_investor_company/<int:company_id>", views.InvestorCompanyUpdateView.as_view(), name='investor_company_update'),
+    path("investment/update/<int:id>", views.InvestmentUpdateView.as_view(), name="investment_update"),
+    path("investment/delete/<int:id>", views.InvestmentDeleteView.as_view(), name="investment_delete"),
+    path("investment/create/<int:company_id>", views.InvestmentCreateView.as_view(), name="investment_create"),
+    path("investment/create_investor_company/", views.InvestorCompanyCreateView.as_view(), name="investor_company_create"),
+    path("investment/update_investor_company/<int:company_id>", views.InvestorCompanyUpdateView.as_view(), name="investor_company_update"),
 
     # Documents
-    path("upload/", views.document_upload, name='document_upload'),
+    path("portfolio_company/<int:company_id>/upload_document/", views.document_upload, name="document_upload"),
+    path("redirect/<int:file_id>", views.open_url, name="open_url"),
+    path("download_document/<int:file_id>", views.download_document, name="download_document"),
+    path("delete_document/<int:file_id>", views.delete_document, name="delete_document"),
 ]
 
 if settings.DEBUG:
