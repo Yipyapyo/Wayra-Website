@@ -18,6 +18,9 @@ function clicked(e)
             <th scope="col">File Type</th>
             <th scope="col">File Size</th>
             <th scope="col">Uploaded At</th>
+            {% if request.user.is_staff %}
+                <th scope="col">Permissions</th>
+            {% endif %}
         </tr>
     </thead>
 
@@ -31,6 +34,15 @@ function clicked(e)
                     </td>
                     <td>{{ document.file_size }}</td>
                     <td>{{ document.updated_at }}</td>
+                    {% if request.user.is_staff %}
+                        <td>
+                            {% if document.is_private %}
+                                Staff Only
+                            {% else %}
+                                Public
+                            {% endif %}
+                        </td>
+                    {% endif %}
                     <td>
                         <div class="dropdown">
 
