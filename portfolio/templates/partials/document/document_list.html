@@ -4,7 +4,7 @@
 <script>
 function clicked(e)
 {
-    if(!confirm('Deleting file. Are you sure?')) {
+    if(!confirm('Are you sure?')) {
         e.preventDefault();
     }
 }
@@ -23,36 +23,45 @@ function clicked(e)
 
     <tbody>
         {% for document in documents %}
-            <tr>
-                <td>{{ document.file_name }}</td>
-                <td>
-                    <div class="file-icon file-icon-lg" data-type="{{ document.file_type }}"></div>
-                </td>
-                <td>{{ document.file_size }}</td>
-                <td>{{ document.updated_at }}</td>
-                <td>
-                    <div class="dropdown">
+            {% if document.is_private and request.user.is_staff or not document.is_private %}
+                <tr>
+                    <td>{{ document.file_name }}</td>
+                    <td>
+                        <div class="file-icon file-icon-lg" data-type="{{ document.file_type }}"></div>
+                    </td>
+                    <td>{{ document.file_size }}</td>
+                    <td>{{ document.updated_at }}</td>
+                    <td>
+                        <div class="dropdown">
 
-                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Options
-                        </button>
+                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Options
+                            </button>
 
-                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                            {% if document.url %}
-                                <a class="dropdown-item" href="{% url 'open_url' document.file_id %}">Go to file</a>
-                            {%  else %}
-                                <a class="dropdown-item" href="{% url 'download_document' document.file_id %}">Download</a>
-                            {% endif %}
-                            <a class="dropdown-item" href="{% url 'delete_document' document.file_id %}" onclick="clicked(event)">Delete</a>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+
+                                {% if document.url %}
+                                    <a class="dropdown-item" href="{% url 'open_url' document.file_id %}">Go to file</a>
+                                {%  else %}
+                                    <a class="dropdown-item" href="{% url 'download_document' document.file_id %}">Download</a>
+                                {% endif %}
+
+                                {% if request.user.is_staff %}
+                                    <a class="dropdown-item" href="{% url 'change_permissions' document.file_id %}" onclick="clicked(event)">Change permissions</a>
+                                {% endif %}
+
+                                <a class="dropdown-item" href="{% url 'delete_document' document.file_id %}" onclick="clicked(event)">Delete</a>
+
+                            </div>
+
+                            <!-- {% comment %}
+                            {% include 'partials/document/document_delete_modal.html' %}
+                            {% endcomment %} -->
+
                         </div>
-
-                        <!-- {% comment %}
-                        {% include 'partials/document/document_delete_modal.html' %}
-                        {% endcomment %} -->
-
-                    </div>
-                </td>
-            </tr>
+                    </td>
+                </tr>
+            {% endif %}
         {% endfor %}
     </tbody>
 
