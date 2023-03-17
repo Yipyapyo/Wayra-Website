@@ -6,7 +6,6 @@ from portfolio.models.company_model import Company
 class Founder(models.Model):
     """A founder of a company."""
     objects = IndividualManager()
-    # companyFounded = models.CharField(max_length=100, blank=False, default="startup")
     companyFounded = models.OneToOneField(Company, on_delete=models.CASCADE)
     individualFounder = models.OneToOneField(Individual, on_delete=models.CASCADE)
 
