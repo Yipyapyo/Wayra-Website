@@ -1,7 +1,7 @@
+"""Founder model of a company."""
 from django.db import models
 from portfolio.models.individual_model import Individual, IndividualManager
 from portfolio.models.company_model import Company
-
 
 class Founder(models.Model):
     """A founder of a company."""

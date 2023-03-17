@@ -2,9 +2,8 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.forms import model_to_dict
 from django.urls import reverse
 from django.views.generic import CreateView, UpdateView, DeleteView
-
 from portfolio.forms import InvestmentForm, InvestorCompanyCreateForm, InvestorEditForm
-from portfolio.models import Investment, InvestorCompany
+from portfolio.models import Investment
 from portfolio.models.investment_model import Investor
 
 

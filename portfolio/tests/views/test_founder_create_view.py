@@ -1,3 +1,4 @@
+"""Unit tests of the founder create view."""
 from django.test import TestCase
 from django.urls import reverse
 from portfolio.models import Founder, User, Individual, Company
@@ -6,14 +7,12 @@ from portfolio.tests.helpers import reverse_with_next, set_session_variables
 from phonenumber_field.phonenumber import PhoneNumber
 from django.utils import timezone
 
-
-
 class FounderCreateTestCase(TestCase):
+    """Unit tests of the founder create view."""
     fixtures = [
         "portfolio/tests/fixtures/default_user.json",
         "portfolio/tests/fixtures/other_users.json",
     ]
-    
     
     def setUp(self):
         self.user = User.objects.get(email="john.doe@example.org")
