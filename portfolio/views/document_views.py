@@ -66,6 +66,16 @@ def download_document(request, file_id):
         raise Http404
 
 
+# Change access permissions for a document.
+@login_required
+def change_permissions(request, file_id):
+    document = Document.objects.get(file_id=file_id)
+    document.is_private = not document.is_private
+    document.save()
+
+    return redirect(request.META.get("HTTP_REFERER", "/"))
+
+
 # Delete a document from the database.
 @login_required
 def delete_document(request, file_id):
