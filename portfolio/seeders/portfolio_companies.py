@@ -36,7 +36,7 @@ class PortfolioCompaniesSeeder(Seeder):
                 address = self.faker.address()
                 city = self.faker.city()
                 
-                p_company = Portfolio_Company.objects.create(
+                p_company = Company.objects.create(
                     name=name,
                     company_registration_number=crn,
                     trading_names=trading_name,
@@ -52,5 +52,5 @@ class PortfolioCompaniesSeeder(Seeder):
                     wayra_number=f"WN-{i}"
                 )
                 portfolio.save()
-                
+
                 print(f"Portfolio_Company with id({i}) has been seeded.")
