@@ -103,10 +103,10 @@ class ArchiveViewTestCase(TestCase):
         response = self.client.get(self.search_url, data={'searchresult': search})
         self.assertEqual(response.status_code, 200)
         self.assertIsInstance(response, HttpResponse) 
-        company_search_result = Portfolio_Company.objects.filter(name__contains=search,is_archived=True).values().order_by('id')
+        company_search_result = Portfolio_Company.objects.filter(parent_company__name__contains=search,is_archived=True).values().order_by('id')
         individual_search_result = Individual.objects.filter(name__contains=search, is_archived=True).values()
         founder_individuals = Founder.objects.all()
-        individual_search_result = Individual.objects.filter(id__in=founder_individuals.values('individualFounder'), name__contains=search, is_archived=True).values().order_by('id')
+        individual_search_result = Individual.objects.filter(id__in=founder_individuals.values('individualFounder'), parent_company__name__contains=search, is_archived=True).values().order_by('id')
         for company in company_search_result:
             self.assertContains(response, company.name)
         for individual in individual_search_result:
@@ -178,7 +178,7 @@ class ArchiveViewTestCase(TestCase):
         response = self.client.get(self.company_filter_url, data={'filter_number': 2})
         self.assertEqual(response.status_code, 200)
         self.assertIsInstance(response, HttpResponse) 
-        company_search_result = Portfolio_Company.objects.filter(is_archived=True).values().order_by('id')
+        company_search_result = Portfolio_Company.objects.filter(parent_company__is_archived=True).values().order_by('id')
         for company in company_search_result:
             self.assertContains(response, company.name)
         self.assertEqual(len(company_search_result), 0)

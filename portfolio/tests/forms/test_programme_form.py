@@ -100,7 +100,7 @@ class EditProgrammeFormTestCase(TestCase):
 
         self.default_programme = Programme.objects.get(id=1)
         self.partner = Company.objects.first()
-        self.participant = Portfolio_Company.objects.first()
+        self.participant = Portfolio_Company.objects.first().parent_company
         self.coach = Individual.objects.first()
 
         self.default_programme.cover = self.file_data

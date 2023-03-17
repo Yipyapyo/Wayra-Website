@@ -85,7 +85,7 @@ class Investor(models.Model):
 class Investment(models.Model):
     """Investment model for a investment from an investor to a startups"""
     investor = models.ForeignKey(Investor, on_delete=models.CASCADE, related_name="investor")
-    startup = models.ForeignKey(Company, on_delete=models.CASCADE, related_name="startup")
+    startup = models.ForeignKey(Portfolio_Company, on_delete=models.CASCADE, related_name="startup")
     typeOfFoundingRounds = models.CharField(max_length=50, choices=FOUNDING_ROUNDS)
     investmentAmount = models.DecimalField(max_digits=15, decimal_places=2)
     dateInvested = models.DateField(validators=[MaxValueValidator(limit_value=timezone.now().date())])

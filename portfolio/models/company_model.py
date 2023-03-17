@@ -54,7 +54,8 @@ class Company(models.Model):
         self.is_archived = False
         self.save()
 
-class Portfolio_Company(Company):
+class Portfolio_Company(models.Model):
+    parent_company = models.ForeignKey(Company, on_delete=models.CASCADE, related_name="parent_company")
     wayra_number = models.CharField(max_length=255)
     # programmes = None  # e.g. models.ForeignKey(Programme)
     # mentors = None # e.g. models.ForeignKey(Mentor)

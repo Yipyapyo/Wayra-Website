@@ -35,7 +35,7 @@ class PortfolioCompaniesSeeder(Seeder):
                 crn = random.randint(0, 10 ** 8)
                 address = self.faker.address()
                 city = self.faker.city()
-
+                
                 p_company = Portfolio_Company.objects.create(
                     name=name,
                     company_registration_number=crn,
@@ -44,7 +44,13 @@ class PortfolioCompaniesSeeder(Seeder):
                     registered_address=address,
                     jurisdiction=city,
                     incorporation_date=self.faker.date_this_century(),
-                    wayra_number=f"WN-{i}"
                 )
                 p_company.save()
+
+                portfolio = Portfolio_Company.objects.create(
+                    parent_company=p_company,
+                    wayra_number=f"WN-{i}"
+                )
+                portfolio.save()
+                
                 print(f"Portfolio_Company with id({i}) has been seeded.")

@@ -17,6 +17,10 @@ class ModelChoiceField(forms.ModelChoiceField):
     def label_from_instance(self, obj):
         return obj.name
 
+class PortfolioCompanyChoiceField(forms.ModelChoiceField):
+    def label_from_instance(self, obj):
+        return obj.parent_company.name
+
 
 class InvestmentForm(forms.ModelForm):
     class Meta:
@@ -33,7 +37,7 @@ class InvestmentForm(forms.ModelForm):
         widget=forms.Select()
     )
 
-    startup = ModelChoiceField(
+    startup = PortfolioCompanyChoiceField(
         queryset=Portfolio_Company.objects.all(),
         widget=forms.Select()
     )
