@@ -11,7 +11,14 @@
                 {%endif%}
                 <h2 class="pb-3">{{ company.name }}</h2>
             </div>
+
             <div class="btn-group me-1">
+                {% if user.is_authenticated %}
+                    <a href="{% url 'document_upload' company.id %}" class="btn btn-sm btn-outline-primary">Upload a document</a>
+                {% endif %}
+            </div>
+
+            <div class="btn-group me-2">
                 {% if is_investor_company %}
                     <a href="{% url 'investor_company_update' company.id %}" class="btn btn-sm btn-outline-primary">
                         Update Investor Company detail
@@ -20,7 +27,8 @@
                         investment</a>
                 {% endif %}
             </div>
-            <div class="btn-group me-2">
+
+            <div class="btn-group me-3">
                 {% if company.is_archived %}
                     <a type="button" class="btn btn-sm btn-outline-secondary"
                        href="{% url 'unarchive_company' company.id %}">Unarchive</a>
@@ -34,6 +42,7 @@
                         data-target="#deleteCompanyModal">Delete
                 </button>
             </div>
+
             {% include 'partials/company/company_delete_modal.html' %}
 
         </div>
@@ -99,19 +108,7 @@
     </div>
 
     <div class="container-fluid pt-3">
-        <h2>Contracts and Rights</h2>
-        <div class="px-5 pt-3 pb-2 mb-4 bg-light rounded-3">
-            <div class="container-fluid py-3">
-                <div class="row mb-3">
-                    {% for count in contract_counter %}
-                        {% include 'partials/utilities/document_card.html' %}
-                    {% endfor %}
-                </div>
-                <div class="row pt-2">
-                    {% include 'partials/utilities/see_all_button.html' %}
-                </div>
-            </div>
-        </div>
+        {% include 'document/document_page.html' with documents=documents %}
     </div>
 
     {% if programmes|length > 0 %}

@@ -28,7 +28,7 @@ class CreateProgrammeFormTestCase(TestCase):
             "name": "Accelerator Programme",
             "cohort": 2,  # avoid pk of default_programme
             "partners": [1],  # for pk of default_company
-            "participants": [1],  # for pk of default_portfolio_company
+            "participants": [101],  # for pk of default_portfolio_company
             "coaches_mentors": [1],  # for pk of default_individual
             "cover": self.file_data
         }

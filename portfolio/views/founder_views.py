@@ -15,31 +15,32 @@ Create a founder.
 @login_required
 def founder_create(request):
     if request.method == 'POST':
-        address_forms = AddressCreateForm(request.POST, prefix="form2")
-        past_experience_forms = [PastExperienceForm(request.POST, prefix=str(x)) for x in range(0,2)]
+        # address_forms = AddressCreateForm(request.POST, prefix="form2")
+        # past_experience_forms = [PastExperienceForm(request.POST, prefix=str(x)) for x in range(0,2)]
         founder_form = FounderForm(request.POST, prefix="form1")
-        if founder_form.is_valid() and address_forms.is_valid() and all([pf.is_valid() for pf in past_experience_forms]):
+        # if founder_form.is_valid() and address_forms.is_valid() and all([pf.is_valid() for pf in past_experience_forms]):
+        if founder_form.is_valid():
             founder = founder_form.save()     
-            new_address = address_forms.save(commit=False)
-            new_address.individual = founder
-            new_address.country = Country(new_address.country)
-            new_address.save()
-            for pf in past_experience_forms:
-                new_past_experience = pf.save(commit=False)
-                new_past_experience.individual = founder
-                new_past_experience.duration = new_past_experience.end_year - new_past_experience.start_year
-                new_past_experience.save()
-                new_past_experience.duration = "To present"
-                new_past_experience.save()
+            # new_address = address_forms.save(commit=False)
+            # new_address.individual = founder
+            # new_address.country = Country(new_address.country)
+            # new_address.save()
+            # for pf in past_experience_forms:
+            #     new_past_experience = pf.save(commit=False)
+            #     new_past_experience.individual = founder
+            #     new_past_experience.duration = new_past_experience.end_year - new_past_experience.start_year
+            #     new_past_experience.save()
+            #     new_past_experience.duration = "To present"
+            #     new_past_experience.save()
             return redirect("individual_page")
     else:
         founder_form = FounderForm(prefix="form1")
-        address_forms = AddressCreateForm(prefix="form2")
-        past_experience_forms = [PastExperienceForm(prefix=str(x)) for x in range(0,2)]
+        # address_forms = AddressCreateForm(prefix="form2")
+        # past_experience_forms = [PastExperienceForm(prefix=str(x)) for x in range(0,2)]
 
     context = {
-        'addressForms': address_forms,
-        'pastExperienceForms': past_experience_forms,
+        # 'addressForms': address_forms,
+        # 'pastExperienceForms': past_experience_forms,
         'founderForm': founder_form
     }
     return render(request, "individual/founder_create.html", context=context)
@@ -63,31 +64,32 @@ Modify a founder.
 @login_required
 def founder_modify(request, id):
     founder_form = Founder.objects.get(id=id)
-    address_forms = ResidentialAddress.objects.get(id=id)
-    past_experience_list = PastExperience.objects.filter(individual=founder_form)
-    past_experience_forms = [PastExperienceForm(instance=p, prefix="past_experience") for p in past_experience_list]
+    # address_forms = ResidentialAddress.objects.get(id=id)
+    # past_experience_list = PastExperience.objects.filter(individual=founder_form)
+    # past_experience_forms = [PastExperienceForm(instance=p, prefix="past_experience") for p in past_experience_list]
     if request.method == 'POST':
         form1 = FounderForm(request.POST, instance=founder_form, prefix="form1")
-        form2 = AddressCreateForm(request.POST, instance=address_forms, prefix="form2")
-        forms3 = [PastExperienceForm(request.POST, instance=p, prefix="past_experience") for p in past_experience_list]
-        if form1.is_valid() and form2.is_valid() and all([pf.is_valid() for pf in forms3]):
+        # form2 = AddressCreateForm(request.POST, instance=address_forms, prefix="form2")
+        # forms3 = [PastExperienceForm(request.POST, instance=p, prefix="past_experience") for p in past_experience_list]
+        # if form1.is_valid() and form2.is_valid() and all([pf.is_valid() for pf in forms3]):
+        if form1.is_valid():
             updated_founder = form1.save()
-            updated_address = form2.save(commit=False)
-            updated_address.individual = updated_founder
-            updated_address.save()
-            for pf in forms3:
-                updated_experience = pf.save(commit=False)
-                updated_experience.individual = updated_founder
-                updated_experience.duration = updated_experience.end_year - updated_experience.start_year
-                updated_experience.save()
+            # updated_address = form2.save(commit=False)
+            # updated_address.individual = updated_founder
+            # updated_address.save()
+            # for pf in forms3:
+            #     updated_experience = pf.save(commit=False)
+            #     updated_experience.individual = updated_founder
+            #     updated_experience.duration = updated_experience.end_year - updated_experience.start_year
+            #     updated_experience.save()
             return redirect("individual_page")
     else:
         form1 = FounderForm(instance=founder_form, prefix="form1")
-        form2 = AddressCreateForm(instance=address_forms, prefix="form2")
-        forms3 = past_experience_forms
+        # form2 = AddressCreateForm(instance=address_forms, prefix="form2")
+        # forms3 = past_experience_forms
     context = {
         'founderForm': form1,
-        'addressForms': form2,
-        'pastExperienceForms': forms3,
+        # 'addressForms': form2,
+        # 'pastExperienceForms': forms3,
     }
     return render(request, 'individual/founder_modify.html', context=context)

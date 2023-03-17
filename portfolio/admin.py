@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from portfolio.models import User, Programme, Company
+from portfolio.models import User, Programme, Company, Individual
 
 # Register your models here.
 @admin.register(User)
@@ -13,4 +13,5 @@ class UserAdmin(admin.ModelAdmin):
 
 admin.site.register(Programme)
 admin.site.register(Company)
+admin.site.register(Individual)
 

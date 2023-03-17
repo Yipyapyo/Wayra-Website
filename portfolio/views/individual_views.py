@@ -1,13 +1,14 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from portfolio.forms import IndividualCreateForm, AddressCreateForm, PastExperienceForm
-from portfolio.models import Individual, ResidentialAddress
+from portfolio.models import Individual, ResidentialAddress, InvestorIndividual, Founder
 from portfolio.models.past_experience_model import PastExperience
 from portfolio.forms.founder_form import FounderForm
 from django.shortcuts import redirect, render
 from django.core.paginator import Paginator, EmptyPage
 from django.http import HttpResponse
 from django.template.loader import render_to_string
+from django.urls import reverse
 
 
 
@@ -18,27 +19,26 @@ Create an individual.
 
 def individual_search(request):
     if request.method == "GET":
-
-        searched = request.GET['individualsearchresult']
+        searched = request.GET['searchresult']
         
         response = []
 
         if(searched == ""):
             response = []
         else:
-            search_result = Individual.objects.filter(name__contains=searched).values()
-            response.append(("Individual", list(search_result)))
+            search_result = Individual.objects.filter(name__contains=searched).values()[:5]
+            response.append(("Individual", list(search_result),{'destination_url':'individual_profile'}))
         
 
-        individual_search_results_table_html = render_to_string('partials/search/individual_search_results_table.html', {
-        'search_results': response, 'searched':searched, 'destination_url':'individual'})
+        individual_search_results_table_html = render_to_string('partials/search/search_results_table.html', {
+        'search_results': response, 'searched':searched, "destination_url":"individual_profile"})
 
         return HttpResponse(individual_search_results_table_html)
 
 
     elif request.method == "POST":
         page_number = request.POST.get('page', 1)
-        searched = request.POST['individualsearchresult']
+        searched = request.POST['searchresult']
 
         if searched == "":
             return redirect('individual_page')
@@ -98,7 +98,15 @@ List of individuals
 def individual_page(request):
     page_number = request.GET.get('page', 1)
     individuals = Individual.objects.filter(is_archived=False).order_by('id')
-    paginator = Paginator(individuals, 6)
+
+
+
+    cast_individuals = list()
+    for individual in individuals:
+        cast_individuals.append(individual.as_child_class)
+
+    paginator = Paginator(cast_individuals, 6)
+
     try:
         individuals_page = paginator.page(page_number)
     except EmptyPage:
@@ -106,7 +114,11 @@ def individual_page(request):
 
     data = {
         'individuals': individuals_page,
+        "search_url": reverse('individual_search_result'),
+        "placeholder": "Search for an Individual"
     }
+
+
 
     return render(request, "individual/individual_page.html", data)
 
@@ -165,7 +177,14 @@ View an individual profile page
 @login_required
 def individual_profile(request, id):
     individual = Individual.objects.get(id=id)
-    return render(request, 'individual/individual_about_page.html', {"individual": individual})
+    if(not individual.is_archived or (individual.is_archived and request.user.is_staff)):
+        return render(request, 'individual/individual_about_page.html', {"individual": individual})
+    else: 
+        return redirect('individual_page')
+
+"""
+Archive an Individual
+"""
 
 @login_required
 def archive_individual(request, id):
@@ -174,9 +193,89 @@ def archive_individual(request, id):
     individual.archive()
     return redirect('individual_profile', id=individual.id)
 
+"""
+Unarchive an Individual
+"""
+
 @login_required
 def unarchive_individual(request, id):
     """Handles the deletion of a company"""
     individual = Individual.objects.get(id=id)
     individual.unarchive()
     return redirect('individual_profile', id=individual.id)
+
+"""
+Asynchronously filter individuals on the individuals page
+"""
+
+@login_required
+def change_individual_filter(request):
+    if request.method == "GET":
+        filter_number = request.GET['filter_number']
+        page_number = request.GET.get('page', 1)
+        if filter_number:
+            request.session['individual_filter'] = filter_number
+        else:
+            request.session['individual_filter'] = 1
+
+        if request.session['individual_filter'] == '2':
+            founder_individuals = Founder.objects.all()
+            result = Individual.objects.filter(id__in=founder_individuals.values('individualFounder'), is_archived=False).order_by('id')
+        elif request.session['individual_filter'] == '3':
+            result = InvestorIndividual.objects.filter(is_archived=False).order_by('id')
+        else:
+            result = Individual.objects.filter(is_archived=False).values().order_by('id')
+
+        paginator = Paginator(result, 6)
+
+        try:
+            individual_page = paginator.page(page_number)
+        except EmptyPage:
+            individual_page = []
+
+        context = {
+            "individuals": individual_page,
+            "search_url": reverse('individual_search_result'),
+            "placeholder": "Search for a Individual",
+            "async_individual_layout": int(request.session["individual_layout"]),
+        }
+
+        search_results_table_html = render_to_string('individual/individual_page_content_reusable.html', context)
+
+        return HttpResponse(search_results_table_html)
+
+@login_required
+def change_individual_layout(request):
+    if request.method == "GET":
+        layout_number = request.GET['layout_number']
+        page_number = request.GET.get('page', 1)
+        if layout_number:
+            request.session['individual_layout'] = layout_number
+        else:
+            request.session['individual_layout'] = 1
+
+        if request.session['individual_filter'] == '2':
+            founder_individuals = Founder.objects.all()
+            result = Individual.objects.filter(id__in=founder_individuals.values('individualFounder'), is_archived=False).order_by('id')
+        elif request.session['individual_filter'] == '3':
+            result = InvestorIndividual.objects.filter(is_archived=False).order_by('id')
+        else:
+            result = Individual.objects.filter(is_archived=False).values().order_by('id')
+
+        paginator = Paginator(result, 6)
+
+        try:
+            individuals_page = paginator.page(page_number)
+        except EmptyPage:
+            individuals_page = []
+
+        context = {
+            "individuals": individuals_page,
+            "search_url": reverse('individual_search_result'),
+            "placeholder": "Search for a Individual",
+            "async_individual_layout": int(request.session["individual_layout"]),
+        }
+
+        search_results_table_html = render_to_string('individual/individual_page_content_reusable.html', context)
+
+        return HttpResponse(search_results_table_html)

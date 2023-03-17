@@ -35,13 +35,6 @@ function change_layout(number) {
     })
 }
 
-// $(".company_layout_dropdown_button").click(function(){
-//     alert("Called")
-//     var layout_number = $(this).data("layout");
-//     change_layout(layout_number)
-//   });
-
 $(document).on('click', '.company_layout_dropdown_button', function(event){
-    alert("called")
     change_layout(layout_number)
 });

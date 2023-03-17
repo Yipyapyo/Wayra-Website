@@ -1,12 +1,12 @@
 [
   {
     "model": "portfolio.company",
-    "pk": 2,
+    "pk": 201,
     "fields": {
-      "name": "Default TWO Ltd",
-      "company_registration_number":"00000002",
-      "trading_names": "D2_ltd",
-      "previous_names": "Ante LTD",
+      "name": "Default 201 Ltd",
+      "company_registration_number":"00000201",
+      "trading_names": "D201_ltd",
+      "previous_names": "Ante201 LTD",
       "registered_address": "Strand, London WC2R 2LS",
       "jurisdiction": "United Kingdom",
       "incorporation_date": "2023-02-16"

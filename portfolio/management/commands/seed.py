@@ -9,9 +9,12 @@ class Command(BaseCommand):
                PortfolioCompaniesSeeder(),
                IndividualSeeder(),
                InvestorCompanySeeder(),
+               InvestorIndividualSeeder(),
                InvestmentSeeder(),
                ProgrammeSeeder(),
                DocumentSeeder(),
+               InvestorIndividualSeeder(),
+               FounderSeeder(),
                ]
 
     def handle(self, *args, **options):
@@ -19,4 +22,3 @@ class Command(BaseCommand):
         for seeder in self.seeders:
             seeder.seed()
         print(f"done.")
-
