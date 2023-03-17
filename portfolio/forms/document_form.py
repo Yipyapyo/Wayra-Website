@@ -15,6 +15,10 @@ class DocumentUploadForm(forms.ModelForm):
             "is_private": _("Staff only:")
         }
 
+    def __init__(self, *args, **kwargs):
+        super(DocumentUploadForm, self).__init__(*args, **kwargs)
+        self.fields["file"].required = True
+
     def save(self, commit=True):
         document = super().save(commit=False)
         document.file_name = self.cleaned_data["file"].name
@@ -40,6 +44,10 @@ class URLUploadForm(forms.ModelForm):
             "url": _("URL:"),
             "is_private": _("Staff only:")
         }
+
+    def __init__(self, *args, **kwargs):
+        super(URLUploadForm, self).__init__(*args, **kwargs)
+        self.fields["url"].required = True
 
     def save(self, commit=True):
         document = super().save(commit=False)
