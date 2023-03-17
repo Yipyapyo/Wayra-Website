@@ -1,7 +1,7 @@
 from django.db import models
 from django.dispatch import receiver
 from django.core.validators import RegexValidator
-from portfolio.models import Company
+from portfolio.models import Company, Individual, Programme
 import os
 
 
@@ -10,7 +10,14 @@ DEFAULT_PATH = "documents/"
 
 # Returns the storage path of a file.
 def get_path(instance, file_name):
-    return os.path.join(DEFAULT_PATH, instance.company.name, file_name)
+    if instance.company:
+        return os.path.join(DEFAULT_PATH, instance.company.name, file_name)
+    elif instance.individual:
+        return os.path.join(DEFAULT_PATH, instance.individual.name, file_name)
+    elif instance.programme:
+        return os.path.join(DEFAULT_PATH, instance.programme.name, file_name)
+    else:
+        raise ValueError("Document must be associated with a company, individual or programme.")
 
 
 class Document(models.Model):
@@ -38,7 +45,9 @@ class Document(models.Model):
     file_size = models.PositiveIntegerField(default=0)
     url = models.URLField(max_length=200, blank=True, null=True)
     file = models.FileField(upload_to=get_path, blank=True, null=True)
-    company = models.ForeignKey(Company, on_delete=models.CASCADE)
+    company = models.ForeignKey(Company, on_delete=models.CASCADE, blank=True, null=True)
+    individual = models.ForeignKey(Individual, on_delete=models.CASCADE, blank=True, null=True)
+    programme = models.ForeignKey(Programme, on_delete=models.CASCADE, blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     is_private = models.BooleanField(default=False)
@@ -47,14 +56,22 @@ class Document(models.Model):
         return self.file_name
 
     class Meta:
-        """Define a constraint to ensure both the url and file fields are not null at the same time."""
+        """Define constraints to ensure url, file, company, individual and programme fields are valid."""
 
         constraints = [
             models.CheckConstraint(
                 name="%(app_label)s_%(class)s_url_or_file",
                 check=(
                     models.Q(url__isnull=True, file__gt="") | models.Q(url__isnull=False, file__exact="")
-                ),
+                )
+            ),
+            models.CheckConstraint(
+                name="%(app_label)s_%(class)s_company_or_individual_or_programme",
+                check=(
+                    models.Q(company__isnull=False, individual__isnull=True, programme__isnull=True) |
+                    models.Q(company__isnull=True, individual__isnull=False, programme__isnull=True) |
+                    models.Q(company__isnull=True, individual__isnull=True, programme__isnull=False)
+                )
             )
         ]
 
