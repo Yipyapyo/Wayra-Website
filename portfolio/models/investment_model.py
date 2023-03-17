@@ -1,8 +1,7 @@
+"""Model to store investments"""
 from django.core.exceptions import ValidationError
 from django.db import models
-from django.db.models import Q
-
-from portfolio.models import Portfolio_Company, Company, Individual
+from portfolio.models import Company, Individual
 from django.core.validators import MaxValueValidator
 from django.utils import timezone
 
