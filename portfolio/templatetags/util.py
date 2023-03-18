@@ -6,7 +6,10 @@ register = template.Library()
 
 @register.filter
 def is_investor(value):
-    if Investor.objects.filter(individual=value).count():
+    # print(type(value))
+    if type(value) != dict :
+        value = value.__dict__
+    if Investor.objects.filter(individual=value['id']).count():
         return True
 
 @register.filter

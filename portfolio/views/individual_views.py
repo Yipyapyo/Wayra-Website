@@ -54,9 +54,6 @@ def individual_search(request):
             else:
                 individuals = Individual.objects.filter(is_archived=False, name__contains=searched).values().order_by('id')
             
-        cast_individuals = list()
-        for individual in individuals:
-            cast_individuals.append(individual.as_child_class)
 
         paginator = Paginator(individuals, 6)
 
@@ -122,11 +119,7 @@ def individual_page(request):
     else:
         individuals = Individual.objects.filter(is_archived=False).values().order_by('id')
 
-    cast_individuals = list()
-    for individual in individuals:
-        cast_individuals.append(individual.as_child_class)
-
-    paginator = Paginator(cast_individuals, 6)
+    paginator = Paginator(individuals, 6)
 
     try:
         individuals_page = paginator.page(page_number)

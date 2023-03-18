@@ -1,7 +1,7 @@
 """Tests of the Individual views."""
 from django.test import TestCase
 from django.urls import reverse
-from portfolio.models import Individual, Founder, User, InvestorIndividual
+from portfolio.models import Individual, Founder, User, InvestorIndividual, Investor
 from phonenumber_field.formfields import PhoneNumberField
 from django_countries.fields import Country
 from portfolio.forms import IndividualCreateForm, AddressCreateForm, PastExperienceForm
@@ -157,7 +157,7 @@ class IndividualFilterViewTestCase(TestCase):
             self.assertContains(response, individual['name'])
         self.assertEqual(len(individual_search_result), 5)
         
-    def test_get_change_filter_returns_correct_data_for_portfolio_individuals(self):
+    def test_get_change_filter_returns_correct_data_for_founder_individuals(self):
         self.client.login(email=self.user.email, password="Password123")
         set_session_individual_filter_variable(self.client, 2)
         response = self.client.get(self.url, data={'filter_number': 2})
@@ -175,7 +175,8 @@ class IndividualFilterViewTestCase(TestCase):
         response = self.client.get(self.url, data={'filter_number': 3})
         self.assertEqual(response.status_code, 200)
         self.assertIsInstance(response, HttpResponse) 
-        test_result = InvestorIndividual.objects.filter(is_archived=False).order_by('id')
+        investors = Investor.objects.all()
+        test_result = Individual.objects.filter(id__in=investors.values('individual'), is_archived=False).order_by('id')
         for individual in test_result:
             self.assertContains(response, individual.name)
         self.assertEqual(len(test_result), 3)
@@ -239,5 +240,6 @@ class IndividualLayoutViewTestCase(TestCase):
         response = self.client.get(self.url, data={'layout_number': 3})
         self.assertEqual(response.status_code, 200)
         self.assertIsInstance(response, HttpResponse) 
-        result = InvestorIndividual.objects.filter(is_archived=False).order_by('id')
-        self.assertEqual(len(result), 3)
+        investors = Investor.objects.all()
+        test_result = Individual.objects.filter(id__in=investors.values('individual'), is_archived=False).order_by('id')
+        self.assertEqual(len(test_result), 3)

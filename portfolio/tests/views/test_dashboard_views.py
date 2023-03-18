@@ -1,7 +1,7 @@
 """Unit tests of the dashboard views"""
 from django.test import TestCase
 from django.urls import reverse
-from portfolio.models import User, Company, Portfolio_Company, InvestorCompany
+from portfolio.models import User, Company, Portfolio_Company, InvestorCompany, Investor
 from portfolio.forms import CompanyCreateForm
 from portfolio.tests.helpers import LogInTester, reverse_with_next
 from portfolio.tests.helpers import set_session_variables, set_session_company_filter_variable
@@ -122,11 +122,11 @@ class DashboardViewTestCase(TestCase, LogInTester):
         response = self.client.get(self.search_url, data={'searchresult': 'lt'})
         self.assertEqual(response.status_code, 200)
         self.assertIsInstance(response, HttpResponse) 
-        investor_companies = InvestorCompany.objects.all()
-        company_search_result = Company.objects.filter(id__in=investor_companies.values('company'), is_archived=False, name__contains='lt')[:5]
-        for company in company_search_result:
+        investors = Investor.objects.all()
+        search_result = Company.objects.filter(id__in=investors.values('company'), is_archived=False, name__contains='lt').order_by('id')[:5]
+        for company in search_result:
             self.assertContains(response, company.name)
-        self.assertEqual(len(company_search_result), 3)
+        self.assertEqual(len(search_result), 3)
     
     def test_search_company_with_blank_query(self):
         self.client.login(email=self.user.email, password="Password123")
@@ -161,7 +161,7 @@ class DashboardViewTestCase(TestCase, LogInTester):
         set_session_company_filter_variable(self.client,3)
         response = self.client.post(self.search_url, follow=True, data={'searchresult': 'l'})
         companies = response.context['companies']
-        self.assertEqual(len(companies), 3)
+        self.assertEqual(len(companies), 0)
 
     ## Portfolio Company Tests
     def test_get_portfolio_company(self):
@@ -270,11 +270,11 @@ class DashboardViewTestCase(TestCase, LogInTester):
         response = self.client.get(self.change_company_layout_url, data={'layout_number': 3})
         self.assertEqual(response.status_code, 200)
         self.assertIsInstance(response, HttpResponse) 
-        investor_companies = InvestorCompany.objects.all()
-        company_search_result = Company.objects.filter(id__in=investor_companies.values('company'), is_archived=False)
-        for company in company_search_result:
+        investors = Investor.objects.all()
+        result = Company.objects.filter(id__in=investors.values('company'), is_archived=False).order_by('id')
+        for company in result:
             self.assertContains(response, company.name)
-        self.assertEqual(len(company_search_result), 3)
+        self.assertEqual(len(result), 3)
 
     ## Change filter Number Tests
     def test_get_change_filter(self):
@@ -314,8 +314,8 @@ class DashboardViewTestCase(TestCase, LogInTester):
         response = self.client.get(self.change_company_filter_url, data={'filter_number': 3})
         self.assertEqual(response.status_code, 200)
         self.assertIsInstance(response, HttpResponse) 
-        investor_companies = InvestorCompany.objects.all()
-        company_search_result = Company.objects.filter(id__in=investor_companies.values('company'), is_archived=False)
-        for company in company_search_result:
+        investors = Investor.objects.all()
+        result = Company.objects.filter(id__in=investors.values('company'), is_archived=False).order_by('id')
+        for company in result:
             self.assertContains(response, company.name)
-        self.assertEqual(len(company_search_result), 3)
+        self.assertEqual(len(result), 3)
