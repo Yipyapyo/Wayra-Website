@@ -4,8 +4,10 @@ import shutil
 import time
 from io import BytesIO
 
+from django.core.exceptions import ValidationError
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django import forms
+from django.db import IntegrityError
 from django.test import TestCase
 from portfolio.models import Company, Document
 from portfolio.forms import URLUploadForm, DocumentUploadForm
@@ -34,6 +36,11 @@ class URLUploadFormTest(TestCase):
         self.assertEqual(document.file_type, "URL")
         self.assertEqual(document.url, self.form_data["url"])
         self.assertTrue(document.is_private)
+
+    def test_forms_save_without_assigning_company_raises_error(self):
+        form = URLUploadForm(data=self.form_data)
+        with self.assertRaises(IntegrityError):
+            form.save()
 
     def test_form_is_invalid(self):
         form_data = {
@@ -87,6 +94,11 @@ class DocumentFormTestCase(TestCase):
         self.form_input['file'] = None
         form = DocumentUploadForm(data=self.form_input, files=self.form_input)
         self.assertFalse(form.is_valid())
+
+    def test_forms_save_without_assigning_company_raises_error(self):
+        form = DocumentUploadForm(data=self.form_input, files=self.form_input)
+        with self.assertRaises(AttributeError):
+            form.save(commit=True)
 
     def test_form_must_save_correctly(self):
         form = DocumentUploadForm(data=self.form_input, files=self.form_input)
