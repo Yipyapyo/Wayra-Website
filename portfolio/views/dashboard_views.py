@@ -124,7 +124,7 @@ class CompanyDetailView(LoginRequiredMixin, UserPassesTestMixin, ListView):
         return super().dispatch(request, company_id, *args, **kwargs)
 
     def get_context_data(self, *, object_list=None, **kwargs):
-        print(((not self.company.is_archived) or (self.company.is_archived and self.request.user.is_staff)))
+        # print(((not self.company.is_archived) or (self.company.is_archived and self.request.user.is_staff)))
         context = super().get_context_data(**kwargs)
         context['company'] = self.company
         context['is_investor_company'] = Investor.objects.filter(company=self.company).exists()

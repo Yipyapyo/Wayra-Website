@@ -165,7 +165,7 @@ class ProgrammeModelTestCase(TestCase):
         self.assertEqual(second_programme.participants.count(), self.programme.participants.count())
 
     def test_remove_participant_removes_from_programme_correctly(self):
-        Portfolio_Company.objects.get(pk=101).delete()
+        Company.objects.get(pk=101).delete()
         self._assert_programme_is_valid()
         all_programmes = list(Programme.objects.all())
         self.assertIn(self.programme, all_programmes)

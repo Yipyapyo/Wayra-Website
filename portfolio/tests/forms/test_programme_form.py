@@ -73,7 +73,7 @@ class CreateProgrammeFormTestCase(TestCase):
         partners = set([Company.objects.get(id=ID) for ID in self.form_input['partners']])
         self.assertTrue(set(programme.partners.all()) == partners)
 
-        participants = set([Portfolio_Company.objects.get(id=ID) for ID in self.form_input['participants']])
+        participants = set([Company.objects.get(id=ID) for ID in self.form_input['participants']])
         self.assertTrue(set(programme.participants.all()) == participants)
 
         coaches_mentors = set([Individual.objects.get(id=ID) for ID in self.form_input['coaches_mentors']])
