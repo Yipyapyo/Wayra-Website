@@ -99,7 +99,7 @@ class DocumentFormTestCase(TestCase):
         document = Document.objects.get()
 
         directory = os.path.join(MEDIA_ROOT, f'documents/{self.defaultCompany.name}')
-        print(directory)
+        # print(directory)
         self.assertTrue(os.path.isdir(directory))
         self.assertTrue(os.path.isfile(os.path.join(directory, self.file_data.name)))
 
