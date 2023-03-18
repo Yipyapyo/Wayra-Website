@@ -55,7 +55,7 @@ def archive_search(request):
                     investor_companies = InvestorCompany.objects.all()
                     company_search_result = Company.objects.filter(id__in=investor_companies.values('company'),name__contains=searched, is_archived=True).values().order_by('id')
                 elif request.session['archived_company_filter'] == '2':
-                    company_search_result = Portfolio_Company.objects.filter(name__contains=searched, is_archived=True).values().order_by('id')
+                    company_search_result = Portfolio_Company.objects.filter(parent_company__name__contains=searched, is_archived=True).values().order_by('id')
                 else:
                     company_search_result = Company.objects.filter(name__contains=searched, is_archived=True).values().order_by('id')
                 
@@ -94,7 +94,7 @@ def change_archived_company_filter(request):
                 investor_companies = InvestorCompany.objects.all()
                 result = Company.objects.filter(id__in=investor_companies.values('company'), is_archived=True).order_by('id')
             elif request.session['archived_company_filter'] == '2':
-                result = Portfolio_Company.objects.filter(is_archived=True).order_by('id')
+                result = Portfolio_Company.objects.filter(parent_company__is_archived=True).order_by('id')
             else:
                 result = Company.objects.filter(is_archived=True).order_by('id')
 

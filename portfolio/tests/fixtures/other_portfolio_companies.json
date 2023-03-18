@@ -16,15 +16,23 @@
     "model": "portfolio.portfolio_company",
     "pk": 301,
     "fields": {
+      "parent_company":301,
       "wayra_number": "WN-301"
+    }
+  },
+  {
+    "model": "portfolio.company",
+    "pk": 3,
+    "fields": {
+      "name": "Child THREE Ltd",
+      "incorporation_date": "2023-02-17"
     }
   },
   {
     "model": "portfolio.portfolio_company",
     "pk": 3,
     "fields": {
-      "name": "Child THREE Ltd",
-      "incorporation_date": "2023-02-17",
+      "parent_company": 3,
       "wayra_number": "WN-3"
     }
   }

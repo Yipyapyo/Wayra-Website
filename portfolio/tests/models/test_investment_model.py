@@ -6,7 +6,7 @@ from django.test import TestCase
 from django.utils import timezone
 
 from portfolio.models import Company, Portfolio_Company, Investment, Individual
-from portfolio.models.investment_model import Investor
+from portfolio.models.investor_model import Investor
 
 
 class InvestmentModelTestCase(TestCase):
