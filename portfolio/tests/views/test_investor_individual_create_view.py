@@ -1,4 +1,4 @@
-
+"""Unit tests for investor individual create page."""
 from django.test import TestCase
 from django.urls import reverse
 from portfolio.models import ResidentialAddress, PastExperience, User
@@ -9,8 +9,8 @@ from django_countries.fields import Country
 from portfolio.tests.helpers import reverse_with_next, set_session_variables
 
 
-
 class InvestorIndividualCreateTestCase(TestCase):
+    """Unit tests for investor individual create page."""
     fixtures = [
         "portfolio/tests/fixtures/default_user.json",
         "portfolio/tests/fixtures/other_users.json",
@@ -203,7 +203,7 @@ class InvestorIndividualCreateTestCase(TestCase):
         self.post_input['1-Description'] = ""
         self.can_create_investor_individual()
 
-#Helper functions
+    #Helper functions
     def can_create_investor_individual(self):
         before_count = InvestorIndividual.objects.count()
         before_count2 = ResidentialAddress.objects.count()

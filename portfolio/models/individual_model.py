@@ -15,7 +15,7 @@ class PolymorphicQuerySet(QuerySet):
         for item in super(PolymorphicQuerySet, self).__iter__():
             yield item.as_child_class()
 
-## Indiviidual Manager Override
+## Individual Manager Override
 class IndividualManager(models.Manager):
     def get_query_set(self):
         return PolymorphicQuerySet(self.model)

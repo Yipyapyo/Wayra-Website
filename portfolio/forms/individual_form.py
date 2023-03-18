@@ -1,4 +1,4 @@
-"""Forms for the VC portfolio management site"""
+"""Forms for the individual creation."""
 from django import forms
 from portfolio.models import Individual, ResidentialAddress
 from portfolio.models.past_experience_model import PastExperience

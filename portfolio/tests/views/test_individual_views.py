@@ -11,6 +11,7 @@ from django.http import HttpResponse
 
 
 class IndividualProfileViewTestCase(TestCase):
+    """Tests of the Individual views."""
     fixtures = [
         "portfolio/tests/fixtures/default_user.json",
         "portfolio/tests/fixtures/other_users.json",
@@ -78,7 +79,11 @@ class IndividualArchiveViewTestCase(TestCase):
         response = self.client.get(self.url)
         self.assertRedirects(response, redirect_url, status_code=302, target_status_code=200)
 
+
+
+
 class IndividualUnarchiveViewTestCase(TestCase):
+    """Tests for the individual unarchive views."""
     fixtures = [
         "portfolio/tests/fixtures/default_user.json",
         "portfolio/tests/fixtures/other_users.json",
@@ -181,7 +186,10 @@ class IndividualFilterViewTestCase(TestCase):
             self.assertContains(response, individual.name)
         self.assertEqual(len(test_result), 3)
 
+
+
 class IndividualLayoutViewTestCase(TestCase):
+    """Tests for the individual layout view."""
     fixtures = [
         "portfolio/tests/fixtures/default_user.json",
         "portfolio/tests/fixtures/other_users.json",
