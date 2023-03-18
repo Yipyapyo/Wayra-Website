@@ -45,7 +45,20 @@ def individual_search(request):
             return redirect('individual_page')
         else:
             individuals = Individual.objects.filter(name__contains=searched).values()
-            paginator = Paginator(individuals, 6)
+            if request.session['individual_filter'] == '2':
+                founder_individuals = Founder.objects.all()
+                individuals = Individual.objects.filter(id__in=founder_individuals.values('individualFounder'), name__contains=searched , is_archived=False).order_by('id')
+            elif request.session['individual_filter'] == '3':
+                investors = Investor.objects.all()
+                individuals = Individual.objects.filter(id__in=investors.values('individual'), name__contains=searched , is_archived=False).order_by('id')
+            else:
+                individuals = Individual.objects.filter(is_archived=False, name__contains=searched).values().order_by('id')
+            
+        cast_individuals = list()
+        for individual in individuals:
+            cast_individuals.append(individual.as_child_class)
+
+        paginator = Paginator(individuals, 6)
 
         try:
             individual_page = paginator.page(page_number)
