@@ -111,9 +111,9 @@ class DashboardViewTestCase(TestCase, LogInTester):
         response = self.client.get(self.search_url, data={'searchresult': 'lt'})
         self.assertEqual(response.status_code, 200)
         self.assertIsInstance(response, HttpResponse) 
-        company_search_result = Portfolio_Company.objects.filter(is_archived=False, name__contains='lt')[:5]
+        company_search_result = Portfolio_Company.objects.filter(parent_company__is_archived=False, parent_company__name__contains='lt')[:5]
         for company in company_search_result:
-            self.assertContains(response, company.name)
+            self.assertContains(response, company.parent_company.name)
         self.assertEqual(len(company_search_result), 3)
     
     def test_get_search_company_returns_correct_data_for_investor_companies(self):
@@ -261,7 +261,7 @@ class DashboardViewTestCase(TestCase, LogInTester):
         response = self.client.get(self.change_company_layout_url, data={'layout_number': 2})
         self.assertEqual(response.status_code, 200)
         self.assertIsInstance(response, HttpResponse) 
-        company_search_result = Portfolio_Company.objects.filter(is_archived=False)
+        company_search_result = Portfolio_Company.objects.filter(parent_company__is_archived=False)
         self.assertEqual(len(company_search_result), 3)
     
     def test_get_cahnge_layout_returns_correct_data_for_investor_companies(self):
@@ -303,9 +303,9 @@ class DashboardViewTestCase(TestCase, LogInTester):
         response = self.client.get(self.change_company_filter_url, data={'filter_number': 2})
         self.assertEqual(response.status_code, 200)
         self.assertIsInstance(response, HttpResponse) 
-        company_search_result = Portfolio_Company.objects.filter(is_archived=False)
+        company_search_result = Portfolio_Company.objects.filter(parent_company__is_archived=False)
         for company in company_search_result:
-            self.assertContains(response, company.name)
+            self.assertContains(response, company.parent_company.name)
         self.assertEqual(len(company_search_result), 3)
     
     def test_get_change_filtetr_returns_correct_data_for_investor_companies(self):

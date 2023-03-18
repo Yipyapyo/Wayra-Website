@@ -13,7 +13,7 @@
             <tbody>
             {% for investment in investments %}
                 <tr>
-                    <td>{{ investment.startup.name }}</td>
+                    <td>{{ investment.startup.parent_company.name }}</td>
                     <td>{{ investment.typeOfFoundingRounds }}</td>
                     <td>{{ investment.investmentAmount }}</td>
                     <td>{{ investment.dateInvested }}</td>
