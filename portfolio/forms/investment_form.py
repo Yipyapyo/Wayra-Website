@@ -72,7 +72,8 @@ class InvestorCompanyCreateForm(forms.ModelForm):
         fields = ["company", "classification"]
 
     company = ModelChoiceField(
-        queryset = Company.objects.filter(~Exists(Investor.objects.filter(company=OuterRef('id')))),
+        queryset=Company.objects.filter(~Exists(Investor.objects.filter(company=OuterRef('id'))),
+                                          ~Exists(Portfolio_Company.objects.filter(parent_company=OuterRef('id')))),
         widget=forms.Select()
     )
 
@@ -82,7 +83,7 @@ class InvestorIndividualCreateForm(forms.ModelForm):
         fields = ["individual", "classification"]
 
     individual = ModelChoiceField(
-        queryset = Individual.objects.filter(~Exists(Investor.objects.filter(individual=OuterRef('id')))),
+        queryset=Individual.objects.filter(~Exists(Investor.objects.filter(individual=OuterRef('id')))),
         widget=forms.Select()
     )
 
