@@ -20,15 +20,17 @@ def dashboard(request):
 
     # Data for the each company will be listed here.
     page_number = request.GET.get('page', 1)
+    print(type(request.session.get('company_filter')))
 
-    if request.session['company_filter'] == 3:
-        # investor_companies = InvestorCompany.objects.all()
-        # companies = Company.objects.filter(id__in=investor_companies.values('company'), is_archived=False).order_by('id')
+    if int(request.session['company_filter']) == 3:
+        print("A")
         investors = Investor.objects.all()
         companies = Company.objects.filter(id__in=investors.values('company'), is_archived=False).order_by('id')
-    elif request.session['company_filter'] == 2:
+    elif int(request.session['company_filter']) == 2:
+        print("B")
         companies =Company.objects.filter(parent_company__parent_company__is_archived=False).order_by('id')
     else:
+        print("C")
         companies = Company.objects.filter(is_archived=False).order_by('id')
 
     paginator = Paginator(companies, 6)
