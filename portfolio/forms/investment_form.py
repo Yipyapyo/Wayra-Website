@@ -1,7 +1,9 @@
 """Forms to input investment between an investor and a startup"""
 from django import forms
-from portfolio.models.investment_model import Investment, Investor, ContractRight
-from portfolio.models.company_model import Portfolio_Company, Company
+from portfolio.models.investment_model import Investment, ContractRight
+from portfolio.models.investor_model import Investor
+from portfolio.models.company_model import Company
+from portfolio.models import Portfolio_Company
 from portfolio.models.individual_model import Individual
 from django.db.models import Exists, OuterRef
 

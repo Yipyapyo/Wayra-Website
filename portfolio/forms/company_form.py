@@ -3,6 +3,8 @@ from django import forms
 from portfolio.models import Company, Portfolio_Company
 from django.db.models import Exists, OuterRef
 
+from portfolio.models.investor_model import Investor
+
 
 # Form for creating an individual / client
 class CompanyCreateForm(forms.ModelForm):
@@ -25,6 +27,12 @@ class PortfolioCompanyCreateForm(forms.ModelForm):
         fields = ["parent_company", "wayra_number"]
     
     parent_company = ModelChoiceField(
-        queryset=Company.objects.filter(~Exists(Portfolio_Company.objects.filter(parent_company=OuterRef('id')))),
+        queryset=Company.objects.filter(~Exists(Portfolio_Company.objects.filter(parent_company=OuterRef('id'))),
+                                        ~Exists(Investor.objects.filter(company=OuterRef('id')))),
         widget=forms.Select()
     )
+
+class PortfolioCompanyEditForm(forms.ModelForm):
+    class Meta:
+        model = Portfolio_Company
+        fields = ["wayra_number"]
