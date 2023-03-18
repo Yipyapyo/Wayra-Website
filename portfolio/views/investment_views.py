@@ -132,6 +132,9 @@ class PortfolioCompanyUpdateView(LoginRequiredMixin, UpdateView):
         self.company_id = company_id
         return super().dispatch(request, company_id, *args, **kwargs)
 
+    def get_object(self, queryset=None):
+        return Portfolio_Company.objects.get(parent_company_id=self.company_id)
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['company_id'] = self.company_id
