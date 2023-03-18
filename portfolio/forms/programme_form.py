@@ -7,7 +7,6 @@ class MultipleChoiceField(forms.ModelMultipleChoiceField):
     def label_from_instance(self, obj):
         return obj.name
 
-
 class CompanySelectWidget(d2forms.ModelSelect2MultipleWidget):
     search_fields = ['name__icontains']
 
@@ -36,8 +35,7 @@ class CreateProgrammeForm(forms.ModelForm):
     )
 
     participants = MultipleChoiceField(
-        queryset=Portfolio_Company.objects.all(),
-        # widget=forms.CheckboxSelectMultiple
+        queryset=Company.objects.all(),
         widget=CompanySelectWidget(
             attrs={'data-minimum-input-length': 3},
             options={'placeholder': 'Search for a company...',
@@ -122,7 +120,7 @@ class EditProgrammeForm(forms.ModelForm):
     )
 
     participants = MultipleChoiceField(
-        queryset=Portfolio_Company.objects.all(),
+        queryset=Company.objects.all(),
         # widget=forms.CheckboxSelectMultiple
         widget=CompanySelectWidget(
             attrs={'data-minimum-input-length': 3},

@@ -3,6 +3,7 @@
     "model": "portfolio.company",
     "pk": 101,
     "fields": {
+      "id": 101,
       "name": "Child 101 Ltd",
       "company_registration_number": "00000101",
       "trading_names": "D101_LTD",
@@ -16,6 +17,7 @@
     "model": "portfolio.portfolio_company",
     "pk": 101,
     "fields": {
+      "parent_company": 101,
       "wayra_number": "WN-1"
     }
   }
