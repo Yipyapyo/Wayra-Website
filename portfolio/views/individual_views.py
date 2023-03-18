@@ -2,6 +2,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from portfolio.forms import IndividualCreateForm, AddressCreateForm, PastExperienceForm
 from portfolio.models import Individual, ResidentialAddress, InvestorIndividual, Founder
+from portfolio.models.investment_model import Investor
 from portfolio.models.past_experience_model import PastExperience
 from portfolio.forms.founder_form import FounderForm
 from django.shortcuts import redirect, render
@@ -222,7 +223,9 @@ def change_individual_filter(request):
             founder_individuals = Founder.objects.all()
             result = Individual.objects.filter(id__in=founder_individuals.values('individualFounder'), is_archived=False).order_by('id')
         elif request.session['individual_filter'] == '3':
-            result = InvestorIndividual.objects.filter(is_archived=False).order_by('id')
+            # result = InvestorIndividual.objects.filter(is_archived=False).order_by('id')
+            investors = Investor.objects.all()
+            result = Individual.objects.filter(id__in=investors.values('individual'), is_archived=False).order_by('id')
         else:
             result = Individual.objects.filter(is_archived=False).values().order_by('id')
 
@@ -258,7 +261,9 @@ def change_individual_layout(request):
             founder_individuals = Founder.objects.all()
             result = Individual.objects.filter(id__in=founder_individuals.values('individualFounder'), is_archived=False).order_by('id')
         elif request.session['individual_filter'] == '3':
-            result = InvestorIndividual.objects.filter(is_archived=False).order_by('id')
+            # result = InvestorIndividual.objects.filter(is_archived=False).order_by('id')
+            investors = Investor.objects.all()
+            result = Individual.objects.filter(id__in=investors.values('individual'), is_archived=False).order_by('id')
         else:
             result = Individual.objects.filter(is_archived=False).values().order_by('id')
 
