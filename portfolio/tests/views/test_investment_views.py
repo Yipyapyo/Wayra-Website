@@ -6,7 +6,7 @@ from django.utils import timezone
 
 from portfolio.forms import InvestmentForm, InvestorCompanyCreateForm, InvestorEditForm
 from portfolio.models import Company, Portfolio_Company, User, Investment, InvestorCompany
-from portfolio.models.investment_model import Investor
+from portfolio.models.investor_model import Investor
 from portfolio.tests.helpers import LogInTester, reverse_with_next
 
 

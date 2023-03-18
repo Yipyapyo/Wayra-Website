@@ -10,7 +10,7 @@ from django.views.generic import ListView
 
 from portfolio.forms.company_form import CompanyCreateForm
 from portfolio.models import Company, Programme, Investment, InvestorCompany, Portfolio_Company, Document
-from portfolio.models.investment_model import Investor
+from portfolio.models.investor_model import Investor
 
 
 # Create your views here.
@@ -27,7 +27,7 @@ def dashboard(request):
         investors = Investor.objects.all()
         companies = Company.objects.filter(id__in=investors.values('company'), is_archived=False).order_by('id')
     elif request.session['company_filter'] == 2:
-        companies = Portfolio_Company.objects.filter(is_archived=False).order_by('id')
+        companies =Company.objects.filter(parent_company__parent_company__is_archived=False).order_by('id')
     else:
         companies = Company.objects.filter(is_archived=False).order_by('id')
 
@@ -64,7 +64,7 @@ def searchcomp(request):
                 investors = Investor.objects.all()
                 search_result = Company.objects.filter(id__in=investors.values('company'), is_archived=False, name__contains=searched).order_by('id')[:5]
             elif request.session['company_filter'] == 2:
-                search_result = Portfolio_Company.objects.filter(is_archived=False, name__contains=searched)[:5]
+                search_result = Company.objects.filter(parent_company__parent_company__is_archived=False, parent_company__parent_company__name__contains=searched)[:5]
             else:
                 search_result = Company.objects.filter(name__contains=searched, is_archived=False).values()[:5]
             response.append(("Companies", list(search_result),{'destination_url':'portfolio_company'}))
@@ -84,7 +84,7 @@ def searchcomp(request):
                 investor_companies = InvestorCompany.objects.all()
                 companies = Company.objects.filter(id__in=investor_companies.values('company'), is_archived=False, name__contains=searched).order_by('id')[:5]
             elif request.session['company_filter'] == 2:
-                companies = Portfolio_Company.objects.filter(is_archived=False, name__contains=searched).order_by('id')[:5]
+                companies = Company.objects.filter(parent_company__parent_company__is_archived=False, parent_company__parent_company__name__contains=searched).order_by('id')[:5]
             else:
                 companies = Company.objects.filter(name__contains=searched, is_archived=False).values().order_by('id')[:5]
 
@@ -128,10 +128,11 @@ class CompanyDetailView(LoginRequiredMixin, UserPassesTestMixin, ListView):
         return super().dispatch(request, company_id, *args, **kwargs)
 
     def get_context_data(self, *, object_list=None, **kwargs):
-        print(((not self.company.is_archived) or (self.company.is_archived and self.request.user.is_staff)))
+        # print(((not self.company.is_archived) or (self.company.is_archived and self.request.user.is_staff)))
         context = super().get_context_data(**kwargs)
         context['company'] = self.company
         context['is_investor_company'] = Investor.objects.filter(company=self.company).exists()
+        context['is_portfolio_company'] = Portfolio_Company.objects.filter(parent_company=self.company).exists()
         context['counter'] = [1, 2, 3]
         context['contract_counter'] = [1, 2, 3, 4]
         context['programmes'] = Programme.objects.filter(participants__name=self.company.name)
@@ -228,7 +229,7 @@ def change_company_layout(request):
             investors = Investor.objects.all()
             result = Company.objects.filter(id__in=investors.values('company'), is_archived=False).order_by('id')
         elif request.session['company_filter'] == '2':
-            result = Portfolio_Company.objects.filter(is_archived=False).order_by('id')
+            result = Company.objects.filter(parent_company__parent_company__is_archived=False).order_by('id')
         else:
             result = Company.objects.filter(is_archived=False).values().order_by('id')
 
@@ -267,7 +268,7 @@ def change_company_filter(request):
             investors = Investor.objects.all()
             result = Company.objects.filter(id__in=investors.values('company'), is_archived=False).order_by('id')
         elif request.session['company_filter'] == '2':
-            result = Portfolio_Company.objects.filter(is_archived=False).order_by('id')
+            result = Company.objects.filter(parent_company__parent_company__is_archived=False).order_by('id')
         elif request.session['company_filter'] == '1':
             result = Company.objects.filter(is_archived=False).values().order_by('id')
 

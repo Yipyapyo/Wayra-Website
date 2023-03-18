@@ -13,7 +13,6 @@ class Command(BaseCommand):
                InvestmentSeeder(),
                ProgrammeSeeder(),
                DocumentSeeder(),
-               InvestorIndividualSeeder(),
                FounderSeeder(),
                ]
 

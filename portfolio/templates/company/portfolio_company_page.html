@@ -13,8 +13,16 @@
             </div>
 
             <div class="btn-group me-1">
+                {% if is_portfolio_company %}
+                    <a href="{% url 'portfolio_company_update' company.id %}" class="btn btn-sm btn-outline-primary">Update
+                        Portfolio Company</a>
+                {% endif %}
+            </div>
+
+            <div class="btn-group me-1">
                 {% if user.is_authenticated %}
-                    <a href="{% url 'document_upload' company.id %}" class="btn btn-sm btn-outline-primary">Upload a document</a>
+                    <a href="{% url 'document_upload' company.id %}" class="btn btn-sm btn-outline-primary">Upload a
+                        document</a>
                 {% endif %}
             </div>
 
