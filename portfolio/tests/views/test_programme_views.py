@@ -5,7 +5,7 @@ import shutil
 from django.test import TestCase
 from django.urls import reverse
 
-from portfolio.models import User
+from portfolio.models import User, Portfolio_Company
 from portfolio.tests.helpers import LogInTester, reverse_with_next
 from io import BytesIO
 
@@ -16,7 +16,7 @@ from django.forms import model_to_dict, FileInput
 from django.forms.fields import *
 from django.test import TestCase
 from portfolio.forms import CreateProgrammeForm, MultipleChoiceField, EditProgrammeForm
-from portfolio.models import Company, Portfolio_Company, Individual, Programme
+from portfolio.models import Company, Individual, Programme
 from vcpms.settings import MEDIA_ROOT
 from portfolio.tests.helpers import set_session_variables
 
@@ -128,7 +128,7 @@ class ProgrammeUpdateViewTestCase(TestCase, LogInTester):
 
         self.default_programme = Programme.objects.get(id=1)
         self.partner = Company.objects.first()
-        self.participant = Portfolio_Company.objects.first()
+        self.participant = Portfolio_Company.objects.first().parent_company
         self.coach = Individual.objects.first()
 
         self.default_programme.cover = self.file_data

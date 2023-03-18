@@ -51,7 +51,7 @@ class ProgrammeSeeder(Seeder):
                     accelerator_1.partners.add(company)
                 for p_company in self._get_objects_from_models(Portfolio_Company, i - 1,
                                                                Portfolio_Company.objects.count() // count):
-                    accelerator_1.participants.add(p_company)
+                    accelerator_1.participants.add(p_company.parent_company)
                 for individual in self._get_objects_from_models(Individual, i - 1, Individual.objects.count() // count):
                     accelerator_1.coaches_mentors.add(individual)
                 accelerator_1.save()
