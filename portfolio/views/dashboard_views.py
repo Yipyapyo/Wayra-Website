@@ -22,8 +22,10 @@ def dashboard(request):
     page_number = request.GET.get('page', 1)
 
     if request.session['company_filter'] == 3:
-        investor_companies = InvestorCompany.objects.all()
-        companies = Company.objects.filter(id__in=investor_companies.values('company'), is_archived=False).order_by('id')
+        # investor_companies = InvestorCompany.objects.all()
+        # companies = Company.objects.filter(id__in=investor_companies.values('company'), is_archived=False).order_by('id')
+        investors = Investor.objects.all()
+        companies = Company.objects.filter(id__in=investors.values('company'), is_archived=False).order_by('id')
     elif request.session['company_filter'] == 2:
         companies = Portfolio_Company.objects.filter(is_archived=False).order_by('id')
     else:
@@ -57,8 +59,10 @@ def searchcomp(request):
         else:
             # search_result = Company.objects.filter(name__contains=searched, is_archived=False).values()[:5]
             if request.session['company_filter'] == 3:
-                investor_companies = InvestorCompany.objects.all()
-                search_result = Company.objects.filter(id__in=investor_companies.values('company'), is_archived=False, name__contains=searched)[:5]
+                # investor_companies = InvestorCompany.objects.all()
+                # search_result = Company.objects.filter(id__in=investor_companies.values('company'), is_archived=False, name__contains=searched)[:5]
+                investors = Investor.objects.all()
+                search_result = Company.objects.filter(id__in=investors.values('company'), is_archived=False, name__contains=searched).order_by('id')[:5]
             elif request.session['company_filter'] == 2:
                 search_result = Portfolio_Company.objects.filter(is_archived=False, name__contains=searched)[:5]
             else:
@@ -221,8 +225,8 @@ def change_company_layout(request):
             request.session['company_layout'] = 1
 
         if request.session['company_filter'] == '3':
-            investor_companies = InvestorCompany.objects.all()
-            result = Company.objects.filter(id__in=investor_companies.values('company'), is_archived=False).order_by('id')
+            investors = Investor.objects.all()
+            result = Company.objects.filter(id__in=investors.values('company'), is_archived=False).order_by('id')
         elif request.session['company_filter'] == '2':
             result = Portfolio_Company.objects.filter(is_archived=False).order_by('id')
         else:
@@ -260,8 +264,8 @@ def change_company_filter(request):
             request.session['company_filter'] = 1
 
         if request.session['company_filter'] == '3':
-            investor_companies = InvestorCompany.objects.all()
-            result = Company.objects.filter(id__in=investor_companies.values('company'), is_archived=False).order_by('id')
+            investors = Investor.objects.all()
+            result = Company.objects.filter(id__in=investors.values('company'), is_archived=False).order_by('id')
         elif request.session['company_filter'] == '2':
             result = Portfolio_Company.objects.filter(is_archived=False).order_by('id')
         elif request.session['company_filter'] == '1':
