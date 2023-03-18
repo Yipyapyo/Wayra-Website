@@ -1,4 +1,4 @@
-"""Founder form """
+"""Unit tests for investor individual form."""
 from django import forms
 from django.forms.fields import URLField
 from django.test import TestCase
@@ -7,6 +7,7 @@ from portfolio.models.investor_individual_model import InvestorIndividual
 from portfolio.forms.investor_individual_form import InvestorIndividualForm
 
 class InvestorIndividualFormTestCase(TestCase):
+    """Unit tests for investor individual form."""
     def setUp(self):
         self.form_input = {
              "name": "Ben", 

@@ -10,8 +10,7 @@ from phonenumber_field.widgets import PhoneNumberPrefixWidget
 
 
 class CreateFormTestCase(TestCase):
-
-    # Set up an examplery input to use for the tests
+    """Unit tests of the sign up form."""
     def setUp(self):
         self.form_input = {
             "name": "Jemma Doe",

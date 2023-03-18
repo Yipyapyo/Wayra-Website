@@ -3,19 +3,15 @@ from django.shortcuts import render
 from portfolio.forms import IndividualCreateForm, AddressCreateForm, PastExperienceForm
 from portfolio.models import Individual, ResidentialAddress, InvestorIndividual, Founder
 from portfolio.models.past_experience_model import PastExperience
-from portfolio.forms.founder_form import FounderForm
 from django.shortcuts import redirect, render
 from django.core.paginator import Paginator, EmptyPage
 from django.http import HttpResponse
 from django.template.loader import render_to_string
 from django.urls import reverse
 
-
-
 """
-Create an individual.
+Search an individual.
 """
-
 
 def individual_search(request):
     if request.method == "GET":
@@ -56,9 +52,9 @@ def individual_search(request):
     else:
         return HttpResponse("Request method is not a GET")
 
-
-
-
+"""
+Create an individual.
+"""
 @login_required
 def individual_create(request):
 
@@ -91,15 +87,13 @@ def individual_create(request):
 
 
 """
-List of individuals
+Past data to the individual page.
 """
 
 @login_required
 def individual_page(request):
     page_number = request.GET.get('page', 1)
     individuals = Individual.objects.filter(is_archived=False).order_by('id')
-
-
 
     cast_individuals = list()
     for individual in individuals:
@@ -118,14 +112,13 @@ def individual_page(request):
         "placeholder": "Search for an Individual"
     }
 
-
-
     return render(request, "individual/individual_page.html", data)
 
 
 """
 Update a particular individual's information
 """
+
 @login_required
 def individual_update(request, id):
     individual_form = Individual.objects.get(id=id)
@@ -160,8 +153,9 @@ def individual_update(request, id):
 
 
 """
-Delete a particular individual
+Delete a particular individual.
 """
+
 @login_required
 def individual_delete(request, id):
     individual_form = Individual.objects.get(id=id)
@@ -243,6 +237,10 @@ def change_individual_filter(request):
         search_results_table_html = render_to_string('individual/individual_page_content_reusable.html', context)
 
         return HttpResponse(search_results_table_html)
+
+"""
+Update layout of the individual page.
+"""
 
 @login_required
 def change_individual_layout(request):
