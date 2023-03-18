@@ -98,9 +98,16 @@ List of individuals
 @login_required
 def individual_page(request):
     page_number = request.GET.get('page', 1)
-    individuals = Individual.objects.filter(is_archived=False).order_by('id')
+    # individuals = Individual.objects.filter(is_archived=False).order_by('id')
 
-
+    if request.session['individual_filter'] == '2':
+        founder_individuals = Founder.objects.all()
+        individuals = Individual.objects.filter(id__in=founder_individuals.values('individualFounder'), is_archived=False).order_by('id')
+    elif request.session['individual_filter'] == '3':
+        investors = Investor.objects.all()
+        individuals = Individual.objects.filter(id__in=investors.values('individual'), is_archived=False).order_by('id')
+    else:
+        individuals = Individual.objects.filter(is_archived=False).values().order_by('id')
 
     cast_individuals = list()
     for individual in individuals:
@@ -223,7 +230,6 @@ def change_individual_filter(request):
             founder_individuals = Founder.objects.all()
             result = Individual.objects.filter(id__in=founder_individuals.values('individualFounder'), is_archived=False).order_by('id')
         elif request.session['individual_filter'] == '3':
-            # result = InvestorIndividual.objects.filter(is_archived=False).order_by('id')
             investors = Investor.objects.all()
             result = Individual.objects.filter(id__in=investors.values('individual'), is_archived=False).order_by('id')
         else:
@@ -261,7 +267,6 @@ def change_individual_layout(request):
             founder_individuals = Founder.objects.all()
             result = Individual.objects.filter(id__in=founder_individuals.values('individualFounder'), is_archived=False).order_by('id')
         elif request.session['individual_filter'] == '3':
-            # result = InvestorIndividual.objects.filter(is_archived=False).order_by('id')
             investors = Investor.objects.all()
             result = Individual.objects.filter(id__in=investors.values('individual'), is_archived=False).order_by('id')
         else:

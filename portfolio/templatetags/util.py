@@ -1,12 +1,12 @@
 from django import template
-from portfolio.models import Founder, Individual
+from portfolio.models import Founder, Individual, Investor
 from portfolio.models.investor_individual_model import InvestorIndividual
 
 register = template.Library()
 
 @register.filter
 def is_investor(value):
-    if isinstance(value, InvestorIndividual):
+    if Investor.objects.filter(individual=value).count():
         return True
 
 @register.filter
