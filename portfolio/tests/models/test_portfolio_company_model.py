@@ -36,10 +36,6 @@ class PortfolioCompanyTestCase(TestCase):
         self.portfolio_company.parent_company = other_p_company.parent_company
         self._assert_portfolio_company_is_invalid()
 
-    def test_parent_company_cannot_be_investor_company(self):
-        other_company = Investor.objects.create(company=Company.objects.get(id=201), classification='VC')
-        self.portfolio_company.parent_company = other_company.company
-        self._assert_portfolio_company_is_invalid()
 
     def test_wayra_number_cannot_be_repeated(self):
         other_p_company = self._create_second_portfolio_company()

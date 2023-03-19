@@ -1,6 +1,6 @@
 """Forms for the VC portfolio management site"""
 from django import forms
-from portfolio.models import Company, Portfolio_Company
+from portfolio.models import Company, Portfolio_Company, Investor
 from django.db.models import Exists, OuterRef
 
 from portfolio.models.investor_model import Investor
@@ -31,6 +31,10 @@ class PortfolioCompanyCreateForm(forms.ModelForm):
                                         ~Exists(Investor.objects.filter(company=OuterRef('id')))),
         widget=forms.Select()
     )
+
+    def clean(self):
+        if Investor.objects.filter(company=self.cleaned_data.get("parent_company")).count() > 0:
+            raise ValidationError('Company selected cannot be a Investor Company')
 
 class PortfolioCompanyEditForm(forms.ModelForm):
     class Meta:
