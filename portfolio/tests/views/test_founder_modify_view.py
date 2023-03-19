@@ -1,14 +1,13 @@
+"""Unit tests for the founder modify page."""
 from django.test import TestCase
 from django.urls import reverse
 from portfolio.models import Founder, User, Individual, Company
-from portfolio.forms import AddressCreateForm, PastExperienceForm, FounderForm
-from django_countries.fields import Country
-from django_countries.fields import Country
 from portfolio.tests.helpers import reverse_with_next, set_session_variables
 from phonenumber_field.phonenumber import PhoneNumber
 from django.utils import timezone
 
 class FounderModifyTestCase(TestCase):
+    """Unit tests for the founder modify page."""
     fixtures = [
         "portfolio/tests/fixtures/default_user.json",
         "portfolio/tests/fixtures/other_users.json",

@@ -1,6 +1,6 @@
 from django.shortcuts import render
-from portfolio.forms import IndividualCreateForm, AddressCreateForm, PastExperienceForm
-from portfolio.models import Individual, ResidentialAddress
+from portfolio.forms import AddressCreateForm, PastExperienceForm
+from portfolio.models import ResidentialAddress
 from portfolio.models.past_experience_model import PastExperience
 from portfolio.models.investor_individual_model import InvestorIndividual
 from portfolio.forms.investor_individual_form import InvestorIndividualForm

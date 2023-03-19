@@ -1,4 +1,4 @@
-
+"""Unit tests for the individual modify views."""
 from django.test import TestCase
 from django.urls import reverse
 from portfolio.models import ResidentialAddress, PastExperience, Individual, User
@@ -8,6 +8,7 @@ from django_countries.fields import Country
 from portfolio.tests.helpers import reverse_with_next, set_session_variables
 
 class IndividualModifyTestCase(TestCase):
+    """Unit tests for the individual modify views."""
     fixtures = [
         "portfolio/tests/fixtures/default_user.json",
         "portfolio/tests/fixtures/other_users.json",

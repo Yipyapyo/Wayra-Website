@@ -1,14 +1,14 @@
-"""Tests of the sign up view."""
+"""Tests of the individual create view."""
 from django.test import TestCase
 from django.urls import reverse
 from portfolio.models import Individual, ResidentialAddress, PastExperience, User
-from phonenumber_field.formfields import PhoneNumberField
 from django_countries.fields import Country
 from portfolio.forms import IndividualCreateForm, AddressCreateForm, PastExperienceForm
 from portfolio.tests.helpers import reverse_with_next, set_session_variables
 
 
 class IndividualCreateViewTestCase(TestCase):
+    """Tests of the individual create view."""
     fixtures = [
         "portfolio/tests/fixtures/default_user.json",
         "portfolio/tests/fixtures/other_users.json",
