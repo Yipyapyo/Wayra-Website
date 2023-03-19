@@ -1,13 +1,10 @@
 [
     {
-      "model": "portfolio.investorindividual",
+      "model": "portfolio.investor",
       "pk": 1,
       "fields": {
-        "NumberOfPortfolioCompanies": 3,
-        "NumberOfPersonalInvestments": 1,
-        "NumberOfPartnerInvestments": 2,
-        "PartOfIncubator": true,
-        "NumberOfExits": 1
+        "company": 1,
+        "individual": 1
       }
     }
   ]

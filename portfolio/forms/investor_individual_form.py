@@ -1,9 +1,11 @@
+"""Forms to create investor individual."""
 from django import forms
 from portfolio.models.investor_individual_model import InvestorIndividual
 from phonenumber_field.widgets import PhoneNumberPrefixWidget
 
 
 class InvestorIndividualForm(forms.ModelForm):
+    """Forms to create investor individual."""
     class Meta:
         model = InvestorIndividual
         fields = '__all__'

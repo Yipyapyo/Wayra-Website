@@ -1,3 +1,4 @@
+"""Unit test for the founder model."""
 from django.test import TestCase
 from portfolio.models import Founder, Individual, Company
 from django.core.exceptions import ValidationError
@@ -55,13 +56,14 @@ class FounderModelTestCase(TestCase):
         self.individual.delete()
         self.assertFalse(Founder.objects.filter(pk=self.founder.pk).exists())
 
+    # Assert a founder is valid.
     def _assert_founder_is_valid(self):
         try:
             self.founder.full_clean()
         except ValidationError:
             self.fail('Test founder is not valid.')
 
-    # Assert a individual is invalid
+    # Assert a founder is invalid
     def _assert_founder_is_invalid(self):
         with self.assertRaises(ValidationError):
             self.founder.full_clean()

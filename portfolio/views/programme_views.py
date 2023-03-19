@@ -6,9 +6,7 @@ from django.urls import reverse
 from django.views.generic import TemplateView, CreateView, DeleteView, UpdateView, DetailView, ListView
 from django.core.paginator import Paginator, EmptyPage
 from django.template.loader import render_to_string
-import logging
 from django.http import HttpResponse
-import json
 from portfolio.forms import CreateProgrammeForm, EditProgrammeForm
 from portfolio.models import Programme
 from vcpms import settings

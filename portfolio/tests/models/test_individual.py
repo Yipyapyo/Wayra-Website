@@ -1,3 +1,4 @@
+"""Unit tests for the individual model."""
 from django.test import TestCase
 from django.core.exceptions import ValidationError
 from portfolio.models import Individual
@@ -7,7 +8,6 @@ from phonenumber_field.phonenumber import PhoneNumber
 class IndividualTests(TestCase):
     """Unit tests for the individual model."""
 
-    # Sets up example individual to be used for tests
     def setUp(self):
         self.individual = Individual.objects.create(
              name="Jemma Doe",

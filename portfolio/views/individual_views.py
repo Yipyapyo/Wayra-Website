@@ -2,20 +2,17 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from portfolio.forms import IndividualCreateForm, AddressCreateForm, PastExperienceForm
 from portfolio.models import Individual, ResidentialAddress, InvestorIndividual, Founder
+from portfolio.models.investment_model import Investor
 from portfolio.models.past_experience_model import PastExperience
-from portfolio.forms.founder_form import FounderForm
 from django.shortcuts import redirect, render
 from django.core.paginator import Paginator, EmptyPage
 from django.http import HttpResponse
 from django.template.loader import render_to_string
 from django.urls import reverse
 
-
-
 """
-Create an individual.
+Search an individual.
 """
-
 
 def individual_search(request):
     if request.method == "GET":
@@ -44,7 +41,17 @@ def individual_search(request):
             return redirect('individual_page')
         else:
             individuals = Individual.objects.filter(name__contains=searched).values()
-            paginator = Paginator(individuals, 6)
+            if request.session['individual_filter'] == '2':
+                founder_individuals = Founder.objects.all()
+                individuals = Individual.objects.filter(id__in=founder_individuals.values('individualFounder'), name__contains=searched , is_archived=False).order_by('id')
+            elif request.session['individual_filter'] == '3':
+                investors = Investor.objects.all()
+                individuals = Individual.objects.filter(id__in=investors.values('individual'), name__contains=searched , is_archived=False).order_by('id')
+            else:
+                individuals = Individual.objects.filter(is_archived=False, name__contains=searched).values().order_by('id')
+            
+
+        paginator = Paginator(individuals, 6)
 
         try:
             individual_page = paginator.page(page_number)
@@ -56,9 +63,9 @@ def individual_search(request):
     else:
         return HttpResponse("Request method is not a GET")
 
-
-
-
+"""
+Create an individual.
+"""
 @login_required
 def individual_create(request):
 
@@ -91,21 +98,24 @@ def individual_create(request):
 
 
 """
-List of individuals
+Past data to the individual page.
 """
 
 @login_required
 def individual_page(request):
     page_number = request.GET.get('page', 1)
-    individuals = Individual.objects.filter(is_archived=False).order_by('id')
+    # individuals = Individual.objects.filter(is_archived=False).order_by('id')
 
+    if request.session['individual_filter'] == '2':
+        founder_individuals = Founder.objects.all()
+        individuals = Individual.objects.filter(id__in=founder_individuals.values('individualFounder'), is_archived=False).order_by('id')
+    elif request.session['individual_filter'] == '3':
+        investors = Investor.objects.all()
+        individuals = Individual.objects.filter(id__in=investors.values('individual'), is_archived=False).order_by('id')
+    else:
+        individuals = Individual.objects.filter(is_archived=False).values().order_by('id')
 
-
-    cast_individuals = list()
-    for individual in individuals:
-        cast_individuals.append(individual.as_child_class)
-
-    paginator = Paginator(cast_individuals, 6)
+    paginator = Paginator(individuals, 6)
 
     try:
         individuals_page = paginator.page(page_number)
@@ -118,14 +128,13 @@ def individual_page(request):
         "placeholder": "Search for an Individual"
     }
 
-
-
     return render(request, "individual/individual_page.html", data)
 
 
 """
 Update a particular individual's information
 """
+
 @login_required
 def individual_update(request, id):
     individual_form = Individual.objects.get(id=id)
@@ -160,8 +169,9 @@ def individual_update(request, id):
 
 
 """
-Delete a particular individual
+Delete a particular individual.
 """
+
 @login_required
 def individual_delete(request, id):
     individual_form = Individual.objects.get(id=id)
@@ -222,7 +232,8 @@ def change_individual_filter(request):
             founder_individuals = Founder.objects.all()
             result = Individual.objects.filter(id__in=founder_individuals.values('individualFounder'), is_archived=False).order_by('id')
         elif request.session['individual_filter'] == '3':
-            result = InvestorIndividual.objects.filter(is_archived=False).order_by('id')
+            investors = Investor.objects.all()
+            result = Individual.objects.filter(id__in=investors.values('individual'), is_archived=False).order_by('id')
         else:
             result = Individual.objects.filter(is_archived=False).values().order_by('id')
 
@@ -244,6 +255,10 @@ def change_individual_filter(request):
 
         return HttpResponse(search_results_table_html)
 
+"""
+Update layout of the individual page.
+"""
+
 @login_required
 def change_individual_layout(request):
     if request.method == "GET":
@@ -258,7 +273,8 @@ def change_individual_layout(request):
             founder_individuals = Founder.objects.all()
             result = Individual.objects.filter(id__in=founder_individuals.values('individualFounder'), is_archived=False).order_by('id')
         elif request.session['individual_filter'] == '3':
-            result = InvestorIndividual.objects.filter(is_archived=False).order_by('id')
+            investors = Investor.objects.all()
+            result = Individual.objects.filter(id__in=investors.values('individual'), is_archived=False).order_by('id')
         else:
             result = Individual.objects.filter(is_archived=False).values().order_by('id')
 
