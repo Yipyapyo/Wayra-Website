@@ -3,6 +3,15 @@
   background-color: red;
 }
 
+.filter-white{
+  filter: invert(100%) sepia(100%) saturate(1%) hue-rotate(321deg) brightness(102%) contrast(101%);
+}
+
+.text-gradient {
+  background: -webkit-linear-gradient(#7468f7, #80d0c7);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
 
 .lesson-grid {
     display: grid; 
@@ -16,7 +25,7 @@
 }
 
 .navbar-gradient {
-    background-image: linear-gradient(15deg, #13547a 0%, #80d0c7 100%);
+    background-image: linear-gradient(15deg, #7468f7 0%, #80d0c7 100%);
 }
 
 .btn.mb-2.home_button.btn-lg.btn-secondary.mb-2 {
