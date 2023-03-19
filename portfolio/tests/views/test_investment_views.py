@@ -1,10 +1,12 @@
+import datetime
 from datetime import date
 
 from django.test import TestCase
 from django.urls import reverse
 from django.utils import timezone
 
-from portfolio.forms import InvestmentForm, InvestorCompanyCreateForm, InvestorEditForm, PortfolioCompanyCreateForm, PortfolioCompanyEditForm
+from portfolio.forms import InvestmentForm, InvestorCompanyCreateForm, InvestorEditForm, PortfolioCompanyCreateForm, \
+    PortfolioCompanyEditForm
 from portfolio.models import Company, Portfolio_Company, User, Investment, InvestorCompany
 from portfolio.models.investor_model import Investor
 from portfolio.tests.helpers import LogInTester, reverse_with_next
@@ -23,8 +25,8 @@ class InvestmentCreateViewTestCase(TestCase, LogInTester):
             classification='VENTURE CAPITAL'
         )
         self.portfolioCompany = Portfolio_Company.objects.get(pk=101)
-        self.form_input = {'investor': 1,
-                           'startup': self.portfolioCompany,
+        self.form_input = {'investor': self.investorCompany.pk,
+                           'startup': self.portfolioCompany.pk,
                            'typeOfFoundingRounds': 'Series A',
                            'investmentAmount': 10_000_000,
                            'dateInvested': date(year=2023, month=3, day=5),
@@ -53,16 +55,21 @@ class InvestmentCreateViewTestCase(TestCase, LogInTester):
         response = self.client.post(self.url, self.form_input)
         self.assertRedirects(response, redirect_url, status_code=302, target_status_code=200)
 
-    # #TODO:FIX THIS TEST
-    # def test_successful_form(self):
-    #     self.client.login(email=self.user.email, password="Password123")
-    #     response = self.client.post(self.url, self.form_input, follow=True)
-    #     self.assertTemplateUsed(response, 'company/portfolio_company_page.html')
-    #     self.assertEqual(response.context['company'], self.defaultCompany)
+    def test_successful_form(self):
+        self.client.login(email=self.user.email, password="Password123")
+        response = self.client.post(self.url, self.form_input, follow=True)
+        self.assertTemplateUsed(response, 'company/portfolio_company_page.html')
+        self.assertEqual(response.context['company'], self.defaultCompany)
+        investment = Investment.objects.first()
+        self.assertEqual(investment.investor, Investor.objects.get(pk=self.form_input['investor']))
+        self.assertEqual(investment.startup, Portfolio_Company.objects.get(pk=self.form_input['startup']))
+        self.assertEqual(investment.typeOfFoundingRounds, self.form_input['typeOfFoundingRounds'])
+        self.assertEqual(investment.investmentAmount, self.form_input['investmentAmount'])
+        self.assertEqual(investment.dateInvested, date(year=2023, month=3, day=5))
 
     def test_unsuccessful_form(self):
         self.client.login(email=self.user.email, password="Password123")
-        self.form_input['investmentAmount'] = -1
+        self.form_input['dateInvested'] = (date.today() + datetime.timedelta(days=1)).strftime('%Y-%m-%d')
         response = self.client.post(self.url, self.form_input)
         self.assertTrue(response.status_code, 200)
         self.assertTemplateUsed(response, 'investment/investment_create.html')
@@ -92,8 +99,8 @@ class InvestmentUpdateViewTestCase(TestCase, LogInTester):
             investmentAmount=1_000_000_000,
             dateExit=None,
         )
-        self.form_input = {'investor': self.defaultCompany,
-                           'startup': self.portfolioCompany,
+        self.form_input = {'investor': self.defaultCompany.pk,
+                           'startup': self.portfolioCompany.pk,
                            'typeOfFoundingRounds': 'Series A',
                            'investmentAmount': 10_000_000,
                            'dateInvested': '2023-03-05',
@@ -122,26 +129,26 @@ class InvestmentUpdateViewTestCase(TestCase, LogInTester):
         response = self.client.post(self.url, self.form_input)
         self.assertRedirects(response, redirect_url, status_code=302, target_status_code=200)
 
-    # #TODO:FIX THIS TEST
-    # def test_successful_form(self):
-    #     self.client.login(email=self.user.email, password="Password123")
-    #     before_count = Investment.objects.count()
-    #     response = self.client.post(self.url, self.form_input, follow=True)
-    #     after_count = Investment.objects.count()
-    #     self.assertTemplateUsed(response, 'company/portfolio_company_page.html')
-    #     self.assertEqual(response.context['company'], self.defaultCompany)
-    #     self.assertEqual(before_count, after_count)
-    #     investment = Investment.objects.get(id=1)
-    #     self.assertEqual(investment.investor, self.form_input['investor'])
-    #     self.assertEqual(investment.startup, self.form_input['startup'])
-    #     self.assertEqual(investment.typeOfFoundingRounds, self.form_input['typeOfFoundingRounds'])
-    #     self.assertEqual(investment.investmentAmount, self.form_input['investmentAmount'])
-    #     self.assertEqual(investment.dateInvested, date(year=2023, month=3, day=5))
+    def test_successful_form(self):
+        self.client.login(email=self.user.email, password="Password123")
+        before_count = Investment.objects.count()
+        response = self.client.post(self.url, self.form_input, follow=True)
+        after_count = Investment.objects.count()
+
+        self.assertTemplateUsed(response, 'company/portfolio_company_page.html')
+        self.assertEqual(response.context['company'], self.defaultCompany)
+        self.assertEqual(before_count, after_count)
+        investment = Investment.objects.get(id=1)
+        self.assertEqual(investment.investor, Investor.objects.get(pk=self.form_input['investor']))
+        self.assertEqual(investment.startup, Portfolio_Company.objects.get(pk=self.form_input['startup']))
+        self.assertEqual(investment.typeOfFoundingRounds, self.form_input['typeOfFoundingRounds'])
+        self.assertEqual(investment.investmentAmount, self.form_input['investmentAmount'])
+        self.assertEqual(investment.dateInvested, date(year=2023, month=3, day=5))
 
     def test_unsuccessful_form(self):
         self.client.login(email=self.user.email, password="Password123")
-        self.form_input['investmentAmount'] = -1
-        response = self.client.post(self.url, self.form_input)
+        self.form_input['dateInvested'] = (date.today() + datetime.timedelta(days=1)).strftime('%Y-%m-%d')
+        response = self.client.post(self.url, self.form_input, follow=True)
         self.assertTrue(response.status_code, 200)
         self.assertTemplateUsed(response, 'investment/investment_update.html')
         form = response.context['form']
@@ -209,8 +216,8 @@ class InvestorCreateViewTestCase(TestCase):
         self.user = User.objects.get(email='john.doe@example.org')
         self.defaultCompany = Company.objects.get(id=1)
         self.form_input = {
-            'company': self.defaultCompany,
-            'classification': 'VC'
+            'company': self.defaultCompany.pk,
+            'classification': 'VENTURE_CAPITAL'
         }
         self.url = reverse('investor_company_create')
 
@@ -236,14 +243,14 @@ class InvestorCreateViewTestCase(TestCase):
         response = self.client.post(self.url, self.form_input)
         self.assertRedirects(response, redirect_url, status_code=302, target_status_code=200)
 
-    # #TODO:FIX THIS TEST
-    # def test_successful_form(self):
-    #     self.client.login(email=self.user.email, password="Password123")
-    #     before_count = Investor.objects.count()
-    #     response = self.client.post(self.url, self.form_input, follow=True)
-    #     after_count = Investor.objects.count()
-    #     self.assertTemplateUsed(response, 'company/main_dashboard.html')
-    #     self.assertEqual(before_count + 1, after_count)
+    def test_successful_form(self):
+        self.client.login(email=self.user.email, password="Password123")
+        before_count = Investor.objects.count()
+        response = self.client.post(self.url, self.form_input, follow=True)
+        after_count = Investor.objects.count()
+        self.assertTemplateUsed(response, 'company/portfolio_company_page.html')
+        self.assertEqual(response.context['company'], self.defaultCompany)
+        self.assertEqual(before_count + 1, after_count)
 
     def test_unsuccessful_form(self):
         self.client.login(email=self.user.email, password="Password123")
@@ -323,7 +330,7 @@ class PortfolioCompanyCreateViewTestCase(TestCase):
         self.user = User.objects.get(email='john.doe@example.org')
         self.defaultCompany = Company.objects.get(id=1)
         self.form_input = {
-            'parent_company': self.defaultCompany,
+            'parent_company': self.defaultCompany.pk,
             'wayra_number': 'WN123456'
         }
         self.url = reverse('portfolio_company_create')
@@ -350,13 +357,14 @@ class PortfolioCompanyCreateViewTestCase(TestCase):
         response = self.client.post(self.url, self.form_input)
         self.assertRedirects(response, redirect_url, status_code=302, target_status_code=200)
 
-    # #TODO:FIX THIS TEST
-    # def test_successful_form(self):
-    #     self.client.login(email=self.user.email, password="Password123")
-    #     before_count = Portfolio_Company.objects.count()
-    #     response = self.client.post(self.url, self.form_input, follow=True)
-    #     after_count = Portfolio_Company.objects.count()
-    #     self.assertEqual(before_count + 1, after_count)
+    def test_successful_form(self):
+        self.client.login(email=self.user.email, password="Password123")
+        before_count = Portfolio_Company.objects.count()
+        response = self.client.post(self.url, self.form_input, follow=True)
+        after_count = Portfolio_Company.objects.count()
+        self.assertEqual(before_count + 1, after_count)
+        self.assertTemplateUsed(response, 'company/portfolio_company_page.html')
+        self.assertEqual(response.context['company'], self.defaultCompany)
 
     def test_unsuccessful_form(self):
         self.client.login(email=self.user.email, password="Password123")
