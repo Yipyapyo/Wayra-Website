@@ -244,3 +244,45 @@ class SettingsViewTestCase(TestCase, LogInTester):
         session['company_layout'] = 1
         session.save()
         self.set_session_cookies(session)
+
+class DeactiveAccountViewTestCase(TestCase,LogInTester):
+    fixtures = ['portfolio/tests/fixtures/default_user.json', 'portfolio/tests/fixtures/other_users.json']
+
+    def setUp(self) -> None:
+        self.url = reverse('logout')
+        self.user = User.objects.get(email="john.doe@example.org")
+        self.admin_user = User.objects.get(email="petra.pickles@example.org")
+        self.url = reverse('deactivate_account')
+
+    def test_deactivate_account_url(self):
+        self.assertEqual(self.url, '/deactivate_account')
+
+    def test_get_deactivate_account_url(self):
+        self.client.login(email=self.user.email, password='Password123')
+        self.assertTrue(self._is_logged_in())
+        before_count = User.objects.count()
+        response = self.client.get(self.url, follow=True)
+        after_count = User.objects.count()
+        self.assertEqual(before_count - 1, after_count)
+        response_url = reverse('login')
+        self.assertRedirects(response, response_url, status_code=302, target_status_code=200)
+        self.assertTemplateUsed(response, 'login/login.html')
+        self.assertFalse(self._is_logged_in())
+
+    def test_get_deactivate_account_url_for_admin_user(self):
+        self.client.login(email=self.admin_user.email, password='Password123')
+        self.assertTrue(self._is_logged_in())
+        before_count = User.objects.count()
+        response = self.client.get(self.url, follow=True)
+        after_count = User.objects.count()
+        self.assertEqual(before_count - 1, after_count)
+        response_url = reverse('login')
+        self.assertRedirects(response, response_url, status_code=302, target_status_code=200)
+        self.assertTemplateUsed(response, 'login/login.html')
+        self.assertFalse(self._is_logged_in())
+
+    def test_get_deactivate_account_when_not_logged_in(self):
+        redirect_url = reverse_with_next('login', self.url)
+        response = self.client.get(self.url)
+        self.assertRedirects(response, redirect_url, status_code=302, target_status_code=200)
+
