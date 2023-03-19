@@ -29,7 +29,7 @@ urlpatterns = [
     path('logout', views.log_out, name='logout'),
     path('search_result', views.searchcomp, name='company_search_result'),
 
-    path('portfolio_company/', views.portfolio_company, name='portfolio_company'),
+    # path('portfolio_company/', views.portfolio_company, name='portfolio_company'),
     path('portfolio_company/<int:company_id>', views.CompanyDetailView.as_view(), name='portfolio_company'),
     path('portfolio_company/company_create/', views.create_company, name='create_company'),
     path('portfolio_company/company_update/<int:company_id>', views.update_company, name='update_company'),
