@@ -18,6 +18,8 @@ class DocumentModelTestCase(TestCase):
             file_name="test.document",
             file_type="document",
             company=Company.objects.get(id=1),
+            individual=None,
+            programme=None,
             file=SimpleUploadedFile("test.document", b"file contents")
         )
 

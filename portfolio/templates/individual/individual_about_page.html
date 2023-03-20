@@ -7,9 +7,19 @@
 
     <div class="px-5 py-2 rounded-3">
     <div class="d-flex justify-content-between align-items-center border-bottom mb-3">
+
         <div class="col">
             <h2 class="pb-3">Individual</h2>
         </div>
+
+        <div class="btn-group me-1">
+            {% if user.is_authenticated %}
+                <a href="{% url 'individual_document_upload' individual.id %}" class="btn btn-sm btn-outline-primary">Upload
+                    a
+                    document</a>
+            {% endif %}
+        </div>
+
         <div class="btn-group me-2">
             {% if individual.is_archived %}
                 <a type="button" class="btn btn-sm btn-outline-secondary"
@@ -23,11 +33,10 @@
                     data-target="#deleteIndividualModal">Delete
             </button>
         </div>
+
         {% include 'partials/individual/individual_delete_modal.html' %}
 
     </div>
-
-
 
     <div class="row align-items-md-stretch">
     <div class="col-md-6">
@@ -37,37 +46,37 @@
             <ul class="list-group list-group-flush">
                 <li class="list-group-item mb-2 mt-2">
                     <h6 style="font-size: 1.1rem; font-weight: bold;">Name</h6>
-                    <h7 style="font-size: 1.0rem;">{{ individual.name }}</h7>
+                    <h6 style="font-size: 1.0rem;">{{ individual.name }}</h6>
                 </li>
                 <li class="list-group-item my-2">
                     <h6 style="font-size: 1.1rem; font-weight: bold;">Position</h6>
-                    <h7 style="font-size: 1.0rem;">{{ individual.Position }}</h7>
+                    <h6 style="font-size: 1.0rem;">{{ individual.Position }}</h6>
                 </li>
                 <li class="list-group-item my-2">
                     <div class="col">
                         <h6 style="font-size: 1.1rem; font-weight: bold;">Company </h6>
-                        <h7 style="font-size: 1.0rem;">{{ individual.Company }}</h7>
+                        <h6 style="font-size: 1.0rem;">{{ individual.Company }}</h6>
                     </div>
                 </li>
                 <li class="list-group-item my-2">
                     <h6 style="font-size: 1.1rem; font-weight: bold;">Email</h6>
-                    <h7 style="font-size: 1.0rem;">{{ individual.Email }}</h7>
+                    <h6 style="font-size: 1.0rem;">{{ individual.Email }}</h6>
                 </li>
                 <li class="list-group-item my-2">
                     <h6 style="font-size: 1.1rem; font-weight: bold;">Phone Number</h6>
-                    <h7 style="font-size: 1.0rem;">{{ individual.PrimaryNumber }}</h7>
+                    <h6 style="font-size: 1.0rem;">{{ individual.PrimaryNumber }}</h6>
                 </li>
                 <li class="list-group-item my-2">
                     <h6 style="font-size: 1.1rem; font-weight: bold;">Secondary Number</h6>
-                    <h7 style="font-size: 1.0rem;">{{ individual.SecondaryNumber }}</h7>
+                    <h6 style="font-size: 1.0rem;">{{ individual.SecondaryNumber }}</h6>
                 </li>
                 <li class="list-group-item my-2">
                     <h6 style="font-size: 1.0rem; font-weight: bold;">Links</h6>
-                    <h7 style="font-size: 1.0rem;">{{ individual.LinkedInLink }}</h7>
+                    <h6 style="font-size: 1.0rem;">{{ individual.LinkedInLink }}</h6>
                     <br>
-                    <h7 style="font-size: 1.0rem;">{{ individual.CrunchbaseLink }}</h7>
+                    <h6 style="font-size: 1.0rem;">{{ individual.CrunchbaseLink }}</h6>
                     <br>
-                    <h7 style="font-size: 1.0rem;">{{ individual.AngelListLink }}</h7>
+                    <h6 style="font-size: 1.0rem;">{{ individual.AngelListLink }}</h6>
                     <br>
                 </li>
             </ul>
@@ -96,9 +105,10 @@
             </div>
         </a>
     </div>
-    <head>
-        <hr>
-    </head>
+
+    <div class="container-fluid pt-3">
+        {% include 'document/document_page.html' with documents=documents %}
+    </div>
 
     <br><br><br>
     <div class="container-fluid pt-3">

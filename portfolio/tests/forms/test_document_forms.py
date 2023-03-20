@@ -31,6 +31,8 @@ class URLUploadFormTest(TestCase):
         self.assertTrue(form.is_valid())
         document = form.save(commit=False)
         document.company = Company.objects.get(id=1)
+        document.individual = None
+        document.programme = None
         document.save()
         self.assertEqual(document.file_name, self.form_data["file_name"])
         self.assertEqual(document.file_type, "URL")
@@ -97,7 +99,7 @@ class DocumentFormTestCase(TestCase):
 
     def test_forms_save_without_assigning_company_raises_error(self):
         form = DocumentUploadForm(data=self.form_input, files=self.form_input)
-        with self.assertRaises(AttributeError):
+        with self.assertRaises(ValueError):
             form.save(commit=True)
 
     def test_form_must_save_correctly(self):
@@ -105,6 +107,8 @@ class DocumentFormTestCase(TestCase):
         before_count = Document.objects.count()
         document = form.save(commit=False)
         document.company = self.defaultCompany
+        document.individual = None
+        document.programme = None
         form.save()
         after_count = Document.objects.count()
         self.assertEqual(after_count, before_count + 1)

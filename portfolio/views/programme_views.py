@@ -8,7 +8,7 @@ from django.urls import reverse
 from django.views.generic import TemplateView, CreateView, DeleteView, UpdateView, DetailView, ListView
 
 from portfolio.forms import CreateProgrammeForm, EditProgrammeForm
-from portfolio.models import Programme
+from portfolio.models import Programme, Document
 from vcpms import settings
 
 
@@ -103,4 +103,5 @@ class ProgrammeDetailView(LoginRequiredMixin, DetailView):
         context['partners'] = instance.partners.all()
         context['participants'] = instance.participants.all()
         context['coaches_mentors'] = instance.coaches_mentors.all()
+        context['documents'] = Document.objects.filter(programme=instance)
         return context
