@@ -63,15 +63,15 @@ class Document(models.Model):
             models.CheckConstraint(
                 name="%(app_label)s_%(class)s_url_or_file",
                 check=(
-                    models.Q(url__isnull=True, file__gt="") | models.Q(url__isnull=False, file__exact="")
+                        models.Q(url__isnull=True, file__gt="") | models.Q(url__isnull=False, file__exact="")
                 )
             ),
             models.CheckConstraint(
                 name="%(app_label)s_%(class)s_company_or_individual_or_programme",
                 check=(
-                    models.Q(company__isnull=False, individual__isnull=True, programme__isnull=True) |
-                    models.Q(company__isnull=True, individual__isnull=False, programme__isnull=True) |
-                    models.Q(company__isnull=True, individual__isnull=True, programme__isnull=False)
+                        models.Q(company__isnull=False, individual__isnull=True, programme__isnull=True) |
+                        models.Q(company__isnull=True, individual__isnull=False, programme__isnull=True) |
+                        models.Q(company__isnull=True, individual__isnull=True, programme__isnull=False)
                 )
             )
         ]

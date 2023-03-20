@@ -10,7 +10,8 @@ class DocumentUploadForm(forms.ModelForm):
     class Meta:
         model = Document
         fields = ["file", "is_private"]
-        exclude = ["file_name", "file_type", "file_size", "url", "company", "individual", "programme", "created_at", "updated_at"]
+        exclude = ["file_name", "file_type", "file_size", "url", "company", "individual", "programme", "created_at",
+                   "updated_at"]
         labels = {
             "file": _("Select a file to upload:"),
             "is_private": _("Staff only:")

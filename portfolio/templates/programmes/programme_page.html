@@ -18,8 +18,9 @@
             </div>
 
             <div class="btn-group me-2">
-                    <a href="{% url 'programme_update' id=id %}" class="btn btn-sm btn-outline-primary"> Update Programme</a>
-                    <a href="{% url 'programme_delete' id=id %}" class="btn btn-sm btn-outline-danger"> Delete Programme</a>
+                <a href="{% url 'programme_update' id=id %}" class="btn btn-sm btn-outline-primary"> Update
+                    Programme</a>
+                <a href="{% url 'programme_delete' id=id %}" class="btn btn-sm btn-outline-danger"> Delete Programme</a>
             </div>
 
         </div>
@@ -45,7 +46,7 @@
                             <div class="col">
                                 <h6>Partners</h6>
                                 {% for partner in partners %}
-                                    <h7>{{partner.name}}</h7>
+                                    <h7>{{ partner.name }}</h7>
                                 {% endfor %}
                             </div>
                         </li>
@@ -83,7 +84,7 @@
                 </div>
             </li>
         </div>
-        </div>
+    </div>
     </div>
 
 {% endblock %}
