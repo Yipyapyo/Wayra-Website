@@ -199,7 +199,7 @@ View an individual profile page
 @login_required
 def individual_profile(request, id):
     individual = Individual.objects.get(id=id)
-    if (not individual.is_archived or (individual.is_archived and request.user.is_staff)):
+    if not individual.is_archived or (individual.is_archived and request.user.is_staff):
         return render(request, 'individual/individual_about_page.html', {"individual": individual})
     else:
         return redirect('individual_page')
