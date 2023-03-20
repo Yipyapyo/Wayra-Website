@@ -116,7 +116,9 @@ urlpatterns = [
          name='portfolio_company_update'),
 
     # Documents
-    path("portfolio_company/<int:company_id>/upload_document/", views.document_upload, name="document_upload"),
+    path("portfolio_company/<int:company_id>/upload_document/", views.company_document_upload, name="company_document_upload"),
+    path("individual_profile_page/<int:individual_id>/upload_document/", views.individual_document_upload, name="individual_document_upload"),
+    path("asd/<int:programme_id>/upload_document/", views.programme_document_upload, name="programme_document_upload"),
     path("redirect/<int:file_id>", views.open_url, name="open_url"),
     path("download_document/<int:file_id>", views.download_document, name="download_document"),
     path("document_permissions/<int:file_id>", views.change_permissions, name="change_permissions"),
