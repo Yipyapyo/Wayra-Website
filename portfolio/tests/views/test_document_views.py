@@ -41,7 +41,7 @@ class DocumentViewsTestCase(TestCase):
 
         self.defaultCompany = Company.objects.get(id=1)
         self.file_data = SimpleUploadedFile("TestingExcel.xlsx", file.read(), content_type=mimetypes.guess_type(
-            "portfolio/tests/forms/TestingExcel.xlsx"))
+            "portfolio/tests/forms/TestingExcel.xlsx")[0])
         self.document_form_input = {
             "upload_file" : 'True',
             "file": self.file_data,
