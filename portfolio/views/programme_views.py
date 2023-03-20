@@ -32,7 +32,7 @@ class SearchProgramme(TemplateView):
         if searched == "":
             return redirect('programme_list')
 
-        programmes = Programme.objects.filter(name__contains=searched).values()
+        programmes = Programme.objects.filter(name__contains=searched).values().order_by('id')
 
         paginator = Paginator(programmes, 6)
         try:
