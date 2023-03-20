@@ -4,7 +4,7 @@ from django.core.validators import RegexValidator
 from django.db import models
 from django.dispatch import receiver
 
-from portfolio.models import Company
+from portfolio.models import Company, Individual, Programme
 
 DEFAULT_PATH = "documents/"
 
