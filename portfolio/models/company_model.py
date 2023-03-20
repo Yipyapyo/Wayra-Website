@@ -54,8 +54,3 @@ class Company(models.Model):
         self.is_archived = False
         self.save()
 
-class Portfolio_Company(Company):
-    wayra_number = models.CharField(max_length=255)
-    programmes = None  # e.g. models.ForeignKey(Programme)
-    mentors = None # e.g. models.ForeignKey(Mentor)
-    coaches = None # e.g. models.ForeignKey(Coach)

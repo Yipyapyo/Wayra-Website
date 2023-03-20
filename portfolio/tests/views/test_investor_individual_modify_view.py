@@ -1,14 +1,14 @@
+"""Unit tests for individual investor modify page."""
 from django.test import TestCase
 from django.urls import reverse
 from portfolio.models import ResidentialAddress, PastExperience, User
 from portfolio.models.investor_individual_model import InvestorIndividual
-from portfolio.forms import AddressCreateForm, PastExperienceForm
-from portfolio.forms.investor_individual_form import InvestorIndividualForm
 from django_countries.fields import Country
 from django_countries.fields import Country
 from portfolio.tests.helpers import reverse_with_next, set_session_variables
 
 class InvestorIndividualModifyTestCase(TestCase):
+    """Unit tests for individual investor modify page."""
     fixtures = [
         "portfolio/tests/fixtures/default_user.json",
         "portfolio/tests/fixtures/other_users.json",

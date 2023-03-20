@@ -3,9 +3,10 @@ from django.forms import model_to_dict
 from django.urls import reverse
 from django.views.generic import CreateView, UpdateView, DeleteView
 
-from portfolio.forms import InvestmentForm, InvestorCompanyCreateForm, InvestorEditForm
-from portfolio.models import Investment, InvestorCompany
-from portfolio.models.investment_model import Investor
+from portfolio.forms import InvestmentForm, InvestorCompanyCreateForm, InvestorEditForm, PortfolioCompanyCreateForm, \
+    PortfolioCompanyEditForm
+from portfolio.models import Investment, Portfolio_Company
+from portfolio.models.investor_model import Investor
 
 
 class InvestmentCreateView(LoginRequiredMixin, CreateView):
@@ -105,3 +106,40 @@ class InvestorCompanyUpdateView(LoginRequiredMixin, UpdateView):
 
     def get_success_url(self):
         return reverse('portfolio_company', kwargs={'company_id': self.company_id})
+
+
+class PortfolioCompanyCreateView(LoginRequiredMixin, CreateView):
+    template_name = 'investment/portfolio_company_create.html'
+    model = Portfolio_Company
+    form_class = PortfolioCompanyCreateForm
+    http_method_names = ['get', 'post']
+
+    def form_valid(self, form):
+        self.redirect_id = form.cleaned_data['parent_company'].id
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse('portfolio_company', kwargs={'company_id': self.redirect_id})
+
+class PortfolioCompanyUpdateView(LoginRequiredMixin, UpdateView):
+    template_name = 'investment/portfolio_company_update.html'
+    model = Portfolio_Company
+    form_class = PortfolioCompanyEditForm
+    http_method_names = ['get', 'post']
+    pk_url_kwarg = 'company_id'
+
+    def dispatch(self, request, company_id, *args, **kwargs):
+        self.company_id = company_id
+        return super().dispatch(request, company_id, *args, **kwargs)
+
+    def get_object(self, queryset=None):
+        return Portfolio_Company.objects.get(parent_company_id=self.company_id)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['company_id'] = self.company_id
+        return context
+
+    def get_success_url(self):
+        return reverse('portfolio_company', kwargs={'company_id': self.company_id})
+

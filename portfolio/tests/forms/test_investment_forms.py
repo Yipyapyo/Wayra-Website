@@ -5,7 +5,8 @@ from django.forms import *
 from portfolio.forms import InvestmentForm, InvestorChoiceField, ContractRightForm, InvestorCompanyCreateForm, \
     InvestorIndividualCreateForm, InvestorEditForm
 from portfolio.models import Company, Portfolio_Company, Investment, Individual
-from portfolio.models.investment_model import Investor, ContractRight
+from portfolio.models.investment_model import ContractRight
+from portfolio.models.investor_model import Investor
 
 
 class InvestmentFormTestCase(TestCase):

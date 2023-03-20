@@ -1,4 +1,4 @@
-"""Founder form test"""
+"""Unit tests for the founder form."""
 from django import forms
 from django.test import TestCase
 from portfolio.models import Founder, Individual, Company
@@ -7,7 +7,7 @@ from django.utils import timezone
 from portfolio.forms import FounderForm
 
 class FounderFormTestCase(TestCase):
-    """Founder form test"""
+    """Unit tests for the founder form."""
     def setUp(self):
         self.individual = Individual.objects.create(
              AngelListLink = "https://www.AngelList.com",
