@@ -18,6 +18,6 @@ class Programme(models.Model):
     participants = models.ManyToManyField(Company, related_name="participants")
     coaches_mentors = models.ManyToManyField(Individual)
     cover = models.ImageField(blank=True, validators=[validate_image_file_extension], upload_to=get_path)
-    description = models.CharField(max_length=255, blank=True)
+    description = models.TextField(blank=True)
     class Meta:
         unique_together = ('name', 'cohort')

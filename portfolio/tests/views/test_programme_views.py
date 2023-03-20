@@ -1,6 +1,7 @@
 """Unit tests of the dashboard views"""
 import os
 import shutil
+import time
 
 from django.http import HttpResponse
 from django.test import TestCase
@@ -62,11 +63,20 @@ class ProgrammeCreateViewTestCase(TestCase, LogInTester):
         }
         self.default_programme = Programme.objects.get(id=1)
         # TODO: Reset media directory should write a proper way soon
-        media_files = os.listdir(MEDIA_ROOT)
-        for file in media_files:
-            file_path = os.path.join(MEDIA_ROOT, file)
-            if os.path.isfile(file_path):
-                os.remove(file_path)
+        # media_files = os.listdir(MEDIA_ROOT)
+        # for file in media_files:
+        #     file_path = os.path.join(MEDIA_ROOT, file)
+        #     if os.path.isfile(file_path):
+        #         os.remove(file_path)
+        path = os.path.join(MEDIA_ROOT, f'programmes/{self.form_input["name"]}')
+        path = os.path.normpath(path)
+        for i in range(10):
+            # Multithreaded test causes locking
+            try:
+                if os.path.isdir(path):
+                    shutil.rmtree(path)
+            except IOError:
+                time.sleep(.1)
 
     def test_create_programme_url(self):
         self.assertEqual(self.url, '/programme_page/create/')
@@ -143,11 +153,20 @@ class ProgrammeUpdateViewTestCase(TestCase, LogInTester):
         self.target_programme = Programme.objects.get(id=1)
         self.url = reverse('programme_update', kwargs={'id': self.target_programme.id})
         # TODO: Reset media directory should write a proper way soon
-        media_files = os.listdir(MEDIA_ROOT)
-        for file in media_files:
-            file_path = os.path.join(MEDIA_ROOT, file)
-            if os.path.isfile(file_path):
-                os.remove(file_path)
+        # media_files = os.listdir(MEDIA_ROOT)
+        # for file in media_files:
+        #     file_path = os.path.join(MEDIA_ROOT, file)
+        #     if os.path.isfile(file_path):
+        #         os.remove(file_path)
+        path = os.path.join(MEDIA_ROOT, f'programmes/{self.default_programme.name}')
+        path = os.path.normpath(path)
+        for i in range(10):
+            # Multithreaded test causes locking
+            try:
+                if os.path.isdir(path):
+                    shutil.rmtree(path)
+            except IOError:
+                time.sleep(.1)
 
     def test_update_programme_url(self):
         self.assertEqual(self.url, f'/programme_page/{self.target_programme.id}/update/')
@@ -242,11 +261,21 @@ class ProgrammeDeleteViewTestCase(TestCase, LogInTester):
         self.target_programme = Programme.objects.get(id=1)
         self.url = reverse('programme_delete', kwargs={'id': self.target_programme.id})
         # TODO: Reset media directory should write a proper way soon
-        media_files = os.listdir(MEDIA_ROOT)
-        for file in media_files:
-            file_path = os.path.join(MEDIA_ROOT, file)
-            if os.path.isfile(file_path):
-                os.remove(file_path)
+        # media_files = os.listdir(MEDIA_ROOT)
+        # for file in media_files:
+        #     file_path = os.path.join(MEDIA_ROOT, file)
+        #     if os.path.isfile(file_path):
+        #         os.remove(file_path)
+        path = os.path.join(MEDIA_ROOT, f'programmes/{self.default_programme.name}')
+        path = os.path.normpath(path)
+
+        for i in range(10):
+            # Multithreaded test causes locking
+            try:
+                if os.path.isdir(path):
+                    shutil.rmtree(path)
+            except IOError:
+                time.sleep(.1)
 
     def test_delete_programme_url(self):
         self.assertEqual(self.url, f'/programme_page/{self.target_programme.id}/delete/')
@@ -337,6 +366,7 @@ class ProgrammeDetailViewTestCase(TestCase, LogInTester):
         response = self.client.get(self.url)
         self.assertRedirects(response, redirect_url, status_code=302, target_status_code=200)
 
+
 class SearchProgrammeViewTestCase(TestCase):
     fixtures = [
         "portfolio/tests/fixtures/default_user.json",
@@ -398,4 +428,3 @@ class SearchProgrammeViewTestCase(TestCase):
         response = self.client.post(self.url, follow=True, data={'searchresult': 'A'})
         companies = response.context['programmes']
         self.assertEqual(len(companies), 1)
-

@@ -58,9 +58,7 @@ class CreateProgrammeForm(forms.ModelForm):
         super().clean()
         programme_name = self.cleaned_data.get("name")
         programme_cohort = self.cleaned_data.get("cohort")
-        if programme_cohort <= 0:
-            self.add_error("cohort", "Cohort value must be positive")
-        elif Programme.objects.filter(name=programme_name, cohort=programme_cohort).count() > 0:
+        if Programme.objects.filter(name=programme_name, cohort=programme_cohort).count() > 0:
             self.add_error("cohort", "Cohort for this programme already exists")
 
     def save(self):
