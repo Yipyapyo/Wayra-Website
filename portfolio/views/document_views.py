@@ -10,6 +10,7 @@ import os
 # Render the document upload page.
 @login_required
 def document_upload(request, company_id):
+    context = {}
     if request.method == "POST":
         if "upload_file" in request.POST:
             form = DocumentUploadForm(request.POST, request.FILES)

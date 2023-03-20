@@ -27,16 +27,39 @@ class UploadDocumentViewsTestCase(TestCase):
 
     def setUp(self):
         self.user = User.objects.get(email="john.doe@example.org")
-        self.target_company = Company.objects.get(id=1)
-        self.url = reverse('document_upload', kwargs={'company_id': self.target_company.id})
-        self.form_data = {
+        self.defaultCompany = Company.objects.get(id=1)
+        self.url = reverse('document_upload', kwargs={'company_id': self.defaultCompany.id})
+        self.url_form_data = {
+            "upload_url" : 'True',
             "file_name": "test_file.txt",
             "url": "https://www.wayra.uk",
             "is_private": True
         }
+        file = BytesIO()
+        file.write(open("portfolio/tests/forms/TestingExcel.xlsx", 'rb').read())
+        file.seek(0)
+
+        self.file_data = SimpleUploadedFile("TestingExcel.xlsx", file.read(), content_type=mimetypes.guess_type(
+            "portfolio/tests/forms/TestingExcel.xlsx"))
+
+        directory = os.path.join(MEDIA_ROOT, f'documents/{self.defaultCompany.name}')
+        directory = os.path.normpath(directory)
+        for i in range(10):
+            # Multi-threaded test causes locking
+            try:
+                if os.path.isdir(directory):
+                    shutil.rmtree(directory)
+            except IOError:
+                time.sleep(.1)
+        self.document_form_input = {
+            "upload_file" : 'True',
+            "file": self.file_data,
+            "is_private": True
+            }
+
     
     def test_document_upload_url(self):
-        self.assertEqual(self.url, f'/portfolio_company/{self.target_company.id}/upload_document/')
+        self.assertEqual(self.url, f'/portfolio_company/{self.defaultCompany.id}/upload_document/')
 
     def test_get_document_upload_view(self):
         self.client.login(email=self.user.email, password="Password123")
@@ -52,3 +75,33 @@ class UploadDocumentViewsTestCase(TestCase):
         response = self.client.get(self.url)
         self.assertRedirects(response, redirect_url, status_code=302, target_status_code=200)
 
+    def test_post_upload_url(self):
+        self.client.login(email=self.user.email, password="Password123")
+        before_count = Document.objects.count()
+        response = self.client.post(self.url, self.url_form_data, follow=True)
+        self.assertEqual(response.status_code, 200)
+        after_count = Document.objects.count()
+        self.assertEqual(before_count, after_count-1)
+    
+    def test_post_upload_document(self):
+        self.client.login(email=self.user.email, password="Password123")
+        before_count = Document.objects.count()
+        response = self.client.post(self.url, self.document_form_input, follow=True)
+        self.assertEqual(response.status_code, 200)
+        after_count = Document.objects.count()
+        self.assertEqual(before_count, after_count-1)
+
+
+    # def test_download_document(self):
+    #     self.client.login(email=self.user.email, password="Password123")
+    #     response = self.client.get()
+        
+    # def test_delete_document(self):
+
+    # def test_delete_document_url(self):
+        # self.assertEqual(self.url, f'/programme_page/{self.target_programme.id}/delete/')
+
+    # # def test_document_delete_redirects_when_not_logged_in(self):
+    #     redirect_url = reverse_with_next('login', self.url)
+    #     response = self.client.get(self.url)
+    #     self.assertRedirects(response, redirect_url, status_code=302, target_status_code=200)
