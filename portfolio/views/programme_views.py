@@ -1,14 +1,12 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.forms import model_to_dict
-from django.shortcuts import render, redirect
-from django.urls import reverse
-
-from django.views.generic import TemplateView, CreateView, DeleteView, UpdateView, DetailView, ListView
 from django.core.paginator import Paginator, EmptyPage
-from django.template.loader import render_to_string
-import logging
+from django.forms import model_to_dict
 from django.http import HttpResponse
-import json
+from django.shortcuts import render, redirect
+from django.template.loader import render_to_string
+from django.urls import reverse
+from django.views.generic import TemplateView, CreateView, DeleteView, UpdateView, DetailView, ListView
+
 from portfolio.forms import CreateProgrammeForm, EditProgrammeForm
 from portfolio.models import Programme
 from vcpms import settings
@@ -34,7 +32,7 @@ class SearchProgramme(TemplateView):
         if searched == "":
             return redirect('programme_list')
 
-        programmes = Programme.objects.filter(name__contains=searched).values()
+        programmes = Programme.objects.filter(name__contains=searched).values().order_by('id')
 
         paginator = Paginator(programmes, 6)
         try:
@@ -53,8 +51,6 @@ class ProgrammeListView(LoginRequiredMixin, ListView):
 
     def get_queryset(self):
         return Programme.objects.all().order_by('id')
-
-    
 
 
 class ProgrammeCreateView(LoginRequiredMixin, CreateView):

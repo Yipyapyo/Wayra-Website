@@ -1,10 +1,10 @@
-"""Forms for the VC portfolio management site"""
+"""Forms for the individual creation."""
 from django import forms
-from portfolio.models import Individual, ResidentialAddress
-from portfolio.models.past_experience_model import PastExperience
 from django_countries.widgets import CountrySelectWidget
 from phonenumber_field.widgets import PhoneNumberPrefixWidget
-from django.forms.models import inlineformset_factory
+
+from portfolio.models import Individual, ResidentialAddress
+from portfolio.models.past_experience_model import PastExperience
 
 
 # Form for creating an individual / client
@@ -24,7 +24,7 @@ class IndividualCreateForm(forms.ModelForm):
 # Form for creating addresses
 class AddressCreateForm(forms.ModelForm):
     class Meta:
-        model = ResidentialAddress  
+        model = ResidentialAddress
         fields = ['address_line1', 'address_line2', 'postal_code', 'city', 'state', 'country']
         exclude = ('individual',)
         widgets = {

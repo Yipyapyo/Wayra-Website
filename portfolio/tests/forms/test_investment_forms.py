@@ -1,11 +1,13 @@
-from datetime import datetime, date
+from datetime import date
 
-from django.test import TestCase
 from django.forms import *
+from django.test import TestCase
+
 from portfolio.forms import InvestmentForm, InvestorChoiceField, ContractRightForm, InvestorCompanyCreateForm, \
     InvestorIndividualCreateForm, InvestorEditForm
 from portfolio.models import Company, Portfolio_Company, Investment, Individual
-from portfolio.models.investment_model import Investor, ContractRight
+from portfolio.models.investment_model import ContractRight
+from portfolio.models.investor_model import Investor
 
 
 class InvestmentFormTestCase(TestCase):

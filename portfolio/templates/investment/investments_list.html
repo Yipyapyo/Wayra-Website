@@ -13,14 +13,15 @@
             <tbody>
             {% for investment in investments %}
                 <tr>
-                    <td>{{ investment.startup.name }}</td>
+                    <td>{{ investment.startup.parent_company.name }}</td>
                     <td>{{ investment.typeOfFoundingRounds }}</td>
                     <td>{{ investment.investmentAmount }}</td>
                     <td>{{ investment.dateInvested }}</td>
                     <td>{{ investment.dateExit }}</td>
                     <td>
                         <a href="{% url 'investment_update' investment.id %}" class="btn btn-sm btn-primary">Update</a>
-                        <a href="{% url 'contract_right_list' investment.id%}" class="btn btn-sm btn-primary">Update rights</a>
+                        <a href="{% url 'contract_right_list' investment.id %}" class="btn btn-sm btn-primary">Update
+                            rights</a>
                         <a href="{% url 'investment_delete' investment.id %}" class="btn btn-sm btn-primary">Delete</a>
                     </td>
                 </tr>

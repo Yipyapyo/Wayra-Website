@@ -1,6 +1,7 @@
 from django import forms
 from django_select2 import forms as d2forms
-from portfolio.models import Company, Individual, Portfolio_Company, Programme
+
+from portfolio.models import Company, Individual, Programme
 
 
 class MultipleChoiceField(forms.ModelMultipleChoiceField):
@@ -36,8 +37,7 @@ class CreateProgrammeForm(forms.ModelForm):
     )
 
     participants = MultipleChoiceField(
-        queryset=Portfolio_Company.objects.all(),
-        # widget=forms.CheckboxSelectMultiple
+        queryset=Company.objects.all(),
         widget=CompanySelectWidget(
             attrs={'data-minimum-input-length': 3},
             options={'placeholder': 'Search for a company...',
@@ -122,7 +122,7 @@ class EditProgrammeForm(forms.ModelForm):
     )
 
     participants = MultipleChoiceField(
-        queryset=Portfolio_Company.objects.all(),
+        queryset=Company.objects.all(),
         # widget=forms.CheckboxSelectMultiple
         widget=CompanySelectWidget(
             attrs={'data-minimum-input-length': 3},

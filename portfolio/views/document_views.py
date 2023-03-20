@@ -1,10 +1,11 @@
+import os
+
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, Http404
 from django.shortcuts import render, redirect
+
 from portfolio.forms import DocumentUploadForm, URLUploadForm
 from portfolio.models import Document
-
-import os
 
 
 # Render the document upload page.

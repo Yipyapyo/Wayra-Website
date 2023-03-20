@@ -1,13 +1,14 @@
-
+"""Unit tests for the individual modify views."""
 from django.test import TestCase
 from django.urls import reverse
+from django_countries.fields import Country
+
 from portfolio.models import ResidentialAddress, PastExperience, Individual, User
-from portfolio.forms import AddressCreateForm, PastExperienceForm
-from django_countries.fields import Country
-from django_countries.fields import Country
 from portfolio.tests.helpers import reverse_with_next, set_session_variables
 
+
 class IndividualModifyTestCase(TestCase):
+    """Unit tests for the individual modify views."""
     fixtures = [
         "portfolio/tests/fixtures/default_user.json",
         "portfolio/tests/fixtures/other_users.json",
@@ -37,38 +38,38 @@ class IndividualModifyTestCase(TestCase):
             "form2-state": "testState",
             "form2-country": Country("AD"),
             "0-companyName": "exampleCompany",
-            "0-workTitle" : "exampleWork",
-            "0-start_year" : 2033,
-            "0-end_year" : 2035,
-            "0-Description" : "testCase",
+            "0-workTitle": "exampleWork",
+            "0-start_year": 2033,
+            "0-end_year": 2035,
+            "0-Description": "testCase",
             "1-companyName": "exampleCompany2",
-            "1-workTitle" : "exampleWork2",
-            "1-start_year" : 2034,
-            "1-end_year" : 2036,
-            "1-Description" : "testCase2"
+            "1-workTitle": "exampleWork2",
+            "1-start_year": 2034,
+            "1-end_year": 2036,
+            "1-Description": "testCase2"
         }
 
         self.url2 = reverse('individual_create')
         self.client.post(self.url2, self.post_input)
         self.listUsed = Individual.objects.filter(name="Jemma Doe")[0]
         self.url = reverse('individual_update', kwargs={'id': self.listUsed.id})
-    
+
     def test__individual_update_url(self):
         self.assertEqual(self.url, '/individual_page/{}/update/'.format(self.listUsed.id))
-    
+
     def test_redirect_when_user_not_logged_in(self):
         self.client.logout()
         redirect_url = reverse_with_next('login', self.url)
         response = self.client.get(self.url)
         self.assertRedirects(response, redirect_url, status_code=302, target_status_code=200)
-    
+
     def test_post_individual_update_with_blank_name(self):
         self.post_input['form1-name'] = ""
         response = self.client.post(self.url, self.post_input)
         self.assertEqual(response.status_code, 200)
         individual = Individual.objects.filter(Company="exampleCompany")[0]
         self.assertEqual(individual.name, "Jemma Doe")
-    
+
     def test_post_individual_update_angellist_link_invalid(self):
         self.post_input['form1-AngelListLink'] = "hi"
         response = self.client.post(self.url, self.post_input)
@@ -96,14 +97,14 @@ class IndividualModifyTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
         individual = Individual.objects.filter(name="Jemma Doe")[0]
         self.assertEqual(individual.Company, "exampleCompany")
-    
+
     def test_post_individual_update_position_cannot_be_blank(self):
         self.post_input['form1-Position'] = ""
         response = self.client.post(self.url, self.post_input)
         self.assertEqual(response.status_code, 200)
         individual = Individual.objects.filter(name="Jemma Doe")[0]
         self.assertEqual(individual.Position, "examplePosition")
-    
+
     def test_post_individual_update_email_cannot_be_blank(self):
         self.post_input['form1-Email'] = ""
         response = self.client.post(self.url, self.post_input)
@@ -117,29 +118,27 @@ class IndividualModifyTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
         individual = Individual.objects.filter(name="Jemma Doe")[0]
         self.assertEqual(individual.PrimaryNumber, "+447975777666")
-    
-    
+
     def test_address_update_post_address_line_1_cannot_be_blank(self):
         self.post_input['form2-address_line1'] = ""
         response = self.client.post(self.url, self.post_input)
         self.assertEqual(response.status_code, 200)
         address = ResidentialAddress.objects.filter(address_line1="testAdress1")[0]
         self.assertEqual(address.address_line1, "testAdress1")
-    
+
     def test_post_address_line_2_cannot_be_blank(self):
         self.post_input['form2-address_line2'] = ""
         response = self.client.post(self.url, self.post_input)
         self.assertEqual(response.status_code, 200)
         address = ResidentialAddress.objects.filter(address_line1="testAdress1")[0]
         self.assertEqual(address.address_line2, "testAdress2")
-    
+
     def test_post_postal_code_cannot_be_blank(self):
         self.post_input['form2-postal_code'] = ""
         response = self.client.post(self.url, self.post_input)
         self.assertEqual(response.status_code, 200)
         address = ResidentialAddress.objects.filter(address_line1="testAdress1")[0]
         self.assertEqual(address.postal_code, "testCode")
-    
 
     def test_post_city_cannot_be_blank(self):
         self.post_input['form2-city'] = ""
@@ -147,23 +146,20 @@ class IndividualModifyTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
         address = ResidentialAddress.objects.filter(address_line1="testAdress1")[0]
         self.assertEqual(address.city, "testCity")
-    
-    
+
     def test_post_country_cannot_be_invalid(self):
         self.post_input['form2-country'] = "hi"
         response = self.client.post(self.url, self.post_input)
         self.assertEqual(response.status_code, 200)
         address = ResidentialAddress.objects.filter(address_line1="testAdress1")[0]
         self.assertEqual(address.country, Country(code="AD"))
-    
-    
+
     def test_post_country_cannot_be_blank(self):
         self.post_input['form2-country'] = ""
         response = self.client.post(self.url, self.post_input)
         self.assertEqual(response.status_code, 200)
         address = ResidentialAddress.objects.filter(address_line1="testAdress1")[0]
         self.assertEqual(address.country, Country(code="AD"))
-    
 
     def test_post_past_experience_companyName_cannot_be_blank(self):
         self.post_input['0-companyName'] = ""
@@ -174,7 +170,7 @@ class IndividualModifyTestCase(TestCase):
         pastExp2 = PastExperience.objects.filter(companyName="exampleCompany2")[0]
         self.assertEqual(pastExp1.companyName, "exampleCompany")
         self.assertEqual(pastExp2.companyName, "exampleCompany2")
-    
+
     def test_post_past_experience_workTitle_cannot_be_blank(self):
         self.post_input['0-workTitle'] = ""
         self.post_input['1-workTitle'] = ""
@@ -184,7 +180,7 @@ class IndividualModifyTestCase(TestCase):
         pastExp2 = PastExperience.objects.filter(companyName="exampleCompany2")[0]
         self.assertEqual(pastExp1.workTitle, "exampleWork")
         self.assertEqual(pastExp2.workTitle, "exampleWork2")
-    
+
     def test_post_past_experience_start_year_cannot_be_blank(self):
         self.post_input['0-start_year'] = ""
         self.post_input['1-start_year'] = ""
@@ -194,28 +190,3 @@ class IndividualModifyTestCase(TestCase):
         pastExp2 = PastExperience.objects.filter(companyName="exampleCompany2")[0]
         self.assertEqual(pastExp1.start_year, 2033)
         self.assertEqual(pastExp2.start_year, 2034)
-
-    
-    
-    
-    
-
-    
-
-
-
-    
-
-    
-
-
-    
-
-    
-    
-    
-
-        
-
-
-        

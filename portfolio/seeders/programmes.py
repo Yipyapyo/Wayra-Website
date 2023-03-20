@@ -3,13 +3,12 @@ import random
 import shutil
 from io import BytesIO
 
-from django.conf.global_settings import STATIC_ROOT
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.files.uploadedfile import SimpleUploadedFile
 
-from portfolio.seeders import Seeder, CompanySeeder
 from portfolio.models import Programme, Company, Portfolio_Company, Individual
-from vcpms.settings import MEDIA_ROOT, STATIC_URL, BASE_DIR
+from portfolio.seeders import Seeder, CompanySeeder
+from vcpms.settings import MEDIA_ROOT, BASE_DIR
 
 
 class ProgrammeSeeder(Seeder):
@@ -38,7 +37,8 @@ class ProgrammeSeeder(Seeder):
                 print(f"Accelerator Programme {i} has already been seeded.")
             except ObjectDoesNotExist:
                 image_file = BytesIO()
-                image_file.write(open(os.path.join(BASE_DIR,'portfolio/seeders/resource/edison_programme.png'), 'rb').read())
+                image_file.write(
+                    open(os.path.join(BASE_DIR, 'portfolio/seeders/resource/edison_programme.png'), 'rb').read())
                 image_file.seek(0)
                 file_data = SimpleUploadedFile("edison_programme.png", image_file.read(), content_type="image/png")
 
@@ -51,7 +51,7 @@ class ProgrammeSeeder(Seeder):
                     accelerator_1.partners.add(company)
                 for p_company in self._get_objects_from_models(Portfolio_Company, i - 1,
                                                                Portfolio_Company.objects.count() // count):
-                    accelerator_1.participants.add(p_company)
+                    accelerator_1.participants.add(p_company.parent_company)
                 for individual in self._get_objects_from_models(Individual, i - 1, Individual.objects.count() // count):
                     accelerator_1.coaches_mentors.add(individual)
                 accelerator_1.save()

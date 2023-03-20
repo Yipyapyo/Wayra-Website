@@ -1,14 +1,15 @@
+"""Unit tests for individual investor modify page."""
 from django.test import TestCase
 from django.urls import reverse
+from django_countries.fields import Country
+
 from portfolio.models import ResidentialAddress, PastExperience, User
 from portfolio.models.investor_individual_model import InvestorIndividual
-from portfolio.forms import AddressCreateForm, PastExperienceForm
-from portfolio.forms.investor_individual_form import InvestorIndividualForm
-from django_countries.fields import Country
-from django_countries.fields import Country
 from portfolio.tests.helpers import reverse_with_next, set_session_variables
 
+
 class InvestorIndividualModifyTestCase(TestCase):
+    """Unit tests for individual investor modify page."""
     fixtures = [
         "portfolio/tests/fixtures/default_user.json",
         "portfolio/tests/fixtures/other_users.json",
@@ -43,38 +44,38 @@ class InvestorIndividualModifyTestCase(TestCase):
             "form2-state": "testState",
             "form2-country": Country("AD"),
             "0-companyName": "exampleCompany",
-            "0-workTitle" : "exampleWork",
-            "0-start_year" : 2033,
-            "0-end_year" : 2035,
-            "0-Description" : "testCase",
+            "0-workTitle": "exampleWork",
+            "0-start_year": 2033,
+            "0-end_year": 2035,
+            "0-Description": "testCase",
             "1-companyName": "exampleCompany2",
-            "1-workTitle" : "exampleWork2",
-            "1-start_year" : 2034,
-            "1-end_year" : 2036,
-            "1-Description" : "testCase2"
+            "1-workTitle": "exampleWork2",
+            "1-start_year": 2034,
+            "1-end_year": 2036,
+            "1-Description": "testCase2"
         }
 
         self.url2 = reverse('investor_individual_create')
         self.client.post(self.url2, self.post_input)
         self.listUsed = InvestorIndividual.objects.filter(name="Jemma Doe")[0]
         self.url = reverse('investor_individual_modify', kwargs={'id': self.listUsed.id})
-    
+
     def test_investor_individual_modify_url(self):
         self.assertEqual(self.url, '/individual_page/{}/investor_individual_modify/'.format(self.listUsed.id))
-    
+
     def test_redirect_when_user_not_logged_in(self):
         self.client.logout()
         redirect_url = reverse_with_next('login', self.url)
         response = self.client.get(self.url)
         self.assertRedirects(response, redirect_url, status_code=302, target_status_code=200)
-    
+
     def test_post_investor_individual_update_with_blank_name(self):
         self.post_input['form1-name'] = ""
         response = self.client.post(self.url, self.post_input)
         self.assertEqual(response.status_code, 200)
         investor_individual = InvestorIndividual.objects.filter(Company="exampleCompany")[0]
         self.assertEqual(investor_individual.name, "Jemma Doe")
-    
+
     def test_post_investor_individual_update_angellist_link_invalid(self):
         self.post_input['form1-AngelListLink'] = "hi"
         response = self.client.post(self.url, self.post_input)
@@ -102,22 +103,21 @@ class InvestorIndividualModifyTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
         investor_individual = InvestorIndividual.objects.filter(name="Jemma Doe")[0]
         self.assertEqual(investor_individual.Company, "exampleCompany")
-    
+
     def test_post_investor_individual_update_position_cannot_be_blank(self):
         self.post_input['form1-Position'] = ""
         response = self.client.post(self.url, self.post_input)
         self.assertEqual(response.status_code, 200)
         investor_individual = InvestorIndividual.objects.filter(name="Jemma Doe")[0]
         self.assertEqual(investor_individual.Position, "examplePosition")
-    
+
     def test_post_investor_individual_update_email_cannot_be_blank(self):
         self.post_input['form1-Email'] = ""
         response = self.client.post(self.url, self.post_input)
         self.assertEqual(response.status_code, 200)
         investor_individual = InvestorIndividual.objects.filter(name="Jemma Doe")[0]
         self.assertEqual(investor_individual.Email, "test@gmail.com")
-    
-        
+
     def test_post_number_of_portfolio_companies_cannot_be_blank(self):
         self.post_input['form1-NumberOfPortfolioCompanies'] = ""
         response = self.client.post(self.url, self.post_input)
@@ -139,7 +139,6 @@ class InvestorIndividualModifyTestCase(TestCase):
         investor_individual = InvestorIndividual.objects.filter(name="Jemma Doe")[0]
         self.assertEqual(investor_individual.NumberOfPartnerInvestments, 5)
 
-
     def test_post_number_of_exits_cannot_be_blank(self):
         self.post_input['form1-NumberOfExits'] = ""
         response = self.client.post(self.url, self.post_input)
@@ -153,29 +152,27 @@ class InvestorIndividualModifyTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
         investor_individual = InvestorIndividual.objects.filter(name="Jemma Doe")[0]
         self.assertEqual(investor_individual.PrimaryNumber, "+447975777666")
-    
-    
+
     def test_address_update_post_address_line_1_cannot_be_blank(self):
         self.post_input['form2-address_line1'] = ""
         response = self.client.post(self.url, self.post_input)
         self.assertEqual(response.status_code, 200)
         address = ResidentialAddress.objects.filter(address_line1="testAdress1")[0]
         self.assertEqual(address.address_line1, "testAdress1")
-    
+
     def test_post_address_line_2_cannot_be_blank(self):
         self.post_input['form2-address_line2'] = ""
         response = self.client.post(self.url, self.post_input)
         self.assertEqual(response.status_code, 200)
         address = ResidentialAddress.objects.filter(address_line1="testAdress1")[0]
         self.assertEqual(address.address_line2, "testAdress2")
-    
+
     def test_post_postal_code_cannot_be_blank(self):
         self.post_input['form2-postal_code'] = ""
         response = self.client.post(self.url, self.post_input)
         self.assertEqual(response.status_code, 200)
         address = ResidentialAddress.objects.filter(address_line1="testAdress1")[0]
         self.assertEqual(address.postal_code, "testCode")
-    
 
     def test_post_city_cannot_be_blank(self):
         self.post_input['form2-city'] = ""
@@ -183,23 +180,20 @@ class InvestorIndividualModifyTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
         address = ResidentialAddress.objects.filter(address_line1="testAdress1")[0]
         self.assertEqual(address.city, "testCity")
-    
-    
+
     def test_post_country_cannot_be_invalid(self):
         self.post_input['form2-country'] = "hi"
         response = self.client.post(self.url, self.post_input)
         self.assertEqual(response.status_code, 200)
         address = ResidentialAddress.objects.filter(address_line1="testAdress1")[0]
         self.assertEqual(address.country, Country(code="AD"))
-    
-    
+
     def test_post_country_cannot_be_blank(self):
         self.post_input['form2-country'] = ""
         response = self.client.post(self.url, self.post_input)
         self.assertEqual(response.status_code, 200)
         address = ResidentialAddress.objects.filter(address_line1="testAdress1")[0]
         self.assertEqual(address.country, Country(code="AD"))
-    
 
     def test_post_past_experience_companyName_cannot_be_blank(self):
         self.post_input['0-companyName'] = ""
@@ -210,7 +204,7 @@ class InvestorIndividualModifyTestCase(TestCase):
         pastExp2 = PastExperience.objects.filter(companyName="exampleCompany2")[0]
         self.assertEqual(pastExp1.companyName, "exampleCompany")
         self.assertEqual(pastExp2.companyName, "exampleCompany2")
-    
+
     def test_post_past_experience_workTitle_cannot_be_blank(self):
         self.post_input['0-workTitle'] = ""
         self.post_input['1-workTitle'] = ""
@@ -220,7 +214,7 @@ class InvestorIndividualModifyTestCase(TestCase):
         pastExp2 = PastExperience.objects.filter(companyName="exampleCompany2")[0]
         self.assertEqual(pastExp1.workTitle, "exampleWork")
         self.assertEqual(pastExp2.workTitle, "exampleWork2")
-    
+
     def test_post_past_experience_start_year_cannot_be_blank(self):
         self.post_input['0-start_year'] = ""
         self.post_input['1-start_year'] = ""
@@ -230,28 +224,3 @@ class InvestorIndividualModifyTestCase(TestCase):
         pastExp2 = PastExperience.objects.filter(companyName="exampleCompany2")[0]
         self.assertEqual(pastExp1.start_year, 2033)
         self.assertEqual(pastExp2.start_year, 2034)
-
-    
-    
-    
-    
-
-    
-
-
-
-    
-
-    
-
-
-    
-
-    
-    
-    
-
-        
-
-
-        

@@ -1,11 +1,10 @@
 from io import BytesIO
 
-from PIL.Image import Image
 from django.core.files.uploadedfile import SimpleUploadedFile
-from django.db.models.fields.files import ImageFieldFile
 from django.forms import model_to_dict, FileInput
 from django.forms.fields import *
 from django.test import TestCase
+
 from portfolio.forms import CreateProgrammeForm, MultipleChoiceField, EditProgrammeForm
 from portfolio.models import Company, Portfolio_Company, Individual, Programme
 
@@ -73,7 +72,7 @@ class CreateProgrammeFormTestCase(TestCase):
         partners = set([Company.objects.get(id=ID) for ID in self.form_input['partners']])
         self.assertTrue(set(programme.partners.all()) == partners)
 
-        participants = set([Portfolio_Company.objects.get(id=ID) for ID in self.form_input['participants']])
+        participants = set([Company.objects.get(id=ID) for ID in self.form_input['participants']])
         self.assertTrue(set(programme.participants.all()) == participants)
 
         coaches_mentors = set([Individual.objects.get(id=ID) for ID in self.form_input['coaches_mentors']])
@@ -100,7 +99,7 @@ class EditProgrammeFormTestCase(TestCase):
 
         self.default_programme = Programme.objects.get(id=1)
         self.partner = Company.objects.first()
-        self.participant = Portfolio_Company.objects.first()
+        self.participant = Portfolio_Company.objects.first().parent_company
         self.coach = Individual.objects.first()
 
         self.default_programme.cover = self.file_data

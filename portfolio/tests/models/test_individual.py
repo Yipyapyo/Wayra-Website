@@ -1,24 +1,25 @@
-from django.test import TestCase
+"""Unit tests for the individual model."""
 from django.core.exceptions import ValidationError
-from portfolio.models import Individual
+from django.test import TestCase
 from phonenumber_field.phonenumber import PhoneNumber
+
+from portfolio.models import Individual
 
 
 class IndividualTests(TestCase):
     """Unit tests for the individual model."""
 
-    # Sets up example individual to be used for tests
     def setUp(self):
         self.individual = Individual.objects.create(
-             name="Jemma Doe",
-             AngelListLink = "https://www.AngelList.com",
-             CrunchbaseLink = "https://www.Crunchbase.com",
-             LinkedInLink = "https://www.LinkedIn.com",
-             Company = "exampleCompany",
-             Position = "examplePosition",
-             Email = "test@gmail.com",
-             PrimaryNumber = PhoneNumber.from_string("+447975777666"),
-             SecondaryNumber = PhoneNumber.from_string("+441325777655")
+            name="Jemma Doe",
+            AngelListLink="https://www.AngelList.com",
+            CrunchbaseLink="https://www.Crunchbase.com",
+            LinkedInLink="https://www.LinkedIn.com",
+            Company="exampleCompany",
+            Position="examplePosition",
+            Email="test@gmail.com",
+            PrimaryNumber=PhoneNumber.from_string("+447975777666"),
+            SecondaryNumber=PhoneNumber.from_string("+441325777655")
         )
 
     # Tests if individual is valid

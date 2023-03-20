@@ -1,6 +1,7 @@
 from django import forms
-from portfolio.models import Document, Company
 from django.utils.translation import gettext_lazy as _
+
+from portfolio.models import Document
 
 
 class DocumentUploadForm(forms.ModelForm):
@@ -15,17 +16,21 @@ class DocumentUploadForm(forms.ModelForm):
             "is_private": _("Staff only:")
         }
 
+    def __init__(self, *args, **kwargs):
+        super(DocumentUploadForm, self).__init__(*args, **kwargs)
+        self.fields["file"].required = True
+
     def save(self, commit=True):
-        document = super().save(commit=False)
-        document.file_name = self.cleaned_data["file"].name
-        document.file_type = self.cleaned_data["file"].name.split(".")[-1]
-        document.file_size = self.cleaned_data["file"].size
-        document.is_public = self.cleaned_data["is_private"]
-
         if commit:
-            document.save()
+            super().save()
+        else:
+            document = super().save(commit=False)
+            document.file_name = self.cleaned_data["file"].name
+            document.file_type = self.cleaned_data["file"].name.split(".")[-1]
+            document.file_size = self.cleaned_data["file"].size
+            document.is_public = self.cleaned_data["is_private"]
 
-        return document
+            return document
 
 
 class URLUploadForm(forms.ModelForm):
@@ -40,6 +45,10 @@ class URLUploadForm(forms.ModelForm):
             "url": _("URL:"),
             "is_private": _("Staff only:")
         }
+
+    def __init__(self, *args, **kwargs):
+        super(URLUploadForm, self).__init__(*args, **kwargs)
+        self.fields["url"].required = True
 
     def save(self, commit=True):
         document = super().save(commit=False)

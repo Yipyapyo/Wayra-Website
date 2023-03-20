@@ -1,19 +1,21 @@
-from django.test import TestCase
 from django.core.exceptions import ValidationError
-from portfolio.models import PastExperience, Individual
+from django.test import TestCase
 from phonenumber_field.phonenumber import PhoneNumber
+
+from portfolio.models import PastExperience, Individual
+
 
 class ExperienceModelTestCase(TestCase):
     def setUp(self):
         self.individual = Individual.objects.create(
-             AngelListLink = "https://www.AngelList.com",
-             CrunchbaseLink = "https://www.Crunchbase.com",
-             LinkedInLink = "https://www.LinkedIn.com",
-             Company = "exampleCompany",
-             Position = "examplePosition",
-             Email = "test@gmail.com",
-             PrimaryNumber = PhoneNumber.from_string("+447975777666"),
-             SecondaryNumber = PhoneNumber.from_string("+441325777655")
+            AngelListLink="https://www.AngelList.com",
+            CrunchbaseLink="https://www.Crunchbase.com",
+            LinkedInLink="https://www.LinkedIn.com",
+            Company="exampleCompany",
+            Position="examplePosition",
+            Email="test@gmail.com",
+            PrimaryNumber=PhoneNumber.from_string("+447975777666"),
+            SecondaryNumber=PhoneNumber.from_string("+441325777655")
         )
 
         self.pastExperience = PastExperience.objects.create(
@@ -21,7 +23,7 @@ class ExperienceModelTestCase(TestCase):
             workTitle="CEO",
             start_year=1995,
             end_year=1998,
-            duration="3", 
+            duration="3",
             Description="I'm the founder of the Startup.",
             individual=self.individual
         )
@@ -36,11 +38,11 @@ class ExperienceModelTestCase(TestCase):
     def test_workTitle_has_max_length_of_100_characters(self):
         self.pastExperience.workTitle = "x" * 101
         self._assert_past_experience_is_invalid()
-    
+
     def test_end_year_cannot_be_blank(self):
         self.pastExperience.end_year = ""
         self._assert_past_experience_is_invalid()
-    
+
     def test_duration_has_max_length_of_50_characters(self):
         self.pastExperience.duration = "x" * 51
         self._assert_past_experience_is_invalid()

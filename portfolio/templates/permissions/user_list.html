@@ -41,7 +41,8 @@
                         </td>
                         <td>
                             <a href="{% url 'permission_edit_user' id=user.id %}" class="btn btn-primary">Update</a>
-                            <a type="button" class="btn btn-success" href="{% url 'permission_reset_password' user.id %}">Reset Password</a>
+                            <a type="button" class="btn btn-success"
+                               href="{% url 'permission_reset_password' user.id %}">Reset Password</a>
                             <a href="{% url 'permission_delete_user' id=user.id %}" class="btn btn-danger">Delete</a>
                         </td>
                     </tr>

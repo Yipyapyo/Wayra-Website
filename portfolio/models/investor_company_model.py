@@ -1,4 +1,5 @@
 from django.db import models
+
 from portfolio.models.company_model import Company
 
 
@@ -58,4 +59,3 @@ class InvestorCompany(models.Model):
         choices=INVESTOR_TYPES,
         default=VENTURE_CAPITAL,
     )
-   

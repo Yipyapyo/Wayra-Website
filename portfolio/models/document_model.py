@@ -1,9 +1,10 @@
-from django.db import models
-from django.dispatch import receiver
-from django.core.validators import RegexValidator
-from portfolio.models import Company, Individual, Programme
 import os
 
+from django.core.validators import RegexValidator
+from django.db import models
+from django.dispatch import receiver
+
+from portfolio.models import Company
 
 DEFAULT_PATH = "documents/"
 

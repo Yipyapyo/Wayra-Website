@@ -1,22 +1,16 @@
 [
-    {
-        "model": "portfolio.investorcompany",
-        "pk": 2,
-        "fields": {
-            "company": 5,
-            "angelListLink":"www.angellist.com",
-            "crunchbaseLink":"www.crunchbase.com",
-            "linkedInLink":"www.linkedin.com"
-        }
-    },
-    {
-        "model": "portfolio.investorcompany",
-        "pk": 3,
-        "fields": {
-            "company": 6,
-            "angelListLink":"www.angellist.com",
-            "crunchbaseLink":"www.crunchbase.com",
-            "linkedInLink":"www.linkedin.com"
-        }
+  {
+    "model": "portfolio.investor",
+    "pk": 5,
+    "fields": {
+      "company": 3
     }
-  ]
+  },
+  {
+    "model": "portfolio.investor",
+    "pk": 6,
+    "fields": {
+      "company": 4
+    }
+  }
+]
