@@ -27,7 +27,7 @@ class Document(models.Model):
     file_id = models.BigAutoField(primary_key=True)
     file_name = models.CharField(
         max_length=254,
-        unique=True,
+        unique=False,
         blank=False,
         validators=[RegexValidator(
             regex=r"^[0-9a-zA-Z_\-. ]+$",
