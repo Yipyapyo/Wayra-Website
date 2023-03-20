@@ -2,7 +2,7 @@ from .auth_form import *
 from .change_password_form import *
 from .company_form import *
 from .contact_details_form import *
-from .document_form import *
+from .document_forms import *
 from .founder_form import *
 from .individual_form import *
 from .investment_form import *
