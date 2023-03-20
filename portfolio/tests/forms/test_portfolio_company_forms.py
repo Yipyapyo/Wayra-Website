@@ -36,7 +36,6 @@ class PortfolioCompanyCreateFormTestCase(TestCase):
         self.assertIn("wayra_number", form.fields)
         self.assertTrue(isinstance(form.fields['wayra_number'], CharField))
 
-
     def test_form_must_save_correctly(self):
         form = PortfolioCompanyCreateForm(data=self.form_input)
         before_count = Portfolio_Company.objects.count()

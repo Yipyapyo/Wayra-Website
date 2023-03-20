@@ -1,11 +1,10 @@
 from io import BytesIO
 
-from PIL.Image import Image
 from django.core.files.uploadedfile import SimpleUploadedFile
-from django.db.models.fields.files import ImageFieldFile
 from django.forms import model_to_dict, FileInput
 from django.forms.fields import *
 from django.test import TestCase
+
 from portfolio.forms import CreateProgrammeForm, MultipleChoiceField, EditProgrammeForm
 from portfolio.models import Company, Portfolio_Company, Individual, Programme
 

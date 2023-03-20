@@ -1,12 +1,11 @@
 """ authentication view classes or view functions """
 
+from django.contrib import messages
+from django.contrib.auth import login, logout
 from django.shortcuts import redirect, render
 from django.views import View
 
 from portfolio.forms import LogInForm
-from django.contrib import messages
-from django.contrib.auth import login, logout
-
 from portfolio.views.mixins import LoginProhibitedMixin
 from vcpms import settings
 
@@ -48,11 +47,11 @@ class LogInCBV(LoginProhibitedMixin, View):
 def log_out(request):
     """sign out the current user"""
     try:
-      del request.session['company_layout']
-      del request.session['company_filter']
-      del request.session['individual_layout']
-      del request.session['individual_filter']
-      del request.session['archived_company_filter']
+        del request.session['company_layout']
+        del request.session['company_filter']
+        del request.session['individual_layout']
+        del request.session['individual_filter']
+        del request.session['archived_company_filter']
     except:
         pass
     logout(request)

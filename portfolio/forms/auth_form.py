@@ -1,6 +1,7 @@
 from django import forms
 from django.contrib.auth import authenticate
 from django.contrib.auth.models import Group
+
 from portfolio.models import User
 
 
@@ -30,7 +31,7 @@ class UserCreationForm(forms.ModelForm):
         label='Group',
         queryset=Group.objects.all(),
         empty_label=None,
-        required = False
+        required=False
     )
 
     def save(self, commit=True):
@@ -44,6 +45,7 @@ class UserCreationForm(forms.ModelForm):
         if commit:
             user.save()
         return user
+
 
 class EditUserForm(forms.ModelForm):
     class Meta:

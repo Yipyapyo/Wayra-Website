@@ -1,6 +1,7 @@
 from django import forms
-from portfolio.models import Document, Company
 from django.utils.translation import gettext_lazy as _
+
+from portfolio.models import Document
 
 
 class DocumentUploadForm(forms.ModelForm):

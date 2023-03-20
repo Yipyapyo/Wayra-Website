@@ -98,6 +98,7 @@ class UserEditFormView(LoginRequiredMixin, UserPassesTestMixin, FindObjectMixin,
     def get_success_url(self):
         return reverse('permission_user_list')
 
+
 class UserResetPasswordView(LoginRequiredMixin, UserPassesTestMixin, FindObjectMixin, UpdateView):
     http_method_names = ['get', 'post']
     model = User
@@ -194,7 +195,6 @@ class GroupDeleteView(LoginRequiredMixin, UserPassesTestMixin, FindObjectMixin, 
 
     def handle_no_permission(self):
         return redirect('dashboard')
-
 
     def get_success_url(self):
         return reverse('permission_group_list')

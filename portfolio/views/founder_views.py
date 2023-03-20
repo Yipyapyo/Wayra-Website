@@ -1,19 +1,20 @@
-from django.shortcuts import render
-from portfolio.models.founder_model import Founder
-from portfolio.forms.founder_form import FounderForm
-from django.shortcuts import redirect, render
 from django.contrib.auth.decorators import login_required
+from django.shortcuts import redirect, render
+
+from portfolio.forms.founder_form import FounderForm
+from portfolio.models.founder_model import Founder
 
 """
 Create a founder.
 """
+
 
 @login_required
 def founder_create(request):
     if request.method == 'POST':
         founder_form = FounderForm(request.POST, prefix="form1")
         if founder_form.is_valid():
-            founder_form.save()     
+            founder_form.save()
             return redirect("individual_page")
     else:
         founder_form = FounderForm(prefix="form1")
@@ -22,9 +23,11 @@ def founder_create(request):
     }
     return render(request, "individual/founder_create.html", context=context)
 
+
 """
 Delete a founder.
 """
+
 
 @login_required
 def founder_delete(request, id):
@@ -38,6 +41,8 @@ def founder_delete(request, id):
 """
 Modify a founder.
 """
+
+
 @login_required
 def founder_modify(request, id):
     founder_form = Founder.objects.get(id=id)

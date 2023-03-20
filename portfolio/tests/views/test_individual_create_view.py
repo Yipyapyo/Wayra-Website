@@ -1,9 +1,10 @@
 """Tests of the individual create view."""
 from django.test import TestCase
 from django.urls import reverse
-from portfolio.models import Individual, ResidentialAddress, PastExperience, User
 from django_countries.fields import Country
+
 from portfolio.forms import IndividualCreateForm, AddressCreateForm, PastExperienceForm
+from portfolio.models import Individual, ResidentialAddress, PastExperience, User
 from portfolio.tests.helpers import reverse_with_next, set_session_variables
 
 
@@ -39,15 +40,15 @@ class IndividualCreateViewTestCase(TestCase):
             "form2-state": "testState",
             "form2-country": Country("AD"),
             "0-companyName": "exampleCompany",
-            "0-workTitle" : "exampleWork",
-            "0-start_year" : 2033,
-            "0-end_year" : 2035,
-            "0-Description" : "testCase",
+            "0-workTitle": "exampleWork",
+            "0-start_year": 2033,
+            "0-end_year": 2035,
+            "0-Description": "testCase",
             "1-companyName": "exampleCompany2",
-            "1-workTitle" : "exampleWork2",
-            "1-start_year" : 2034,
-            "1-end_year" : 2036,
-            "1-Description" : "testCase2",
+            "1-workTitle": "exampleWork2",
+            "1-start_year": 2034,
+            "1-end_year": 2036,
+            "1-Description": "testCase2",
         }
 
     def test_individual_create_view_url(self):
@@ -121,7 +122,6 @@ class IndividualCreateViewTestCase(TestCase):
         after_count_adress = ResidentialAddress.objects.count()
         after_count_past_work = PastExperience.objects.count()
 
-
         self.assertEqual(after_count_individual, before_count_individual + 1)
         individual = Individual.objects.get(Company='exampleCompany')
         self.assertEqual(individual.name, "Jemma Doe")
@@ -145,7 +145,7 @@ class IndividualCreateViewTestCase(TestCase):
         self.assertEqual(residential_adress.individual, individual)
 
         self.assertEqual(after_count_past_work, before_count_past_work + 2)
-        past_work_1 = PastExperience.objects.get(companyName = "exampleCompany")
+        past_work_1 = PastExperience.objects.get(companyName="exampleCompany")
         self.assertEqual(past_work_1.companyName, "exampleCompany")
         self.assertEqual(past_work_1.workTitle, "exampleWork")
         self.assertEqual(past_work_1.start_year, 2033)
@@ -154,7 +154,7 @@ class IndividualCreateViewTestCase(TestCase):
         self.assertEqual(past_work_1.Description, "testCase")
         self.assertEqual(past_work_1.individual, individual)
 
-        past_work_2 = PastExperience.objects.get(companyName = "exampleCompany2")
+        past_work_2 = PastExperience.objects.get(companyName="exampleCompany2")
         self.assertEqual(past_work_2.companyName, "exampleCompany2")
         self.assertEqual(past_work_2.workTitle, "exampleWork2")
         self.assertEqual(past_work_2.start_year, 2034)

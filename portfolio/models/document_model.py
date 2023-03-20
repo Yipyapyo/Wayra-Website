@@ -1,9 +1,10 @@
-from django.db import models
-from django.dispatch import receiver
-from django.core.validators import RegexValidator
-from portfolio.models import Company
 import os
 
+from django.core.validators import RegexValidator
+from django.db import models
+from django.dispatch import receiver
+
+from portfolio.models import Company
 
 DEFAULT_PATH = "documents/"
 
@@ -53,7 +54,7 @@ class Document(models.Model):
             models.CheckConstraint(
                 name="%(app_label)s_%(class)s_url_or_file",
                 check=(
-                    models.Q(url__isnull=True, file__gt="") | models.Q(url__isnull=False, file__exact="")
+                        models.Q(url__isnull=True, file__gt="") | models.Q(url__isnull=False, file__exact="")
                 ),
             )
         ]

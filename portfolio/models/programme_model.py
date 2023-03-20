@@ -1,6 +1,6 @@
-from django.core.exceptions import ValidationError
-from django.db import models
 from django.core.validators import MinValueValidator, validate_image_file_extension
+from django.db import models
+
 from portfolio.models import Individual, Company
 
 

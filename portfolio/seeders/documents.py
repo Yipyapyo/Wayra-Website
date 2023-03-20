@@ -1,6 +1,8 @@
 import random
+
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.files.uploadedfile import SimpleUploadedFile
+
 from portfolio.models import Document, Company
 from portfolio.seeders import Seeder
 

@@ -1,16 +1,15 @@
-#backgrouhd
-{
-  background-color: red;
+#backgrouhd {
+    background-color: red;
 }
 
 
 .lesson-grid {
-    display: grid; 
+    display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     gap: 20px;
-  }
-  
-.wayra-logo{
+}
+
+.wayra-logo {
     max-width: 120px;
     mix-blend-mode: multiply;
 }
@@ -20,182 +19,175 @@
 }
 
 .btn.mb-2.home_button.btn-lg.btn-secondary.mb-2 {
-  font-size: 25px;
-  color: #000000;
-  font-family: inherit;
-  font-weight: 800;
-  cursor: pointer;
-  position: relative;
-  border: none;
-  background: none;
-  text-transform: uppercase;
-  transition-timing-function: cubic-bezier(0.25, 0.8, 0.25, 1);
-  transition-duration: 400ms;
-  transition-property: color;
+    font-size: 25px;
+    color: #000000;
+    font-family: inherit;
+    font-weight: 800;
+    cursor: pointer;
+    position: relative;
+    border: none;
+    background: none;
+    text-transform: uppercase;
+    transition-timing-function: cubic-bezier(0.25, 0.8, 0.25, 1);
+    transition-duration: 400ms;
+    transition-property: color;
 }
 
 .btn.mb-2.home_button.btn-lg.btn-secondary.mb-3 {
-  font-size: 55px;
-  color: #000000;
-  font-family: inherit;
-  font-weight: 800;
-  cursor: pointer;
-  position: relative;
-  border: none;
-  background: none;
-  text-transform: uppercase;
-  transition-timing-function: cubic-bezier(0.25, 0.8, 0.25, 1);
-  transition-duration: 400ms;
-  transition-property: color;
+    font-size: 55px;
+    color: #000000;
+    font-family: inherit;
+    font-weight: 800;
+    cursor: pointer;
+    position: relative;
+    border: none;
+    background: none;
+    text-transform: uppercase;
+    transition-timing-function: cubic-bezier(0.25, 0.8, 0.25, 1);
+    transition-duration: 400ms;
+    transition-property: color;
 }
 
 .btn.mb-2.home_button.btn-lg.btn-secondary.mb-2:focus,
 .btn.mb-2.home_button.btn-lg.btn-secondary.mb-2:hover {
-  color: #b82929;
+    color: #b82929;
 }
 
 .btn.mb-2.home_button.btn-lg.btn-secondary.mb-2:focus:after,
 .btn.mb-2.home_button.btn-lg.btn-secondary.mb-2:hover:after {
-  width: 100%;
-  left: 0%;
+    width: 100%;
+    left: 0%;
 }
 
 .btn.mb-2.home_button.btn-lg.btn-secondary.mb-2:after {
-  content: "";
-  pointer-events: none;
-  bottom: -2px;
-  left: 50%;
-  position: absolute;
-  width: 0%;
-  height: 2px;
-  background-color: #fff;
-  transition-timing-function: cubic-bezier(0.25, 0.8, 0.25, 1);
-  transition-duration: 400ms;
-  transition-property: width, left;
+    content: "";
+    pointer-events: none;
+    bottom: -2px;
+    left: 50%;
+    position: absolute;
+    width: 0%;
+    height: 2px;
+    background-color: #fff;
+    transition-timing-function: cubic-bezier(0.25, 0.8, 0.25, 1);
+    transition-duration: 400ms;
+    transition-property: width, left;
 }
 
 .individual_count {
-  font-weight: bold;
-  font-size: 36px;
-  font-family: Monospace;
-  border: 2px solid black;
-  outline: #26bcb7 solid 10px;
-  margin: auto;
-  padding: 20px;
-  text-align: center;
+    font-weight: bold;
+    font-size: 36px;
+    font-family: Monospace;
+    border: 2px solid black;
+    outline: #26bcb7 solid 10px;
+    margin: auto;
+    padding: 20px;
+    text-align: center;
 
 }
 
 .individual_delete {
-  padding: 20px;
-  position: relative;
-  font-weight: bold;
-  font-size: 25px;
-  font-family: Monospace;
+    padding: 20px;
+    position: relative;
+    font-weight: bold;
+    font-size: 25px;
+    font-family: Monospace;
 
 }
 
-.company_plus_button{
-  position:fixed;
-  bottom:5px;
-  right:20px;
-  margin:0;
-  padding:5px 3px;
+.company_plus_button {
+    position: fixed;
+    bottom: 5px;
+    right: 20px;
+    margin: 0;
+    padding: 5px 3px;
 }
 
 #search_input:focus {
-  outline: none;
-  box-shadow:none;
-  border:1px solid #ccc;
-} 
-
-.search-div-styling{
-  position:absolute;
-  z-index: 1;
-  max-width: 75%;
+    outline: none;
+    box-shadow: none;
+    border: 1px solid #ccc;
 }
 
-.create-company-plus-button{
-  position:fixed;
-  bottom:30px;
-  right:30px;
-  margin:0;
-  padding:5px 3px;
+.search-div-styling {
+    position: absolute;
+    z-index: 1;
+    max-width: 75%;
 }
 
-
-#companycard{
-
-  transition: all 0.2s ease;
-  cursor: pointer;
-  
-
-}
-  
-
-
-#companycard:hover{
-
-  /* box-shadow: 1px 1px 1px 1px #e9ecef; */
-  transform: scale(1.04);
-}
-
-#individualcard{
-
-  transition: all 0.2s ease;
-  cursor: pointer;
-  
-
-}
-  
-
-
-#individualcard:hover{
-
-  /* box-shadow: 1px 1px 1px 1px #e9ecef; */
-  transform: scale(1.04);
+.create-company-plus-button {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    margin: 0;
+    padding: 5px 3px;
 }
 
 
-#programcard{
+#companycard {
 
-  transition: all 0.2s ease;
-  cursor: pointer;
-  
-
-}
-  
+    transition: all 0.2s ease;
+    cursor: pointer;
 
 
-#programcard:hover{
-
-  /* box-shadow: 1px 1px 1px 1px #e9ecef; */
-  transform: scale(1.04);
 }
 
 
-#navbaritems
-{
-  transition: all 0.2 ease;
-  cursor: pointer;
+#companycard:hover {
+
+    /* box-shadow: 1px 1px 1px 1px #e9ecef; */
+    transform: scale(1.04);
 }
 
-#navbaritems:hover
-{
-  transform: scale(1.01);
-}
+#individualcard {
 
+    transition: all 0.2s ease;
+    cursor: pointer;
 
-#navbar
-{
-  transition: all 0.2s ease;
-  cursor: pointer;
 
 }
 
-#navbar:hover
-{
-  transform: scale(1.01);
+
+#individualcard:hover {
+
+    /* box-shadow: 1px 1px 1px 1px #e9ecef; */
+    transform: scale(1.04);
+}
+
+
+#programcard {
+
+    transition: all 0.2s ease;
+    cursor: pointer;
+
+
+}
+
+
+#programcard:hover {
+
+    /* box-shadow: 1px 1px 1px 1px #e9ecef; */
+    transform: scale(1.04);
+}
+
+
+#navbaritems {
+    transition: all 0.2 ease;
+    cursor: pointer;
+}
+
+#navbaritems:hover {
+    transform: scale(1.01);
+}
+
+
+#navbar {
+    transition: all 0.2s ease;
+    cursor: pointer;
+
+}
+
+#navbar:hover {
+    transform: scale(1.01);
 }
 
 

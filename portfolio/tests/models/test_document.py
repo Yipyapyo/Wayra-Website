@@ -1,9 +1,11 @@
-from django.test import TestCase
+import os
+
 from django.core.exceptions import ValidationError
 from django.core.files.uploadedfile import SimpleUploadedFile
-from portfolio.models import Document
+from django.test import TestCase
+
 from portfolio.models import Company
-import os
+from portfolio.models import Document
 
 
 class DocumentModelTestCase(TestCase):

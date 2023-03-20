@@ -1,11 +1,13 @@
 from django import forms
 from django_select2 import forms as d2forms
-from portfolio.models import Company, Individual, Portfolio_Company, Programme
+
+from portfolio.models import Company, Individual, Programme
 
 
 class MultipleChoiceField(forms.ModelMultipleChoiceField):
     def label_from_instance(self, obj):
         return obj.name
+
 
 class CompanySelectWidget(d2forms.ModelSelect2MultipleWidget):
     search_fields = ['name__icontains']

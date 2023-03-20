@@ -2,10 +2,10 @@ import random
 
 from django.core.exceptions import ObjectDoesNotExist
 
-from portfolio.seeders import Seeder
 from portfolio.models import Company, Investment, Portfolio_Company, Individual
 from portfolio.models.investment_model import FOUNDING_ROUNDS, ContractRight
 from portfolio.models.investor_model import Investor
+from portfolio.seeders import Seeder
 
 
 class InvestorCompanySeeder(Seeder):
