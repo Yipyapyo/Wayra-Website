@@ -20,16 +20,16 @@ class DocumentUploadForm(forms.ModelForm):
         self.fields["file"].required = True
 
     def save(self, commit=True):
-        document = super().save(commit=False)
-        document.file_name = self.cleaned_data["file"].name
-        document.file_type = self.cleaned_data["file"].name.split(".")[-1]
-        document.file_size = self.cleaned_data["file"].size
-        document.is_public = self.cleaned_data["is_private"]
-
         if commit:
-            document.save()
+            super().save()
+        else:
+            document = super().save(commit=False)
+            document.file_name = self.cleaned_data["file"].name
+            document.file_type = self.cleaned_data["file"].name.split(".")[-1]
+            document.file_size = self.cleaned_data["file"].size
+            document.is_public = self.cleaned_data["is_private"]
 
-        return document
+            return document
 
 
 class URLUploadForm(forms.ModelForm):
