@@ -9,7 +9,7 @@ from django.urls import reverse
 from django.views.generic import ListView
 
 from portfolio.forms.company_form import CompanyCreateForm
-from portfolio.models import Company, Programme, Investment, InvestorCompany, Portfolio_Company, Document
+from portfolio.models import Company, Programme, Investment, InvestorCompany, Portfolio_Company, Document, Founder, Individual
 from portfolio.models.investor_model import Investor
 
 
@@ -23,14 +23,11 @@ def dashboard(request):
     print(type(request.session.get('company_filter')))
 
     if int(request.session['company_filter']) == 3:
-        print("A")
         investors = Investor.objects.all()
         companies = Company.objects.filter(id__in=investors.values('company'), is_archived=False).order_by('id')
     elif int(request.session['company_filter']) == 2:
-        print("B")
         companies =Company.objects.filter(parent_company__parent_company__is_archived=False).order_by('id')
     else:
-        print("C")
         companies = Company.objects.filter(is_archived=False).order_by('id')
 
     paginator = Paginator(companies, 6)
@@ -121,7 +118,7 @@ def portfolio_company(request, company_id):
 class CompanyDetailView(LoginRequiredMixin, UserPassesTestMixin, ListView):
     """This page displays details about a single portfolio company"""
 
-    template_name = 'company/portfolio_company_page.html'
+    template_name = 'company/company_page.html'
     context_object_name = 'investments'
     paginate_by = 10
 
@@ -137,8 +134,20 @@ class CompanyDetailView(LoginRequiredMixin, UserPassesTestMixin, ListView):
         context['is_portfolio_company'] = Portfolio_Company.objects.filter(parent_company=self.company).exists()
         context['counter'] = [1, 2, 3]
         context['contract_counter'] = [1, 2, 3, 4]
-        context['programmes'] = Programme.objects.filter(participants__name=self.company.name)
+        programmes = Programme.objects.filter(participants__name=self.company.name)
+        context['programmes'] = programmes
         context['documents'] = Document.objects.filter(company=self.company)
+        founders = Founder.objects.all()
+        context["founders"] = Individual.objects.filter(id__in=founders.values('individualFounder'), is_archived=False)
+        investments = Investment.objects.filter(startup=self.company.id)
+        investors = Investor.objects.filter(id__in=investments.values('investor'))
+        context['company_investors'] = Company.objects.filter(id__in=investors.values('company'))
+        context['individual_investors'] = Individual.objects.filter(id__in=investors.values('individual'))
+        coaches_mentors = Individual.objects.none()
+        for programme in programmes:
+            coaches_mentors = coaches_mentors.union(programme.coaches_mentors.all())
+        context['coaches_mentors'] = coaches_mentors
+        
         return context
 
     def get_queryset(self):
