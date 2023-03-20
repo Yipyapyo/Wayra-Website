@@ -21,7 +21,7 @@
 
             <div class="btn-group me-1">
                 {% if user.is_authenticated %}
-                    <a href="{% url 'document_upload' company.id %}" class="btn btn-sm btn-outline-primary">Upload a
+                    <a href="{% url 'company_document_upload' company.id %}" class="btn btn-sm btn-outline-primary">Upload a
                         document</a>
                 {% endif %}
             </div>
