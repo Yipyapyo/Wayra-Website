@@ -6,7 +6,7 @@ from django.template.loader import render_to_string
 from django.urls import reverse
 
 from portfolio.forms import IndividualCreateForm, AddressCreateForm, PastExperienceForm
-from portfolio.models import Individual, ResidentialAddress, Founder
+from portfolio.models import Individual, ResidentialAddress, Founder, Document
 from portfolio.models.investment_model import Investor
 from portfolio.models.past_experience_model import PastExperience
 
@@ -199,8 +199,13 @@ View an individual profile page
 @login_required
 def individual_profile(request, id):
     individual = Individual.objects.get(id=id)
+    documents = Document.objects.filter(individual=individual)
     if not individual.is_archived or (individual.is_archived and request.user.is_staff):
-        return render(request, 'individual/individual_about_page.html', {"individual": individual})
+        context = {
+            'individual': individual,
+            'documents': documents,
+        }
+        return render(request, 'individual/individual_about_page.html', context)
     else:
         return redirect('individual_page')
 
