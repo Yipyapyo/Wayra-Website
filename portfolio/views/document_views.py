@@ -53,7 +53,7 @@ def individual_document_upload(request, individual_id):
                 new_document = form.save(commit=False)
                 new_document.individual_id = individual_id
                 new_document.save()
-                return redirect("portfolio_individual", individual_id=individual_id)
+                return redirect("individual_profile", id=individual_id)
 
         elif "upload_url" in request.POST:
             form = URLUploadForm(request.POST)
@@ -62,7 +62,7 @@ def individual_document_upload(request, individual_id):
                 new_document = form.save(commit=False)
                 new_document.individual_id = individual_id
                 new_document.save()
-                return redirect("portfolio_individual", individual_id=individual_id)
+                return redirect("individual_profile", id=individual_id)
     else:
         file_form = DocumentUploadForm()
         url_form = URLUploadForm()
@@ -87,7 +87,7 @@ def programme_document_upload(request, programme_id):
                 new_document = form.save(commit=False)
                 new_document.programme_id = programme_id
                 new_document.save()
-                return redirect("portfolio_programme", programme_id=programme_id)
+                return redirect("programme_detail", id=programme_id)
 
         elif "upload_url" in request.POST:
             form = URLUploadForm(request.POST)
@@ -96,7 +96,7 @@ def programme_document_upload(request, programme_id):
                 new_document = form.save(commit=False)
                 new_document.programme_id = programme_id
                 new_document.save()
-                return redirect("portfolio_programme", programme_id=programme_id)
+                return redirect("programme_detail", id=programme_id)
     else:
         file_form = DocumentUploadForm()
         url_form = URLUploadForm()
