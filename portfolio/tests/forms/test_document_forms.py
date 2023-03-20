@@ -4,13 +4,13 @@ import shutil
 import time
 from io import BytesIO
 
-from django.core.exceptions import ValidationError
-from django.core.files.uploadedfile import SimpleUploadedFile
 from django import forms
+from django.core.files.uploadedfile import SimpleUploadedFile
 from django.db import IntegrityError
 from django.test import TestCase
-from portfolio.models import Company, Document
+
 from portfolio.forms import URLUploadForm, DocumentUploadForm
+from portfolio.models import Company, Document
 from vcpms.settings import MEDIA_ROOT
 
 
@@ -54,6 +54,7 @@ class URLUploadFormTest(TestCase):
 
 class DocumentFormTestCase(TestCase):
     fixtures = ["portfolio/tests/fixtures/default_company.json"]
+
     def setUp(self) -> None:
         file = BytesIO()
         file.write(open("portfolio/tests/forms/TestingExcel.xlsx", 'rb').read())
@@ -74,7 +75,6 @@ class DocumentFormTestCase(TestCase):
                     shutil.rmtree(directory)
             except IOError:
                 time.sleep(.1)
-
 
     def test_valid_document_create_form(self):
         form = DocumentUploadForm(data=self.form_input, files=self.form_input)

@@ -1,5 +1,5 @@
-from portfolio.seeders import Seeder
 from portfolio.models import Individual, ResidentialAddress
+from portfolio.seeders import Seeder
 
 
 class IndividualSeeder(Seeder):
@@ -9,11 +9,10 @@ class IndividualSeeder(Seeder):
         self._populate_individuals(self.INDIVIDUAL_COUNT)
         print(f"{Individual.objects.count()} companies in the db.\n")
 
-
     def _populate_individuals(self, count):
         """Seeder for fake individuals"""
         print('seeding individuals...')
-        for i in range(1,count+1):
+        for i in range(1, count + 1):
             name = self.faker.name()
             company = self.faker.company()
             position = self.faker.job()

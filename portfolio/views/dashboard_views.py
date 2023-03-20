@@ -1,7 +1,6 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.core.paginator import Paginator, EmptyPage
-from django.db.models import Q
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.template.loader import render_to_string
@@ -28,7 +27,7 @@ def dashboard(request):
         companies = Company.objects.filter(id__in=investors.values('company'), is_archived=False).order_by('id')
     elif int(request.session['company_filter']) == 2:
         # print("B")
-        companies =Company.objects.filter(parent_company__parent_company__is_archived=False).order_by('id')
+        companies = Company.objects.filter(parent_company__parent_company__is_archived=False).order_by('id')
     else:
         # print("C")
         companies = Company.objects.filter(is_archived=False).order_by('id')
@@ -64,15 +63,17 @@ def searchcomp(request):
                 # investor_companies = InvestorCompany.objects.all()
                 # search_result = Company.objects.filter(id__in=investor_companies.values('company'), is_archived=False, name__contains=searched)[:5]
                 investors = Investor.objects.all()
-                search_result = Company.objects.filter(id__in=investors.values('company'), is_archived=False, name__contains=searched).order_by('id')[:5]
+                search_result = Company.objects.filter(id__in=investors.values('company'), is_archived=False,
+                                                       name__contains=searched).order_by('id')[:5]
             elif request.session['company_filter'] == 2:
-                search_result = Company.objects.filter(parent_company__parent_company__is_archived=False, parent_company__parent_company__name__contains=searched)[:5]
+                search_result = Company.objects.filter(parent_company__parent_company__is_archived=False,
+                                                       parent_company__parent_company__name__contains=searched)[:5]
             else:
                 search_result = Company.objects.filter(name__contains=searched, is_archived=False).values()[:5]
-            response.append(("Companies", list(search_result),{'destination_url':'portfolio_company'}))
+            response.append(("Companies", list(search_result), {'destination_url': 'portfolio_company'}))
 
         search_results_table_html = render_to_string('partials/search/search_results_table.html', {
-            'search_results': response, 'searched': searched, "destination_url":"portfolio_company"})
+            'search_results': response, 'searched': searched, "destination_url": "portfolio_company"})
 
         return HttpResponse(search_results_table_html)
 
@@ -84,11 +85,15 @@ def searchcomp(request):
         else:
             if request.session['company_filter'] == 3:
                 investor_companies = InvestorCompany.objects.all()
-                companies = Company.objects.filter(id__in=investor_companies.values('company'), is_archived=False, name__contains=searched).order_by('id')[:5]
+                companies = Company.objects.filter(id__in=investor_companies.values('company'), is_archived=False,
+                                                   name__contains=searched).order_by('id')[:5]
             elif request.session['company_filter'] == 2:
-                companies = Company.objects.filter(parent_company__parent_company__is_archived=False, parent_company__parent_company__name__contains=searched).order_by('id')[:5]
+                companies = Company.objects.filter(parent_company__parent_company__is_archived=False,
+                                                   parent_company__parent_company__name__contains=searched).order_by(
+                    'id')[:5]
             else:
-                companies = Company.objects.filter(name__contains=searched, is_archived=False).values().order_by('id')[:5]
+                companies = Company.objects.filter(name__contains=searched, is_archived=False).values().order_by('id')[
+                            :5]
 
         paginator = Paginator(companies, 6)
         try:

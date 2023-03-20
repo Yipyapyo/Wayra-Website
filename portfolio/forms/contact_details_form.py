@@ -1,8 +1,8 @@
 """Forms for the VC portfolio management site"""
 from django import forms
-from portfolio.models import User
 from django.core.validators import RegexValidator
-from django.contrib.auth.hashers import check_password
+
+from portfolio.models import User
 
 
 # Form for updating a user model
@@ -19,7 +19,7 @@ class ContactDetailsForm(forms.ModelForm):
                 message="Your phone number should be of the format: 0712345678 or +44712345678"
             )
         ])
-    
+
     def __init__(self, user, *args, **kwargs):
         super(ContactDetailsForm, self).__init__(*args, **kwargs)
         self.user = user

@@ -1,7 +1,6 @@
 """Unit tests of the Programme model."""
 from django.core.exceptions import ValidationError
 from django.test import TestCase
-from PIL import Image
 
 from portfolio.models import Programme, Company, Portfolio_Company, Individual
 
@@ -220,4 +219,3 @@ class ProgrammeModelTestCase(TestCase):
             self.programme.cover = f
             self._assert_programme_is_invalid()
             f.close()
-

@@ -1,8 +1,8 @@
 """Unit tests of the log in view"""
 
+from django.contrib import messages
 from django.test import TestCase
 from django.urls import reverse
-from django.contrib import messages
 
 from portfolio.forms import LogInForm
 from portfolio.models import User
@@ -117,7 +117,8 @@ class LogInViewTestCase(TestCase, LogInTester):
         self.assertRedirects(response, redirect_url, status_code=302, target_status_code=200)
         self.assertTemplateUsed(response, "company/main_dashboard.html")
 
-class LogOutViewTestCase(TestCase,LogInTester):
+
+class LogOutViewTestCase(TestCase, LogInTester):
     fixtures = ['portfolio/tests/fixtures/default_user.json',
                 'portfolio/tests/fixtures/other_users.json']
 

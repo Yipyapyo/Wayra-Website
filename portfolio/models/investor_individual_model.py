@@ -1,5 +1,6 @@
 """The investor individual model."""
 from django.db import models
+
 from portfolio.models.individual_model import Individual, IndividualManager
 
 

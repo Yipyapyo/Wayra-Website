@@ -1,36 +1,40 @@
 """Unit tests of the Profile Picture form."""
-from django import forms
-from django.test import TestCase
-from portfolio.models import User
-from portfolio.forms import ProfilePictureForm
-from io import BytesIO
-from django.core.files.uploadedfile import SimpleUploadedFile
 import logging
+from io import BytesIO
+
+from django import forms
+from django.core.files.uploadedfile import SimpleUploadedFile
+from django.test import TestCase
+
+from portfolio.forms import ProfilePictureForm
+from portfolio.models import User
+
 logging.getLogger("PIL").setLevel(logging.WARNING)
 
-class CompanyCreateFormTestCase(TestCase):
 
+class CompanyCreateFormTestCase(TestCase):
     fixtures = [
         "portfolio/tests/fixtures/default_user.json",
     ]
 
-    #Set up an examplery input to use for the tests
+    # Set up an examplery input to use for the tests
     def setUp(self):
         self.user = User.objects.get(email="john.doe@example.org")
         image_file = BytesIO()
         image_file.write(open("portfolio/static/images/wayra_logo.png", 'rb').read())
         image_file.seek(0)
-        self.file_data = SimpleUploadedFile("portfolio/static/images/wayra_logo.png", image_file.read(), content_type="image/png")
+        self.file_data = SimpleUploadedFile("portfolio/static/images/wayra_logo.png", image_file.read(),
+                                            content_type="image/png")
         self.form_input = {
-             "profile_picture" :self.file_data,
+            "profile_picture": self.file_data,
         }
 
-    #Default Tests
+    # Default Tests
     def test_valid_profile_picture_form(self):
         form = ProfilePictureForm(data=self.form_input, instance=self.user, files=self.form_input)
         self.assertTrue(form.is_bound)
         self.assertTrue(form.is_valid())
-        
+
     def test_profile_picture_form_has_necessary_fields(self):
         form = ProfilePictureForm()
         self.assertIn('profile_picture', form.fields)
@@ -50,5 +54,5 @@ class CompanyCreateFormTestCase(TestCase):
         self.user = User.objects.get(email="john.doe@example.org")
         new_profile_picture = self.user.profile_picture
         self.assertNotEqual(old_profile_picture, new_profile_picture)
-        #self.assertEqual(self.user.profile_picture.url, "/media/wayra_logo.png")
+        # self.assertEqual(self.user.profile_picture.url, "/media/wayra_logo.png")
         self.user.profile_picture.delete()

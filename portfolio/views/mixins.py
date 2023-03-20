@@ -1,4 +1,3 @@
-from django.contrib.auth.models import Group
 from django.core.exceptions import ImproperlyConfigured, ObjectDoesNotExist
 from django.shortcuts import redirect
 
@@ -28,9 +27,6 @@ class LoginProhibitedMixin:
             )
         else:
             return self.redirect_when_logged_in_url
-
-
-
 
 
 class FindObjectMixin:

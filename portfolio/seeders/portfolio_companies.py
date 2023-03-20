@@ -2,8 +2,8 @@ import random
 
 from django.core.exceptions import ObjectDoesNotExist
 
-from portfolio.seeders import Seeder
 from portfolio.models import Portfolio_Company, Company
+from portfolio.seeders import Seeder
 
 
 class PortfolioCompaniesSeeder(Seeder):
@@ -35,7 +35,7 @@ class PortfolioCompaniesSeeder(Seeder):
                 crn = random.randint(0, 10 ** 8)
                 address = self.faker.address()
                 city = self.faker.city()
-                
+
                 p_company = Company.objects.create(
                     name=name,
                     company_registration_number=crn,

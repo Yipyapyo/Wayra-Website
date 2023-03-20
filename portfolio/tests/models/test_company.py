@@ -1,6 +1,7 @@
-from django.test import TestCase
 from django.core.exceptions import ValidationError
+from django.test import TestCase
 from django.utils import timezone
+
 from portfolio.models import Company
 
 
@@ -35,6 +36,7 @@ class CompanyModelTestCase(TestCase):
         self._assert_company_is_invalid()
 
     """Helper functions"""
+
     # Assert a company is valid
     def _assert_company_is_valid(self):
         try:
