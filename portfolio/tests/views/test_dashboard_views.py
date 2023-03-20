@@ -47,7 +47,7 @@ class DashboardViewTestCase(TestCase, LogInTester):
     def test_dashboard_urls(self):
         self.assertEqual(self.url, '/dashboard/')
         self.assertEqual(self.search_url, '/search_result')
-        self.assertEqual(self.portfolio_company_url, '/portfolio_company/1')
+        self.assertEqual(self.portfolio_company_url, '/portfolio_company/1/')
         self.assertEqual(self.create_company_url, '/portfolio_company/company_create/')
         self.assertEqual(self.update_company_url, '/portfolio_company/company_update/1')
         self.assertEqual(self.delete_company_url, '/portfolio_company/company_delete/1')
@@ -168,7 +168,7 @@ class DashboardViewTestCase(TestCase, LogInTester):
         self.client.login(email=self.user.email, password="Password123")
         response = self.client.get(self.portfolio_company_url)
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'company/portfolio_company_page.html')
+        self.assertTemplateUsed(response, 'company/company_page.html')
         company = response.context['company']
         self.assertEqual(company.id, 1)
 

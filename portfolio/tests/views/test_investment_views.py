@@ -196,7 +196,7 @@ class InvestmentDeleteViewTestCase(TestCase, LogInTester):
         before_count = Investment.objects.count()
         response = self.client.post(self.url, follow=True)
         after_count = Investment.objects.count()
-        self.assertTemplateUsed(response, 'company/portfolio_company_page.html')
+        self.assertTemplateUsed(response, 'company/company_page.html')
         self.assertEqual(response.context['company'], self.defaultCompany)
         self.assertEqual(before_count - 1, after_count)
 
@@ -300,7 +300,7 @@ class InvestorUpdateViewTestCase(TestCase):
         before_count = Investor.objects.count()
         response = self.client.post(self.url, self.form_input, follow=True)
         after_count = Investor.objects.count()
-        self.assertTemplateUsed(response, 'company/portfolio_company_page.html')
+        self.assertTemplateUsed(response, 'company/company_page.html')
         self.assertEqual(response.context['company'], self.defaultCompany)
         self.assertEqual(before_count, after_count)
 

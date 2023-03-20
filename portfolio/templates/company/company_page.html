@@ -78,9 +78,11 @@
         </div>
         <div id="rounds" class="tab-pane fade">
             {% if is_investor_company %}
-                {% include 'investment/investments_list.html' with investments=investments %}
+                {% include 'investment/investments_list_startups.html' with investments=investments %}
+            {% elif is_portfolio_company  %}
+                {% include 'investment/investments_list_investors.html' with investments=investments %}
             {% else %}
-            Wayra rounds go here
+                Wayra rounds go here
             {% endif %}
         </div>
     </div>
