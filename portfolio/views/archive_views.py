@@ -149,7 +149,8 @@ def change_archived_individual_filter(request):
                 result = Individual.objects.filter(id__in=founder_individuals.values('individualFounder'),
                                                    is_archived=True).order_by('id')
             elif request.session['archived_individual_filter'] == '3':
-                result = Investor.objects.filter(company__is_null=True, is_archived=True).order_by('id')
+                all_investors = Investor.objects.all()
+                result = Individual.objects.filter(id__in=all_investors.values('individual'), is_archived=True).order_by('id')
             else:
                 result = Individual.objects.filter(is_archived=True).values().order_by('id')
 

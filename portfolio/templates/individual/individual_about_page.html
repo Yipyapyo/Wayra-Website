@@ -61,9 +61,9 @@
                 </li>
                 <li class="nav-item"><a data-target="#documents" data-toggle="tab" class="nav-link font-regular">Documents</a>
                 </li>
-                {% if is_investor %}
+                {% if individual|is_investor %}
                     <li class="nav-item"><a data-target="#rounds" data-toggle="tab" class="nav-link font-regular">
-                        investments
+                        Investments
                     </a></li>
                 {% endif %}
             </ul>
@@ -81,7 +81,7 @@
                         {% include 'document/document_page.html' with documents=documents %}
                     </div>
                 </div>
-                {% if is_investor %}
+                {% if individual|is_investor %}
                     <div id="rounds" class="tab-pane fade">
                         {% include 'investment/investments_list_startups.html' with investments=investments %}
                     </div>
