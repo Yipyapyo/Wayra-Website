@@ -19,7 +19,6 @@ from django.contrib import admin
 from django.urls import path, include
 
 from portfolio import views
-from portfolio.views import investor_individual_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),

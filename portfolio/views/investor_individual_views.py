@@ -2,7 +2,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect, render
 from django.urls import reverse
-from django.views.generic import CreateView
+from django.views.generic import CreateView, UpdateView
 
 from portfolio.forms import InvestorIndividualCreateForm, InvestorEditForm
 from portfolio.models import Investor
@@ -10,7 +10,6 @@ from portfolio.models import Investor
 """
 Create a investor_individual.
 """
-
 
 # @login_required
 # def investor_individual_create(request):
@@ -46,7 +45,6 @@ Create a investor_individual.
 """
 Delete a investor_individual.
 """
-
 
 # @login_required
 # def investor_individual_delete(request, id):
@@ -94,20 +92,21 @@ Modify a investor_individual.
 #         'pastExperienceForms': forms3,
 #     }
 #     return render(request, 'individual/investor_individual_modify.html', context=context)
-class InvestorIndividualCreateView(LoginRequiredMixin,CreateView):
+class InvestorIndividualCreateView(LoginRequiredMixin, CreateView):
     template_name = 'individual/investor_individual_create.html'
     form_class = InvestorIndividualCreateForm
     model = Investor
-    http_method_names = ['get','post']
+    http_method_names = ['get', 'post']
 
     def get_success_url(self):
         return reverse('individual_page')
 
 
-class InvestorIndividualUpdateView(LoginRequiredMixin, CreateView):
+class InvestorIndividualUpdateView(LoginRequiredMixin, UpdateView):
     template_name = 'individual/investor_individual_modify.html'
     form_class = InvestorEditForm
     model = Investor
+    pk_url_kwarg = 'id'
     http_method_names = ['get', 'post']
 
     def dispatch(self, request, id, *args, **kwargs):
@@ -120,6 +119,4 @@ class InvestorIndividualUpdateView(LoginRequiredMixin, CreateView):
         return context
 
     def get_success_url(self):
-        return reverse('individual_page', kwargs={'individual_id':self.individual_id})
-
-
+        return reverse('individual_profile', kwargs={'id': self.individual_id})

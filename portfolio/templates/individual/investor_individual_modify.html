@@ -16,10 +16,12 @@
         <form action="{% url 'investor_individual_modify' individual_id %}" method="post">
             {% csrf_token %}
             {% include 'partials/utilities/form_input.html' %}
+
             <div class="mb-3">
                 <button type="submit" class="btn btn-primary">Submit</button>
-                <a type="button" class="btn btn-secondary" href="{% url 'individual_profile' individual_id %}">Cancel</a>
+                <a type="button" class="btn btn-secondary" href="{% url 'individual_profile' individual_id%}">Cancel</a>
             </div>
+
         </form>
     </div>
 
