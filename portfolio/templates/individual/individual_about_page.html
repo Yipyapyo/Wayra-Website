@@ -2,125 +2,80 @@
 {% block main %}
     {% load static %}
 
-    <link rel="stylesheet" href="{% static 'css/indiviudal.css' %}">
+    {#    <link rel="stylesheet" href="{% static 'css/indiviudal.css' %}">#}
     <link href="{% static 'css/indiv_about.css' %}" rel="stylesheet"/>
 
-    <div class="px-5 py-2 rounded-3">
-    <div class="d-flex justify-content-between align-items-center border-bottom mb-3">
+    <div class="px-5 py-2 rounded-3 mt-2">
+        <div class="d-flex justify-content-between align-items-center border-bottom mb-3">
 
-        <div class="col">
-            <h2 class="pb-3">Individual</h2>
+            <div class="col">
+                <h2 class="pb-3">Individual</h2>
+            </div>
+
+            <div class="btn-group me-1">
+                {% if user.is_sta %}
+                    <a href="{% url 'individual_document_upload' individual.id %}"
+                       class="btn btn-sm btn-outline-primary">Upload
+                        a document</a>
+                {% endif %}
+            </div>
+
+            <div class="btn-group me-2">
+                {% if individual.is_archived %}
+                    <a type="button" class="btn btn-sm btn-outline-secondary"
+                       href="{% url 'unarchive_individual' individual.id %}">Unrchive</a>
+                {% else %}
+                    <a type="button" class="btn btn-sm btn-outline-success"
+                       href="{% url 'archive_individual' individual.id %}">Archive</a>
+                {% endif %}
+                <a type="button" class="btn btn-sm btn-outline-primary"
+                   href="{% url 'individual_update' individual.id %}">Update</a>
+                <button type="button" class="btn btn-sm btn-outline-danger" data-toggle="modal"
+                        data-target="#deleteIndividualModal">Delete
+                </button>
+            </div>
+
+            {% include 'partials/individual/individual_delete_modal.html' %}
+
         </div>
 
-        <div class="btn-group me-1">
-            {% if user.is_authenticated %}
-                <a href="{% url 'individual_document_upload' individual.id %}" class="btn btn-sm btn-outline-primary">Upload
-                    a
-                    document</a>
-            {% endif %}
-        </div>
-
-        <div class="btn-group me-2">
-            {% if individual.is_archived %}
-                <a type="button" class="btn btn-sm btn-outline-secondary"
-                   href="{% url 'unarchive_individual' individual.id %}">Unrchive</a>
-            {% else %}
-                <a type="button" class="btn btn-sm btn-outline-success"
-                   href="{% url 'archive_individual' individual.id %}">Archive</a>
-            {% endif %}
-            <a type="button" class="btn btn-sm btn-outline-primary" href="{% url 'individual_update' individual.id %}">Update</a>
-            <button type="button" class="btn btn-sm btn-outline-danger" data-toggle="modal"
-                    data-target="#deleteIndividualModal">Delete
-            </button>
-        </div>
-
-        {% include 'partials/individual/individual_delete_modal.html' %}
-
-    </div>
-
-    <div class="row align-items-md-stretch">
-    <div class="col-md-6">
-        <div class="container-fluid">
-            <br>
-            <h5 style="font-size: 1.6rem; font-weight: bold;">Details</h5>
-            <ul class="list-group list-group-flush">
-                <li class="list-group-item mb-2 mt-2">
-                    <h6 style="font-size: 1.1rem; font-weight: bold;">Name</h6>
-                    <h6 style="font-size: 1.0rem;">{{ individual.name }}</h6>
+        <div class="row align-items-md-stretch">
+            <!-- Pills navs -->
+            <ul id="tabs" class="nav nav-pills pb-3 mt-auto overflow-x border-0">
+                <li class="nav-item"><a data-target="#overview" data-toggle="tab" class="nav-link active font-regular">Overview</a>
                 </li>
-                <li class="list-group-item my-2">
-                    <h6 style="font-size: 1.1rem; font-weight: bold;">Position</h6>
-                    <h6 style="font-size: 1.0rem;">{{ individual.Position }}</h6>
+                <li class="nav-item"><a data-target="#individuals" data-toggle="tab" class="nav-link font-regular">Individuals
+                    association</a>
                 </li>
-                <li class="list-group-item my-2">
-                    <div class="col">
-                        <h6 style="font-size: 1.1rem; font-weight: bold;">Company </h6>
-                        <h6 style="font-size: 1.0rem;">{{ individual.Company }}</h6>
-                    </div>
+                <li class="nav-item"><a data-target="#documents" data-toggle="tab" class="nav-link font-regular">Documents</a>
                 </li>
-                <li class="list-group-item my-2">
-                    <h6 style="font-size: 1.1rem; font-weight: bold;">Email</h6>
-                    <h6 style="font-size: 1.0rem;">{{ individual.Email }}</h6>
-                </li>
-                <li class="list-group-item my-2">
-                    <h6 style="font-size: 1.1rem; font-weight: bold;">Phone Number</h6>
-                    <h6 style="font-size: 1.0rem;">{{ individual.PrimaryNumber }}</h6>
-                </li>
-                <li class="list-group-item my-2">
-                    <h6 style="font-size: 1.1rem; font-weight: bold;">Secondary Number</h6>
-                    <h6 style="font-size: 1.0rem;">{{ individual.SecondaryNumber }}</h6>
-                </li>
-                <li class="list-group-item my-2">
-                    <h6 style="font-size: 1.0rem; font-weight: bold;">Links</h6>
-                    <h6 style="font-size: 1.0rem;">{{ individual.LinkedInLink }}</h6>
-                    <br>
-                    <h6 style="font-size: 1.0rem;">{{ individual.CrunchbaseLink }}</h6>
-                    <br>
-                    <h6 style="font-size: 1.0rem;">{{ individual.AngelListLink }}</h6>
-                    <br>
-                </li>
+                {% if is_investor %}
+                    <li class="nav-item"><a data-target="#rounds" data-toggle="tab" class="nav-link font-regular">
+                        investments
+                    </a></li>
+                {% endif %}
             </ul>
-        </div>
-    </div>
 
-    <div class="col-md-6 d-flex justify-content-center align-items-center">
-        <a href="{% url 'individual_profile' individual.id %}" class="text-reset">
-            <div style="background-color: #fff; border-radius: 15px; overflow: hidden; display: flex; flex-direction: column; align-items: center;">
-                <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-profiles/avatar-1.webp"
-                     alt="Profile Picture" class="img-fluid profile-picture rounded-circle my-3">
-                <div class="profile-stats d-flex justify-content-around w-100">
-                    <div class="profile-stats-item">
-                        <p class="small text-muted mb-1">Articles</p>
-                        <p class="mb-0">41</p>
-                    </div>
-                    <div class="profile-stats-item">
-                        <p class="small text-muted mb-1">Followers</p>
-                        <p class="mb-0">976</p>
-                    </div>
-                    <div class="profile-stats-item">
-                        <p class="small text-muted mb-1">Rating</p>
-                        <p class="mb-0">8.5</p>
+            <!-- Pills content -->
+            <div id="tabsContent" class="tab-content">
+                <div id="overview" class="tab-pane fade active show">
+                    {% include 'individual/details_section.html' %}
+                </div>
+                <div id="individuals" class="tab-pane fade">
+                    {% include 'individual/company_association_section.html' with founder_companies=founder_companies %}
+                </div>
+                <div id="documents" class="tab-pane fade">
+                    <div class="container-fluid pt-3">
+                        {% include 'document/document_page.html' with documents=documents %}
                     </div>
                 </div>
+                {% if is_investor %}
+                    <div id="rounds" class="tab-pane fade">
+                        {% include 'investment/investments_list_startups.html' with investments=investments %}
+                    </div>
+                {% endif %}
             </div>
-        </a>
-    </div>
 
-    <div class="container-fluid pt-3">
-        {% include 'document/document_page.html' with documents=documents %}
-    </div>
-
-    <br><br><br>
-    <div class="container-fluid pt-3">
-        <h2>Programmes</h2>
-        <div class="px-5 pt-3 pb-2 mb-4 bg-light rounded-3">
-            <div class="container-fluid py-3">
-                <p>Wayra UK Limited is currently enrolled in the following programmes:</p>
-                <div class="row mb-3">
-                    {% include 'partials/utilities/programme_card.html' %}
-                </div>
-            </div>
         </div>
     </div>
-
 {% endblock %}

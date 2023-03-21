@@ -1,0 +1,22 @@
+<div class="pt-1 pb-3">
+    <h4>Founders of</h4>
+    <div class="row mb-3 rounded bg-light p-3">
+        {% for company in founder_companies%}
+            {% include 'partials/company/company_card.html' with company=company %}
+        {% endfor %}
+        <!-- Add founder card -->
+        <div class="col-lg-4 col-md-6 col-sm-12 mb-0">
+            <div class="h-100 pb-3">
+                <div class="individual-card mx-1 border h-100 d-flex align-items-center text-center">
+                    <div class="w-100 h-auto text-center">
+                        <div class=" row individual-card-info text-center">
+                            <a class="individual-card-title text-decoration-none w-auto"
+                               href="{% url 'founder_create' %}" style="font-size: xx-large;">+</a>
+                            <div class="individual-card-subtitle w-auto">Add Founder</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
