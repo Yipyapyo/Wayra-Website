@@ -1,6 +1,7 @@
 from django import forms
-from portfolio.models import Document, Company
 from django.utils.translation import gettext_lazy as _
+
+from portfolio.models import Document
 
 
 class DocumentUploadForm(forms.ModelForm):
@@ -9,7 +10,8 @@ class DocumentUploadForm(forms.ModelForm):
     class Meta:
         model = Document
         fields = ["file", "is_private"]
-        exclude = ["file_name", "file_type", "file_size", "url", "company", "created_at", "updated_at"]
+        exclude = ["file_name", "file_type", "file_size", "url", "company", "individual", "programme", "created_at",
+                   "updated_at"]
         labels = {
             "file": _("Select a file to upload:"),
             "is_private": _("Staff only:")
@@ -20,16 +22,16 @@ class DocumentUploadForm(forms.ModelForm):
         self.fields["file"].required = True
 
     def save(self, commit=True):
-        document = super().save(commit=False)
-        document.file_name = self.cleaned_data["file"].name
-        document.file_type = self.cleaned_data["file"].name.split(".")[-1]
-        document.file_size = self.cleaned_data["file"].size
-        document.is_public = self.cleaned_data["is_private"]
-
         if commit:
-            document.save()
+            super().save()
+        else:
+            document = super().save(commit=False)
+            document.file_name = self.cleaned_data["file"].name
+            document.file_type = self.cleaned_data["file"].name.split(".")[-1]
+            document.file_size = self.cleaned_data["file"].size
+            document.is_public = self.cleaned_data["is_private"]
 
-        return document
+            return document
 
 
 class URLUploadForm(forms.ModelForm):
@@ -38,7 +40,7 @@ class URLUploadForm(forms.ModelForm):
     class Meta:
         model = Document
         fields = ["file_name", "url", "is_private"]
-        exclude = ["file_type", "file_size", "file", "company", "created_at", "updated_at"]
+        exclude = ["file_type", "file_size", "file", "company", "individual", "programme", "created_at", "updated_at"]
         labels = {
             "file_name": _("File name:"),
             "url": _("URL:"),

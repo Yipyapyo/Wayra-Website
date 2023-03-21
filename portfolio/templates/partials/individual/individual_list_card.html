@@ -11,19 +11,20 @@
                     <div class="flex-grow-1 ms-3">
                         {% load util %}
                         {% if individual|is_founder_and_investor %}
-                        <h4 class="mb-1">Founder/Investor </h4>
+                            <h4 class="mb-1">Founder/Investor </h4>
                         {% elif individual|is_founder %}
-                        <h4 class="mb-1">Founder </h4>
+                            <h4 class="mb-1">Founder </h4>
                         {% elif individual|is_investor %}
-                        <h4 class="mb-1">Investor </h4>
+                            <h4 class="mb-1">Investor </h4>
                         {% else %}
-                        <h4 class="mb-1">Individual</h4>
+                            <h4 class="mb-1">Individual</h4>
                         {% endif %}
                         <h5 class="mb-1">
-                            {{individual.name}}
+                            {{ individual.name }}
                         </h5>
-                        <h7>{{individual.Position}}</h7>
-                        <div class="d-flex justify-content-start rounded-3 p-2 mb-2 mt-2" style="background-color: #efefef;">
+                        <h7>{{ individual.Position }}</h7>
+                        <div class="d-flex justify-content-start rounded-3 p-2 mb-2 mt-2"
+                             style="background-color: #efefef;">
                             <div>
                                 <p class="small text-muted mb-1">Founded</p>
                                 <p class="mb-0">1</p>

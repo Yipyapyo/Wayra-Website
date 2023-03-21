@@ -34,13 +34,13 @@
 
     <div id="tabsContent" class="tab-content">
         <div id="all-companies" class="tab-pane fade active show">
-          {% include 'company/company_dashboard_content_reusable.html' with companies=companies %}
+            {% include 'company/company_dashboard_content_reusable.html' with companies=companies %}
         </div>
         <div id="portfolio" class="tab-pane fade">
-          {% include 'company/company_dashboard_content_reusable.html' with companies=companies %}
+            {% include 'company/company_dashboard_content_reusable.html' with companies=companies %}
         </div>
         <div id="investors" class="tab-pane fade">
-          {% include 'company/company_dashboard_content_reusable.html' with companies=companies %}
+            {% include 'company/company_dashboard_content_reusable.html' with companies=companies %}
         </div>
     </div>
 
@@ -51,9 +51,9 @@
     <!-- Ajax function call -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
     <script>
-      var filter_search_url = "{% url 'change_company_filter' %}";
-      var layout_search_url = "{% url 'change_company_layout' %}";
-      var active_tab = "#all-companies";
+        var filter_search_url = "{% url 'change_company_filter' %}";
+        var layout_search_url = "{% url 'change_company_layout' %}";
+        var active_tab = "#all-companies";
     </script>
 
     <script src="{% static 'js/companies_async.js' %}"></script>

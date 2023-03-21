@@ -1,13 +1,10 @@
 """Tests of the Individual views."""
+from django.http import HttpResponse
 from django.test import TestCase
 from django.urls import reverse
-from portfolio.models import Individual, Founder, User, InvestorIndividual, Investor
-from phonenumber_field.formfields import PhoneNumberField
-from django_countries.fields import Country
-from portfolio.forms import IndividualCreateForm, AddressCreateForm, PastExperienceForm
-from portfolio.tests.helpers import reverse_with_next, set_session_variables, set_session_individual_filter_variable
-from django.http import HttpResponse
 
+from portfolio.models import Individual, Founder, User, Investor
+from portfolio.tests.helpers import reverse_with_next, set_session_variables, set_session_individual_filter_variable
 
 
 class IndividualProfileViewTestCase(TestCase):
@@ -21,7 +18,7 @@ class IndividualProfileViewTestCase(TestCase):
     def setUp(self):
         self.user = User.objects.get(email="john.doe@example.org")
         self.client.login(email=self.user.email, password="Password123")
-        self.url = reverse('individual_profile', kwargs={'id':1})
+        self.url = reverse('individual_profile', kwargs={'id': 1})
         set_session_variables(self.client)
 
     def test_individual_profile_view_url(self):
@@ -46,6 +43,7 @@ class IndividualProfileViewTestCase(TestCase):
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, 302)
 
+
 class IndividualArchiveViewTestCase(TestCase):
     fixtures = [
         "portfolio/tests/fixtures/default_user.json",
@@ -56,7 +54,7 @@ class IndividualArchiveViewTestCase(TestCase):
     def setUp(self):
         self.user = User.objects.get(email="john.doe@example.org")
         self.client.login(email=self.user.email, password="Password123")
-        self.url = reverse('archive_individual', kwargs={'id':1})
+        self.url = reverse('archive_individual', kwargs={'id': 1})
         set_session_variables(self.client)
 
     def test_individual_archive_view_url(self):
@@ -80,8 +78,6 @@ class IndividualArchiveViewTestCase(TestCase):
         self.assertRedirects(response, redirect_url, status_code=302, target_status_code=200)
 
 
-
-
 class IndividualUnarchiveViewTestCase(TestCase):
     """Tests for the individual unarchive views."""
     fixtures = [
@@ -93,14 +89,14 @@ class IndividualUnarchiveViewTestCase(TestCase):
     def setUp(self):
         self.user = User.objects.get(email="john.doe@example.org")
         self.client.login(email=self.user.email, password="Password123")
-        self.url = reverse('unarchive_individual', kwargs={'id':1})
+        self.url = reverse('unarchive_individual', kwargs={'id': 1})
         set_session_variables(self.client)
 
     def test_individual_archive_view_url(self):
         self.assertEqual(self.url, '/individual_page/unarchive/1')
 
     def test_get_individual_unarchive_view(self):
-        response = self.client.get(reverse('archive_individual', kwargs={'id':1}))
+        response = self.client.get(reverse('archive_individual', kwargs={'id': 1}))
         individual = Individual.objects.get(id=1)
         before_archive = individual.is_archived
         response = self.client.get(self.url)
@@ -116,7 +112,8 @@ class IndividualUnarchiveViewTestCase(TestCase):
         redirect_url = reverse_with_next('login', self.url)
         response = self.client.get(self.url)
         self.assertRedirects(response, redirect_url, status_code=302, target_status_code=200)
-    
+
+
 class IndividualFilterViewTestCase(TestCase):
     fixtures = [
         "portfolio/tests/fixtures/default_user.json",
@@ -156,36 +153,36 @@ class IndividualFilterViewTestCase(TestCase):
         self.client.login(email=self.user.email, password="Password123")
         response = self.client.get(self.url, data={'filter_number': 1})
         self.assertEqual(response.status_code, 200)
-        self.assertIsInstance(response, HttpResponse) 
+        self.assertIsInstance(response, HttpResponse)
         individual_search_result = Individual.objects.filter(is_archived=False).values()
         for individual in individual_search_result:
             self.assertContains(response, individual['name'])
         self.assertEqual(len(individual_search_result), 5)
-        
+
     def test_get_change_filter_returns_correct_data_for_founder_individuals(self):
         self.client.login(email=self.user.email, password="Password123")
         set_session_individual_filter_variable(self.client, 2)
         response = self.client.get(self.url, data={'filter_number': 2})
         self.assertEqual(response.status_code, 200)
-        self.assertIsInstance(response, HttpResponse) 
+        self.assertIsInstance(response, HttpResponse)
         founder_individuals = Founder.objects.all()
-        test_result = Individual.objects.filter(id__in=founder_individuals.values('individualFounder'), is_archived=False).order_by('id')
+        test_result = Individual.objects.filter(id__in=founder_individuals.values('individualFounder'),
+                                                is_archived=False).order_by('id')
         for individual in test_result:
             self.assertContains(response, individual.name)
         self.assertEqual(len(test_result), 2)
-    
+
     def test_get_change_filter_returns_correct_data_for_investor_individuals(self):
         self.client.login(email=self.user.email, password="Password123")
         set_session_individual_filter_variable(self.client, 3)
         response = self.client.get(self.url, data={'filter_number': 3})
         self.assertEqual(response.status_code, 200)
-        self.assertIsInstance(response, HttpResponse) 
+        self.assertIsInstance(response, HttpResponse)
         investors = Investor.objects.all()
         test_result = Individual.objects.filter(id__in=investors.values('individual'), is_archived=False).order_by('id')
         for individual in test_result:
             self.assertContains(response, individual.name)
         self.assertEqual(len(test_result), 3)
-
 
 
 class IndividualLayoutViewTestCase(TestCase):
@@ -228,7 +225,7 @@ class IndividualLayoutViewTestCase(TestCase):
         self.client.login(email=self.user.email, password="Password123")
         response = self.client.get(self.url, data={'layout_number': 1})
         self.assertEqual(response.status_code, 200)
-        self.assertIsInstance(response, HttpResponse) 
+        self.assertIsInstance(response, HttpResponse)
         individual_search_result = Individual.objects.filter(is_archived=False).values()
         self.assertEqual(len(individual_search_result), 5)
 
@@ -237,9 +234,10 @@ class IndividualLayoutViewTestCase(TestCase):
         set_session_individual_filter_variable(self.client, 2)
         response = self.client.get(self.url, data={'layout_number': 2})
         self.assertEqual(response.status_code, 200)
-        self.assertIsInstance(response, HttpResponse) 
+        self.assertIsInstance(response, HttpResponse)
         founder_individuals = Founder.objects.all()
-        result = Individual.objects.filter(id__in=founder_individuals.values('individualFounder'), is_archived=False).order_by('id')
+        result = Individual.objects.filter(id__in=founder_individuals.values('individualFounder'),
+                                           is_archived=False).order_by('id')
         self.assertEqual(len(result), 2)
 
     def test_get_change_filter_returns_correct_data_for_investor_individuals(self):
@@ -247,7 +245,7 @@ class IndividualLayoutViewTestCase(TestCase):
         set_session_individual_filter_variable(self.client, 3)
         response = self.client.get(self.url, data={'layout_number': 3})
         self.assertEqual(response.status_code, 200)
-        self.assertIsInstance(response, HttpResponse) 
+        self.assertIsInstance(response, HttpResponse)
         investors = Investor.objects.all()
         test_result = Individual.objects.filter(id__in=investors.values('individual'), is_archived=False).order_by('id')
         self.assertEqual(len(test_result), 3)

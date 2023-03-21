@@ -1,11 +1,10 @@
 """Model to store investments"""
 from django.core.exceptions import ValidationError
-from django.db import models
-
-from portfolio.models import Portfolio_Company
 from django.core.validators import MaxValueValidator
+from django.db import models
 from django.utils import timezone
 
+from portfolio.models import Portfolio_Company
 from portfolio.models.investor_model import Investor
 
 FOUNDING_ROUNDS = [

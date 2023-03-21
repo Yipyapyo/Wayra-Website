@@ -1,7 +1,6 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.core.paginator import Paginator, EmptyPage
-from django.db.models import Q
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.template.loader import render_to_string
@@ -103,23 +102,23 @@ def searchcomp(request):
         return render(request, 'company/main_dashboard.html', {"companies": companies_page, "searched": searched})
 
 
-@login_required
-def portfolio_company(request, company_id):
-    """This page displays information about a single portfolio company"""
-
-    company = Company.objects.get(id=company_id)
-    print(company.is_archived)
-    print("Called")
-    if (company.is_archived or (company.is_archived and request.user.is_staff)):
-        programmes = Programme.objects.filter(Q(participants=company) | Q(partners=company))
-        return render(request, 'company/portfolio_company_page.html',
-                      {'counter': {1, 2, 3},
-                       'contract_counter': {1, 2, 3, 4},
-                       'company': company,
-                       'programmes': programmes
-                       })
-    else:
-        redirect('dashboard')
+# @login_required
+# def portfolio_company(request, company_id):
+#     """This page displays information about a single portfolio company"""
+#
+#     company = Company.objects.get(id=company_id)
+#     print(company.is_archived)
+#     print("Called")
+#     if(company.is_archived or (company.is_archived and request.user.is_staff)):
+#         programmes = Programme.objects.filter(Q(participants=company) | Q(partners=company))
+#         return render(request, 'company/portfolio_company_page.html',
+#                     {'counter': {1, 2, 3},
+#                     'contract_counter': {1, 2, 3, 4},
+#                     'company': company,
+#                     'programmes': programmes
+#                     })
+#     else:
+#         redirect('dashboard')
 
 
 class CompanyDetailView(LoginRequiredMixin, UserPassesTestMixin, ListView):

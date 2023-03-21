@@ -2,8 +2,8 @@ import random
 
 from django.core.exceptions import ObjectDoesNotExist
 
-from portfolio.seeders import Seeder
 from portfolio.models import Company
+from portfolio.seeders import Seeder
 
 
 class CompanySeeder(Seeder):
@@ -14,7 +14,7 @@ class CompanySeeder(Seeder):
         print(f"{Company.objects.count()} companies in the db.\n")
 
     def _create_companies(self, count):
-        for i in range(1,count+1):
+        for i in range(1, count + 1):
             try:
                 Company.objects.get(id=i)
                 print(f"Company with id({i}) has already seeded.")

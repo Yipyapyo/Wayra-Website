@@ -1,8 +1,7 @@
 """Forms for the VC portfolio management site"""
 from django import forms
-from portfolio.models import User
-from django.core.validators import RegexValidator
 from django.contrib.auth.hashers import check_password
+from django.core.validators import RegexValidator
 
 
 # Form for creating an individual / client
@@ -30,7 +29,7 @@ class ChangePasswordForm(forms.Form):
     def __init__(self, user, *args, **kwargs):
         self.user = user
         super(ChangePasswordForm, self).__init__(*args, **kwargs)
-    
+
     def clean(self):
         super().clean()
         old_password = self.cleaned_data.get("old_password")
@@ -38,9 +37,9 @@ class ChangePasswordForm(forms.Form):
         confirm_password = self.cleaned_data.get("confirm_password")
         if new_password != confirm_password:
             self.add_error("confirm_password", "Confirmation does not match password.")
-        
-        if not check_password(old_password, self.user.password):\
-            self.add_error("old_password", "Incorrect Password.")
+
+        if not check_password(old_password, self.user.password): \
+                self.add_error("old_password", "Incorrect Password.")
 
     def save(self):
         self.user.set_password(self.cleaned_data.get("new_password"))

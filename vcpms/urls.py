@@ -13,14 +13,13 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from django.contrib import admin
-from django.urls import path, include
-from portfolio import views
-
-from portfolio.views import founder_views
-from portfolio.views import investor_individual_views
 from django.conf import settings
 from django.conf.urls.static import static
+from django.contrib import admin
+from django.urls import path, include
+
+from portfolio import views
+from portfolio.views import investor_individual_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -29,8 +28,8 @@ urlpatterns = [
     path('logout', views.log_out, name='logout'),
     path('search_result', views.searchcomp, name='company_search_result'),
 
-    path('portfolio_company/', views.portfolio_company, name='portfolio_company'),
-    path('portfolio_company/<int:company_id>/', views.CompanyDetailView.as_view(), name='portfolio_company'),
+    # path('portfolio_company/', views.portfolio_company, name='portfolio_company'),
+    path('portfolio_company/<int:company_id>', views.CompanyDetailView.as_view(), name='portfolio_company'),
     path('portfolio_company/company_create/', views.create_company, name='create_company'),
     path('portfolio_company/company_update/<int:company_id>', views.update_company, name='update_company'),
     path('portfolio_company/company_delete/<int:company_id>', views.delete_company, name='delete_company'),
@@ -71,7 +70,7 @@ urlpatterns = [
     path("programme_page/create/", views.ProgrammeCreateView.as_view(), name="programme_create"),
     path("programme_page/<int:id>/update/", views.ProgrammeUpdateView.as_view(), name="programme_update"),
     path("programme_page/<int:id>/delete/", views.ProgrammeDeleteView.as_view(), name="programme_delete"),
-    path("programme_page/<int:id>/programme_id/", views.ProgrammeDetailView.as_view(), name="programme_detail"),
+    path("programme_page/<int:id>", views.ProgrammeDetailView.as_view(), name="programme_detail"),
     path('programme_page/search_result', views.SearchProgramme.as_view(), name="programme_search_result"),
 
     # Archive views
@@ -117,7 +116,12 @@ urlpatterns = [
          name='portfolio_company_update'),
 
     # Documents
-    path("portfolio_company/<int:company_id>/upload_document/", views.document_upload, name="document_upload"),
+    path("portfolio_company/<int:company_id>/upload_document/", views.company_document_upload,
+         name="company_document_upload"),
+    path("individual_profile_page/<int:individual_id>/upload_document/", views.individual_document_upload,
+         name="individual_document_upload"),
+    path("programme_page/<int:programme_id>/upload_document/", views.programme_document_upload,
+         name="programme_document_upload"),
     path("redirect/<int:file_id>", views.open_url, name="open_url"),
     path("download_document/<int:file_id>", views.download_document, name="download_document"),
     path("document_permissions/<int:file_id>", views.change_permissions, name="change_permissions"),
