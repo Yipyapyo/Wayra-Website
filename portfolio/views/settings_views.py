@@ -1,35 +1,31 @@
-from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, redirect
-from portfolio.forms import ChangePasswordForm, ContactDetailsForm, ProfilePictureForm
-from portfolio.models import User
-import logging
-from django.http import HttpResponse
-from django.template.loader import render_to_string
-import json 
-from django.core.paginator import Paginator, EmptyPage
-from django.urls import reverse
 from django.contrib import messages
-from django.contrib.auth.hashers import check_password
-from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth import logout
+from django.contrib.auth import update_session_auth_hash
+from django.contrib.auth.decorators import login_required
+from django.http import HttpResponse
+from django.shortcuts import render, redirect
 
+from portfolio.forms import ChangePasswordForm, ContactDetailsForm, ProfilePictureForm
 
 """
 View and Update user settings
 """
+
+
 @login_required
 def account_settings(request):
     current_user = request.user
     change_password_form = ChangePasswordForm(user=current_user)
-    contact_details_form = ContactDetailsForm(user= current_user, instance=request.user)
+    contact_details_form = ContactDetailsForm(user=current_user, instance=request.user)
     profile_picture_form = ProfilePictureForm(instance=request.user)
     context = {
-        "user":current_user,
+        "user": current_user,
         "change_password_form": change_password_form,
         "contact_details_form": contact_details_form,
         "profile_picture_form": profile_picture_form,
     }
     return render(request, 'settings/account_settings.html', context)
+
 
 @login_required
 def upload_profile_picture(request):
@@ -43,9 +39,9 @@ def upload_profile_picture(request):
             messages.add_message(request, messages.ERROR, "Unable to update your profile picture!")
             current_user = request.user
             change_password_form = ChangePasswordForm(user=current_user)
-            contact_details_form = ContactDetailsForm(user= current_user, instance=request.user)
+            contact_details_form = ContactDetailsForm(user=current_user, instance=request.user)
             context = {
-                "user":current_user,
+                "user": current_user,
                 "change_password_form": change_password_form,
                 "contact_details_form": contact_details_form,
                 "profile_picture_form": form,
@@ -53,6 +49,7 @@ def upload_profile_picture(request):
             return render(request, 'settings/account_settings.html', context)
     else:
         return HttpResponse("404, Unable to make this call")
+
 
 @login_required
 def remove_profile_picture(request):
@@ -63,12 +60,13 @@ def remove_profile_picture(request):
         messages.add_message(request, messages.ERROR, "You do not have a profile picture!")
     return redirect("account_settings")
 
+
 @login_required
 def change_password(request):
     if request.method == "POST":
         form = ChangePasswordForm(data=request.POST, user=request.user)
         if form.is_valid():
-            #Change the user's password
+            # Change the user's password
             form.save()
             update_session_auth_hash(request, form.user)
 
@@ -77,18 +75,19 @@ def change_password(request):
         else:
             messages.add_message(request, messages.ERROR, "Unable to change your password!")
             current_user = request.user
-            contact_details_form = ContactDetailsForm(user= current_user, instance=request.user)
+            contact_details_form = ContactDetailsForm(user=current_user, instance=request.user)
             profile_picture_form = ProfilePictureForm(instance=request.user)
             context = {
-                "user":current_user,
-                "change_password_form":form,
+                "user": current_user,
+                "change_password_form": form,
                 "contact_details_form": contact_details_form,
                 "profile_picture_form": profile_picture_form,
             }
             return render(request, 'settings/account_settings.html', context)
     else:
         return HttpResponse("404, Unable to make this call")
-    
+
+
 @login_required
 def contact_details(request):
     if request.method == "POST":
@@ -103,14 +102,15 @@ def contact_details(request):
             profile_picture_form = ProfilePictureForm(instance=request.user)
             change_password_form = ChangePasswordForm(user=current_user)
             context = {
-                "user":current_user,
-                "change_password_form":change_password_form,
+                "user": current_user,
+                "change_password_form": change_password_form,
                 "profile_picture_form": profile_picture_form,
                 "contact_details_form": form,
             }
             return render(request, 'settings/account_settings.html', context)
     else:
         return HttpResponse("404, Unable to make this call")
+
 
 @login_required
 def deactivate_account(request):

@@ -1,7 +1,9 @@
 from io import BytesIO
 
 from django.core.files.uploadedfile import SimpleUploadedFile
-from django.forms import CharField, Textarea
+
+from django.forms import Textarea
+
 from django.forms import model_to_dict, FileInput
 from django.forms.fields import *
 from django.test import TestCase

@@ -2,15 +2,14 @@
 from django.contrib.auth.hashers import check_password
 from django.contrib.auth.models import Group, Permission
 from django.contrib.contenttypes.models import ContentType
-from django.forms import model_to_dict
 from django.test import TestCase
 from django.urls import reverse
 
 from portfolio.forms import UserCreationForm, CreateGroupForm, EditGroupForm, EditUserForm
 from portfolio.models import User, Company
 from portfolio.tests.helpers import reverse_with_next
-from vcpms import settings
 from portfolio.tests.helpers import set_session_variables
+from vcpms import settings
 
 
 class UserListViewTestCase(TestCase):
@@ -94,7 +93,7 @@ class UserListViewTestCase(TestCase):
                                      last_name=f'Last{user_id}',
                                      phone=f'+447312345678'
                                      )
-            
+
 
 class UserSignUpFormViewTestCase(TestCase):
     """ Unit test for UserSignUpFormView"""
@@ -161,7 +160,7 @@ class UserSignUpFormViewTestCase(TestCase):
         form = response.context['form']
         self.assertTrue(isinstance(form, UserCreationForm))
         self.assertTrue(form.is_bound)
-    
+
 
 class GroupCreationViewTestCase(TestCase):
     """ Unit test for GroupCreationView"""
@@ -280,7 +279,7 @@ class UserDeleteViewTestCase(TestCase):
         self.client.login(username='petra.pickles@example.org', password="Password123")
         response = self.client.post(self.url, follow=True)
         self.assertRedirects(response, redirect_url, status_code=302, target_status_code=200)
-    
+
 
 class GroupListViewTestCase(TestCase):
     """ Unit test for group list """
@@ -357,7 +356,7 @@ class GroupListViewTestCase(TestCase):
         self.assertEqual(len(response.context['groups']), 1)
         self.assertTrue(page_obj.has_previous())
         self.assertFalse(page_obj.has_next())
-    
+
 
 class GroupEditViewTestCase(TestCase):
     fixtures = ['portfolio/tests/fixtures/default_user.json',
@@ -583,7 +582,6 @@ class EditUserViewTestCase(TestCase):
         self.assertTrue(form.is_bound)
 
 
-
 class UserResetPasswordViewTestCase(TestCase):
     """ Unit tests for UserResetPasswordView"""
     fixtures = ['portfolio/tests/fixtures/default_user.json',
@@ -593,7 +591,6 @@ class UserResetPasswordViewTestCase(TestCase):
         self.test_user = User.objects.get(email="john.doe@example.org")
         self.url = reverse('permission_reset_password', kwargs={'id': self.test_user.id})
         set_session_variables(self.client)
-
 
     def test_get_edit_user_url(self):
         self.assertEqual(self.url, f'/permissions/{self.test_user.id}/reset_password/')
@@ -640,9 +637,6 @@ class UserResetPasswordViewTestCase(TestCase):
         response = self.client.post(self.url, follow=True)
         response_url = reverse('permission_user_list')
         self.assertRedirects(response, response_url, status_code=302, target_status_code=200)
-        user = User.objects.get(email = self.test_user.email)
+        user = User.objects.get(email=self.test_user.email)
         is_new_password_equal = check_password('Password123', user.password)
         self.assertTrue(is_new_password_equal)
-
-
-

@@ -1,37 +1,37 @@
-from django.test import TestCase
 from django.core.exceptions import ValidationError
+from django.test import TestCase
+from django_countries.fields import Country
+from phonenumber_field.phonenumber import PhoneNumber
+
 from portfolio.models import Individual
 from portfolio.models import ResidentialAddress
-from phonenumber_field.phonenumber import PhoneNumber
-from django_countries.fields import Country
 
 
 class ResidentialAdressTests(TestCase):
     """Unit tests for the individual model."""
 
-
     # Sets up example individual to be used for tests
     def setUp(self):
         self.individual = Individual.objects.create(
-             AngelListLink = "https://www.AngelList.com",
-             CrunchbaseLink = "https://www.Crunchbase.com",
-             LinkedInLink = "https://www.LinkedIn.com",
-             Company = "exampleCompany",
-             Position = "examplePosition",
-             Email = "test@gmail.com",
-             PrimaryNumber = PhoneNumber.from_string("+447975777666"),
-             SecondaryNumber = PhoneNumber.from_string("+441325777655")
+            AngelListLink="https://www.AngelList.com",
+            CrunchbaseLink="https://www.Crunchbase.com",
+            LinkedInLink="https://www.LinkedIn.com",
+            Company="exampleCompany",
+            Position="examplePosition",
+            Email="test@gmail.com",
+            PrimaryNumber=PhoneNumber.from_string("+447975777666"),
+            SecondaryNumber=PhoneNumber.from_string("+441325777655")
         )
 
         self.residential_adress = ResidentialAddress.objects.create(
-            address_line1 = "testAdress1",
-            address_line2 = "testAdress2",
-            postal_code = "testCode",
-            city = "testCity",
-            state = "testState",
-            country = Country("AD"),
-            individual = self.individual
-            )
+            address_line1="testAdress1",
+            address_line2="testAdress2",
+            postal_code="testCode",
+            city="testCity",
+            state="testState",
+            country=Country("AD"),
+            individual=self.individual
+        )
 
     def test_valid_residential_adress(self):
         self._assert_residential_adress_is_valid()

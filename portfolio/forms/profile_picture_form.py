@@ -1,5 +1,6 @@
 """Forms for the VC portfolio management site"""
 from django import forms
+
 from portfolio.models import User
 
 
@@ -13,7 +14,7 @@ class ProfilePictureForm(forms.ModelForm):
                 'required': "Please select an image.",
             },
         }
-    
+
     def __init__(self, *args, **kwargs):
         super(ProfilePictureForm, self).__init__(*args, **kwargs)
         self.fields['profile_picture'].required = True

@@ -1,10 +1,10 @@
 [
-    {
-      "model": "portfolio.investor",
-      "pk": 1,
-      "fields": {
-        "company": 1,
-        "individual": 1
-      }
+  {
+    "model": "portfolio.investor",
+    "pk": 1,
+    "fields": {
+      "company": 1,
+      "individual": 1
     }
-  ]
+  }
+]

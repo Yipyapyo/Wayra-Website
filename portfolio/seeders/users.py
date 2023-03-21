@@ -1,7 +1,7 @@
 from django.core.exceptions import ObjectDoesNotExist
 
-from portfolio.seeders import Seeder
 from portfolio.models import User
+from portfolio.seeders import Seeder
 
 
 class UserSeeder(Seeder):

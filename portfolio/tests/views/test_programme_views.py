@@ -2,25 +2,20 @@
 import os
 import shutil
 import time
+from io import BytesIO
 
+
+from django.core.files.uploadedfile import SimpleUploadedFile
 from django.http import HttpResponse
 from django.test import TestCase
 from django.urls import reverse
 
+from portfolio.forms import CreateProgrammeForm, EditProgrammeForm
+from portfolio.models import Company, Individual, Programme
 from portfolio.models import User, Portfolio_Company
 from portfolio.tests.helpers import LogInTester, reverse_with_next
-from io import BytesIO
-
-from PIL.Image import Image
-from django.core.files.uploadedfile import SimpleUploadedFile
-from django.db.models.fields.files import ImageFieldFile
-from django.forms import model_to_dict, FileInput
-from django.forms.fields import *
-from django.test import TestCase
-from portfolio.forms import CreateProgrammeForm, MultipleChoiceField, EditProgrammeForm
-from portfolio.models import Company, Individual, Programme
-from vcpms.settings import MEDIA_ROOT
 from portfolio.tests.helpers import set_session_variables
+from vcpms.settings import MEDIA_ROOT
 
 
 class ProgrammeCreateViewTestCase(TestCase, LogInTester):

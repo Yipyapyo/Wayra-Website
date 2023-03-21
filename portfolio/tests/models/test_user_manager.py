@@ -12,12 +12,11 @@ class UserManagerTestCase(TestCase):
     def test_has_to_supply_first_name(self):
         with self.assertRaises(ValidationError):
             User.objects.create_user(
-                    email="john.doe@example.org",
-                    password="Password123",
-                    last_name="Doe",
-                    phone="+447312345678",
-                )
-
+                email="john.doe@example.org",
+                password="Password123",
+                last_name="Doe",
+                phone="+447312345678",
+            )
 
     def test_has_to_supply_last_name(self):
         with self.assertRaises(ValidationError):

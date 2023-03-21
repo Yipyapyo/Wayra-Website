@@ -186,7 +186,6 @@ class ContractRightListViewTestCase(TestCase, LogInTester):
 
     def test_get_contract_right_list_for_individual_investor(self):
 
-
         self.investorIndividual = Investor.objects.create(individual=Individual.objects.first(), classification='Angel')
         self.investment.investor = self.investorIndividual
         self.investment.save()
