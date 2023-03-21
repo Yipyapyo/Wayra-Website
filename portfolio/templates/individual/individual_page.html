@@ -4,6 +4,17 @@
     <link href="{% static 'css/styles.css' %}" rel="stylesheet"/>
     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 mb-3 border-bottom">
         <h1 class="h2">Individual</h1>
+
+        <div class="btn-group">
+          <a type="button" class="btn btn-outline-secondary" href="{% url 'individual_create' %}">Create</a>
+          <button type="button" class="btn btn-outline-secondary dropdown-toggle px-3" data-toggle="dropdown" aria-haspopup="true"
+            aria-expanded="false">
+          </button>
+          <div class="dropdown-menu dropdown-menu-right p-0">
+            <a class="btn btn-outline-secondary" href="{% url 'founder_create' %}">Create Founder</a>
+            <a class="btn btn-outline-secondary" href="{% url 'investor_individual_create' %}">Create Investor</a>
+          </div>
+        </div>
         <!-- Nav -->
         <ul id="tabs" class="nav nav-tabs pb-0 mt-auto overflow-x border-0">
             <li class="nav-item"><a data-target="#all-individuals" data-toggle="tab"
