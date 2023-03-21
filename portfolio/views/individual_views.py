@@ -77,7 +77,7 @@ def individual_create(request):
     if request.method == "POST":
         individual_form = IndividualCreateForm(request.POST, prefix="form1")
         address_forms = AddressCreateForm(request.POST, prefix="form2")
-        past_experience_forms = [PastExperienceForm(request.POST, prefix=str(x)) for x in range(0, 2)]
+        past_experience_forms = [PastExperienceForm(request.POST, prefix=str(x)) for x in range(0, 1)]
         if individual_form.is_valid() and address_forms.is_valid() and all(
                 [pf.is_valid() for pf in past_experience_forms]):
             new_individual = individual_form.save()
@@ -93,7 +93,7 @@ def individual_create(request):
     else:
         individual_form = IndividualCreateForm(prefix="form1")
         address_forms = AddressCreateForm(prefix="form2")
-        past_experience_forms = [PastExperienceForm(prefix=str(x)) for x in range(0, 2)]
+        past_experience_forms = [PastExperienceForm(prefix=str(x)) for x in range(0, 1)]
 
     context = {
         'individualForm': individual_form,
