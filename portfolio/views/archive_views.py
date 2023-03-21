@@ -5,7 +5,7 @@ from django.shortcuts import render, redirect
 from django.template.loader import render_to_string
 from django.urls import reverse
 
-from portfolio.models import Company, Individual, Portfolio_Company, InvestorCompany, Founder, InvestorIndividual
+from portfolio.models import Company, Individual, Portfolio_Company, InvestorCompany, Founder, Investor
 
 """Archive views"""
 
@@ -73,8 +73,8 @@ def archive_search(request):
                         id__in=founder_individuals.values('individualFounder'), name__contains=searched,
                         is_archived=True).values().order_by('id')
                 elif request.session['archived_individual_filter'] == '3':
-                    individual_search_result = InvestorIndividual.objects.filter(name__contains=searched,
-                                                                                 is_archived=True).values().order_by(
+                    individual_search_result = Investor.objects.filter(individual__name__contains=searched,
+                                                                       is_archived=True).values().order_by(
                         'id')
                 else:
                     individual_search_result = Individual.objects.filter(name__contains=searched,
@@ -149,7 +149,7 @@ def change_archived_individual_filter(request):
                 result = Individual.objects.filter(id__in=founder_individuals.values('individualFounder'),
                                                    is_archived=True).order_by('id')
             elif request.session['archived_individual_filter'] == '3':
-                result = InvestorIndividual.objects.filter(is_archived=True).order_by('id')
+                result = Investor.objects.filter(company__is_null=True, is_archived=True).order_by('id')
             else:
                 result = Individual.objects.filter(is_archived=True).values().order_by('id')
 

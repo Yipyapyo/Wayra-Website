@@ -13,10 +13,22 @@
             </div>
 
             <div class="btn-group me-1">
-                {% if user.is_sta %}
+                {% if user.is_staff %}
                     <a href="{% url 'individual_document_upload' individual.id %}"
                        class="btn btn-sm btn-outline-primary">Upload
                         a document</a>
+                {% endif %}
+            </div>
+
+            <div class="btn-group me-2">
+                {% load util %}
+                {% if individual|is_investor %}
+                    <a type="button" class="btn btn-sm btn-outline-primary"
+                       href="{% url 'investor_individual_modify' individual.id %}">Update Investor Detail</a>
+                {% endif %}
+                {% if individual|is_founder %}
+                    <a type="button" class="btn btn-sm btn-outline-primary"
+                       href="{% url 'founder_modify' individual.id %}">Update Founder Detail</a>
                 {% endif %}
             </div>
 

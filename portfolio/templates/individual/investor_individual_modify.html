@@ -1,16 +1,29 @@
 {% extends 'dashboard_template.html' %}
 {% block main %}
-    <h1>Update Investor Individual</h1>
-    <p><p></p>
+    {% load static %}
 
-    <form action="" method="post">
-        {% csrf_token %}
-        {{ investorIndividualForm.as_p }}
+    <html>
+    <head>
+        <link rel="stylesheet" type="text/css" href="{% static 'css/styles_create.css' %}">
+    </head>
+    <body>
+    <header class="pb-3 mb-4 border-bottom">
+        <a href="#" class="d-flex align-items-center text-dark text-decoration-none">
+            <span class="fs-4">Update Investor Individual</span>
+        </a>
+    </header>
+    <div class="modal-body p-5 pt-0">
+        <form action="{% url 'investor_individual_modify' individual_id %}" method="post">
+            {% csrf_token %}
+            {% include 'partials/utilities/form_input.html' %}
+            <div class="mb-3">
+                <button type="submit" class="btn btn-primary">Submit</button>
+                <a type="button" class="btn btn-secondary" href="{% url 'individual_profile' individual_id %}">Cancel</a>
+            </div>
+        </form>
+    </div>
 
-        {{ addressForms.as_p }}
-        {% for form in pastExperienceForms %}
-            {{ form.as_p }}
-        {% endfor %}
-        <input type="submit" value="Update" class="btn btn-primary">
-    </form>
+    </body>
+
+    </html>
 {% endblock %}

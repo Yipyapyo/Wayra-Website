@@ -206,7 +206,6 @@ def individual_profile(request, id):
         context = {
             'individual': individual,
             'documents': documents,
-            'is_investor': investments.exists(),
             'investments': investments,
             'founder_companies': founder_companies,
         }
