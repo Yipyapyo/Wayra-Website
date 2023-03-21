@@ -45,7 +45,8 @@ class ProgrammeSeeder(Seeder):
                 accelerator_1 = Programme.objects.create(
                     name=f"Accelerator Programme {i}",
                     cohort=1,
-                    cover=file_data
+                    cover=file_data,
+                    description=self.faker.paragraph(nb_sentences=30)
                 )
                 for company in self._get_objects_from_models(Company, i - 1, CompanySeeder.COMPANIES_COUNT // count):
                     accelerator_1.partners.add(company)

@@ -37,7 +37,7 @@
                     class="dropdown-item btn btn-outline-primary">Update Portfolio Company</a>
                 {% endif %}
                 {% if user.is_authenticated %}
-                <a href="{% url 'document_upload' company.id %}"
+                <a href="{% url 'company_document_upload' company.id %}"
                     class="dropdown-item btn btn-sm btn-outline-primary">Upload Document</a>
                 {% endif %}
                 {% if is_investor_company %}
@@ -104,7 +104,7 @@
                     <h2>Programmes</h2>
                     <div class="px-5 pt-3 pb-2 mb-4 bg-light rounded-3">
                         <div class="container-fluid py-3">
-                            <p>{{ company.name }} is currently enrolled in the following programmes:</p>
+                            <p class="col-sm-0">{{ company.name }} is currently enrolled in the following programmes:</p>
                             <div class="row mb-3">
                                 {% for programme in programmes %}
                                     {% include 'partials/utilities/programme_card.html' with programme=programme %}
