@@ -48,7 +48,7 @@ class DashboardViewTestCase(TestCase, LogInTester):
     def test_dashboard_urls(self):
         self.assertEqual(self.url, '/dashboard/')
         self.assertEqual(self.search_url, '/search_result')
-        self.assertEqual(self.portfolio_company_url, '/portfolio_company/1/')
+        self.assertEqual(self.portfolio_company_url, '/portfolio_company/1')
         self.assertEqual(self.create_company_url, '/portfolio_company/company_create/')
         self.assertEqual(self.update_company_url, '/portfolio_company/company_update/1')
         self.assertEqual(self.delete_company_url, '/portfolio_company/company_delete/1')
