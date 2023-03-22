@@ -249,3 +249,86 @@ class IndividualLayoutViewTestCase(TestCase):
         investors = Investor.objects.all()
         test_result = Individual.objects.filter(id__in=investors.values('individual'), is_archived=False).order_by('id')
         self.assertEqual(len(test_result), 3)
+
+
+class SearchIndividualViewTestCase(TestCase):
+    fixtures = ["portfolio/tests/fixtures/default_user.json",
+                "portfolio/tests/fixtures/default_company.json",
+                "portfolio/tests/fixtures/other_companies.json",
+                "portfolio/tests/fixtures/default_individual.json",
+                "portfolio/tests/fixtures/other_individuals.json",
+                "portfolio/tests/fixtures/default_founder.json",
+                "portfolio/tests/fixtures/other_founders.json",
+                "portfolio/tests/fixtures/default_investor_individual.json",
+                "portfolio/tests/fixtures/other_investor_individuals.json"]
+
+    def setUp(self) -> None:
+        self.user = User.objects.get(id=1)
+        self.url = reverse('dashboard')
+        self.search_url = reverse('individual_search_result')
+        set_session_variables(self.client)
+
+    def test_search_individual_urls(self):
+        self.assertEqual(self.search_url, '/individual_search_result')
+
+    def test_get_search_individual(self):
+        self.client.login(email=self.user.email, password="Password123")
+        response = self.client.get(self.search_url, data={'searchresult': 'J'})
+        self.assertEqual(response.status_code, 200)
+        self.assertIsInstance(response, HttpResponse)
+
+    def test_get_search_individual_returns_correct_data_for_all_individuals(self):
+        self.client.login(email=self.user.email, password="Password123")
+        response = self.client.get(self.search_url, data={'searchresult': 'J'})
+        self.assertEqual(response.status_code, 200)
+        self.assertIsInstance(response, HttpResponse)
+        individual_search_result = Individual.objects.filter(name__contains="J", is_archived=False).values()[:5]
+        for individual in individual_search_result:
+            self.assertContains(response, individual['name'])
+        self.assertEqual(len(individual_search_result), 5)
+
+    def test_get_search_company_returns_correct_data_for_founders(self):
+        self.client.login(email=self.user.email, password="Password123")
+        set_session_individual_filter_variable(self.client, 2)
+        response = self.client.get(self.search_url, data={'searchresult': 'er'})
+        self.assertEqual(response.status_code, 200)
+        self.assertIsInstance(response, HttpResponse)
+        founders_search_result = Founder.objects.filter(individualFounder__is_archived=False,
+                                                        individualFounder__name__contains='er')[:5]
+        for founder in founders_search_result:
+            self.assertContains(response, founder.individualFounder.name)
+        self.assertEqual(len(founders_search_result), 1)
+
+    def test_get_search_company_returns_correct_data_for_investors(self):
+        self.client.login(email=self.user.email, password="Password123")
+        set_session_individual_filter_variable(self.client, 3)
+        response = self.client.get(self.search_url, data={'searchresult': 'en'})
+        self.assertEqual(response.status_code, 200)
+        self.assertIsInstance(response, HttpResponse)
+        investors = Investor.objects.all()
+        search_result = Individual.objects.filter(id__in=investors.values('individual'), is_archived=False,
+                                               name__contains='en').order_by('id')[:5]
+        for company in search_result:
+            self.assertContains(response, company.name)
+        self.assertEqual(len(search_result), 1)
+
+    def test_post_search_company_filters_all_companies_successfully(self):
+        self.client.login(email=self.user.email, password="Password123")
+        response = self.client.post(self.search_url, follow=True, data={'searchresult': 'J'})
+        individuals = response.context['individuals']
+        self.assertEqual(len(individuals), 5)
+
+    def test_post_search_company_filters_portfolio_companies_successfully(self):
+        self.client.login(email=self.user.email, password="Password123")
+        set_session_individual_filter_variable(self.client, 2)
+        response = self.client.post(self.search_url, follow=True, data={'searchresult': 'er'})
+        individuals = response.context['individuals']
+        self.assertEqual(len(individuals), 1)
+
+    def test_post_search_company_filters_investor_companies_successfully(self):
+        self.client.login(email=self.user.email, password="Password123")
+        set_session_individual_filter_variable(self.client, 3)
+        response = self.client.post(self.search_url, follow=True, data={'searchresult': 'en'})
+        individuals = response.context['individuals']
+        self.assertEqual(len(individuals), 1)
+
