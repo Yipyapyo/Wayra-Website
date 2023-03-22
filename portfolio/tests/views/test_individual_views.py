@@ -17,22 +17,21 @@ class IndividualProfileViewTestCase(TestCase):
 
     def setUp(self):
         self.user = User.objects.get(email="john.doe@example.org")
-        self.client.login(email=self.user.email, password="Password123")
+        # self.client.login(email=self.user.email, password="Password123")
         self.url = reverse('individual_profile', kwargs={'id': 1})
-        set_session_variables(self.client)
 
     def test_individual_profile_view_url(self):
         self.assertEqual(self.url, '/individual_profile_page/1/')
 
     def test_get_individual_profile_view(self):
+        self.client.login(email=self.user.email, password="Password123")
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'individual/individual_about_page.html')
 
-    def test_redirect_when_user_access_investor_individual_profile_not_loggedin(self):
-        self.client.logout()
-        redirect_url = reverse_with_next('login', self.url)
-        response = self.client.get(self.url)
+    def test_redirect_when_user_access_individual_profile_not_loggedin(self):
+        redirect_url = reverse_with_next('login', reverse('individual_page'))
+        response = self.client.get(self.url, follow=True)
         self.assertRedirects(response, redirect_url, status_code=302, target_status_code=200)
 
     def test_redirects_when_individual_archived_and_not_admin(self):
@@ -307,7 +306,7 @@ class SearchIndividualViewTestCase(TestCase):
         self.assertIsInstance(response, HttpResponse)
         investors = Investor.objects.all()
         search_result = Individual.objects.filter(id__in=investors.values('individual'), is_archived=False,
-                                               name__contains='en').order_by('id')[:5]
+                                                  name__contains='en').order_by('id')[:5]
         for company in search_result:
             self.assertContains(response, company.name)
         self.assertEqual(len(search_result), 1)
@@ -348,4 +347,3 @@ class SearchIndividualViewTestCase(TestCase):
         response = self.client.post(self.search_url, follow=True, data={'searchresult': 'en'})
         individuals = response.context['individuals']
         self.assertEqual(len(individuals), 1)
-
