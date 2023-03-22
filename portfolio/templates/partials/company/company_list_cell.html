@@ -1,14 +1,10 @@
 {% load static %}
+<link rel="stylesheet" href="{% static 'css/individual_card.css' %}">
 <a href="{% url 'portfolio_company' company.id %}" class="text-reset text-decoration-none">
     <div class="d-flex align-items-center justify-content-between mb-3 mx-2 border">
         <div class="my-4 d-md-flex align-items-center flex-wrap">
             <div class="img-holder">
-                <img
-                        src="{% static 'images/default_logo.png' %}"
-                        alt=""
-                        style="width: 80px; height: 80px"
-                        class="rounded-circle"
-                />
+                <div class="individual-card-avatar" style="width: 80px; height: 80px"></div>
             </div>
 
             <div class="ps-4">
