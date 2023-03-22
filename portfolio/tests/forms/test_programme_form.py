@@ -1,6 +1,9 @@
 from io import BytesIO
 
 from django.core.files.uploadedfile import SimpleUploadedFile
+
+from django.forms import Textarea
+
 from django.forms import model_to_dict, FileInput
 from django.forms.fields import *
 from django.test import TestCase
@@ -53,6 +56,11 @@ class CreateProgrammeFormTestCase(TestCase):
         self.assertIn("cover", form.fields)
         self.assertTrue(isinstance(form.fields['cover'], ImageField))
         self.assertTrue(isinstance(form.fields['cover'].widget, FileInput))
+
+        self.assertIn("description", form.fields)
+        self.assertTrue(isinstance(form.fields['description'], CharField))
+        self.assertTrue(isinstance(form.fields['description'].widget, Textarea))
+
 
     def test_form_uses_model_validation(self):
         self.form_input['name'] = self.default_programme.name
@@ -127,6 +135,11 @@ class EditProgrammeFormTestCase(TestCase):
         self.assertIn("cover", form.fields)
         self.assertTrue(isinstance(form.fields['cover'], ImageField))
         self.assertTrue(isinstance(form.fields['cover'].widget, FileInput))
+
+        self.assertIn("description", form.fields)
+        self.assertTrue(isinstance(form.fields['description'], CharField))
+        self.assertTrue(isinstance(form.fields['description'].widget, Textarea))
+
 
     def test_form_uses_model_validation(self):
         self.default_programme.name = "A" * 256

@@ -171,7 +171,7 @@ class DashboardViewTestCase(TestCase, LogInTester):
         self.client.login(email=self.user.email, password="Password123")
         response = self.client.get(self.portfolio_company_url)
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'company/portfolio_company_page.html')
+        self.assertTemplateUsed(response, 'company/company_page.html')
         company = response.context['company']
         self.assertEqual(company.id, 1)
 

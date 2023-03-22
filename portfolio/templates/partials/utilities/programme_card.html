@@ -1,22 +1,19 @@
 {% load static %}
 <div class="card mb-3">
     <div class="row no-gutters">
-        <div class="col-md-4">
+        <div class="col-md-4" id="companycard">
             {% if programme.cover %}
-                <img src="{{ programme.cover.url }}" class="card-img" alt="...">
+                <img src="{{ programme.cover.url }}" class="card-img border m-3" alt="..." style="border-radius: 1rem;">
             {% else %}
                 <img src="" class="card-img" alt="...">
             {% endif %}
         </div>
         <div class="col-md-8">
-            <div class="card-body">
-                <h5 class="card-title">Edison Programme</h5>
-                <p class="card-text">The Edison™ Accelerator is a start-up and scale-up acceleration & healthcare
-                    provider collaboration programme designed by GE Healthcare in partnership with Wayra UK. It brings
-                    together healthcare providers, start-ups and scale-ups who want to leverage the GE Healthcare
-                    environment and mentoring to enhance their value proposition. It is designed to introduce GE
-                    Healthcare’s Intelligence Platform Edison, to a growing developer community and create a stronger
-                    value proposition in the healthcare sector.</p>
+            <div class="card-body vstack">
+                <h5 class="card-title">{{programme.name}}</h5>
+                <p class="card-text">
+                    {{ programme.description }}
+                </p>
                 <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
             </div>
         </div>

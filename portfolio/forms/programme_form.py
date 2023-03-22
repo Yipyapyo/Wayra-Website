@@ -20,10 +20,11 @@ class IndividualSelectWidget(d2forms.ModelSelect2MultipleWidget):
 class CreateProgrammeForm(forms.ModelForm):
     class Meta:
         model = Programme
-        fields = ["name", "cohort", "cover"]
+        fields = ["name", "cohort", "cover", "description"]
         widgets = {
             'cohort': forms.NumberInput(attrs={'min': 1}),
-            'cover': forms.FileInput()
+            'cover': forms.FileInput(),
+            'description': forms.Textarea()
         }
 
     partners = MultipleChoiceField(
@@ -59,9 +60,7 @@ class CreateProgrammeForm(forms.ModelForm):
         super().clean()
         programme_name = self.cleaned_data.get("name")
         programme_cohort = self.cleaned_data.get("cohort")
-        if programme_cohort <= 0:
-            self.add_error("cohort", "Cohort value must be positive")
-        elif Programme.objects.filter(name=programme_name, cohort=programme_cohort).count() > 0:
+        if Programme.objects.filter(name=programme_name, cohort=programme_cohort).count() > 0:
             self.add_error("cohort", "Cohort for this programme already exists")
 
     def save(self):
@@ -69,7 +68,8 @@ class CreateProgrammeForm(forms.ModelForm):
         new_programme = Programme.objects.create(
             name=self.cleaned_data.get("name"),
             cohort=self.cleaned_data.get("cohort"),
-            cover=self.cleaned_data.get("cover")
+            cover=self.cleaned_data.get("cover"),
+            description = self.cleaned_data.get("description")
         )
         for partner in self.cleaned_data.get("partners"):
             new_programme.partners.add(partner)
@@ -105,10 +105,11 @@ class CreateProgrammeForm(forms.ModelForm):
 class EditProgrammeForm(forms.ModelForm):
     class Meta:
         model = Programme
-        fields = ["name", "cohort", "cover"]
+        fields = ["name", "cohort", "cover", "description"]
         widgets = {
             'cohort': forms.NumberInput(attrs={'min': 1}),
-            'cover': forms.FileInput()
+            'cover': forms.FileInput(), 
+            'description': forms.Textarea()
         }
 
     partners = MultipleChoiceField(
@@ -146,6 +147,7 @@ class EditProgrammeForm(forms.ModelForm):
         programme = self.instance
         programme.name = self.cleaned_data.get("name")
         programme.cohort = self.cleaned_data.get("cohort")
+        programme.description = self.cleaned_data.get("description")
         programme.partners.clear()
         programme.participants.clear()
         programme.coaches_mentors.clear()
