@@ -3,18 +3,15 @@ import os
 import shutil
 import time
 from io import BytesIO
-from django.http import HttpResponse
+
+from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import TestCase
 from django.urls import reverse
-from django.core.exceptions import ValidationError
-from django.core.files.uploadedfile import SimpleUploadedFile
-from django import forms
-from django.db import IntegrityError
-from django.test import TestCase
+
+from portfolio.forms import DocumentUploadForm
 from portfolio.models import Company, Document, User
-from portfolio.forms import URLUploadForm, DocumentUploadForm
+from portfolio.tests.helpers import reverse_with_next
 from vcpms.settings import MEDIA_ROOT
-from portfolio.tests.helpers import LogInTester, reverse_with_next
 
 
 class DocumentViewsTestCase(TestCase):
@@ -29,7 +26,7 @@ class DocumentViewsTestCase(TestCase):
     def setUp(self):
         self.user = User.objects.get(email="john.doe@example.org")
         self.defaultCompany = Company.objects.get(id=1)
-        self.url = reverse('document_upload', kwargs={'company_id': self.defaultCompany.id})
+        self.url = reverse('company_document_upload', kwargs={'company_id': self.defaultCompany.id})
         self.url_form_data = {
             "upload_url" : 'True',
             "file_name": "test_file.txt",
