@@ -9,7 +9,17 @@
         <div class="d-flex justify-content-between align-items-center border-bottom mb-3">
 
             <div class="col">
-                <h2 class="pb-3">Individual</h2>
+                {% load util %}
+                {% if individual|is_founder_and_investor %}
+                    <p class="mb-1">Founder/Investor </p>
+                {% elif individual|is_founder %}
+                    <p class="mb-1">Founder </p>
+                {% elif individual|is_investor %}
+                    <p class="mb-1">Investor </p>
+                {% else %}
+                    <p class="mb-1">Individual</p>
+                {% endif %}
+                <h2 class="pb-3">{{individual.name}}</h2>
             </div>
 
             <div class="btn-group me-1">
