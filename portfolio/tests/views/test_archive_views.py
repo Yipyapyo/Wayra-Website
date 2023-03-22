@@ -3,7 +3,7 @@ from django.http import HttpResponse
 from django.test import TestCase
 from django.urls import reverse
 
-from portfolio.models import Company, Individual, User, Portfolio_Company, Founder, InvestorCompany, InvestorIndividual
+from portfolio.models import Company, Individual, User, Portfolio_Company, Founder, Investor
 from portfolio.tests.helpers import reverse_with_next
 from portfolio.tests.helpers import set_session_variables, set_session_archived_company_filter_variable, \
     set_session_archived_individual_filter_variable
@@ -124,11 +124,12 @@ class ArchiveViewTestCase(TestCase):
         response = self.client.get(self.search_url, data={'searchresult': search})
         self.assertEqual(response.status_code, 200)
         self.assertIsInstance(response, HttpResponse)
-        investor_companies = InvestorCompany.objects.all()
+        investor_companies = Investor.objects.filter(individual__isnull=True)
         company_search_result = Company.objects.filter(id__in=investor_companies.values('company'),
                                                        name__contains=search, is_archived=True).values().order_by('id')
-        individual_search_result = InvestorIndividual.objects.filter(name__contains=search,
-                                                                     is_archived=True).values().order_by('id')
+        investor_individuals = Investor.objects.filter(company__isnull=True)
+        individual_search_result = Individual.objects.filter(id__in=investor_individuals.values('individual'),
+                                                             is_archived=True).values().order_by('id')
 
         for company in company_search_result:
             self.assertContains(response, company.name)
@@ -196,7 +197,7 @@ class ArchiveViewTestCase(TestCase):
         response = self.client.get(self.company_filter_url, data={'filter_number': 3})
         self.assertEqual(response.status_code, 200)
         self.assertIsInstance(response, HttpResponse)
-        investor_companies = InvestorCompany.objects.all()
+        investor_companies = Investor.objects.filter(individual__isnull=True)
         company_search_result = Company.objects.filter(id__in=investor_companies.values('company'),
                                                        is_archived=True).values().order_by('id')
         for company in company_search_result:
@@ -247,7 +248,7 @@ class ArchiveViewTestCase(TestCase):
         response = self.client.get(self.individual_filter_url, data={'filter_number': 3})
         self.assertEqual(response.status_code, 200)
         self.assertIsInstance(response, HttpResponse)
-        individual_search_result = InvestorIndividual.objects.filter(is_archived=True).values().order_by('id')
+        individual_search_result = Individual.objects.filter(id__in=Investor.objects.filter(individual__is_archived=True)).values().order_by('id')
         for individual in individual_search_result:
             self.assertContains(response, individual.name)
         self.assertEqual(len(individual_search_result), 0)

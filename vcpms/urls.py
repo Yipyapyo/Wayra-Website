@@ -19,7 +19,6 @@ from django.contrib import admin
 from django.urls import path, include
 
 from portfolio import views
-from portfolio.views import investor_individual_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -46,7 +45,7 @@ urlpatterns = [
     path("individual_page/founder_create/", views.founder_create, name="founder_create"),
     path("individual_page/<int:id>/deleteFounder/", views.founder_delete, name="founder_delete"),
     path("individual_page/<int:id>/modifyFounder/", views.founder_modify, name="founder_modify"),
-    path("individual_profile_page/<int:id>/", views.individual_profile, name='individual_profile'),
+    path("individual_profile_page/<int:id>/", views.IndividualProfileListView.as_view(), name='individual_profile'),
     path('individual_page/archive/<int:id>', views.archive_individual, name='archive_individual'),
     path('individual_page/unarchive/<int:id>', views.unarchive_individual, name='unarchive_individual'),
     path('change_individual_layout/', views.change_individual_layout, name='change_individual_layout'),
@@ -57,11 +56,9 @@ urlpatterns = [
     path('individual_search_result', views.individual_search, name='individual_search_result'),
 
     # Individual Investor CRUD
-    path("individual_page/investor_individual_create/", investor_individual_views.investor_individual_create,
+    path("individual_page/investor_individual_create/", views.InvestorIndividualCreateView.as_view(),
          name="investor_individual_create"),
-    path("individual_page/<int:id>/investor_individual_delete/", investor_individual_views.investor_individual_delete,
-         name='investor_individual_delete'),
-    path("individual_page/<int:id>/investor_individual_modify/", investor_individual_views.investor_individual_modify,
+    path("individual_page/<int:id>/investor_individual_modify/", views.InvestorIndividualUpdateView.as_view(),
          name='investor_individual_modify'),
 
     # Programme CRUD

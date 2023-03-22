@@ -7,7 +7,7 @@ class IndividualSeeder(Seeder):
 
     def seed(self):
         self._populate_individuals(self.INDIVIDUAL_COUNT)
-        print(f"{Individual.objects.count()} companies in the db.\n")
+        print(f"{Individual.objects.count()} individuals in the db.\n")
 
     def _populate_individuals(self, count):
         """Seeder for fake individuals"""

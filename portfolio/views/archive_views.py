@@ -5,7 +5,7 @@ from django.shortcuts import render, redirect
 from django.template.loader import render_to_string
 from django.urls import reverse
 
-from portfolio.models import Company, Individual, Portfolio_Company, InvestorCompany, Founder, InvestorIndividual
+from portfolio.models import Company, Individual, Portfolio_Company, InvestorCompany, Founder, Investor
 
 """Archive views"""
 
@@ -73,8 +73,8 @@ def archive_search(request):
                         id__in=founder_individuals.values('individualFounder'), name__contains=searched,
                         is_archived=True).values().order_by('id')
                 elif request.session['archived_individual_filter'] == '3':
-                    individual_search_result = InvestorIndividual.objects.filter(name__contains=searched,
-                                                                                 is_archived=True).values().order_by(
+                    individual_search_result = Investor.objects.filter(individual__name__contains=searched,
+                                                                       is_archived=True).values().order_by(
                         'id')
                 else:
                     individual_search_result = Individual.objects.filter(name__contains=searched,
@@ -126,7 +126,7 @@ def change_archived_company_filter(request):
                 "companies": companies_page,
             }
 
-            archived_companies_table_html = render_to_string('archive/archived_companies_table.html', context)
+            archived_companies_table_html = render_to_string('archive/archived_companies_table.html', context, request)
 
             return HttpResponse(archived_companies_table_html)
     else:
@@ -149,7 +149,8 @@ def change_archived_individual_filter(request):
                 result = Individual.objects.filter(id__in=founder_individuals.values('individualFounder'),
                                                    is_archived=True).order_by('id')
             elif request.session['archived_individual_filter'] == '3':
-                result = InvestorIndividual.objects.filter(is_archived=True).order_by('id')
+                all_investors = Investor.objects.all()
+                result = Individual.objects.filter(id__in=all_investors.values('individual'), is_archived=True).order_by('id')
             else:
                 result = Individual.objects.filter(is_archived=True).values().order_by('id')
 
@@ -164,7 +165,7 @@ def change_archived_individual_filter(request):
                 "individuals": individuals_page,
             }
 
-            archived_individuals_table_html = render_to_string('archive/archived_individuals_table.html', context)
+            archived_individuals_table_html = render_to_string('archive/archived_individuals_table.html', context, request)
 
             return HttpResponse(archived_individuals_table_html)
     else:

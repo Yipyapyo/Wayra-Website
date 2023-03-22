@@ -9,3 +9,4 @@ from .investment_views import *
 from .permission_views import *
 from .programme_views import *
 from .settings_views import *
+from .investor_individual_views import *

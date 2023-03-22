@@ -5,6 +5,7 @@ from django_countries.fields import Country
 
 from portfolio.models import ResidentialAddress, PastExperience, Individual, User
 from portfolio.tests.helpers import reverse_with_next, set_session_variables
+from portfolio.forms import IndividualCreateForm, AddressCreateForm, PastExperienceForm
 
 
 class IndividualModifyTestCase(TestCase):
@@ -56,6 +57,71 @@ class IndividualModifyTestCase(TestCase):
 
     def test__individual_update_url(self):
         self.assertEqual(self.url, '/individual_page/{}/update/'.format(self.listUsed.id))
+    
+    def test_get_individual_create_view(self):
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'individual/individual_update.html')
+        individual_form = response.context['individualForm']
+        self.assertTrue(isinstance(individual_form, IndividualCreateForm))
+        adress_form = response.context['addressForms']
+        self.assertTrue(isinstance(adress_form, AddressCreateForm))
+        past_experience_forms = response.context['pastExperienceForms']
+        for past_form in past_experience_forms:
+            self.assertTrue(isinstance(past_form, PastExperienceForm))
+            self.assertFalse(past_form.is_bound)
+        self.assertFalse(adress_form.is_bound)
+        self.assertFalse(individual_form.is_bound)
+    
+    def test_successful_post_update(self):
+        before_count_individual = Individual.objects.count()
+        before_count_adress = ResidentialAddress.objects.count()
+        before_count_past_work = PastExperience.objects.count()
+        self.client.post(self.url, self.post_input)
+        after_count_individual = ResidentialAddress.objects.count()
+        after_count_adress = ResidentialAddress.objects.count()
+        after_count_past_work = PastExperience.objects.count()
+
+        self.assertEqual(after_count_individual, before_count_individual)
+        individual = Individual.objects.get(Company='exampleCompany')
+        self.assertEqual(individual.name, "Jemma Doe")
+        self.assertEqual(individual.AngelListLink, "https://www.AngelList.com")
+        self.assertEqual(individual.CrunchbaseLink, "https://www.Crunchbase.com")
+        self.assertEqual(individual.LinkedInLink, "https://www.LinkedIn.com")
+        self.assertEqual(individual.Company, "exampleCompany")
+        self.assertEqual(individual.Position, "examplePosition")
+        self.assertEqual(individual.Email, "test@gmail.com")
+        self.assertEqual(individual.PrimaryNumber, "+447975777666")
+        self.assertEqual(individual.SecondaryNumber, "+441325777655")
+
+        self.assertEqual(after_count_adress, before_count_adress)
+        residential_adress = ResidentialAddress.objects.get(address_line1='testAdress1')
+        self.assertEqual(residential_adress.address_line1, "testAdress1")
+        self.assertEqual(residential_adress.address_line2, "testAdress2")
+        self.assertEqual(residential_adress.postal_code, "testCode")
+        self.assertEqual(residential_adress.city, "testCity")
+        self.assertEqual(residential_adress.state, "testState")
+        self.assertEqual(residential_adress.country, Country("AD"))
+        self.assertEqual(residential_adress.individual, individual)
+
+        self.assertEqual(after_count_past_work, before_count_past_work)
+        past_work_1 = PastExperience.objects.get(companyName="exampleCompany")
+        self.assertEqual(past_work_1.companyName, "exampleCompany")
+        self.assertEqual(past_work_1.workTitle, "exampleWork")
+        self.assertEqual(past_work_1.start_year, 2033)
+        self.assertEqual(past_work_1.end_year, 2035)
+        self.assertEqual(past_work_1.duration, "2")
+        self.assertEqual(past_work_1.Description, "testCase")
+        self.assertEqual(past_work_1.individual, individual)
+
+        past_work_2 = PastExperience.objects.get(companyName="exampleCompany2")
+        self.assertEqual(past_work_2.companyName, "exampleCompany2")
+        self.assertEqual(past_work_2.workTitle, "exampleWork2")
+        self.assertEqual(past_work_2.start_year, 2034)
+        self.assertEqual(past_work_2.end_year, 2036)
+        self.assertEqual(past_work_2.duration, "2")
+        self.assertEqual(past_work_2.Description, "testCase2")
+        self.assertEqual(past_work_2.individual, individual)
 
     def test_redirect_when_user_not_logged_in(self):
         self.client.logout()

@@ -1,14 +1,17 @@
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.core.paginator import Paginator, EmptyPage
 from django.http import HttpResponse
 from django.shortcuts import redirect, render
 from django.template.loader import render_to_string
 from django.urls import reverse
+from django.views.generic import ListView
 
 from portfolio.forms import IndividualCreateForm, AddressCreateForm, PastExperienceForm
-from portfolio.models import Individual, ResidentialAddress, Founder, Document
-from portfolio.models.investment_model import Investor
+from portfolio.models import Individual, ResidentialAddress, Founder, Document, Company
+from portfolio.models.investment_model import Investor, Investment
 from portfolio.models.past_experience_model import PastExperience
+from django.template import RequestContext
 
 """
 Search an individual.
@@ -191,22 +194,59 @@ def individual_delete(request, id):
     return render(request, 'individual/individual_delete.html')
 
 
+# @login_required
+# def individual_profile(request, id):
+#     individual = Individual.objects.get(id=id)
+#     documents = Document.objects.filter(individual=individual)
+#     investments = Investment.objects.filter(investor__individual_id=id).order_by('id')
+#     founder_companies = list(Company.objects.filter(
+#         id__in=Founder.objects.filter(individualFounder=individual).values_list('companyFounded')))
+#
+#     if not individual.is_archived or (individual.is_archived and request.user.is_staff):
+#         context = {
+#             'individual': individual,
+#             'documents': documents,
+#             'investments': investments,
+#             'founder_companies': founder_companies,
+#         }
+#         return render(request, 'individual/individual_about_page.html', context)
+#     else:
+#         return redirect('individual_page')
+
 """
 View an individual profile page
 """
 
 
-@login_required
-def individual_profile(request, id):
-    individual = Individual.objects.get(id=id)
-    documents = Document.objects.filter(individual=individual)
-    if not individual.is_archived or (individual.is_archived and request.user.is_staff):
-        context = {
-            'individual': individual,
-            'documents': documents,
-        }
-        return render(request, 'individual/individual_about_page.html', context)
-    else:
+class IndividualProfileListView(LoginRequiredMixin, UserPassesTestMixin, ListView):
+    template_name = 'individual/individual_about_page.html'
+    context_object_name = 'investments'
+    paginate_by = 10
+
+    def dispatch(self, request, id, *args, **kwargs):
+        self.id = id
+        self.individual = Individual.objects.get(id=self.id)
+        return super().dispatch(request, id, *args, **kwargs)
+
+    def get_queryset(self):
+        self.investments = Investment.objects.filter(investor__individual_id=self.id).order_by('id')
+        return self.investments
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        documents = Document.objects.filter(individual=self.individual)
+
+        founder_companies = list(Company.objects.filter(
+            id__in=Founder.objects.filter(individualFounder=self.individual).values_list('companyFounded')))
+        context['individual'] = self.individual
+        context['documents'] = documents
+        context['founder_companies'] = founder_companies
+        return context
+
+    def test_func(self):
+        return (not self.individual.is_archived) or (self.individual.is_archived and self.request.user.is_staff)
+
+    def handle_no_permission(self):
         return redirect('individual_page')
 
 
@@ -275,7 +315,8 @@ def change_individual_filter(request):
             "async_individual_layout": int(request.session["individual_layout"]),
         }
 
-        search_results_table_html = render_to_string('individual/individual_page_content_reusable.html', context)
+        search_results_table_html = render_to_string('individual/individual_page_content_reusable.html', context,
+                                                     request)
 
         return HttpResponse(search_results_table_html)
 
@@ -319,6 +360,7 @@ def change_individual_layout(request):
             "async_individual_layout": int(request.session["individual_layout"]),
         }
 
-        search_results_table_html = render_to_string('individual/individual_page_content_reusable.html', context)
+        search_results_table_html = render_to_string('individual/individual_page_content_reusable.html', context,
+                                                     request)
 
         return HttpResponse(search_results_table_html)

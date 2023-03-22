@@ -20,8 +20,7 @@
                     <td>{{ investment.dateExit }}</td>
                     <td>
                         <a href="{% url 'investment_update' investment.id %}" class="btn btn-sm btn-primary">Update</a>
-                        <a href="{% url 'contract_right_list' investment.id %}" class="btn btn-sm btn-primary">Update
-                            rights</a>
+                        <a href="{% url 'contract_right_list' investment.id%}" class="btn btn-sm btn-primary">Update rights</a>
                         <a href="{% url 'investment_delete' investment.id %}" class="btn btn-sm btn-primary">Delete</a>
                     </td>
                 </tr>

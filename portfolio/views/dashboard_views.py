@@ -11,7 +11,7 @@ from portfolio.forms.company_form import CompanyCreateForm
 from portfolio.models import Company, Programme, Investment, InvestorCompany, Portfolio_Company, Document, Founder, \
     Individual
 from portfolio.models.investor_model import Investor
-
+from django.template import RequestContext
 
 # Create your views here.
 @login_required
@@ -269,7 +269,7 @@ def change_company_layout(request):
             "async_company_layout": int(request.session["company_layout"]),
         }
 
-        search_results_table_html = render_to_string('company/company_dashboard_content_reusable.html', context)
+        search_results_table_html = render_to_string('company/company_dashboard_content_reusable.html', context, request)
 
         return HttpResponse(search_results_table_html)
 
@@ -308,6 +308,6 @@ def change_company_filter(request):
             "async_company_layout": int(request.session["company_layout"]),
         }
 
-        search_results_table_html = render_to_string('company/company_dashboard_content_reusable.html', context)
+        search_results_table_html = render_to_string('company/company_dashboard_content_reusable.html', context, request)
 
         return HttpResponse(search_results_table_html)
