@@ -24,7 +24,8 @@
 }
 
 .navbar-gradient {
-    background-image: linear-gradient(15deg, #7468f7 0%, #80d0c7 100%);
+    background-image: linear-gradient(to top, #37ecba 0%, #72afd3 100%);
+    /* background-image: linear-gradient(to right, #43e97b 0%, #38f9d7 100%); */
 }
 
 .btn.mb-2.home_button.btn-lg.btn-secondary.mb-2 {

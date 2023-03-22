@@ -78,9 +78,8 @@
 
 .nav-pills .nav-item .active{
     background-color: #ffffff;
-    border-width: 1rem;
-    border-color: #191825;
-    color: #3A98B9;
+    color: #72afd3;
+    border:solid 1px #72afd3;
 }
 
 /*Hover*/
@@ -107,5 +106,5 @@
 }
 
 .individual-card-title:hover {
-    color: linear-gradient(to right, #6a11cb 50%, #2575fc 50%);
+    color: #7468f7;
 }
