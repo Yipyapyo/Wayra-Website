@@ -287,7 +287,7 @@ class SearchIndividualViewTestCase(TestCase):
             self.assertContains(response, individual['name'])
         self.assertEqual(len(individual_search_result), 5)
 
-    def test_get_search_company_returns_correct_data_for_founders(self):
+    def test_get_search_individual_returns_correct_data_for_founders(self):
         self.client.login(email=self.user.email, password="Password123")
         set_session_individual_filter_variable(self.client, 2)
         response = self.client.get(self.search_url, data={'searchresult': 'er'})
@@ -299,7 +299,7 @@ class SearchIndividualViewTestCase(TestCase):
             self.assertContains(response, founder.individualFounder.name)
         self.assertEqual(len(founders_search_result), 1)
 
-    def test_get_search_company_returns_correct_data_for_investors(self):
+    def test_get_search_individual_returns_correct_data_for_investors(self):
         self.client.login(email=self.user.email, password="Password123")
         set_session_individual_filter_variable(self.client, 3)
         response = self.client.get(self.search_url, data={'searchresult': 'en'})
@@ -312,20 +312,37 @@ class SearchIndividualViewTestCase(TestCase):
             self.assertContains(response, company.name)
         self.assertEqual(len(search_result), 1)
 
-    def test_post_search_company_filters_all_companies_successfully(self):
+    def test_search_individual_with_blank_query(self):
+        self.client.login(email=self.user.email, password="Password123")
+        response = self.client.get(self.search_url, {'searchresult': ''})
+        self.assertEqual(response.status_code, 200)
+        templates = response.templates
+        template_names = [template.name for template in templates]
+        self.assertIn("partials/search/search_results_table.html", template_names)
+        self.assertNotContains(response, 'No Search Results Found.')
+
+    def test_post_search_individual_with_blank_query(self):
+        self.client.login(email=self.user.email, password="Password123")
+        response = self.client.post(self.search_url, follow=True, data={'searchresult': ''})
+        self.assertEqual(response.status_code, 200)
+        templates = response.templates
+        template_names = [template.name for template in templates]
+        self.assertIn("individual/individual_page.html", template_names)
+
+    def test_post_search_individual_filters_all_individuals_successfully(self):
         self.client.login(email=self.user.email, password="Password123")
         response = self.client.post(self.search_url, follow=True, data={'searchresult': 'J'})
         individuals = response.context['individuals']
         self.assertEqual(len(individuals), 5)
 
-    def test_post_search_company_filters_portfolio_companies_successfully(self):
+    def test_post_search_company_filters_founders_successfully(self):
         self.client.login(email=self.user.email, password="Password123")
         set_session_individual_filter_variable(self.client, 2)
         response = self.client.post(self.search_url, follow=True, data={'searchresult': 'er'})
         individuals = response.context['individuals']
         self.assertEqual(len(individuals), 1)
 
-    def test_post_search_company_filters_investor_companies_successfully(self):
+    def test_post_search_company_filters_investors_successfully(self):
         self.client.login(email=self.user.email, password="Password123")
         set_session_individual_filter_variable(self.client, 3)
         response = self.client.post(self.search_url, follow=True, data={'searchresult': 'en'})
