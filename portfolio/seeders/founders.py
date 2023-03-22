@@ -1,5 +1,5 @@
-from portfolio.seeders import Seeder
 from portfolio.models import Founder, Company, Individual
+from portfolio.seeders import Seeder
 
 
 class FounderSeeder(Seeder):
@@ -13,7 +13,7 @@ class FounderSeeder(Seeder):
         """Seeder for fake founders"""
 
         print('seeding founders...')
-        for i in range(1, count+1):
+        for i in range(1, count + 1):
 
             if Founder.objects.filter(id=i).exists():
                 print(f"Founder with the id({i}) is already seeded.")

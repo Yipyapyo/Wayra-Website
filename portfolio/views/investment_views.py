@@ -121,6 +121,7 @@ class PortfolioCompanyCreateView(LoginRequiredMixin, CreateView):
     def get_success_url(self):
         return reverse('portfolio_company', kwargs={'company_id': self.redirect_id})
 
+
 class PortfolioCompanyUpdateView(LoginRequiredMixin, UpdateView):
     template_name = 'investment/portfolio_company_update.html'
     model = Portfolio_Company
@@ -142,4 +143,3 @@ class PortfolioCompanyUpdateView(LoginRequiredMixin, UpdateView):
 
     def get_success_url(self):
         return reverse('portfolio_company', kwargs={'company_id': self.company_id})
-

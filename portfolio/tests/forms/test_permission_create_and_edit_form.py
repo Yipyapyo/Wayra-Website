@@ -1,7 +1,8 @@
 from django import forms
-from django.test import TestCase
-from portfolio.forms import CreateGroupForm, EditGroupForm
 from django.contrib.auth.models import Group, Permission
+from django.test import TestCase
+
+from portfolio.forms import CreateGroupForm, EditGroupForm
 
 
 class CreatePermissionGroupFormTestCase(TestCase):
@@ -45,7 +46,7 @@ class CreatePermissionGroupFormTestCase(TestCase):
 class EditPermissionGroupFormTestCase(TestCase):
     # Set up an examplery input to use for the tests
     def setUp(self):
-        Group.objects.create(name = "TestGroup2")
+        Group.objects.create(name="TestGroup2")
         self.form_input = {
             "name": "TestGroup",
             "permissions": ["add_company"]
@@ -68,8 +69,8 @@ class EditPermissionGroupFormTestCase(TestCase):
         self.form_input['name'] = ''
         form = EditGroupForm(data=self.form_input)
         self.assertFalse(form.is_valid())
-    
+
     def test_name_cannot_be_the_same(self):
         self.form_input['name'] = 'TestGroup2'
-        form = EditGroupForm(data = self.form_input)
+        form = EditGroupForm(data=self.form_input)
         self.assertFalse(form.is_valid())

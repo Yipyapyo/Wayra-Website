@@ -1,7 +1,7 @@
 from django.core.exceptions import ValidationError
 from django.test import TestCase
 
-from portfolio.models import Company, Portfolio_Company, Investor
+from portfolio.models import Company, Portfolio_Company
 
 
 class PortfolioCompanyTestCase(TestCase):
@@ -35,7 +35,6 @@ class PortfolioCompanyTestCase(TestCase):
         other_p_company = self._create_second_portfolio_company()
         self.portfolio_company.parent_company = other_p_company.parent_company
         self._assert_portfolio_company_is_invalid()
-
 
     def test_wayra_number_cannot_be_repeated(self):
         other_p_company = self._create_second_portfolio_company()

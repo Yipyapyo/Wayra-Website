@@ -1,9 +1,11 @@
-from django.test import TestCase
+import os
+
 from django.core.exceptions import ValidationError
 from django.core.files.uploadedfile import SimpleUploadedFile
-from portfolio.models import Document
+from django.test import TestCase
+
 from portfolio.models import Company
-import os
+from portfolio.models import Document
 
 
 class DocumentModelTestCase(TestCase):
@@ -16,6 +18,8 @@ class DocumentModelTestCase(TestCase):
             file_name="test.document",
             file_type="document",
             company=Company.objects.get(id=1),
+            individual=None,
+            programme=None,
             file=SimpleUploadedFile("test.document", b"file contents")
         )
 

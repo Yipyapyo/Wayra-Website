@@ -2,15 +2,15 @@
 from django import forms
 from django.forms.fields import URLField, CharField
 from django.test import TestCase
-from portfolio.models import Individual
-from portfolio.forms import IndividualCreateForm
-from phonenumber_field.phonenumber import PhoneNumber
 from phonenumber_field.formfields import PhoneNumberField
-from phonenumber_field.widgets import PhoneNumberPrefixWidget
+
+from portfolio.forms import IndividualCreateForm
+from portfolio.models import Individual
 
 
 class CreateFormTestCase(TestCase):
     """Unit tests of the sign up form."""
+
     def setUp(self):
         self.form_input = {
             "name": "Jemma Doe",
