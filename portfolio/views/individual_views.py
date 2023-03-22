@@ -9,11 +9,10 @@ from portfolio.forms import IndividualCreateForm, AddressCreateForm, PastExperie
 from portfolio.models import Individual, ResidentialAddress, Founder, Document, Company
 from portfolio.models.investment_model import Investor, Investment
 from portfolio.models.past_experience_model import PastExperience
-
+from django.template import RequestContext
 """
 Search an individual.
 """
-
 
 def individual_search(request):
     if request.method == "GET":
@@ -279,7 +278,7 @@ def change_individual_filter(request):
             "async_individual_layout": int(request.session["individual_layout"]),
         }
 
-        search_results_table_html = render_to_string('individual/individual_page_content_reusable.html', context)
+        search_results_table_html = render_to_string('individual/individual_page_content_reusable.html', context, request)
 
         return HttpResponse(search_results_table_html)
 
@@ -323,6 +322,6 @@ def change_individual_layout(request):
             "async_individual_layout": int(request.session["individual_layout"]),
         }
 
-        search_results_table_html = render_to_string('individual/individual_page_content_reusable.html', context)
+        search_results_table_html = render_to_string('individual/individual_page_content_reusable.html', context, request)
 
         return HttpResponse(search_results_table_html)

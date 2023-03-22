@@ -126,7 +126,7 @@ def change_archived_company_filter(request):
                 "companies": companies_page,
             }
 
-            archived_companies_table_html = render_to_string('archive/archived_companies_table.html', context)
+            archived_companies_table_html = render_to_string('archive/archived_companies_table.html', context, request)
 
             return HttpResponse(archived_companies_table_html)
     else:
@@ -165,7 +165,7 @@ def change_archived_individual_filter(request):
                 "individuals": individuals_page,
             }
 
-            archived_individuals_table_html = render_to_string('archive/archived_individuals_table.html', context)
+            archived_individuals_table_html = render_to_string('archive/archived_individuals_table.html', context, request)
 
             return HttpResponse(archived_individuals_table_html)
     else:
