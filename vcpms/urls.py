@@ -113,7 +113,7 @@ urlpatterns = [
          name='portfolio_company_update'),
 
     # Documents
-    path("portfolio_company/<int:company_id>/upload_document/", views.company_document_upload,
+    path("portfolio_company/<int:company_id>/upload_document/", views.document_upload,
          name="company_document_upload"),
     path("individual_profile_page/<int:individual_id>/upload_document/", views.individual_document_upload,
          name="individual_document_upload"),
