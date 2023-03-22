@@ -1,27 +1,25 @@
 {% load static %}
+<link rel="stylesheet" href="{% static 'css/individual_card.css' %}">
 <a href="{% url 'portfolio_company' company.id %}" class="text-reset text-decoration-none">
     <div class="d-flex align-items-center justify-content-between mb-3 mx-2 border">
         <div class="my-4 d-md-flex align-items-center flex-wrap">
             <div class="img-holder">
-                <img
-                    src="{% static 'images/default_logo.png' %}"
-                    alt=""
-                    style="width: 80px; height: 80px"
-                    class="rounded-circle"
-                    />
+                <div class="individual-card-avatar" style="width: 80px; height: 80px"></div>
             </div>
 
             <div class="ps-4">
-                <h4 class="ps-2 text-md-left">{{company.name}}</h4>
+                <h4 class="ps-2 text-md-left">{{ company.name }}</h4>
                 <div class="d-flex rounded-3 p-2 mb-2 mt-2 w-100">
                     <div>
-                        <p class="text-muted mb-1"><i class="fa-solid fa-location-dot"></i> {{company.registered_address}}</p>
+                        <p class="text-muted mb-1"><i
+                                class="fa-solid fa-location-dot"></i> {{ company.registered_address }}</p>
                     </div>
                     <div class="px-3">
-                        <p class="text-muted mb-1"><i class="fa-solid fa-city"></i> {{company.jurisdiction}}</p>
+                        <p class="text-muted mb-1"><i class="fa-solid fa-city"></i> {{ company.jurisdiction }}</p>
                     </div>
                     <div>
-                        <p class="text-muted mb-1"><i class="fa-solid fa-calendar-days"></i> {{company.incorporation_date}}</p>
+                        <p class="text-muted mb-1"><i
+                                class="fa-solid fa-calendar-days"></i> {{ company.incorporation_date }}</p>
                     </div>
                 </div>
             </div>

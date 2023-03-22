@@ -1,15 +1,16 @@
+import os
+
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, Http404
 from django.shortcuts import render, redirect
+
 from portfolio.forms import DocumentUploadForm, URLUploadForm
-from portfolio.models import Document
-
-import os
+from portfolio.models import Document, Company, Individual, Programme
 
 
-# Render the document upload page.
+# Document upload page for companies.
 @login_required
-def document_upload(request, company_id):
+def company_document_upload(request, company_id):
     if request.method == "POST":
         if "upload_file" in request.POST:
             form = DocumentUploadForm(request.POST, request.FILES)
@@ -36,6 +37,74 @@ def document_upload(request, company_id):
             "file_form": file_form,
             "url_form": url_form,
             "company_id": company_id
+        }
+
+    return render(request, "document/document_upload.html", context)
+
+
+# Document upload page for individuals.
+@login_required
+def individual_document_upload(request, individual_id):
+    if request.method == "POST":
+        if "upload_file" in request.POST:
+            form = DocumentUploadForm(request.POST, request.FILES)
+
+            if form.is_valid():
+                new_document = form.save(commit=False)
+                new_document.individual_id = individual_id
+                new_document.save()
+                return redirect("individual_profile", id=individual_id)
+
+        elif "upload_url" in request.POST:
+            form = URLUploadForm(request.POST)
+
+            if form.is_valid():
+                new_document = form.save(commit=False)
+                new_document.individual_id = individual_id
+                new_document.save()
+                return redirect("individual_profile", id=individual_id)
+    else:
+        file_form = DocumentUploadForm()
+        url_form = URLUploadForm()
+
+        context = {
+            "file_form": file_form,
+            "url_form": url_form,
+            "individual_id": individual_id
+        }
+
+    return render(request, "document/document_upload.html", context)
+
+
+# Document upload page for programmes.
+@login_required
+def programme_document_upload(request, programme_id):
+    if request.method == "POST":
+        if "upload_file" in request.POST:
+            form = DocumentUploadForm(request.POST, request.FILES)
+
+            if form.is_valid():
+                new_document = form.save(commit=False)
+                new_document.programme_id = programme_id
+                new_document.save()
+                return redirect("programme_detail", id=programme_id)
+
+        elif "upload_url" in request.POST:
+            form = URLUploadForm(request.POST)
+
+            if form.is_valid():
+                new_document = form.save(commit=False)
+                new_document.programme_id = programme_id
+                new_document.save()
+                return redirect("programme_detail", id=programme_id)
+    else:
+        file_form = DocumentUploadForm()
+        url_form = URLUploadForm()
+
+        context = {
+            "file_form": file_form,
+            "url_form": url_form,
+            "programme_id": programme_id
         }
 
     return render(request, "document/document_upload.html", context)

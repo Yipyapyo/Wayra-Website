@@ -1,8 +1,8 @@
 """Unit tests of the log in view"""
 
+from django.contrib import messages
 from django.test import TestCase
 from django.urls import reverse
-from django.contrib import messages
 
 from portfolio.forms import LogInForm
 from portfolio.models import User
@@ -116,3 +116,45 @@ class LogInViewTestCase(TestCase, LogInTester):
         redirect_url = reverse("dashboard")
         self.assertRedirects(response, redirect_url, status_code=302, target_status_code=200)
         self.assertTemplateUsed(response, "company/main_dashboard.html")
+
+
+class LogOutViewTestCase(TestCase, LogInTester):
+    fixtures = ['portfolio/tests/fixtures/default_user.json',
+                'portfolio/tests/fixtures/other_users.json']
+
+    def setUp(self):
+        self.url = reverse('logout')
+        self.user = User.objects.get(email="john.doe@example.org")
+        self.admin_user = User.objects.get(email="petra.pickles@example.org")
+        set_session_variables(self.client)
+
+    def test_log_out_url(self):
+        self.assertEqual(self.url, '/logout')
+
+    def test_get_log_out(self):
+        self.client.login(email=self.user.email, password='Password123')
+        self.assertTrue(self._is_logged_in())
+        response = self.client.get(self.url, follow=True)
+        response_url = reverse('login')
+        self.assertRedirects(response, response_url, status_code=302, target_status_code=200)
+        self.assertTemplateUsed(response, 'login/login.html')
+        self.assertIsNone(self.client.session.get('company_layout'))
+        self.assertIsNone(self.client.session.get('company_filter'))
+        self.assertIsNone(self.client.session.get('individual_layout'))
+        self.assertIsNone(self.client.session.get('individual_filter'))
+        self.assertIsNone(self.client.session.get('archived_company_filter'))
+        self.assertFalse(self._is_logged_in())
+
+    def test_get_log_out_for_admin(self):
+        self.client.login(email=self.admin_user.email, password='Password123')
+        self.assertTrue(self._is_logged_in())
+        response = self.client.get(self.url, follow=True)
+        response_url = reverse('login')
+        self.assertRedirects(response, response_url, status_code=302, target_status_code=200)
+        self.assertTemplateUsed(response, 'login/login.html')
+        self.assertIsNone(self.client.session.get('company_layout'))
+        self.assertIsNone(self.client.session.get('company_filter'))
+        self.assertIsNone(self.client.session.get('individual_layout'))
+        self.assertIsNone(self.client.session.get('individual_filter'))
+        self.assertIsNone(self.client.session.get('archived_company_filter'))
+        self.assertFalse(self._is_logged_in())

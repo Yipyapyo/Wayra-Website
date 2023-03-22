@@ -10,14 +10,14 @@ button.see-all {
     padding: 0;
     font-size: inherit;
     font-family: inherit;
-   }
-   
-   button.see-all {
+}
+
+button.see-all {
     width: 10rem;
     height: auto;
-   }
-   
-   button.see-all .circle {
+}
+
+button.see-all .circle {
     transition: all 0.45s cubic-bezier(0.65, 0, 0.076, 1);
     position: relative;
     display: block;
@@ -26,26 +26,26 @@ button.see-all {
     height: 3rem;
     background: #282936;
     border-radius: 1.625rem;
-   }
-   
-   button.see-all .circle .icon {
+}
+
+button.see-all .circle .icon {
     transition: all 0.45s cubic-bezier(0.65, 0, 0.076, 1);
     position: absolute;
     top: 0;
     bottom: 0;
     margin: auto;
     background: #fff;
-   }
-   
-   button.see-all .circle .icon.arrow {
+}
+
+button.see-all .circle .icon.arrow {
     transition: all 0.45s cubic-bezier(0.65, 0, 0.076, 1);
     left: 0.625rem;
     width: 1.125rem;
     height: 0.125rem;
     background: none;
-   }
-   
-   button.see-all .circle .icon.arrow::before {
+}
+
+button.see-all .circle .icon.arrow::before {
     position: absolute;
     content: "";
     top: -0.29rem;
@@ -55,9 +55,9 @@ button.see-all {
     border-top: 0.125rem solid #fff;
     border-right: 0.125rem solid #fff;
     transform: rotate(45deg);
-   }
-   
-   button.see-all .button-text {
+}
+
+button.see-all .button-text {
     transition: all 0.45s cubic-bezier(0.65, 0, 0.076, 1);
     position: absolute;
     top: 0;
@@ -71,17 +71,17 @@ button.see-all {
     line-height: 1.6;
     text-align: center;
     text-transform: uppercase;
-   }
-   
-   button:hover .circle {
+}
+
+button:hover .circle {
     width: 100%;
-   }
-   
-   button:hover .circle .icon.arrow {
+}
+
+button:hover .circle .icon.arrow {
     background: #fff;
     transform: translate(1rem, 0);
-   }
-   
-   button:hover .button-text {
+}
+
+button:hover .button-text {
     color: #fff;
-   }
+}

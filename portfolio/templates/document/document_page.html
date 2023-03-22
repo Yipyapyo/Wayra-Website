@@ -9,12 +9,12 @@
 
     <body>
 -->
-        <div class="row">
-            <div class="col-md-6">
-                <h2>Documents</h2>
-            </div>
+<div class="row">
+    <div class="col-md-6">
+        <h2>Documents</h2>
+    </div>
 
-        <!-- {% comment %}
+    <!-- {% comment %}
             <div class="col-md-6 text-right">
                 {% if user.is_authenticated %}
                     <div class="text-center">
@@ -23,18 +23,18 @@
                 {% endif %}
             </div>
         {% endcomment %} -->
-        </div>
+</div>
 
-        <div class="px-5 pt-3 pb-2 mb-4 bg-light rounded-3">
-            {% if documents|length > 0 %}
-                {% include 'partials/document/document_list.html' with documents=documents %}
-                <!-- {% comment %}
+<div class="px-5 pt-3 pb-2 mb-4 bg-light rounded-3">
+    {% if documents|length > 0 %}
+        {% include 'partials/document/document_list.html' with documents=documents %}
+        <!-- {% comment %}
                 {% include 'partials/utilities/pagination.html' with page_obj=documents page_number=1 %}
                 {% endcomment %} -->
-            {% else %}
-                <p class="text-center">No documents uploaded.</p>
-            {% endif %}
-        </div>
+    {% else %}
+        <p class="text-center">No documents uploaded.</p>
+    {% endif %}
+</div>
 <!--
     </body>
 

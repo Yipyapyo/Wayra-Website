@@ -2,10 +2,10 @@ import random
 
 from django.core.exceptions import ObjectDoesNotExist
 
-from portfolio.seeders import Seeder
 from portfolio.models import Company, Investment, Portfolio_Company, Individual
 from portfolio.models.investment_model import FOUNDING_ROUNDS, ContractRight
 from portfolio.models.investor_model import Investor
+from portfolio.seeders import Seeder
 
 
 class InvestorCompanySeeder(Seeder):
@@ -39,13 +39,13 @@ class InvestorIndividualSeeder(Seeder):
         for i in range(1, count + 1):
             try:
                 Investor.objects.get(id=i + InvestorCompanySeeder.INVESTOR_COMPANY_COUNT)
-                print(f"InvestorCompany with id({i}) has already seeded.")
+                print(f"InvestorIndividual with id({i}) has already seeded.")
             except ObjectDoesNotExist:
                 Investor.objects.create(
                     individual=Individual.objects.get(id=i),
                     classification=Investor.INVESTOR_TYPES[i],
                 )
-                print(f"InvestorCompany with id({i}) has been seeded.")
+                print(f"InvestorIndividual with id({i}) has been seeded.")
 
 
 class InvestmentSeeder(Seeder):
@@ -107,8 +107,8 @@ class InvestmentSeeder(Seeder):
         investor_individuals = list(Investor.objects.filter(company__isnull=True))
         for i in range(1, count + 1):
             try:
-                Investment.objects.get(id=i)
-                print(f"InvestorCompany with id({i}) has already seeded.")
+                Investment.objects.get(id=self.INVESTMENT_COUNT + i)
+                print(f"Investment with id({self.INVESTMENT_COUNT + i}) has already seeded.")
             except ObjectDoesNotExist:
                 investment = Investment.objects.create(
                     investor=investor_individuals[investor_count],
@@ -128,4 +128,4 @@ class InvestmentSeeder(Seeder):
                 if random.randint(0, 101) > 30 and investor_count != len(investor_individuals) - 1:
                     investor_count += 1
 
-                print(f"Investment with id({i}) has been seeded.")
+                print(f"Investment with id({self.INVESTMENT_COUNT + i}) has been seeded.")

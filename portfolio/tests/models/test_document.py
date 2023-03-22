@@ -1,8 +1,11 @@
-from django.test import TestCase
+import os
+
 from django.core.exceptions import ValidationError
 from django.core.files.uploadedfile import SimpleUploadedFile
-from portfolio.models import Document
+from django.test import TestCase
+
 from portfolio.models import Company
+from portfolio.models import Document
 
 
 class DocumentModelTestCase(TestCase):
@@ -15,6 +18,8 @@ class DocumentModelTestCase(TestCase):
             file_name="test.document",
             file_type="document",
             company=Company.objects.get(id=1),
+            individual=None,
+            programme=None,
             file=SimpleUploadedFile("test.document", b"file contents")
         )
 
@@ -24,6 +29,30 @@ class DocumentModelTestCase(TestCase):
     def test_both_url_and_file_cannot_be_null(self):
         self.document.company = None
         self._assert_document_is_invalid()
+
+    def test_auto_delete_file_on_delete(self):
+        # Ensure the file exists.
+        file_path = self.document.file.path
+        self.assertTrue(os.path.isfile(file_path))
+
+        # Test if the file is deleted when its record in the database is deleted.
+        self.document.delete()
+        self.assertFalse(os.path.isfile(file_path))
+
+    def test_auto_delete_file_on_change(self):
+        second_document = self._create_second_document()
+
+        # Ensure the old file is deleted when a new file is uploaded.
+        old_file_path = self.document.file.path
+        new_file_path = second_document.file.path
+        self.assertTrue(os.path.isfile(old_file_path))
+        self.assertTrue(os.path.isfile(new_file_path))
+
+        # Update the first document with the second document's file.
+        self.document.file = second_document.file
+        self.document.save()
+        self.assertFalse(os.path.isfile(old_file_path))
+        self.assertTrue(os.path.isfile(new_file_path))
 
     """Helper functions"""
 

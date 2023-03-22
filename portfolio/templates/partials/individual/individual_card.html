@@ -7,47 +7,46 @@
             <div class="card-body p-4">
                 <div class="d-flex text-black">
                     <div class="flex-shrink-0">
-                        
 
-                        {% if individual.profile_pic  %}    
 
-                        <img src="{{ individual.profile_pic.url}}" 
-                             alt="{{ individual.name }} Profile Picture" class="img-fluid"
-                             style="width: 180px; border-radius: 10px;">
+                        {% if individual.profile_pic %}
+
+                            <img src="{{ individual.profile_pic.url }}"
+                                 alt="{{ individual.name }} Profile Picture" class="img-fluid"
+                                 style="width: 180px; border-radius: 10px;">
 
 
                         {% else %}
 
-                        <img src="{% static 'defaultuser.jpg' %}" 
-                        alt="{{ individual.name }} Profile Picture" class="img-fluid"
-                        style="width: 180px; border-radius: 10px;">
+                            <img src="{% static 'images/defaultuser.jpeg' %}"
+                                 alt="{{ individual.name }} Profile Picture" class="img-fluid"
+                                 style="width: 180px; border-radius: 10px;">
 
                         {% endif %}
 
                     </div>
 
 
-
-
                     <div class="flex-grow-1 ms-3">
                         {% load util %}
 
-                        <h4 >
-                            {{individual.name}}
+                        <h4>
+                            {{ individual.name }}
                         </h4>
 
                         {% if individual|is_founder_and_investor %}
-                        <h5 class="mb-1">Founder/Investor </h4>
+                            <h5 class="mb-1">Founder/Investor </h4>
                         {% elif individual|is_founder %}
-                        <h5 class="mb-1">Founder </h4>
+                            <h5 class="mb-1">Founder </h4>
                         {% elif individual|is_investor %}
-                        <h5 class="mb-1">Investor </h4>
+                            <h5 class="mb-1">Investor </h4>
                         {% else %}
-                        <h5 class="mb-1">Individual</h4>
+                            <h5 class="mb-1">Individual</h4>
                         {% endif %}
-                        
-                        <h7>{{individual.Position}}</h7>
-                        <div class="d-flex justify-content-start rounded-3 p-2 mb-2 mt-2" style="background-color: #efefef;">
+
+                        <h7>{{ individual.Position }}</h7>
+                        <div class="d-flex justify-content-start rounded-3 p-2 mb-2 mt-2"
+                             style="background-color: #efefef;">
                             <div>
                                 <p class="small text-muted mb-1">Articles</p>
                                 <p class="mb-0">41</p>
@@ -67,21 +66,21 @@
                     </div>
                 </div>
             </div>
-    
+
             <ul class="list-group list-group-flush">
                 <li class="list-group-item mb-2 mt-2">
-                        <h6>Company</h6>
-                        <h7>{{individual.Company}}</h7>
+                    <h6>Company</h6>
+                    <h7>{{ individual.Company }}</h7>
                 </li>
                 <li class="list-group-item my-2">
                     <div class="col">
                         <h6>Position</h6>
-                        <h7>{{individual.Position}}</h7>
+                        <h7>{{ individual.Position }}</h7>
                     </div>
                 </li>
                 <li class="list-group-item my-2">
                     <h6>Email</h6>
-                    <h7>{{individual.Email}}</h7>
+                    <h7>{{ individual.Email }}</h7>
                 </li>
             </ul>
         </div>

@@ -1,7 +1,6 @@
 """Unit tests of the Programme model."""
 from django.core.exceptions import ValidationError
 from django.test import TestCase
-from PIL import Image
 
 from portfolio.models import Programme, Company, Portfolio_Company, Individual
 
@@ -29,6 +28,7 @@ class ProgrammeModelTestCase(TestCase):
         self.programme.partners.add(self.partner)
         self.programme.participants.add(self.participant)
         self.programme.coaches_mentors.add(self.coach)
+        self.programme.description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
 
     def _create_second_programme(self):
         second_programme = Programme.objects.get(id=2)
@@ -220,4 +220,8 @@ class ProgrammeModelTestCase(TestCase):
             self.programme.cover = f
             self._assert_programme_is_invalid()
             f.close()
+
+    def test_description_can_be_blank(self):
+        self.programme.description = ""
+        self._assert_programme_is_valid()
 
