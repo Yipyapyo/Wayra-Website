@@ -25,62 +25,6 @@
 
 .navbar-gradient {
     background-image: linear-gradient(to top, #37ecba 0%, #72afd3 100%);
-    /* background-image: linear-gradient(to right, #43e97b 0%, #38f9d7 100%); */
-}
-
-.btn.mb-2.home_button.btn-lg.btn-secondary.mb-2 {
-    font-size: 25px;
-    color: #000000;
-    font-family: inherit;
-    font-weight: 800;
-    cursor: pointer;
-    position: relative;
-    border: none;
-    background: none;
-    text-transform: uppercase;
-    transition-timing-function: cubic-bezier(0.25, 0.8, 0.25, 1);
-    transition-duration: 400ms;
-    transition-property: color;
-}
-
-.btn.mb-2.home_button.btn-lg.btn-secondary.mb-3 {
-    font-size: 55px;
-    color: #000000;
-    font-family: inherit;
-    font-weight: 800;
-    cursor: pointer;
-    position: relative;
-    border: none;
-    background: none;
-    text-transform: uppercase;
-    transition-timing-function: cubic-bezier(0.25, 0.8, 0.25, 1);
-    transition-duration: 400ms;
-    transition-property: color;
-}
-
-.btn.mb-2.home_button.btn-lg.btn-secondary.mb-2:focus,
-.btn.mb-2.home_button.btn-lg.btn-secondary.mb-2:hover {
-    color: #b82929;
-}
-
-.btn.mb-2.home_button.btn-lg.btn-secondary.mb-2:focus:after,
-.btn.mb-2.home_button.btn-lg.btn-secondary.mb-2:hover:after {
-    width: 100%;
-    left: 0%;
-}
-
-.btn.mb-2.home_button.btn-lg.btn-secondary.mb-2:after {
-    content: "";
-    pointer-events: none;
-    bottom: -2px;
-    left: 50%;
-    position: absolute;
-    width: 0%;
-    height: 2px;
-    background-color: #fff;
-    transition-timing-function: cubic-bezier(0.25, 0.8, 0.25, 1);
-    transition-duration: 400ms;
-    transition-property: width, left;
 }
 
 .individual_count {
@@ -198,9 +142,5 @@
 
 #navbar:hover {
     transform: scale(1.01);
-}
-
-.table_row_hover:hover{
-    
 }
 
