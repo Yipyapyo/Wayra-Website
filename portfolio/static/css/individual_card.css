@@ -71,6 +71,18 @@
     font-size: 0.8em;
 }
 
+/* Pills */
+.nav-item .nav-link{
+    color: #191825;
+}
+
+.nav-pills .nav-item .active{
+    background-color: #ffffff;
+    border-width: 1rem;
+    border-color: #191825;
+    color: #3A98B9;
+}
+
 /*Hover*/
 .individual-card:hover {
     box-shadow: 0 5px 10px #23232333;
