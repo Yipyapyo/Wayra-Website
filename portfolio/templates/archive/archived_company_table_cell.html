@@ -2,12 +2,8 @@
 <tr>
     <td class="clickable-cell" data-href="{% url 'portfolio_company' company.id %}">
         <div class="d-flex align-items-center">
-            <img
-                    src="{% static 'images/default_logo.png' %}"
-                    alt=""
-                    style="width: 45px; height: 45px"
-                    class="rounded-circle"
-            />
+            <div class="company-details-avatar " style="width: 45px; height: 45px"></div>
+
             <div class="ms-3">
                 <p class="fw-bold mb-1">{{ company.name }}</p>
             </div>

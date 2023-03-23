@@ -1,13 +1,20 @@
 var search_input = document.getElementById('search_input');
+var searchInputs = $('.search_input');
 var results_container = document.getElementById('results_container');
+var isClickInside = false;
+
 
 // Show or Hide the table depending on if the search input is active or not
 document.addEventListener('click', function (event) {
-    var isClickInside = search_input.contains(event.target);
+    if (searchInputs.is(event.target)) {
+        isClickInside = true;
+      } else {
+        isClickInside = false;
+      }
+
     if (isClickInside) {
         //Show the search results container
         if (results_container.style.display === "none") {
-            console.log("it workds")
             results_container.style.display = "block";
         }
     } else {
@@ -19,17 +26,20 @@ document.addEventListener('click', function (event) {
 });
 
 // Handle the async search result calls to django backend
-$('.search_input').keyup(function () {
-    var search_input = document.getElementById("search_input");
+$('.search_input').keyup(function (event) {
+    var resultsContainer = $(this).closest('.border').find('#results_container')[0];
+    results_container = resultsContainer;
+    search_input = $(this);
+
     $.ajax(
         {
             type: "GET",
             url: search_url,
             data: {
-                searchresult: search_input.value
+                searchresult: search_input.val()
             },
             success: function (data) {
-                $('#results_container').html(data);
+                $(resultsContainer).html(data);
             }
         })
 });

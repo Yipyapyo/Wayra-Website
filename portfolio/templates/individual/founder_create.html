@@ -11,12 +11,8 @@
     <p></p>
     <form action="{% url 'founder_create' %}" method="post">
         {% csrf_token %}
-        {{ founderForm.as_p }}
-        <!-- {{ addressForms.as_p }}
-            {% for form in pastExperienceForms %}
-                {{ form.as_p }}
-            {% endfor %} -->
-        <input type="submit" value="Create" class="btn mb-2 home_button btn-lg btn-secondary mb=2">
+        {% include 'partials/utilities/form_input.html' with form=founderForm %}
+        <button type="submit" class="btn btn-primary">Create</button>
     </form>
 
     </body>

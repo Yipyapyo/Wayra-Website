@@ -34,6 +34,7 @@ class LogInCBV(LoginProhibitedMixin, View):
             request.session['individual_layout'] = 1
             request.session['individual_filter'] = 1
             request.session['archived_company_filter'] = 1
+            request.session['archived_individual_filter'] = 1
             return redirect(self.next)
         messages.add_message(request, messages.ERROR, "The credentials provided were invalid!")
         return self.render()
@@ -52,6 +53,7 @@ def log_out(request):
         del request.session['individual_layout']
         del request.session['individual_filter']
         del request.session['archived_company_filter']
+        del request.session['archived_individual_filter']
     except:
         pass
     logout(request)

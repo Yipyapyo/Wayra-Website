@@ -9,7 +9,7 @@
     }
 </script>
 
-<table class="table">
+<table class="table table-hover">
 
     <thead>
     <tr>
@@ -26,13 +26,14 @@
     <tbody>
     {% for document in documents %}
         {% if document.is_private and request.user.is_staff or not document.is_private %}
-            <tr>
-                <td>{{ document.file_name }}</td>
-                <td>
+            {% include 'partials/document/document_modal.html' with document=document id=forloop.counter%}
+            <tr  data-toggle="modal" data-target="#exampleModalCenter{{forloop.counter}}">
+                <td class="text-center">{{ document.file_name }}</td>
+                <td class="text-center">
                     <div class="file-icon file-icon-lg" data-type="{{ document.file_type }}"></div>
                 </td>
-                <td>{{ document.file_size }}</td>
-                <td>{{ document.updated_at }}</td>
+                <td class="text-center">{{ document.file_size }}</td>
+                <td class="text-center">{{ document.updated_at }}</td>
                 {% if request.user.is_staff %}
                     <td>
                         {% if document.is_private %}
@@ -42,7 +43,7 @@
                         {% endif %}
                     </td>
                 {% endif %}
-                <td>
+                <td class="text-center">
                     <div class="dropdown">
 
                         <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"

@@ -1,32 +1,72 @@
 {% extends 'base.html' %}
 {% load static %}
 
-
 {% block body %}
+<div class="px-5 py-5 p-lg-0" style="height: 100vh;">
+    <div class="d-flex justify-content-between h-100">
+        <div class="col-lg-5 col-xl-4 p-3 p-xl-5 position-fixed start-0 top-0 h-100 overflow-y-hidden d-none d-lg-flex flex-column justify-content-between navbar-gradient">
+            <!-- Logo -->
+            <a class="py-0" href="#">
+                <img src="{% static 'images/wayra-logo-vector.svg'%}" class="h-10 filter-white" alt="..."
+                    style="width: 350px;">
+            </a>
 
-
-
-    <div class="container" id="logincontainer">
-        <div class="col-xs-1 mt-3" align="center">
-            <img src="{% static 'images/logo.jpg' %}" alt="logo" width="128" height="128" align="center">
-            <h6 class="lead text-center mb-2"><em>Telefónica Innovation</em></h6>
+            <!-- Title -->
+            <div class="mt-5 mb-5 w-70">
+                <h1 class="ls-tight bold text-white mb-5" style="font-size: xx-large;">
+                    Venture Capital Portfolio Management Suite
+                </h1>
+                <p class="text-white text-opacity-75" style="font-size:large;">
+                    We scale startups, build lasting corporate partnerships & invest
+                </p>
+            </div>
+            <!-- Circle -->
+            <!-- <a class="rounded-circle" style="background-color: #fab802; height: 100px; width: 100px;"></a> -->
         </div>
-        <div class="col-12" id="card">
-            <h1 class="text-center mt-5 mb-4">Welcome Back</h1>
-            <form action="{% url 'login' %}" method="post">
-                {% csrf_token %}
-                <div class="col-sm-10 offset-sm-1 offset-md-3 col-md-6 mt-3 signupform">
-                    {% load widget_tweaks %}
-                    {% include 'partials/utilities/bootstrap_form.html' with form=form %}
-                    {% include 'partials/messages.html' with messages=messages %}
-
-                    <input type="hidden" name="next" value="{{ next }}">
-                    <div class="col-xs-1 mt-2" align="center">
-                        <input type="submit" value="Log In" class="btn btn-primary btn-lg mr-auto">
-                        <p class="mt-2">Forgot your password? <a href='{% url 'login' %}'>Reset Here</a></p></p>
+        <div class="col-12 col-md-9 col-lg-7 offset-lg-5 border-left-lg min-h-lg-screen d-flex flex-column justify-content-center py-lg-16 px-lg-20 position-relative">
+            <div class="container-fluid h-100">
+                <div class="row h-100">
+                    <div class="hstack h-100">
+                        <div class="col-lg-10 col-md-9 col-xl-6 mx-auto ms-xl-0">
+                            <div class="mt-10 mt-lg-5 mb-6 d-flex align-items-center d-lg-block">
+                                <!-- <span class="d-inline-block d-lg-block h1 mb-lg-6 me-3">👋</span> -->
+                                <h1 class="ls-tight font-bolder h2 text-dark">
+                                    Welcome!
+                                </h1>
+                            </div>
+                            <form action="{% url 'login' %}" method="post">
+                                {% csrf_token %}
+                                <div class="mb-5">
+                                    {% include 'partials/utilities/settings_form_input.html' with field=form.email %}
+                                </div>
+                                <div class="mb-5">
+                                    {% include 'partials/utilities/settings_form_input.html' with field=form.password %}
+                                </div>
+                                
+                                
+                                <div class="mb-5">
+                                    <div class="my-6">
+                                        <small>Forgot your password?</small>
+                                        <a href="{% url 'login' %}" class="text-warning text-sm font-semibold">Reset Here</a>
+                                    </div>
+                                </div>
+                                <div>
+                                    <button type="submit" class="btn btn-lg w-full navbar-gradient border-0 text-white">
+                                        Log in
+                                    </button>
+                                </div>
+                            </form>
+        
+                        </div>
+                        <div class="mt-auto mb-5 d-none d-md-block">
+                            <img src="{% static 'images/login-graphic.jpg'%}" class="h-10" alt="..." style="width: 400px;">
+                        </div>
                     </div>
                 </div>
-            </form>
+            </div>
+            
         </div>
     </div>
+</div>
+
 {% endblock %}
