@@ -30,8 +30,6 @@ $('.search_input').keyup(function (event) {
     var resultsContainer = $(this).closest('.border').find('#results_container')[0];
     results_container = resultsContainer;
     search_input = $(this);
-    // alert(search_input.val())
-    alert(search_url)
 
     $.ajax(
         {
@@ -42,7 +40,6 @@ $('.search_input').keyup(function (event) {
             },
             success: function (data) {
                 $(resultsContainer).html(data);
-                alert("SUCCESS")
             }
         })
 });
