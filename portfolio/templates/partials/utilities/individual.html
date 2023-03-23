@@ -6,16 +6,8 @@
             <a class="individual-card-title text-decoration-none" href="{% url 'individual_profile' individual.id %}">{{individual.name}}</a>
             <div class="individual-card-subtitle">{{role}}</div>
         </div>
-        <ul class="individual-card-social">
-            <li class="individual-card-social__item">
-                <a href="mailto: {{individual.Email}}" class="text-decoration-none"><i class="fa-regular fa-envelope text-dark"></i></a>
-            </li>
-            <li class="individual-card-social__item">
-                <a href="{{individual.LinkedInLink}}" class="text-decoration-none"><i class="fa-brands fa-linkedin-in text-dark"></i></a>
-            </li>
-            <li class="individual-card-social__item">
-                <a href="tel: {{Individual.PrimaryNumber}}" class="text-decoration-none"><i class="fa-solid fa-phone text-dark"></i></a>
-            </li>
-        </ul>
+        <div class="container-fluid py-2 align-items-center text-center">
+            {% include 'partials/individual/individual_contact_button.html' %}
+        </div>
     </div>
 </div>
