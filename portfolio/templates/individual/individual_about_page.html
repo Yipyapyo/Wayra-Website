@@ -88,9 +88,11 @@
             <ul id="tabs" class="nav nav-pills pb-3 mt-auto overflow-x border-0">
                 <li class="nav-item"><a data-target="#overview" data-toggle="tab" class="nav-link active font-regular">Overview</a>
                 </li>
+                {% if founder_companies|length > 0 %}
                 <li class="nav-item"><a data-target="#individuals" data-toggle="tab" class="nav-link font-regular">Individuals
                     association</a>
                 </li>
+                {% endif %}
                 <li class="nav-item"><a data-target="#documents" data-toggle="tab" class="nav-link font-regular">Documents</a>
                 </li>
                 {% if individual|is_investor %}
@@ -105,9 +107,11 @@
                 <div id="overview" class="tab-pane fade active show">
                     {% include 'individual/details_section.html' %}
                 </div>
+                {% if founder_companies|length > 0 %}
                 <div id="individuals" class="tab-pane fade">
                     {% include 'individual/company_association_section.html' with founder_companies=founder_companies %}
                 </div>
+                {% endif %}
                 <div id="documents" class="tab-pane fade">
                     <div class="container-fluid pt-3">
                         {% include 'document/document_page.html' with documents=documents %}
