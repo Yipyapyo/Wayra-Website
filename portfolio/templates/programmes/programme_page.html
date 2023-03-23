@@ -83,6 +83,7 @@
                                             {{ partner.name }} 
                                         {% endfor %}
                                     </p>
+                                    </h5>
                                 </div>
                             </div>
                         </div>
@@ -97,9 +98,9 @@
             <h5 class="pb-3">Participants, Coaches and Mentors</h5>
             <li class="list-group-item my-2">
                 <h6>Participants</h6>
-                <div class="row mb-3">
+                <div class="row mb-3 d-flex align-items-stretch">
                     {% for participant in participants %}
-                        {% include 'partials/utilities/individual.html' with individual=participant %}
+                        {% include 'partials/utilities/company.html' with company=participant %}
                     {% endfor %}
                 </div>
             </li>
